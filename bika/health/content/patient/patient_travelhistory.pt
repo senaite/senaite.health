@@ -1,0 +1,120 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:tal="http://xml.zope.org/namespaces/tal"
+	xmlns:metal="http://xml.zope.org/namespaces/metal"
+	xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+	metal:use-macro="here/main_template/macros/master" i18n:domain="bika">
+<body class="template-travelhistory">
+
+	<metal:content-core fill-slot="content-core">
+    <form name="travelhistory" method="POST">
+
+		<div id="folderlisting-main-table">
+            <input tal:replace="structure context/@@authenticator/authenticator" />
+            <input type="hidden" name="submitted" value="1"/>
+			<div class="bika-listing-table-container">
+				<table summary="Content listing" style="margin-bottom: 0px;"
+					class="bika-listing-table">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th class="sortable column"
+							    id="foldercontents-start-column"
+							    style="width:22%">
+                                <span i18n:translate="" class="fieldRequired">Trip start date</span>
+							</th>
+							<th class="sortable column"
+							    id="foldercontents-end-column"
+							    style="width:22%">
+                                <span i18n:translate="">Trip end date</span>
+                            </th>
+                            <th class="sortable column"
+							    id="foldercontents-country-column"
+							    style="width:22%">
+                                <span i18n:translate="" class="fieldRequired">Country</span>
+                            </th>
+                            <th class="sortable column"
+							    id="foldercontents-location-column"
+							    style="width:22%">
+                                <span i18n:translate="">Location</span>
+                            </th>
+						</tr>
+					</thead>
+
+					<tbody class="item-listing-tbody"
+							tal:define="global index python:-1">
+                        <tr tal:repeat="row context/getTravelHistory">
+                        	<td>
+                            	<input class="noborder" type="checkbox"
+                            		name="SelectItem" id="SelectItem"
+                            		tal:define="global index python:index+1;"
+                            		tal:attributes="
+                            			id python:'SelectItem-%s'%(index);
+                            			name python:'SelectItem-%s'%(index);"/>
+                            </td>
+                            <td colspan="1" rowspan="1" class="state-active TripStartDate">
+                                 <span tal:content="row/TripStartDate"/>
+                            </td>
+                            <td colspan="1" rowspan="1" class="state-active TripEndDate">
+                                 <span tal:content="row/TripEndDate"/>
+                            </td>
+                            <td colspan="1" rowspan="1" class="state-active Country">
+                                 <span tal:content="row/Country"/>
+                            </td>
+                            <td colspan="1" rowspan="1" class="state-active Location">
+                                 <span tal:content="row/Location"/>
+                            </td>
+                        </tr>
+                        <tr id="new">
+                        	<td style="padding-bottom:15px;">&nbsp;</td>
+                            <td colspan="1" rowspan="1" class="state-active TripStartDate">
+                                 <input class="datepicker_nofuture" id="TripStartDate" type="text" value="" autocomplete="off"/>
+                            </td>
+                            <td colspan="1" rowspan="1" class="state-active TripEndDate">
+                                 <input class="datepicker" id="TripEndDate" type="text" value="" autocomplete="off"/>
+                            </td>
+                            <td colspan="1" rowspan="1" class="state-active Country">
+                                 <input class="wide" id="Country" type="text" value="" autocomplete="off"/>
+                            </td>
+                            <td colspan="1" rowspan="1" class="state-active Location">
+                                 <input class="wide" id="Location" type="text" value="" autocomplete="off"/>
+                            </td>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td class="noborder workflow_actions" colspan="5"  style="padding:5px;">
+								<input class="action_button add_row allowMultiSubmit"
+							       type="submit"
+								   i18n:attributes="value"
+								   value="Add" />
+								<tal:hashistory tal:condition="python:hasattr(view, 'hasTravelHistory') and view.hasTravelHistory()">
+									<input class="action_button" type="submit"
+										name="delete"
+										i18n:attributes="value" value="Delete selected" />
+									<input class="action_button" type="submit"
+										name="clear"
+										i18n:attributes="value" value="Delete all" />
+								</tal:hashistory>
+						   </td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+		<input class="action_button" type="submit"
+			i18n:attributes="value" value="Save travel history" />
+
+		<tal:hasremarks tal:condition="python:hasattr(context, 'Remarks')">
+			<tal:remarks
+				define="
+			field python:context.Schema()['Remarks'];
+			errors python:{};">
+				<p style="margin-top: 2em;" />
+				<metal:widget
+					use-macro="python:context.widget('Remarks', mode='edit')" />
+			</tal:remarks>
+		</tal:hasremarks>
+    </form>
+	</metal:content-core>
+
+</body>
+</html>

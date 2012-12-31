@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<object name="Doctor"
+        meta_type="Factory-based Type Information with dynamic views"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        i18n:domain="plone">
+ <property name="title" i18n:translate="">Doctor</property>
+ <property name="description"></property>
+ <property name="content_icon">++resource++bika.health.images/doctor.png</property>
+ <property name="content_meta_type">Doctor</property>
+ <property name="product">bika.health</property>
+ <property name="factory">addDoctor</property>
+ <property name="add_view_expr"></property>
+ <property name="link_target"></property>
+ <property name="global_allow">False</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types"/>
+ <property name="allow_discussion">False</property>
+ <property name="default_view_fallback">False</property>
+
+ <alias from="(Default)" to="base_edit"/>
+ <alias from="view" to="base_edit"/>
+ <alias from="edit" to="base_edit"/>
+
+ <action title="View"
+         action_id="view"
+         category="object"
+         condition_expr=""
+         url_expr="string:${object/aq_parent/absolute_url}"
+         i18n:attributes="title"
+         i18n:domain="plone"
+         visible="False">
+    <permission value="View"/>
+ </action>
+
+ <action title="Edit"
+         action_id="edit"
+         category="object"
+         condition_expr=""
+         url_expr="string:${object_url}/edit"
+         i18n:attributes="title"
+         i18n:domain="plone"
+         visible="True">
+    <permission value="BIKA: Manage Bika"/>
+ </action>
+
+ <action title="Analysis Requests"
+         action_id="analysisrequests"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/++resource++bika.lims.images/ar.png"
+         link_target=""
+         url_expr="string:${object_url}/analysisrequests"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+ <action title="Samples"
+         action_id="samples"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/++resource++bika.lims.images/sample.png"
+         link_target=""
+         url_expr="string:${object_url}/samples"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+ <action title="Login details"
+         action_id="access"
+         category="object"
+         condition_expr=""
+         url_expr="string:${object_url}/login_details"
+         i18n:attributes="title"
+         visible="True">
+    <permission value="BIKA: Manage Clients"/>
+ </action>
+
+</object>

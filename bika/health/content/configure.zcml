@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="bika.health">
+
+  <include package=".aetiologicagent"/>
+  <include package=".analysisrequest"/>
+  <include package=".batch"/>
+  <include package=".caseoutcome"/>
+  <include package=".casestatus"/>
+  <include package=".disease"/>
+  <include package=".doctor"/>
+  <include package=".doctors"/>
+  <include package=".drug"/>
+  <include package=".drugprohibition"/>
+  <include package=".epidemiologicalyear"/>
+  <include package=".identifiertype"/>
+  <include package=".immunization"/>
+  <include package=".patient"/>
+  <include package=".patients"/>
+  <include package=".sampleorigin"/>
+  <include package=".symptom"/>
+  <include package=".treatment"/>
+  <include package=".vaccinationcenter"/>
+  <include package=".vaccinationcentercontact"/>
+
+</configure>

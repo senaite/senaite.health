@@ -1,0 +1,45 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="bika.health">
+
+  <genericsetup:registerProfile
+      name="default"
+      title="Bika Health"
+      directory="profiles/default"
+      description='Extension profile for the Bika LIMS Health branch'
+      provides="Products.GenericSetup.interfaces.EXTENSION"/>
+
+  <genericsetup:importStep
+      name="setupVarious"
+      title="bika setupVarious"
+      description="Final site configuration actions"
+      handler="bika.health.setuphandlers.setupVarious">
+    <depends name="content" />
+    <depends name="toolset" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="setupGroupsAndRoles"
+      title="Bika: Groups And Roles"
+      description="Create system groups and roles."
+      handler="bika.health.setuphandlers.setupGroupsAndRoles">
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="setupPermissions"
+      title="Bika: Setup Permissions"
+      description="Configure default permission"
+      handler="bika.health.setuphandlers.setupPermissions">
+    <depends name="content" />
+  </genericsetup:importStep>
+
+  <genericsetup:importStep
+      name="setupCatalogs"
+      title="Bika: Setup Catalogs"
+      description="Create and configure catalogs and indexes"
+      handler="bika.health.setuphandlers.setupCatalogs">
+    <depends name="toolset" />
+  </genericsetup:importStep>
+
+</configure>

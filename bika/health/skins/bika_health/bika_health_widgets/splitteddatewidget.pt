@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    i18n:domain="plone">
+<body>
+
+<metal:view_macro define-macro="view">
+	<div metal:use-macro="here/widgets/string/macros/view" />
+</metal:view_macro>
+
+<metal:search_macro define-macro="search">
+	<div metal:use-macro="here/widgets/string/macros/edit"/>
+</metal:search_macro>
+
+<metal:edit_macro define-macro="edit">
+  	<metal:use use-macro="field_macro | context/widgets/field/macros/edit">
+		<metal:body_macro fill-slot="widget_body">
+			
+			<!-- Year -->
+			<label tal:attributes="for python:fieldName+'_year';"  i18n:translate="">Years</label>:&nbsp;
+			<input type="text" size="4" maxlength="4" readonly="readonly"
+				tal:attributes="name python:fieldName+'_year';
+	     	   			   		id python:fieldName+'_year';
+	     	   			  		value python: (value and value['year']) and value['year'] or '';"/>&nbsp;
+	     	<!-- Month -->
+	     	<label tal:attributes="for python:fieldName+'_month';"  i18n:translate="">Months</label>:&nbsp;
+	     	<input type="text" size="2" maxlength="2" readonly="readonly"
+	     	   	tal:attributes="name python:fieldName+'_month';
+	     	   				   	id python:fieldName+'_month';
+	     	   				   	value python: (value and value['month']) and value['month'] or '';"/>&nbsp;
+	     	
+	     	<!-- Day -->
+	     	<label tal:attributes="for python:fieldName+'_day';"  i18n:translate="">Days</label>:&nbsp;
+	     	<input type="text" size="2" maxlength="2" readonly="readonly"
+     	   		tal:attributes="name python:fieldName+'_day';
+	     	   				   	id python:fieldName+'_day';
+	     	   				   	value python: (value and value['day']) and value['day'] or '';"/>&nbsp;
+	     	   				   	
+	     	
+	     	<!-- Hidden widget params accessed by js -->
+	     	<input type="hidden" tal:attributes="name python:fieldName+'_changeYear';
+	     	   				   	id python:fieldName+'_changeYear';"/>
+	     	<input type="hidden" tal:attributes="name python:fieldName+'_changeMonth';
+	     	   				   	id python:fieldName+'_changeMonth';"/>
+	     	<input type="hidden" tal:attributes="name python:fieldName+'_changeDay';
+	     	   				   	id python:fieldName+'_changeDay';"/>
+	     	<input type="hidden" tal:attributes="name python:fieldName+'_maxDate';
+	     	   				   	id python:fieldName+'_maxDate';"/>
+	     	<input type="hidden" tal:attributes="name python:fieldName+'_yearRange';
+	     	   				   	id python:fieldName+'_yearRange';"/>
+	     	<input type="hidden" id="fieldName" name="fieldName"
+	     						tal:attributes="value python:fieldName;"/>
+	     	
+		</metal:body_macro>
+	</metal:use>
+</metal:edit_macro>
+
+</body>
+</html>

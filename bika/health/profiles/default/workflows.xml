@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<object name="portal_workflow" meta_type="Plone Workflow Tool">
+
+ <property name="title">Contains workflow definitions for your portal</property>
+
+ <object name="bika_doctor_workflow" meta_type="Workflow"/>
+ <object name="bika_patient_workflow" meta_type="Workflow"/>
+
+ <bindings>
+
+  <type type_id="AetiologicAgents"/>
+  <type type_id="AetiologicAgent">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+
+  <type type_id="CaseOutcome">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="CaseOutcomes"/>
+
+  <type type_id="CaseStatus">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="CaseStatuses"/>
+
+  <type type_id="Disease">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Diseases"/>
+
+  <type type_id="Drug">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Drugs"/>
+
+  <type type_id="DrugProhibition">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="DrugProhibitions"/>
+
+  <type type_id="EpidemiologicalYear">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="EpidemiologicalYears"/>
+
+  <type type_id="IdentifierType">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="IdentifierTypes"/>
+
+  <type type_id="Instrument">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Instruments"/>
+
+  <type type_id="Patient">
+   <bound-workflow workflow_id="bika_patient_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Patients"/>
+
+  <type type_id="Doctor">
+   <bound-workflow workflow_id="bika_doctor_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Doctors"/>
+
+  <type type_id="SampleOrigin">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="SampleOrigins"/>
+
+  <type type_id="Treatment">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Treatments"/>
+
+  <type type_id="Immunization">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Immunizations"/>
+
+  <type type_id="Symptom">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Symptoms"/>
+
+  <type type_id="VaccinationCenter">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="VaccinationCenters"/>
+
+  <type type_id="VaccinationCenterContact">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+
+ </bindings>
+</object>

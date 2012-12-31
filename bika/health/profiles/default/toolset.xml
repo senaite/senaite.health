@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<tool-setup>
+ <required tool_id="bika_patient_catalog" class="bika.health.catalog.BikaPatientCatalog"/>
+</tool-setup>

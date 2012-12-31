@@ -1,0 +1,33 @@
+#!/bin/bash
+I18NDUDE=~/Plone/zinstance/bin/i18ndude
+
+### Grab new translated strings
+# tx pull -a
+
+# Flush the english (transifex source language) po files
+# If we don't do this, new *-manual translations won't be synced.
+> en/LC_MESSAGES/bika.health.po
+> en/LC_MESSAGES/plone.po
+
+find . -name "*.mo" -delete
+
+### bika.health domain
+### ===========
+$I18NDUDE rebuild-pot --pot i18ndude.pot --exclude "build" --create bika.health ..
+msgcat --strict --use-first bika.health-manual.pot i18ndude.pot > bika.health.pot
+$I18NDUDE sync --pot bika.health.pot */LC_MESSAGES/bika.health.po
+rm i18ndude.pot
+
+### plone domain
+### ============
+PLONE_POT=~/Plone/zinstance/parts/omelette/plone/app/locales/locales/plone.pot
+$I18NDUDE rebuild-pot --pot i18ndude.pot --create plone ../profiles/
+$I18NDUDE filter i18ndude.pot $PLONE_POT > plone-tmp.pot
+msgcat --strict --use-first plone-manual.pot plone-tmp.pot > plone.pot
+$I18NDUDE sync --pot plone.pot */LC_MESSAGES/plone.po
+rm i18ndude.pot plone-tmp.pot
+
+for po in `find . -name "*.po"`; do msgfmt -o ${po/%po/mo} $po; done
+
+### push new strings to transifex
+# tx push -s -t

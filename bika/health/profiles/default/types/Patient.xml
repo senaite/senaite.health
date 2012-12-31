@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<object name="Patient"
+        meta_type="Factory-based Type Information with dynamic views"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        i18n:domain="plone">
+ <property name="title" i18n:translate="">Patient</property>
+ <property name="description"></property>
+ <property name="content_icon">++resource++bika.health.images/patient.png</property>
+ <property name="content_meta_type">Patient</property>
+ <property name="product">bika.health</property>
+ <property name="factory">addPatient</property>
+ <property name="add_view_expr"></property>
+ <property name="link_target"></property>
+ <property name="global_allow">False</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types"/>
+ <property name="allow_discussion">False</property>
+ <property name="default_view_fallback">False</property>
+
+ <alias from="(Default)" to="base_edit"/>
+ <alias from="view" to="base_edit"/>
+ <alias from="edit" to="base_edit"/>
+
+ <action title="View"
+         action_id="view"
+         category="object"
+         condition_expr=""
+         url_expr="string:${object/aq_parent/absolute_url}"
+         i18n:attributes="title"
+         i18n:domain="plone"
+         visible="False">
+    <permission value="View"/>
+ </action>
+
+ <action title="Edit"
+         action_id="edit"
+         category="object"
+         condition_expr=""
+         url_expr="string:${object_url}/edit"
+         i18n:attributes="title"
+         i18n:domain="plone"
+         visible="True">
+    <permission value="BIKA: Manage Patients"/>
+ </action>
+
+ <action title="Batches"
+         action_id="batches"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/++resource++bika.lims.images/batch.png"
+         link_target=""
+         url_expr="string:${object_url}/batches"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="BIKA: Manage Patients"/>
+ </action>
+
+ <action title="Analysis Requests"
+         action_id="analysisrequests"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/++resource++bika.lims.images/ar.png"
+         link_target=""
+         url_expr="string:${object_url}/analysisrequests"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+ <action title="Samples"
+         action_id="samples"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/++resource++bika.lims.images/sample.png"
+         link_target=""
+         url_expr="string:${object_url}/samples"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+ <action title="Allergies"
+         action_id="allergies"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/images/drug.png"
+         link_target=""
+         url_expr="string:${object_url}/allergies"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+ <action title="Past Medical History"
+         action_id="chronicconditions"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/images/symptom.png"
+         link_target=""
+         url_expr="string:${object_url}/chronicconditions"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+ <action title="Immunization History"
+         action_id="immunizationhistory"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/images/immunization.png"
+         link_target=""
+         url_expr="string:${object_url}/immunizationhistory"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+ <action title="Drug History"
+         action_id="treatmenthistory"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/images/drug.png"
+         link_target=""
+         url_expr="string:${object_url}/treatmenthistory"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+  <action title="Travel History"
+         action_id="travelhistory"
+         category="object"
+         condition_expr=""
+         icon_expr="string:${portal_url}/images/travel.png"
+         link_target=""
+         url_expr="string:${object_url}/travelhistory"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="View"/>
+ </action>
+
+</object>

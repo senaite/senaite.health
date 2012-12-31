@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="bika">
+<body>
+    <div id="folderlisting-main-table" class="template-caseprovisionaldiagnosis bika-listing-table-container">
+        <input tal:replace="structure context/@@authenticator/authenticator" />
+        <input type="hidden" name="CPD_submitted" value="1"/>
+        <table class="bika-listing-table">
+            <thead>
+                <tr>
+            		<th class="minwidth"></th>
+                    <th i18n:translate="">Code</th>
+                    <th i18n:translate="" class="fieldRequired">Provisional Diagnosis</th>
+                    <th i18n:translate="">Description</th>
+                    <th i18n:translate="">Onset</th>
+                </tr>
+            </thead>
+            <tbody class="item-listing-tbody"
+            		tal:define="global index python:-1">
+                <tr tal:repeat="row python:context.Schema()['ProvisionalDiagnosis'].getAccessor(context)()">
+                	<td class="minwidth">
+                      	<input type="checkbox"
+                      		tal:define="global index python:index+1;"
+                      		tal:attributes="id python:'CPD-SelectItem-%s'%(index);
+                      						name python:'CPD-SelectItem-%s'%(index);"/>
+                      	<input type="hidden" name="CPD_SCode:list" tal:attributes="value row/Code"/>
+                      	<input type="hidden" name="CPD_STitle:list" tal:attributes="value row/Title"/>
+                      	<input type="hidden" name="CPD_SDescription:list" tal:attributes="value row/Description"/>
+                      	<input type="hidden" name="CPD_SOnset:list" tal:attributes="value row/Onset"/>
+                    </td>
+                    <td tal:content="row/Code" class="minwidth"></td>
+                    <td tal:content="row/Title"></td>
+                    <td tal:content="row/Description"></td>
+                    <td tal:content="row/Onset"></td>
+                </tr>
+                <tr id="new">
+                	<td class="minwidth"></td>
+                    <td class="minwidth"><input id="Code" type="text" value="" autocomplete="off" readonly="readonly" disabled="disabled" class="icdcode"></td>
+                    <td><input id="Title" type="text" value="" autocomplete="off"></td>
+                    <td><input id="Description" type="text" value="" autocomplete="off" readonly="readonly" disabled="disabled"></td>
+                    <td><input id="Onset" type="text" value="" autocomplete="off" class="datepicker_nofuture"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+				<tr>
+					<td colspan="5"  style="padding:5px;">
+						<input id="add_row" type="submit" i18n:attributes="value" value="Add" class="allowMultiSubmit"/>
+						<tal:hasprovisionaldiagnosis tal:condition="python:hasattr(view, 'hasProvisionalDiagnosis') and view.hasProvisionalDiagnosis()">
+							<input type="submit" name="CPD_delete" i18n:attributes="value" value="Delete selected" class="allowMultiSubmit"/>
+							<input type="submit" name="CPD_clear" i18n:attributes="value" value="Delete all" class="allowMultiSubmit"/>
+						</tal:hasprovisionaldiagnosis>
+				   </td>
+				</tr>
+			</tfoot>
+        </table>
+      </div>
+</body>
+</html>

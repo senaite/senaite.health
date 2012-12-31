@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object name="portal_factory" meta_type="Plone Factory Tool">
+ <factorytypes>
+  <type portal_type="AetiologicAgent"/>
+  <type portal_type="CaseOutcome"/>
+  <type portal_type="CaseStatus"/>
+  <type portal_type="Disease"/>
+  <type portal_type="Doctor"/>
+  <type portal_type="Drug"/>
+  <type portal_type="DrugProhibition"/>
+  <type portal_type="EpidemiologicalYear"/>
+  <type portal_type="IdentifierType" />
+  <type portal_type="Immunization" />
+  <type portal_type="Patient"/>
+  <type portal_type="SampleOrigin"/>
+  <type portal_type="Symptom"/>
+  <type portal_type="Treatment"/>
+  <type portal_type="VaccinationCenter" />
+ </factorytypes>
+</object>

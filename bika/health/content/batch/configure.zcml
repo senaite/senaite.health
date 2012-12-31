@@ -1,0 +1,41 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/browser"
+           xmlns:fss="http://namespaces.zope.org/browser"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <adapter factory=".batch.BatchExtender" />
+
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="getBatchInfo"
+      class=".getbatchinfo.ajaxGetBatchInfo"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="ajax_rm_aetiologic"
+      class=".ajax_rm_aetiologic.ajax_rm_aetiologic"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="ajax_rm_symptoms"
+      class=".ajax_rm_symptoms.ajax_rm_symptoms"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="ajax_rm_provisional"
+      class=".ajax_rm_provisional.ajax_rm_provisional"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+</configure>

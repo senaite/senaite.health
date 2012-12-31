@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:tal="http://xml.zope.org/namespaces/tal"
+	xmlns:metal="http://xml.zope.org/namespaces/metal"
+	xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+	metal:use-macro="here/main_template/macros/master" i18n:domain="bika">
+<body class="template-treatmenthistory">
+
+	<metal:content-core fill-slot="content-core">
+    <form name="treatmenthistory" method="POST">
+
+		<div id="folderlisting-main-table">
+            <input tal:replace="structure context/@@authenticator/authenticator" />
+            <input type="hidden" name="submitted" value="1"/>
+
+			<div class="bika-listing-table-container">
+				<table summary="Content listing" style="margin-bottom: 0px;"
+					class="bika-listing-table">
+					<thead>
+						<tr>
+	                		<th></th>
+	                        <th class="fieldRequired" i18n:translate="">Drug</th>
+	                        <th i18n:translate="">Start</th>
+	                        <th i18n:translate="">End</th>
+                    	</tr>
+					</thead>
+
+					<tbody class="item-listing-tbody"
+						tal:define="global index python:-1">
+                        <tr tal:repeat="row context/getTreatmentHistory">
+                        	<td>
+                            	<input type="checkbox"
+                            		tal:define="global index python:index+1;"
+                            		tal:attributes="
+                            			id python:'SelectItem-%s'%(index);
+                            			name python:'SelectItem-%s'%(index);"/>
+                            </td>
+                            <td tal:content="row/Drug"></td>
+                            <td tal:content="row/Start"></td>
+                            <td tal:content="row/End"></td>
+                        </tr>
+                        <tr id="new">
+                        	<td></td>
+                            <td class="Drug"><input id="Drug" class="wide" type="text" value="" autocomplete="off"/></td>
+                            <td class="Start"><input id="Start" class="datepicker_nofuture" type="text" value="" autocomplete="off"/></td>
+                            <td class="End"><input id="End" class="datepicker" type="text" value="" autocomplete="off"/></td>
+                        </tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="5" style="padding:5px;">
+								<input class="action_button add_row allowMultiSubmit"
+								       type="submit"
+									   i18n:attributes="value"
+									   value="Add" />
+								<tal:hastreatments tal:condition="python:hasattr(view, 'hasTreatmentHistory') and view.hasTreatmentHistory()">
+									<input class="action_button" type="submit"
+										name="delete"
+										i18n:attributes="value" value="Delete selected" />
+									<input class="action_button" type="submit"
+										name="clear"
+										i18n:attributes="value" value="Delete all" />
+								</tal:hastreatments>
+						   </td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+		<input class="action_button" type="submit"
+			i18n:attributes="value" value="Save drug history" />
+
+		<tal:hasremarks tal:condition="python:hasattr(context, 'Remarks')">
+			<tal:remarks
+				define="
+			field python:context.Schema()['Remarks'];
+			errors python:{};">
+				<p style="margin-top: 2em;" />
+				<metal:widget
+					use-macro="python:context.widget('Remarks', mode='edit')" />
+			</tal:remarks>
+		</tal:hasremarks>
+    </form>
+	</metal:content-core>
+
+</body>
+</html>

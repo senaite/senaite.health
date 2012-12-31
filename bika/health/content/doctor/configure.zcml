@@ -1,0 +1,40 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="bika.health">
+
+    <!-- Workflow action button clicked -->
+    <browser:page
+      for="bika.health.interfaces.IDoctor"
+      name="workflow_action"
+      class="bika.lims.browser.client.ClientWorkflowAction"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IDoctor"
+      name="analysisrequests"
+      class=".analysisrequests.AnalysisRequestsView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IDoctor"
+      name="samples"
+      class=".samples.SamplesView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="*"
+      name="getDoctorID"
+      class=".getdoctorid.ajaxGetDoctorID"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+</configure>

@@ -1,0 +1,221 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2012-10-20 09:21+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: plone\n"
+#
+msgid "Client"
+msgstr "Referring Institution"
+#
+msgid "Client ID"
+msgstr "Referring Institution ID"
+#
+msgid "Clients"
+msgstr "Referring Institutions"
+#
+msgid "Batch"
+msgstr "Case"
+#
+msgid "Batch ID"
+msgstr "Case ID"
+#
+msgid "Batches"
+msgstr "Cases"
+#
+msgid "Batch labels"
+msgstr "Case Syndrome Classifications"
+#
+msgid "Batch label"
+msgstr "Case Syndrome Classification"
+#
+# File: ../profiles/default/workflows/bika_doctor_workflow/definition.xml, line: -1
+# File: ../profiles/default/workflows/bika_patient_workflow/definition.xml, line: -1
+msgid "Active"
+msgstr ""
+#
+# File: ../profiles/default/types/AetiologicAgent.xml, line: -1
+msgid "Aetiologic Agent"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/AetiologicAgents.xml, line: -1
+msgid "Aetiologic Agents"
+msgstr ""
+#
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Allergies"
+msgstr ""
+#
+# File: ../profiles/default/types/Doctor.xml, line: -1
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Analysis Requests"
+msgstr ""
+#
+# File: ../profiles/default/types/CaseOutcome.xml, line: -1
+msgid "Case Outcome"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/CaseOutcomes.xml, line: -1
+msgid "Case Outcomes"
+msgstr ""
+#
+# File: ../profiles/default/types/CaseStatus.xml, line: -1
+msgid "Case Status"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/CaseStatuses.xml, line: -1
+msgid "Case Statuses"
+msgstr ""
+#
+# File: ../profiles/default/types/VaccinationCenter.xml, line: -1
+msgid "Contacts"
+msgstr ""
+#
+# File: ../profiles/default/types/Disease.xml, line: -1
+msgid "Disease"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/Diseases.xml, line: -1
+msgid "Diseases"
+msgstr ""
+#
+# File: ../profiles/default/types/Doctor.xml, line: -1
+msgid "Doctor"
+msgstr ""
+#
+# File: ../profiles/default/types/Doctors.xml, line: -1
+msgid "Doctors"
+msgstr ""
+#
+# File: ../profiles/default/types/Drug.xml, line: -1
+msgid "Drug"
+msgstr ""
+#
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Drug History"
+msgstr ""
+#
+# File: ../profiles/default/types/DrugProhibition.xml, line: -1
+msgid "Drug Prohibition Explanation"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/DrugProhibitions.xml, line: -1
+msgid "Drug Prohibition Explanations"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/Drugs.xml, line: -1
+msgid "Drugs"
+msgstr ""
+#
+# File: ../profiles/default/types/EpidemiologicalYear.xml, line: -1
+msgid "Epidemiological Year"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/EpidemiologicalYears.xml, line: -1
+msgid "Epidemiological Years"
+msgstr ""
+#
+# File: ../profiles/default/types/IdentifierType.xml, line: -1
+msgid "Identifier Type"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/IdentifierTypes.xml, line: -1
+msgid "Identifier Types"
+msgstr ""
+#
+# File: ../profiles/default/types/Immunization.xml, line: -1
+msgid "Immunization"
+msgstr ""
+#
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Immunization History"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/Immunizations.xml, line: -1
+msgid "Immunizations"
+msgstr ""
+#
+# File: ../profiles/default/types/Doctor.xml, line: -1
+msgid "Login details"
+msgstr ""
+#
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Past Medical History"
+msgstr ""
+#
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Patient"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+msgid "Patient Symptoms and Conditions"
+msgstr ""
+#
+# File: ../profiles/default/types/Patients.xml, line: -1
+msgid "Patients"
+msgstr ""
+#
+# File: ../profiles/default/types/SampleOrigin.xml, line: -1
+msgid "Sample Origin"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/SampleOrigins.xml, line: -1
+msgid "Sample Origins"
+msgstr ""
+#
+# File: ../profiles/default/types/Doctor.xml, line: -1
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Samples"
+msgstr ""
+#
+# File: ../profiles/default/types/Symptom.xml, line: -1
+msgid "Symptom"
+msgstr ""
+#
+# File: ../profiles/default/types/Symptoms.xml, line: -1
+msgid "Symptoms"
+msgstr ""
+#
+# File: ../profiles/default/types/Patient.xml, line: -1
+msgid "Travel History"
+msgstr ""
+#
+# File: ../profiles/default/types/Treatment.xml, line: -1
+msgid "Treatment"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+# File: ../profiles/default/types/Treatments.xml, line: -1
+msgid "Treatments"
+msgstr ""
+#
+# File: ../profiles/default/controlpanel.xml, line: -1
+msgid "Vaccination Centers"
+msgstr ""
+#
+# File: ../profiles/default/types/VaccinationCenter.xml, line: -1
+msgid "Vaccination center"
+msgstr ""
+#
+# File: ../profiles/default/types/VaccinationCenters.xml, line: -1
+msgid "Vaccination centers"
+msgstr ""

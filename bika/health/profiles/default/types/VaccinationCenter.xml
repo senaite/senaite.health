@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<object name="VaccinationCenter"
+        meta_type="Factory-based Type Information with dynamic views"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+        i18n:domain="plone">
+ <property name="title" i18n:translate="">Vaccination center</property>
+ <property name="description"></property>
+ <property name="content_icon">++resource++bika.health.images/vaccinationcenter.png</property>
+ <property name="content_meta_type">Vaccination Center</property>
+ <property name="product">bika.health</property>
+ <property name="factory">addVaccinationCenter</property>
+ <property name="add_view_expr"></property>
+ <property name="link_target"></property>
+ <property name="global_allow">False</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types">
+  <element value="VaccinationCenterContact"/>
+ </property>
+ <property name="allow_discussion">False</property>
+ <property name="default_view_fallback">False</property>
+
+ <alias from="(Default)" to="base_edit"/>
+ <alias from="view" to="base_edit"/>
+ <alias from="edit" to="base_edit"/>
+
+ <action title="View"
+         action_id="view"
+         category="object"
+         condition_expr=""
+         url_expr="string:${object_url}/base_view"
+         i18n:attributes="title"
+         i18n:domain="plone"
+         visible="True">
+    <permission value="View"/>
+ </action>
+
+ <action action_id="edit"
+         title="Edit"
+         category="object"
+         url_expr="string:${object_url}/base_edit"
+         i18n:attributes="title"
+         i18n:domain="plone"
+         visible="True">
+  <permission value="Modify portal content"/>
+ </action>
+
+ <action action_id="contacts"
+         title="Contacts"
+         category="object"
+         url_expr="string:${object_url}/contacts"
+         i18n:attributes="title"
+         visible="True">
+  <permission value="List folder contents"/>
+ </action>
+
+</object>

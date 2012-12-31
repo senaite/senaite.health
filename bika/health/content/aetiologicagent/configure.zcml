@@ -1,0 +1,23 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/browser"
+           xmlns:fss="http://namespaces.zope.org/browser"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:page
+      for="*"
+      name="getAetiologicAgents"
+      class=".getaetiologicagents.ajaxGetAetiologicAgents"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="*"
+      name="getAetiologicAgentSubtypes"
+      class=".getaetiologicagentsubtypes.ajaxGetAetiologicAgentSubtypes"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+</configure>

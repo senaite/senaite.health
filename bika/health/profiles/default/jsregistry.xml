@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+
+ <javascript authenticated="False"
+              id="++resource++bika.health.js/utils.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="++resource++bika.lims.js/jquery.json.js"/>
+
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/patient.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/doctor.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+  <javascript authenticated="True"
+              id="++resource++bika.lims.js/client.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="False"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+  <javascript authenticated="True"
+              id="++resource++bika.lims.js/batch.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="False"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/client.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/batch.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+</object>
