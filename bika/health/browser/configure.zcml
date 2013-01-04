@@ -1,27 +1,30 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
     xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="bika.health">
 
-  <!-- Zope 3 browser resources -->
-
-  <browser:resourceDirectory
-      name="bika.health.images"
-      directory="images"
-      layer="bika.lims.interfaces.IBikaLIMS"
-      />
-
-  <browser:resourceDirectory
-      name="bika.health.css"
-      directory="css"
-      layer="bika.lims.interfaces.IBikaLIMS"
-      />
-
-  <browser:resourceDirectory
-      name="bika.health.js"
-      directory="js"
-      layer="bika.lims.interfaces.IBikaLIMS"
-      />
+  <include package=".aetiologicagent"/>
+  <include package=".batch"/>
+  <include package=".caseoutcome"/>
+  <include package=".casestatus"/>
+  <include package=".disease"/>
+  <include package=".doctor"/>
+  <include package=".doctors"/>
+  <include package=".drug"/>
+  <include package=".drugprohibition"/>
+  <include package=".epidemiologicalyear"/>
+  <include package=".identifiertype"/>
+  <include package=".immunization"/>
+  <include package=".patient"/>
+  <include package=".patients"/>
+  <include package=".sampleorigin"/>
+  <include package=".symptom"/>
+  <include package=".treatment"/>
+  <include package=".vaccinationcenter"/>
+  <include package=".vaccinationcentercontact"/>
 
 </configure>

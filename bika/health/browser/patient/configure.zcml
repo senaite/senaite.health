@@ -1,0 +1,89 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="bika.health">
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="batches"
+      class=".batches.BatchesView"
+      permission="bika.health.ViewBatches"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="analysisrequests"
+      class=".analysisrequests.AnalysisRequestsView"
+      permission="bika.health.ViewAnalysisRequests"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="samples"
+      class=".samples.SamplesView"
+      permission="bika.health.ViewSamples"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="*"
+      name="getlastreferralid"
+      class=".getlastreferralid.ajaxGetPatientLastReferralID"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="*"
+      name="getpatientinfo"
+      class=".getpatientinfo.ajaxGetPatientInfo"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="allergies"
+      class=".allergies.AllergiesView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="chronicconditions"
+      class=".chronicconditions.ChronicConditionsView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="treatmenthistory"
+      class=".treatmenthistory.TreatmentHistoryView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="immunizationhistory"
+      class=".immunizationhistory.ImmunizationHistoryView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="travelhistory"
+      class=".travelhistory.TravelHistoryView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+</configure>

@@ -12,12 +12,13 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
-  <include package="archetypes.schemaextender" />
-
   <include file="permissions.zcml" />
 
   <include package=".content"/>
+  <include package=".controlpanel"/>
+  <include package=".extenders"/>
   <include package=".browser"/>
+  <include package=".static"/>
 
   <include file="profiles.zcml" />
 
