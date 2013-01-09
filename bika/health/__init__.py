@@ -36,6 +36,7 @@ def initialize(context):
     from content.aetiologicagent import AetiologicAgent
     from content.caseoutcome import CaseOutcome
     from content.casestatus import CaseStatus
+    from content.casesyndromicclassification import CaseSyndromicClassification
     from content.disease import Disease
     from content.doctor import Doctor
     from content.doctors import Doctors

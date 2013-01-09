@@ -25,6 +25,7 @@ setup(name='bika.health',
       install_requires=[
           'setuptools',
           'bika.lims',
+          'archetypes.schemaextender',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]

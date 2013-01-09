@@ -8,12 +8,10 @@ from bika.lims.permissions import *
 
 
 class AllergiesView(BrowserView):
-
     template = ViewPageTemplateFile("allergies.pt")
 
     def __call__(self):
-
         if 'submitted' in self.request:
-            self.context.setAllergies(self.request.form['Allergies'])
+            self.context.setAllergies(self.request.form.get('Allergies', ()))
             self.context.plone_utils.addPortalMessage(_p("Changes saved"))
         return self.template()

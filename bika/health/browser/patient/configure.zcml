@@ -32,14 +32,6 @@
 
     <browser:page
       for="*"
-      name="getlastreferralid"
-      class=".getlastreferralid.ajaxGetPatientLastReferralID"
-      permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="*"
       name="getpatientinfo"
       class=".getpatientinfo.ajaxGetPatientInfo"
       permission="zope.Public"

@@ -8,14 +8,10 @@ from bika.lims.permissions import *
 
 
 class ImmunizationHistoryView(BrowserView):
-    """ bika listing to display ImmunizationHistory
-    """
-
     template = ViewPageTemplateFile("immunizationhistory.pt")
 
     def __call__(self):
-
         if 'submitted' in self.request:
-            self.context.setChronicConditions
+            self.context.setChronicConditions(self.request.form.get('ImmunizationHistory', ()))
             self.context.plone_utils.addPortalMessage(_p("Changes saved"))
         return self.template()

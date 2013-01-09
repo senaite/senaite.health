@@ -12,6 +12,6 @@ class ChronicConditionsView(BrowserView):
 
     def __call__(self):
         if 'submitted' in self.request:
-            self.context.setChronicConditions(self.request.form['ChronicConditions'])
+            self.context.setChronicConditions(self.request.form.get('ChronicConditions', ()))
             self.context.plone_utils.addPortalMessage(_p("Changes saved"))
         return self.template()

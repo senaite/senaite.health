@@ -201,7 +201,9 @@ def setupCatalogs(context):
     if bc == None:
         logger.warning('Could not find the bika_catalog tool.')
         return
+    addIndex(bc, 'getPatientID', 'FieldIndex')
     addIndex(bc, 'getPatientUID', 'FieldIndex')
+    addIndex(bc, 'getDoctorID', 'FieldIndex')
     addIndex(bc, 'getDoctorUID', 'FieldIndex')
 
     # portal_catalog

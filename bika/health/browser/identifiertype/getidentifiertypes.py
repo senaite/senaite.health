@@ -27,8 +27,7 @@ class ajaxGetIdentifierTypes(BrowserView):
 
         for p in brains:
             rows.append({'IdentifierType': p.Title,
-                         'Description': p.Description,
-                         'IdentifierTypeUID': p.UID})
+                         'Description': p.Description})
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'IdentifierType'))
         if sord == 'desc':

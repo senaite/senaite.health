@@ -6,9 +6,6 @@ from bika.lims.permissions import *
 import json
 import plone
 
-def get(context,fieldname):
-    return context.Schema()[fieldname].getAccessor(context)()
-
 class ajaxGetBatchInfo(BrowserView):
     """ Grab the details for Doctor, Patient, Hospital (Titles).
     These are displayed onload next to the ID fields, but they are not part of the schema.
@@ -21,16 +18,16 @@ class ajaxGetBatchInfo(BrowserView):
         batch = self.context
         patientids = ''
         client = self.portal_catalog(portal_type='Client',
-                                     UID=get(batch, 'ClientUID'))
+                                     UID=batch.getClientUID())
         if client:
             client = client[0].getObject()
         patient = bpc(portal_type='Patient',
-                      UID=get(batch, 'PatientUID'))
+                      UID=batch.getPatientUID())
         if patient:
             patient = patient[0].getObject()
             patientids = len(patient.getPatientIdentifiersStr()) > 0 and "("+patient.getPatientIdentifiersStr()+")" or ''
         doctor = self.portal_catalog(portal_type='Doctor',
-                                     UID=get(batch, 'DoctorUID'))
+                                     UID=batch.getDoctorUID())
         if doctor:
             doctor = doctor[0].getObject()
 

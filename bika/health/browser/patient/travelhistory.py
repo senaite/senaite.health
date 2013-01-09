@@ -12,6 +12,6 @@ class TravelHistoryView(BrowserView):
 
     def __call__(self):
         if 'submitted' in self.request:
-            self.context.setTravelHistory(self.request.form['TravelHistory'])
+            self.context.setTravelHistory(self.request.form.get('TravelHistory', ()))
             self.context.plone_utils.addPortalMessage(_p("Changes saved"))
         return self.template()

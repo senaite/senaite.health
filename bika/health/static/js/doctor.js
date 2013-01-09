@@ -7,13 +7,13 @@ $(document).ready(function(){
 
     if($(".portaltype-doctor").length == 0 &&
        window.location.href.search('portal_factory/Doctor') == -1){
-        $("input[id=DoctorID]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
+        $("input[id=Doctor]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
                     ' class="add_doctor"' +
                     ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/new/edit"' +
                     ' rel="#overlay">' +
                     ' <img style="padding-bottom:1px;" src="'+window.portal_url+'/++resource++bika.lims.images/add.png"/>' +
                 ' </a>');
-        $("input[id*=DoctorID]").combogrid({
+        $("input[id*=Doctor]").combogrid({
             colModel: [{'columnName':'DoctorUID','hidden':true},
                        {'columnName':'DoctorID','width':'20','label':_('Doctor ID')},
                        {'columnName':'Title','width':'80','label':_('Title')}],
@@ -26,7 +26,7 @@ $(document).ready(function(){
                 $(this).change();
                 if($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
                     $(".jsDoctorTitle").remove();
-                    $("#archetypes-fieldname-DoctorID").append("<span class='jsDoctorTitle'>"+ui.item.Title+"</span>");
+                    $("#archetypes-fieldname-Doctor").append("<span class='jsDoctorTitle'>"+ui.item.Title+"</span>");
                 }
                 return false;
             }
@@ -62,7 +62,7 @@ $(document).ready(function(){
                                     'Fullname': Fullname},
                             dataType: "json",
                             success: function(data, textStatus, $XHR){
-                                $("#DoctorID").val(data['DoctorID']);
+                                $("#Doctor").val(data['DoctorID']);
                                 $(".jsDoctorTitle").remove();
                                 $("#archetypes-fieldname-DoctorID").append("<span class='jsDoctorTitle'>"+Fullname+"</span>");
                             }

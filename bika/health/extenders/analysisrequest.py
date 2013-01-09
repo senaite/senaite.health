@@ -27,12 +27,14 @@ class AnalysisRequestExtender(object):
                 label=_('Doctor'),
             ),
         ),
+
         ExtComputedField('DoctorUID',
             expression='context.getDoctor() and context.getDoctor().UID() or None',
             widget=ComputedWidget(
                 visible=False,
             ),
         ),
+
         ExtReferenceField('Patient',
             required=0,
             multiValued=0,
@@ -43,6 +45,7 @@ class AnalysisRequestExtender(object):
                 label=_('Patient'),
             ),
         ),
+
         ExtComputedField('PatientUID',
             expression='context.getPatient() and context.getPatient().UID() or None',
             widget=ComputedWidget(

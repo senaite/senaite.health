@@ -9,8 +9,6 @@
 
   <include package=".aetiologicagent"/>
   <include package=".batch"/>
-  <include package=".caseoutcome"/>
-  <include package=".casestatus"/>
   <include package=".disease"/>
   <include package=".doctor"/>
   <include package=".doctors"/>
@@ -22,7 +20,7 @@
   <include package=".patient"/>
   <include package=".patients"/>
   <include package=".sampleorigin"/>
-  <include package=".symptom"/>
+  <include package=".symptoms"/>
   <include package=".treatment"/>
   <include package=".vaccinationcenter"/>
   <include package=".vaccinationcentercontact"/>

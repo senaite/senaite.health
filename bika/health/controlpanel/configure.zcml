@@ -77,6 +77,14 @@
     />
 
     <browser:page
+      for="bika.health.interfaces.ICaseSyndromicClassifications"
+      name="folder_view"
+      class=".bika_casesyndromicclassifications.CaseSyndromicClassifications"
+      permission="bika.lims.ManageBika"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
       for="bika.health.interfaces.IImmunizations"
       name="folder_view"
       class=".bika_immunizations.ImmunizationsView"

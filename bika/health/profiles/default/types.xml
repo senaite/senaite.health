@@ -7,6 +7,8 @@
  <object name="CaseOutcomes" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="CaseStatus" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="CaseStatuses" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="CaseSyndromicClassification" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="CaseSyndromicClassifications" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Disease" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Diseases" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Drug" meta_type="Factory-based Type Information with dynamic views"/>

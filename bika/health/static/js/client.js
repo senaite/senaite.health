@@ -61,7 +61,7 @@ $(document).ready(function(){
     //     }
     // );
 
-    $("input[id*=ClientID]").combogrid({
+    $("input[id=Client]").combogrid({
         colModel: [{'columnName':'ClientUID','hidden':true},
                    {'columnName':'ClientID','width':'20','label':_('Client ID')},
                    {'columnName':'Title','width':'80','label':_('Title')}],
@@ -74,7 +74,7 @@ $(document).ready(function(){
             $(this).change();
             if($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
                 $(".jsClientTitle").remove();
-                $("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'>"+ui.item.Title+"</span>");
+                $("#archetypes-fieldname-Client").append("<span class='jsClientTitle'>"+ui.item.Title+"</span>");
             }
             return false;
         }

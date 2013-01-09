@@ -1,12 +1,12 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:zcml="http://namespaces.zope.org/browser"
-           xmlns:fss="http://namespaces.zope.org/browser"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="bika.health">
 
     <browser:page
       for="*"
-      name="getAetiologicAgents"
+      name="getaetiologicagents"
       class=".getaetiologicagents.ajaxGetAetiologicAgents"
       permission="zope.Public"
       layer="bika.lims.interfaces.IBikaLIMS"
@@ -14,7 +14,7 @@
 
     <browser:page
       for="*"
-      name="getAetiologicAgentSubtypes"
+      name="getaetiologicagentsubtypes"
       class=".getaetiologicagentsubtypes.ajaxGetAetiologicAgentSubtypes"
       permission="zope.Public"
       layer="bika.lims.interfaces.IBikaLIMS"

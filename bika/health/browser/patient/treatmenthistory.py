@@ -8,14 +8,10 @@ from bika.lims.permissions import *
 
 
 class TreatmentHistoryView(BrowserView):
-    """ bika listing to display TreatmentHistory
-    """
-
     template = ViewPageTemplateFile("treatmenthistory.pt")
 
     def __call__(self):
-
         if 'submitted' in self.request:
-            self.context.setChronicConditions
+            self.context.setTreatmentHistory(self.request.form.get('TreatmentHistory', ()))
             self.context.plone_utils.addPortalMessage(_p("Changes saved"))
         return self.template()

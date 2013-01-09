@@ -5,6 +5,11 @@
     metal:use-macro="here/main_template/macros/master"
     i18n:domain="plone">
 
+<metal:slot fill-slot="head_slot">
+    <link rel="stylesheet" type="text/css" media="all" href=""
+          tal:attributes="href python:context.absolute_url()+'/bika_widgets/recordswidget.css'" />
+</metal:slot>
+
 <body>
 
     <metal:content-core fill-slot="content-core">
@@ -17,10 +22,31 @@
             <input class="action_button" type="submit"
                 i18n:attributes="value" value="save" />
             <input type='hidden' name='submitted' value='1'/>
-
         </form>
-        <script type="text/javascript" tal:attributes="src python:context.absolute_url()+'/bika_widgets/recordswidget.js'">
+
+        <script type="text/javascript" tal:attributes="src python:context.absolute_url()+'/bika_widgets/recordswidget.js'"> </script>
+
+        <!-- Simple date range validation -->
+        <script type="text/javascript">
+            $("input[name^='ChronicConditions\\.Onset'],input[name^='ChronicConditions\\.End']").live('change',
+                function(){
+                    if($(this).hasClass('datepicker_nofuture')){
+                        var onset = $(this).val();
+                        var end = $($($($(this).parents('td')[0]).next()).children()[0]).val();
+                    } else {
+                        var onset = $($($($(this).parents('td')[0]).prev()).children()[0]).val();
+                        var end = $(this).val();
+                    }
+                    if (onset != '' && end != ''){
+                        if (Date.parse(end) < Date.parse(onset)) {
+                            window.bika_utils.portalMessage(_('end date must be after start date'));
+                            $(this).val('');
+                        }
+                    }
+                }
+            )
         </script>
+
     </metal:content-core>
 
 </body>

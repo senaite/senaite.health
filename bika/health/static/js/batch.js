@@ -36,14 +36,14 @@ $(document).ready(function(){
             select: function( event, ui ) {
                 if (window.location.href.search('ar_add') > -1){  // epid ar_add
                     column = $(this).attr('name').split(".")[1];
-                    if($('#ar_'+column+'_PatientID').length > 0){
-                        $('#ar_'+column+'_PatientID').val(ui.item.PatientID);
+                    if($('#ar_'+column+'_Patient').length > 0){
+                        $('#ar_'+column+'_Patient').val(ui.item.PatientID);
                     }
-                    if($('#ar_'+column+'_DoctorID').length > 0){
-                        $('#ar_'+column+'_DoctorID').val(ui.item.DoctorID);
+                    if($('#ar_'+column+'_Doctor').length > 0){
+                        $('#ar_'+column+'_Doctor').val(ui.item.DoctorID);
                     }
-                    if($('#ar_'+column+'_ClientID').length > 0){
-                        $('#ar_'+column+'_ClientID').val(ui.item.ClientID);
+                    if($('#ar_'+column+'_Client').length > 0){
+                        $('#ar_'+column+'_Client').val(ui.item.ClientID);
                     }
                 }
                 $(this).val(ui.item.BatchID);
@@ -64,11 +64,11 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data, textStatus, $XHR){
                 $(".jsClientTitle").remove();
-                $("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'>"+data['Client']+"</span>");
+                $("#archetypes-fieldname-Client").append("<span class='jsClientTitle'>"+data['Client']+"</span>");
                 $(".jsPatientTitle").remove();
-                $("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'>"+data['Patient']+"</span>");
+                $("#archetypes-fieldname-Patient").append("<span class='jsPatientTitle'>"+data['Patient']+"</span>");
                 $(".jsDoctorTitle").remove();
-                $("#archetypes-fieldname-DoctorID").append("<span class='jsDoctorTitle'>"+data['Doctor']+"</span>");
+                $("#archetypes-fieldname-Doctor").append("<span class='jsDoctorTitle'>"+data['Doctor']+"</span>");
             }
         });
     }
@@ -102,21 +102,13 @@ $(document).ready(function(){
         setPatientAgeAtCaseOnsetDate();
     });
 
-    $("#PatientID").live('change', function(){
+    $("#Patient").live('change', function(){
         setPatientAgeAtCaseOnsetDate();
-        $.ajax({
-            type: 'POST',
-            url: window.location.href.split("/batches")[0]
-                    + "/patients/" + $(this).val()
-                    + "/getlastreferralid",
-            data: {'_authenticator': $('input[name="_authenticator"]').val()},
-            dataType: "json",
-            success: function(data){
-                $("#ClientID").val(data["clientid"]);
-                $(".jsClientTitle").remove();
-                $("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'>"+data["clientname"]+"</span>");
-            },
-        });
+        if($(this).val() == ''){
+            $(".jsPatientTitle").remove();
+            $("#Client").val('');
+            $(".jsClientTitle").remove();
+        }
     });
 
     function setPatientAgeAtCaseOnsetDate() {
@@ -171,90 +163,6 @@ $(document).ready(function(){
             $("#PatientAgeAtCaseOnsetDate_day").val('');
         }
     }
-
-    $('[name="CPD_delete"], [name="CPD_clear"]').click(function(event){
-        event.preventDefault();
-        if($(this).attr('name') == 'CPD_clear') {
-            checked = $(this).parents('table').children('tbody').find(':checkbox');
-        } else {
-            checked = $(this).parents('table').children('tbody').find(':checked');
-        }
-        var nrs = [];
-        $.each($(checked), function(i,e){
-            nrs.push($(e).attr('id').split("-")[2]);
-            $(e).parents('tr').remove();
-        });
-        $.ajax({
-            type: 'POST',
-            url: window.location.href.replace("/base_edit", "") + '/ajax_rm_provisional',
-            data: {'nrs': $.toJSON(nrs),
-                   '_authenticator': $('input[name="_authenticator"]').val()}
-        });
-        return false;
-    });
-
-    $('[name="CPD_delete"], [name="CPD_clear"]').click(function(event){
-        event.preventDefault();
-        if($(this).attr('name') == 'CPD_clear') {
-            checked = $(this).parents('table').children('tbody').find(':checkbox');
-        } else {
-            checked = $(this).parents('table').children('tbody').find(':checked');
-        }
-        var nrs = [];
-        $.each($(checked), function(i,e){
-            nrs.push($(e).attr('id').split("-")[2]);
-            $(e).parents('tr').remove();
-        });
-        $.ajax({
-            type: 'POST',
-            url: window.location.href.replace("/base_edit", "") + '/ajax_rm_provisional',
-            data: {'nrs': $.toJSON(nrs),
-                   '_authenticator': $('input[name="_authenticator"]').val()}
-        });
-        return false;
-    });
-
-    $('[name="CAE_delete"], [name="CAE_clear"]').click(function(event){
-        event.preventDefault();
-        if($(this).attr('name') == 'CAE_clear') {
-            checked = $(this).parents('table').children('tbody').find(':checkbox');
-        } else {
-            checked = $(this).parents('table').children('tbody').find(':checked');
-        }
-        var nrs = [];
-        $.each($(checked), function(i,e){
-            nrs.push($(e).attr('id').split("-")[1]);
-            $(e).parents('tr').remove();
-        });
-        $.ajax({
-            type: 'POST',
-            url: window.location.href.replace("/base_edit", "") + '/ajax_rm_aetiologic',
-            data: {'nrs': $.toJSON(nrs),
-                   '_authenticator': $('input[name="_authenticator"]').val()}
-        });
-        return false;
-    });
-
-    $('#casesymptomswidget [name="delete"], #casesymptomswidget [name="clear"]').click(function(event){
-        event.preventDefault();
-        if($(this).attr('name') == 'clear') {
-            checked = $(this).parents('table').children('tbody').find(':checkbox');
-        } else {
-            checked = $(this).parents('table').children('tbody').find(':checked');
-        }
-        var nrs = [];
-        $.each($(checked), function(i,e){
-            nrs.push($(e).attr('id').split("-")[1]);
-            $(e).parents('tr').remove();
-        });
-        $.ajax({
-            type: 'POST',
-            url: window.location.href.replace("/base_edit", "") + '/ajax_rm_symptoms',
-            data: {'nrs': $.toJSON(nrs),
-                   '_authenticator': $('input[name="_authenticator"]').val()}
-        });
-        return false;
-    });
 
 });
 }(jQuery));
