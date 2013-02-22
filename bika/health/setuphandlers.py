@@ -44,7 +44,6 @@ def setupVarious(context):
                    'bika_analysiscategories',
                    'bika_drugs',
                    'bika_drugprohibitions',
-                   'bika_sampleorigins',
                    'bika_diseases',
                    'bika_treatments',
                    'bika_immunizations',
@@ -222,8 +221,6 @@ def setupCatalogs(context):
         logger.warning('Could not find the bika_setup_catalog tool.')
         return
     at = getToolByName(portal, 'archetype_tool')
-    at.setCatalogsByType('SampleOrigin', ['bika_setup_catalog', ])
-    at.setCatalogsByType('Drug', ['bika_setup_catalog', ])
     at.setCatalogsByType('Disease', ['bika_setup_catalog', ])
     at.setCatalogsByType('AetiologicAgent', ['bika_setup_catalog', ])
     at.setCatalogsByType('Treatment', ['bika_setup_catalog'])

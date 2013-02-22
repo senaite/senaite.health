@@ -23,49 +23,46 @@ if errors:
 else:
     message = _(u'Changes saved.')
     stat = 'created'
-    
-    # Redirection after saving edition forms      
+
+    # Redirection after saving edition forms
     if context.portal_type == 'AetiologicAgent':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_aetiologicagents')
-    	
+
     elif context.portal_type == 'BatchLabel':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_batchlabels')
-    
+
     elif context.portal_type == 'CaseOutcome':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_caseoutcomes')
-    	
+
     elif context.portal_type == 'CaseStatus':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_casestatuses')
-    
+
     elif context.portal_type == 'Disease':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_diseases')
-    	
+
     elif context.portal_type == 'Drug':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_drugs')
-    
+
     elif context.portal_type == 'DrugProhibition':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_drugprohibitions')
-    	
+
     elif context.portal_type == 'Immunization':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_immunizations')
-    
-    elif context.portal_type == 'SampleOrigin':
-        state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_sampleorigins')
-    	
+
     elif context.portal_type == 'Treatment':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_treatments')
-    	
+
     elif context.portal_type == 'VaccionationCenter':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_vaccionationcenters')
-    	
+
     elif context.portal_type == 'EpidemiologicalYear':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_epidemiologicalyears')
-    
+
     elif context.portal_type == 'IdentifierType':
     	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_identifiertypes')
-    
+
     else:
     	stat = 'success'
-    	
+
 	addStatusMessage(request, message)
     return state.set(status=stat)

@@ -81,12 +81,6 @@
   </type>
   <type type_id="Doctors"/>
 
-  <type type_id="SampleOrigin">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
-  </type>
-  <type type_id="SampleOrigins"/>
-
   <type type_id="Treatment">
    <bound-workflow workflow_id="bika_one_state_workflow"/>
    <bound-workflow workflow_id="bika_inactive_workflow"/>

@@ -12,7 +12,6 @@
   <type portal_type="IdentifierType" />
   <type portal_type="Immunization" />
   <type portal_type="Patient"/>
-  <type portal_type="SampleOrigin"/>
   <type portal_type="Symptom"/>
   <type portal_type="Treatment"/>
   <type portal_type="VaccinationCenter" />

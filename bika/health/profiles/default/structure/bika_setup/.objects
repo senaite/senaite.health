@@ -8,7 +8,6 @@ bika_drugs,Drugs
 bika_epidemiologicalyears,EpidemiologicalYears
 bika_identifiertypes,IdentifierTypes
 bika_immunizations,Immunizations
-bika_sampleorigins,SampleOrigins
 bika_symptoms,Symptoms
 bika_treatments,Treatments
 bika_vaccinationcenters,VaccinationCenters

@@ -3,7 +3,7 @@
 
 <stylesheet
     id="++resource++bika.health.css/hide_contentmenu.css"
-    expression="python:here.portal_type in ['Doctors', 'Patients', 'Doctor', 'Patient', 'SampleOrigin', 'Drug', 'Treatment', 'DrugProhibition', 'VaccinationCenter', 'VaccinationCenters', 'Immunization', 'Immunizations', 'Disease', 'Diseases', 'CaseStatus', 'CaseStatuses', 'CaseOutcome', 'CaseOutcomes']"
+    expression="python:here.portal_type in ['Doctors', 'Patients', 'Doctor', 'Patient', 'Drug', 'Treatment', 'DrugProhibition', 'VaccinationCenter', 'VaccinationCenters', 'Immunization', 'Immunizations', 'Disease', 'Diseases', 'CaseStatus', 'CaseStatuses', 'CaseOutcome', 'CaseOutcomes']"
     media="screen"
     rel="stylesheet"
     rendering="link"
@@ -11,7 +11,7 @@
 
 <stylesheet
     id="++resource++bika.health.css/hide_editable_border.css"
-    expression="python:here.portal_type in ['Doctors', 'Patients', 'SampleOrigins', 'Drug', 'Drugs', 'Treatment', 'Treatments', 'Symptom', 'Symptoms', 'DrugProhibitions', 'VaccinationCenter', 'VaccinationCenters', 'Immunization', 'Immunizations', 'Disease', 'Diseases', 'CaseStatus', 'CaseStatuses', 'CaseOutcome', 'CaseOutcomes']"
+    expression="python:here.portal_type in ['Doctors', 'Patients', 'Drug', 'Drugs', 'Treatment', 'Treatments', 'Symptom', 'Symptoms', 'DrugProhibitions', 'VaccinationCenter', 'VaccinationCenters', 'Immunization', 'Immunizations', 'Disease', 'Diseases', 'CaseStatus', 'CaseStatuses', 'CaseOutcome', 'CaseOutcomes']"
     media="screen"
     rel="stylesheet"
     rendering="link"

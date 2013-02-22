@@ -23,7 +23,6 @@ allow_module('bika.health')
 allow_module('bika.lims')
 allow_module('bika.lims.permissions')
 allow_module('bika.lims.utils')
-allow_module('bika.health')
 allow_module('bika.health.permissions')
 allow_module('bika.health.utils')
 allow_module('json')
@@ -47,7 +46,6 @@ def initialize(context):
     from content.immunization import Immunization
     from content.patient import Patient
     from content.patients import Patients
-    from content.sampleorigin import SampleOrigin
     from content.symptom import Symptom
     from content.treatment import Treatment
     from content.vaccinationcenter import VaccinationCenter
@@ -62,8 +60,6 @@ def initialize(context):
     from controlpanel.bika_epidemiologicalyears import EpidemiologicalYears
     from controlpanel.bika_identifiertypes import IdentifierTypes
     from controlpanel.bika_immunizations import Immunizations
-    from controlpanel.bika_sampleorigins import SampleOrigins
-    from controlpanel.bika_symptoms import Symptoms
     from controlpanel.bika_treatments import Treatments
     from controlpanel.bika_vaccinationcenters import VaccinationCenters
 

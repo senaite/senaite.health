@@ -23,8 +23,6 @@
  <object name="Patients" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Doctor" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Doctors" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="SampleOrigin" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="SampleOrigins" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Symptoms" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Symptom" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Treatment" meta_type="Factory-based Type Information with dynamic views"/>

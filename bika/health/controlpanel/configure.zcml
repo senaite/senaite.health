@@ -5,18 +5,10 @@
     i18n_domain="bika">
 
     <browser:page
-      for="bika.health.interfaces.ISampleOrigins"
-      name="folder_view"
-      class=".bika_sampleorigins.SampleOriginsView"
-      permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
       for="bika.health.interfaces.IDrugs"
       name="folder_view"
       class=".bika_drugs.DrugsView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -24,7 +16,7 @@
       for="bika.health.interfaces.IDrugProhibitions"
       name="folder_view"
       class=".bika_drugprohibitions.DrugProhibitionsView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -32,7 +24,7 @@
       for="bika.health.interfaces.IDiseases"
       name="folder_view"
       class=".bika_diseases.DiseasesView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -40,7 +32,7 @@
       for="bika.health.interfaces.IAetiologicAgents"
       name="folder_view"
       class=".bika_aetiologicagents.AetiologicAgentsView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -48,7 +40,7 @@
       for="bika.health.interfaces.ITreatments"
       name="folder_view"
       class=".bika_treatments.TreatmentsView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -56,7 +48,7 @@
       for="bika.health.interfaces.ISymptoms"
       name="folder_view"
       class=".bika_symptoms.SymptomsView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -64,7 +56,7 @@
       for="bika.health.interfaces.ICaseStatuses"
       name="folder_view"
       class=".bika_casestatuses.CaseStatusesView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -72,7 +64,7 @@
       for="bika.health.interfaces.ICaseOutcomes"
       name="folder_view"
       class=".bika_caseoutcomes.CaseOutcomesView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -80,7 +72,7 @@
       for="bika.health.interfaces.ICaseSyndromicClassifications"
       name="folder_view"
       class=".bika_casesyndromicclassifications.CaseSyndromicClassifications"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -88,7 +80,7 @@
       for="bika.health.interfaces.IImmunizations"
       name="folder_view"
       class=".bika_immunizations.ImmunizationsView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -96,7 +88,7 @@
       for="bika.health.interfaces.IVaccinationCenters"
       name="folder_view"
       class=".bika_vaccinationcenters.VaccinationCentersView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -104,7 +96,7 @@
       for="bika.health.interfaces.IEpidemiologicalYears"
       name="folder_view"
       class=".bika_epidemiologicalyears.EpidemiologicalYearsView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -112,7 +104,7 @@
       for="bika.health.interfaces.IIdentifierTypes"
       name="folder_view"
       class=".bika_identifiertypes.IdentifierTypesView"
-      permission="bika.lims.ManageBika"
+      permission="bika.lims.permissions.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 

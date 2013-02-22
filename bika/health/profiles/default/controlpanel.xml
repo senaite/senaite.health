@@ -4,15 +4,6 @@
  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
  i18n:domain="plone">
 
-  <configlet title="Sample Origins" action_id="bika_sampleorigins"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/sampleorigin.png"
-    url_expr="string:$portal_url/bika_setup/bika_sampleorigins"
-	visible="True"
-	i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
  <configlet title="Patient Symptoms and Conditions" action_id="bika_symptoms"
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/symptom.png"

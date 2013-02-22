@@ -12,9 +12,6 @@ class IDoctor(Interface):
 class IDoctors(Interface):
     """Doctor folder"""
 
-class ISampleOrigins(Interface):
-    ""
-
 class IDrugs(Interface):
     ""
 
