@@ -8,6 +8,8 @@
     xmlns:monkey="http://namespaces.plone.org/monkey"
     i18n_domain="bika.health">
 
+  <includeDependencies package="." />
+
   <i18n:registerTranslations directory="locales" />
 
   <five:registerPackage package="." initialize=".initialize" />

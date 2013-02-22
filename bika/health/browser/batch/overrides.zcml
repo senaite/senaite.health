@@ -6,6 +6,14 @@
 
     <browser:page
       for="bika.lims.interfaces.IBatch"
+      name="getBatchInfo"
+      class=".getbatchinfo.ajaxGetBatchInfo"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
       name="base_view"
       class=".analysisrequests.BatchAnalysisRequestsView"
       permission="zope2.View"

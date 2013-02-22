@@ -2,7 +2,8 @@
 
 <object name="portal_workflow" meta_type="Plone Workflow Tool">
 
- <property name="title">Contains workflow definitions for your portal</property>
+ <property name="title" purge="False">
+  Contains workflow definitions for your portal</property>
 
  <object name="bika_doctor_workflow" meta_type="Workflow"/>
  <object name="bika_patient_workflow" meta_type="Workflow"/>
