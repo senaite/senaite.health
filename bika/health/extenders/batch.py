@@ -68,11 +68,14 @@ class BatchSchemaExtender(object):
             relationship = 'BatchClient',
             widget=StringWidget(
                 label=_('Client'),
+                visible=False,
             ),
         ),
-        ExtComputedField('ClientID',
-            expression="context.getClient() and context.getClient().getClientID() or None",
-
+        ExtStringField('ClientID',
+            required = 1,
+            widget=StringWidget(
+                label=_('Client'),
+            ),
         ),
         ExtComputedField('ClientUID',
             expression="context.getClient() and context.getClient().UID() or None",
@@ -85,10 +88,14 @@ class BatchSchemaExtender(object):
             relationship = 'BatchDoctor',
             widget=StringWidget(
                 label=_('Doctor'),
+                visible=False,
             ),
         ),
-        ExtComputedField('DoctorID',
-            expression="context.getDoctor() and context.getDoctor().getDoctorID() or None",
+        ExtStringField('DoctorID',
+            required = 1,
+            widget=StringWidget(
+                label=_('Doctor'),
+            ),
         ),
         ExtComputedField('DoctorUID',
             expression="context.getDoctor() and context.getDoctor().UID() or None",
@@ -101,10 +108,14 @@ class BatchSchemaExtender(object):
             relationship = 'BatchPatient',
             widget=StringWidget(
                 label=_('Patient'),
+                visible=False,
             ),
         ),
-        ExtComputedField('PatientID',
-            expression="context.getPatient() and context.getPatient().getPatientID() or None",
+        ExtStringField('PatientID',
+            required = 1,
+            widget=StringWidget(
+                label=_('Patient'),
+            ),
         ),
         ExtComputedField('PatientUID',
             expression="context.getPatient() and context.getPatient().UID() or None",
@@ -284,6 +295,41 @@ class BatchSchemaExtender(object):
 
     def getFields(self):
         return self.fields
+
+    def getClientID(self):
+        return self.getClient() and self.getClient().ID() or None
+
+    def setClientID(self, value=None):
+        self.setClient(None)
+        if value:
+            client = self.portal_catalog(portal_type='Client', ID=value)
+            if client:
+                client = client[0].getObject()
+                self.setClient(client.UID())
+
+    def getPatientID(self):
+        return self.getPatient() and self.getPatient().ID() or None
+
+    def setPatientID(self, value=None):
+        self.setPatient(None)
+        if value:
+            bpc = getToolByName(self.context, 'bika_patient_catalog')
+            patient = bpc(portal_type='Patient', ID=value)
+            if patient:
+                patient = patient[0].getObject()
+                self.setPatient(patient.UID())
+
+    def getDoctorID(self):
+        return self.getClient() and self.getClient().ID() or None
+
+    def setDoctorID(self, value=None):
+        self.setDoctor(None)
+        if value:
+            doctor = self.portal_catalog(portal_type='Doctor', ID=value)
+            if doctor:
+                doctor = doctor[0].getObject()
+                self.setDoctor(doctor.UID())
+
 
 class BatchSchemaModifier(object):
     adapts(IBatch)

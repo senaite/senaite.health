@@ -10,13 +10,13 @@ $(document).ready(function(){
 	// Add Patient popup
 	if($(".portaltype-patient").length == 0 &&
 	   window.location.href.search('portal_factory/Patient') == -1){
-			$("input[id=Patient]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
+			$("input[id=PatientID]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
 						' class="add_patient"' +
 						' href="'+window.portal_url+'/patients/portal_factory/Patient/new/edit"' +
 						' rel="#overlay">' +
 						' <img style="padding-bottom:1px;" src="'+window.portal_url+'/++resource++bika.lims.images/add.png"/>' +
 					' </a>');
-		$("input[id=Patient]").combogrid({
+		$("input[id=PatientID]").combogrid({
 			colModel: [{'columnName':'PatientUID','hidden':true},
 					   {'columnName':'PatientID','width':'20','label':_('Patient ID')},
 					   {'columnName':'Title','width':'40','label':_('Full name')},
@@ -32,10 +32,10 @@ $(document).ready(function(){
 				$(this).change();
 				if($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
 					$(".jsPatientTitle").remove();
-					$("#archetypes-fieldname-Patient").append("<span class='jsPatientTitle'>"+ui.item.Title+"</span>");
-					$("#Client").val(ui.item.ClientID);
+					$("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'>"+ui.item.Title+"</span>");
+					$("#ClientID").val(ui.item.ClientID);
 					$(".jsClientTitle").remove();
-					$("#archetypes-fieldname-Client").append("<span class='jsClientTitle'>"+ui.item.ClientTitle+"</span>");
+					$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'>"+ui.item.ClientTitle+"</span>");
 					if($('input[name="PatientBirthDate"]').length == 0){
 						$("body").append('<input type="hidden" name="PatientBirthDate"/>');
 					}
