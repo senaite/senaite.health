@@ -27,7 +27,7 @@
 <permission id="bika.health.ManageDoctors" title="BIKA: Manage Doctors"/>
 <permission id="bika.health.ManagePatients" title="BIKA: Manage Patients"/>
 
-<permission id="bika.health.ViewBatches" title="BIKA: Add VaccinationCenter"/>
+<permission id="bika.health.ViewBatches" title="BIKA: View Batches"/>
 <permission id="bika.health.ViewSamples" title="BIKA: View Samples"/>
 <permission id="bika.health.ViewAnalysisRequests" title="BIKA: View AnalysisRequests"/>
 
