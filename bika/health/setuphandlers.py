@@ -113,13 +113,13 @@ def setupPermissions(context):
     mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddPatient, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
 
-    mp(ApplyVersionControl, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner'], 1)
-    mp(SaveNewVersion, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner'], 1)
-    mp(AccessPreviousVersions, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner'], 1)
+    mp(ApplyVersionControl, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
+    mp(SaveNewVersion, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
+    mp(AccessPreviousVersions, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
 
-    mp(ManageAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner'], 1)
+    mp(ManageAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 1)
     mp(ManageDoctors, ['Manager', 'LabManager', 'Owner', 'LabClerk'], 1)
-    mp(ManagePatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', ], 1)
+    mp(ManagePatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     portal.bika_setup.laboratory.reindexObject()
 
     # /clients folder permissions
