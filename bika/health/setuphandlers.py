@@ -143,9 +143,9 @@ def setupPermissions(context):
     # /patients
     mp = portal.patients.manage_permission
     mp(CancelAndReinstate, ['Manager', 'LabManager', 'Doctor', ], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
+    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
     portal.patients.reindexObject()
 
     # /reports folder permissions
