@@ -228,6 +228,12 @@ class BatchSchemaExtender(object):
                 },
             ),
         ),
+        ExtIntegerField('HoursFasting',
+            required = 1,
+            widget=IntegerWidget(
+                label=_('Hours fasting'),
+            ),
+        ),
     ]
 
     def __init__(self, context):
@@ -270,7 +276,8 @@ class BatchSchemaExtender(object):
                                 'DoctorUID',
                                 'PatientUID',
                                 'PatientBirthDate',
-                                'BatchLabels']
+                                'BatchLabels',
+                                'HoursFasting']
         return schematas
 
     def getFields(self):

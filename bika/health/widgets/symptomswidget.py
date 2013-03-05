@@ -3,6 +3,7 @@ from Products.Archetypes.Registry import registerWidget
 from Products.Archetypes.Widget import TypesWidget
 from Products.ATExtensions.widget import RecordsWidget as ATRecordsWidget
 from Products.Archetypes.Registry import registerWidget
+from Products.CMFCore.utils import getToolByName
 from operator import itemgetter
 import json
 
@@ -44,8 +45,14 @@ class SymptomsWidget(ATRecordsWidget):
         outsymptoms = {}
         casesymptoms = len(self.aq_parent.getSymptoms()) > 0 \
                         and self.aq_parent.getSymptoms() or []
-        casegender = self.aq_parent.getPatient() \
-                        and self.aq_parent.getPatient().getGender() or 'dk'
+
+        casegender = 'dk'
+        patientid = self.aq_parent.getPatientID()
+        if patientid:
+            bpc = getToolByName(self, 'bika_patient_catalog')
+            patient = bpc(portal_type='Patient', ID=patientid)
+            casegender = len(patient) > 0 \
+                        and patient[0].getObject().getGender() or 'dk'
 
         symptoms = self.bika_setup_catalog(portal_type='Symptom',
                                          inactive_state='active')
@@ -53,7 +60,7 @@ class SymptomsWidget(ATRecordsWidget):
         for symptom in symptoms:
             symptom = symptom.getObject()
             if not gender \
-                or symptom.getGender() == 'bth' \
+                or symptom.getGender() == 'dk' \
                 or symptom.getGender() == gender:
                 outsymptoms[symptom.UID()] = {'UID': symptom.UID(),
                                               'Title': symptom.Title(),
