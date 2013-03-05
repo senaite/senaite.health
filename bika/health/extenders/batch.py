@@ -176,13 +176,6 @@ class BatchSchemaExtender(object):
                 label=_('Additional notes'),
             ),
         ),
-        ExtLinesField('CaseSyndromicClassification',
-            vocabulary = getCaseSyndromicClassification(),
-            widget=MultiSelectionWidget(
-                label=_("Batch labels"),
-                format="checkbox",
-            )
-        ),
         ExtLinesField('CaseStatus',
             vocabulary=getCaseStatus(),
             widget=MultiSelectionWidget(
@@ -288,7 +281,6 @@ class BatchSchemaExtender(object):
                                 'Waist',
                                 'ProvisionalDiagnosis',
                                 'Symptoms',
-                                'CaseSyndromicClassification',
                                 'CaseStatus',
                                 'CaseOutcome',
                                 'AetiologicAgents',
