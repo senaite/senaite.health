@@ -344,6 +344,7 @@ class BatchSchemaModifier(object):
         schema['description'].required = False
         schema['description'].widget.visible = False
         schema['BatchLabels'].widget.visible = False
+        schema['ClientBatchID'].widget.label = _("Client Case ID")
         return schema
 
 
