@@ -4,7 +4,7 @@ from Products.Archetypes import atapi
 from Products.Archetypes.ArchetypeTool import registerType
 from Products.CMFCore.utils import getToolByName
 from bika.lims.browser.bika_listing import BikaListingView
-from bika.health.config import PROJECTNAME
+from bika.health.config import PROJECTNAME, GENDERS_APPLY
 from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
 from bika.lims.content.bikaschema import BikaFolderSchema
@@ -40,6 +40,9 @@ class SymptomsView(BikaListingView):
             'Description': {'title': _('Description'),
                             'index': 'description',
                             'toggle': True},
+            'Gender': {'title': _('Gender'),
+                            'index': 'gender',
+                            'toggle': True},
         }
 
         self.review_states=[
@@ -48,18 +51,21 @@ class SymptomsView(BikaListingView):
              'contentFilter': {'inactive_state': 'active'},
              'transitions': [{'id':'deactivate'},],
              'columns': ['Title',
-                         'Description']},
+                         'Description',
+                         'Gender']},
             {'id':'inactive',
              'title': _('Dormant'),
              'contentFilter': {'inactive_state': 'inactive'},
              'transitions': [{'id':'activate'},],
              'columns': ['Title',
-                         'Description']},
+                         'Description',
+                         'Gender']},
             {'id':'all',
              'title': _('All'),
              'contentFilter':{},
              'columns': ['Title',
-                         'Description']},
+                         'Description',
+                         'Gender']},
         ]
 
     def folderitems(self):
@@ -68,6 +74,7 @@ class SymptomsView(BikaListingView):
             if not items[x].has_key('obj'): continue
             obj=items[x]['obj']
             items[x]['Description']=obj.Description()
+            items[x]['Gender']=GENDERS_APPLY.getValue(obj.getGender())
             items[x]['replace']['Title']="<a href='%s'>%s</a>"%\
                  (items[x]['url'],items[x]['Title'])
 
