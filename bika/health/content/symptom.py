@@ -7,7 +7,7 @@ from Products.CMFCore.permissions import View, ModifyPortalContent
 from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
 from bika.lims.content.bikaschema import BikaSchema
-from bika.health.config import PROJECTNAME
+from bika.health.config import PROJECTNAME, GENDERS_APPLY
 from bika.lims.browser.widgets import RecordsWidget
 from zope.interface import implements
 
@@ -15,6 +15,22 @@ schema = BikaSchema.copy() + Schema((
 
     StringField('Code'),
 
+    StringField('Gender',
+            vocabulary=GENDERS_APPLY,
+            index='FieldIndex',
+            widget=SelectionWidget(
+                format='select',
+                label=_('Applies to'),
+            ),
+    ),
+
+    BooleanField('SeverityAllowed',
+           default=False,
+           widget=BooleanWidget(
+               label=_("Severity levels permitted"),
+               description=_("Check if patient can experience different stress  levels (none, mild, moderate, severe) of the symptom"),
+           ),
+    ),
 ))
 
 schema['description'].widget.visible = True

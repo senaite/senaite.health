@@ -1,0 +1,98 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="bika.health">
+
+<head>
+    <title>Symptoms Widget</title>
+</head>
+<body>
+    <metal:view_macro define-macro="view">
+    <tal:block repeat="symptom python:getSymptoms()">
+        <span>Temp</span>
+    </tal:block>
+    </metal:view_macro>
+    
+    <metal:edit_macro define-macro="edit">
+    <metal:use use-macro="here/widgets/field/macros/edit">
+    <tal:block metal:fill-slot="widget_body">
+        <span tal:replace="structure context/@@authenticator/authenticator"/>
+        
+        <table tal:attributes="id string:${fieldName}_table;
+                               class string:recordswidget;"                
+               tal:define="values python:field.getEditAccessor(here)();
+                           session_values python:here.session_restore_value(fieldName, values);
+                           cached_values python:request.get(fieldName,session_values);
+                           values python:cached_values or values;
+                           i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone">
+           <tbody tal:define="symptoms python:widget.getSymptoms();">
+                <tal:block repeat="idx python:range(len(symptoms))">
+                <tr tal:define="symptom python:symptoms[idx]"
+                    tal:attributes="class python:'symptom-item gender-%s'%symptom['Gender']">
+                                               
+                    <td tal:attributes="style python:symptom['Visible']==False and 'display:none' or ''">
+                        <input type="checkbox"
+                            tal:attributes="name string:${fieldName}.Selected:records;
+                                            id string:${fieldName}-Selected-${repeat/idx/index};
+                                            checked python:symptom['Assigned'];"/>
+                        <span tal:content="python:symptom['Title']"
+                              tal:attributes="title python:symptom['Description']"/> 
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Assigned:records;
+                                            id string:${fieldName}-Assigned-${repeat/idx/index};
+                                            value python:symptom['Assigned']"/>
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.UID:records:ignore_empty;
+                                            id string:${fieldName}-UID-${repeat/idx/index};
+                                            value python:symptom['UID'];"/>    
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Title:records:ignore_empty;
+                                            id string:${fieldName}-Title-${repeat/idx/index};
+                                            value python:symptom['Title'];"/>  
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Description:records:ignore_empty;
+                                            id string:${fieldName}-Description-${repeat/idx/index};
+                                            value python:symptom['Description'];"/>   
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Gender:records:ignore_empty;
+                                            id string:${fieldName}-Gender-${repeat/idx/index};
+                                            value python:symptom['Gender'];"/>           
+                    </td>
+                    <td tal:attributes="style python:symptom['Visible']==False and 'display:none' or ''">
+                        <div tal:condition="python:symptom['SeverityAllowed']==1">
+                            <input type="radio" 
+                                tal:attributes="name string:${fieldName}.Severity:records:ignore_empty;
+                                                id string:${fieldName}-Severity-${repeat/idx/index};
+                                                checked python:symptom['Severity']=='1'"
+                                                value="1"/><span i18n:translate="">Mild</span>&nbsp;
+                            <input type="radio" 
+                                tal:attributes="name string:${fieldName}.Severity:records:ignore_empty;
+                                                id string:${fieldName}-Severity-${repeat/idx/index};
+                                                checked python:symptom['Severity']=='2'"
+                                                value="2"/><span i18n:translate="">Moderate</span>&nbsp;
+                            <input type="radio" 
+                                tal:attributes="name string:${fieldName}.Severity:records:ignore_empty;
+                                                id string:${fieldName}-Severity-${repeat/idx/index};
+                                                checked python:symptom['Severity']=='3'"
+                                                value="3"/><span i18n:translate="">Severe</span>&nbsp;
+                        </div>  
+                        <input type="hidden"
+                            tal:condition="python:symptom['SeverityAllowed']!=1"
+                            tal:attributes="name string:${fieldName}.Severity:records;
+                                            id string:${fieldName}-Severity-${repeat/idx/index};"
+                                            value="0"/>
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.SeverityAllowed:records:ignore_empty;
+                                            id string:${fieldName}-SeverityAllowed-${repeat/idx/index};
+                                            value python:symptom['SeverityAllowed'];"/>                  
+                    </td>
+                </tr>
+                </tal:block>
+           </tbody>                                    
+        </table>
+    </tal:block> 
+    </metal:use>
+    </metal:edit_macro>
+</body>
+</html>

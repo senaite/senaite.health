@@ -60,7 +60,8 @@ class ajaxGetPatients(BrowserView):
                              'ClientID': patient.getPrimaryReferrer().getClientID(),
                              'PatientUID': patient.UID(),
                              'AdditionalIdentifiers': patient.getPatientIdentifiersStrHtml(),
-                             'PatientBirthDate': self.ulocalized_time(patient.getBirthDate(), long_format=0)})
+                             'PatientBirthDate': self.ulocalized_time(patient.getBirthDate(), long_format=0),
+                             'PatientGender': patient.getGender()})
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'Title'))
         if sord == 'desc':

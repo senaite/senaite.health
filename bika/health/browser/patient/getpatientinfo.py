@@ -15,7 +15,8 @@ class ajaxGetPatientInfo(BrowserView):
                'ClientID': '',
                'ClientTitle': '',
                'PatientFullname': Fullname,
-               'PatientBirthDate': ''}
+               'PatientBirthDate': '',
+               'PatientGender':'dk'}
         if not Fullname:
             return json.dumps(ret)
         proxies = None
@@ -34,5 +35,6 @@ class ajaxGetPatientInfo(BrowserView):
                'ClientID': PR and PR.getClientID() or '',
                'ClientTitle': PR and PR.Title() or '',
                'PatientFullname': Fullname,
-               'PatientBirthDate': self.ulocalized_time(patient.getBirthDate())}
+               'PatientBirthDate': self.ulocalized_time(patient.getBirthDate()),
+               'PatientGender': patient.getGender()}
         return json.dumps(ret)

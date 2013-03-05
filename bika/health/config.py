@@ -20,3 +20,9 @@ GENDERS = DisplayList((
     ('female', _('Female')),
     ('dk', _("Don't Know")),
     ))
+
+GENDERS_APPLY = DisplayList((
+    ('male', _('Male')),
+    ('female', _('Female')),
+    ('dk', _("Both")),
+))

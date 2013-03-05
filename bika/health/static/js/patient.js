@@ -21,7 +21,8 @@ $(document).ready(function(){
 					   {'columnName':'PatientID','width':'20','label':_('Patient ID')},
 					   {'columnName':'Title','width':'40','label':_('Full name')},
 					   {'columnName':'AdditionalIdentifiers', 'width':'40','label':_('Additional Identifiers')},
-					   {'columnName':'PatientBirthDate','hidden':true}],
+					   {'columnName':'PatientBirthDate','hidden':true},
+					   {'columnName':'PatientGender', 'hidden':true}],
 			url: window.portal_url + "/getpatients?_authenticator=" + $('input[name="_authenticator"]').val(),
             width: "650px",
 			rows:5,
@@ -40,6 +41,21 @@ $(document).ready(function(){
 						$("body").append('<input type="hidden" name="PatientBirthDate"/>');
 					}
 					$('input[name="PatientBirthDate"]').val(ui.item.PatientBirthDate);
+					if ($('input[name="PatientGender"]').length == 0){
+						$("body").append('<input type="hidden" name="PatientGender"/>');
+						if ($("#Symptoms_table").length) {
+							// Show/Hide the symptoms according to Patient's gender
+							// Hide/shows symptoms items according to selected gender
+							$('input[name="PatientGender"]').change(function(){
+								gender = $('input[name="PatientGender"]').val();
+								$("#Symptoms_table tr.symptom-item").find('td').hide();
+								$("#Symptoms_table tr.symptom-item.gender-"+gender).find('td').show();
+								$("#Symptoms_table tr.symptom-item.gender-dk").find('td').show();								
+							});
+						}
+					}
+					$('input[name="PatientGender"]').val(ui.item.PatientGender);
+					$('input[name="PatientGender"]').change();
 				}
 				return false;
 			}
