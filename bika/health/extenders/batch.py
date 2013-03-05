@@ -229,9 +229,27 @@ class BatchSchemaExtender(object):
             ),
         ),
         ExtIntegerField('HoursFasting',
-            required = 1,
+            required = 0,
             widget=IntegerWidget(
                 label=_('Hours fasting'),
+            ),
+        ),
+        ExtIntegerField('Height',
+            required = 0,
+            widget=IntegerWidget(
+                label=_('Height'),
+            ),
+        ),
+        ExtIntegerField('Weight',
+            required = 0,
+            widget=IntegerWidget(
+                label=_('Weight'),
+            ),
+        ),
+        ExtIntegerField('Waist',
+            required = 0,
+            widget=IntegerWidget(
+                label=_('Waist'),
             ),
         ),
     ]
@@ -264,6 +282,10 @@ class BatchSchemaExtender(object):
                                 'OnsetDate',
                                 'PatientAgeAtCaseOnsetDate',
                                 'OnsetDateEstimated',
+                                'HoursFasting',
+                                'Height',
+                                'Weight',
+                                'Waist',
                                 'ProvisionalDiagnosis',
                                 'Symptoms',
                                 'CaseSyndromicClassification',
@@ -276,8 +298,7 @@ class BatchSchemaExtender(object):
                                 'DoctorUID',
                                 'PatientUID',
                                 'PatientBirthDate',
-                                'BatchLabels',
-                                'HoursFasting']
+                                'BatchLabels']
         return schematas
 
     def getFields(self):
