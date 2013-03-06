@@ -34,7 +34,8 @@
                                        id string:${fieldName}-Day1-0;
                                        value python:data['Day1'];
                                        maxlength string:2;
-                                       size string:2;"/>
+                                       class string:numeric;
+                                       size string:2;"/>&nbsp;ºC
                 </div>
                 <div class="clear-both"></div>
             </div>
@@ -51,7 +52,8 @@
                                        id string:${fieldName}-Day2-0;
                                        value python:data['Day2'];
                                        maxlength string:2;
-                                       size string:2;"/>
+                                       class string:numeric;
+                                       size string:2;"/>&nbsp;ºC
                 </div> 
                 <div class="clear-both"></div>      
             </div>
@@ -69,7 +71,8 @@
                                        id string:${fieldName}-Day3-0;
                                        value python:data['Day3'];
                                        maxlength string:2;
-                                       size string:2;"/>
+                                       class string:numeric;
+                                       size string:2;"/>&nbsp;ºC
                 </div> 
                 <div class="clear-both"></div>   
             </div>

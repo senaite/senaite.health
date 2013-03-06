@@ -34,7 +34,8 @@
                                        id string:${fieldName}-Height-0;
                                        value python:data['Height'];
                                        maxlength string:3;
-                                       size string:3;"/>
+                                       class string:numeric;
+                                       size string:3;"/>&nbsp;cm.
                 </div>
                 <div class="clear-both"></div>
             </div>
@@ -51,7 +52,8 @@
                                        id string:${fieldName}-Weight-0;
                                        value python:data['Weight'];
                                        maxlength string:3;
-                                       size string:3;"/>
+                                       class string:numeric;
+                                       size string:3;"/>&nbsp;kg.
                 </div> 
                 <div class="clear-both"></div>      
             </div>
@@ -69,7 +71,8 @@
                                        id string:${fieldName}-Waist-0;
                                        value python:data['Waist'];
                                        maxlength string:3;
-                                       size string:3;"/>
+                                       class string:numeric;
+                                       size string:3;"/>&nbsp;cm.
                 </div> 
                 <div class="clear-both"></div>   
             </div>

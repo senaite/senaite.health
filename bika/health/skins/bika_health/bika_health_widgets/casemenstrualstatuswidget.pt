@@ -86,6 +86,7 @@
                                            id string:${fieldName}-MonthOfPregnancy-0;
                                            value python:data['MonthOfPregnancy'];
                                            size string:1;
+                                           class string:numeric;
                                            max-length string:1;"/>
                 </div>
                 <div class="clear-both"></div>  
@@ -115,6 +116,7 @@
                                            id string:${fieldName}-HysterectomyYear-0;
                                            value python:data['HysterectomyYear'];
                                            size string:4;
+                                           class string:numeric;
                                            max-length string:4;"/>
                 </div>
                 <div class="clear-both"></div>  
@@ -140,6 +142,7 @@
                                            id string:${fieldName}-OvariesRemovedYear-0;
                                            value python:data['OvariesRemovedYear'];
                                            size string:4;
+                                           class string:numeric;
                                            max-length string:4;"/>
                 </div>
                 <div class="clear-both"></div>  
