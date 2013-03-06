@@ -1,0 +1,22 @@
+fieldset#BasalBodyTemperature {
+    border:1px solid #CDCDCD;
+    margin-top:5px;
+    background-color:#efefef;
+    border-top:2px solid #AEAEAE;
+}
+fieldset#BasalBodyTemperature div.fieldline {
+    margin-bottom:5px;
+    clear:both;
+}
+fieldset#BasalBodyTemperature div.fieldline div.fieldline-label,
+fieldset#BasalBodyTemperature div.fieldline div.fieldline-content {
+    float:left;
+}
+fieldset#BasalBodyTemperature div.fieldline div.fieldline-label {
+    width:80px;
+}
+fieldset#BasalBodyTemperature div.fieldline div.fieldline-content {
+}
+div.clear-both {
+    clear:both;
+}

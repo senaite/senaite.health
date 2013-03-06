@@ -5,3 +5,4 @@ from casesymptomswidget import CaseSymptomsWidget
 from casemenstrualstatuswidget import CaseMenstrualStatusWidget
 from patientmenstrualstatuswidget import PatientMenstrualStatusWidget
 from casepatientconditionwidget import CasePatientConditionWidget
+from casebasalbodytempwidget import CaseBasalBodyTempWidget

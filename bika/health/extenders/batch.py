@@ -234,9 +234,13 @@ class BatchSchemaExtender(object):
             ),
         ),
         ExtRecordsField('MenstrualStatus',
-            type='menstrualstatus',
             widget=CaseMenstrualStatusWidget(
                 label='Menstrual status',
+            ),
+        ),
+        ExtRecordsField('BasalBodyTemperature',
+            widget=CaseBasalBodyTempWidget(
+                label='Basal body temperature',
             ),
         ),
     ]
@@ -271,9 +275,10 @@ class BatchSchemaExtender(object):
                                 'OnsetDateEstimated',
                                 'HoursFasting',
                                 'PatientCondition',
+                                'BasalBodyTemperature',
                                 'MenstrualStatus',
-                                'ProvisionalDiagnosis',
                                 'Symptoms',
+                                'ProvisionalDiagnosis',
                                 'CaseStatus',
                                 'CaseOutcome',
                                 'AetiologicAgents',
