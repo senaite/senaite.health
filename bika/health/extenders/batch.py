@@ -18,6 +18,7 @@ from bika.health.widgets import *
 from bika.lims.interfaces import IBatch
 from zope.component import adapts
 from zope.interface import implements
+from bika.health.widgets.casepatientconditionwidget import CasePatientConditionWidget
 
 class getCaseSyndromicClassification:
     implements(IVocabulary)
@@ -227,22 +228,9 @@ class BatchSchemaExtender(object):
                 label=_('Hours fasting'),
             ),
         ),
-        ExtIntegerField('Height',
-            required = 0,
-            widget=IntegerWidget(
-                label=_('Height'),
-            ),
-        ),
-        ExtIntegerField('Weight',
-            required = 0,
-            widget=IntegerWidget(
-                label=_('Weight'),
-            ),
-        ),
-        ExtIntegerField('Waist',
-            required = 0,
-            widget=IntegerWidget(
-                label=_('Waist'),
+        ExtRecordsField('PatientCondition',
+            widget=CasePatientConditionWidget(
+                label='Patient condition',
             ),
         ),
         ExtRecordsField('MenstrualStatus',
@@ -282,9 +270,7 @@ class BatchSchemaExtender(object):
                                 'PatientAgeAtCaseOnsetDate',
                                 'OnsetDateEstimated',
                                 'HoursFasting',
-                                'Height',
-                                'Weight',
-                                'Waist',
+                                'PatientCondition',
                                 'MenstrualStatus',
                                 'ProvisionalDiagnosis',
                                 'Symptoms',

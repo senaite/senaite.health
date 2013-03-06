@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="bika.health">
+
+<head>
+    <title>CasePatientCondition Widget</title>
+</head>
+<body>    
+    <metal:edit_macro define-macro="edit">
+    <metal:use use-macro="here/widgets/field/macros/edit">
+    <tal:block metal:fill-slot="widget_body">
+        <span tal:replace="structure context/@@authenticator/authenticator"/>                
+        
+        <fieldset tal:attributes="id string:${fieldName};
+                                  name string:${fieldName};"                
+             tal:define="values python:field.getEditAccessor(here)();
+                         session_values python:here.session_restore_value(fieldName, values);
+                         cached_values python:request.get(fieldName,session_values);
+                         values python:cached_values or values;
+                         i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone;
+                         data python:widget.getPatientCondition()[0]">
+        
+            <!-- Height -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <label tal:attributes="for string:${fieldName}.Height:records;"
+                       i18n:translate="">Height</label>
+                </div>
+                <div class="fieldline-content">
+                    <input type="text" 
+                       tal:attributes="name string:${fieldName}.Height:records;
+                                       id string:${fieldName}-Height-0;
+                                       value python:data['Height'];
+                                       maxlength string:3;
+                                       size string:3;"/>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Weight -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <label tal:attributes="for string:${fieldName}.Weight:records;"
+                            i18n:translate="">Weight</label>
+                </div>
+                <div class="fieldline-content">
+                    <input type="text" 
+                       tal:attributes="name string:${fieldName}.Weight:records;
+                                       id string:${fieldName}-Weight-0;
+                                       value python:data['Weight'];
+                                       maxlength string:3;
+                                       size string:3;"/>
+                </div> 
+                <div class="clear-both"></div>      
+            </div>
+            
+            
+            <!-- Waist -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <label tal:attributes="for string:${fieldName}.Waist:records;"
+                            i18n:translate="">Waist</label>
+                </div>
+                <div class="fieldline-content">
+                    <input type="text" 
+                       tal:attributes="name string:${fieldName}.Waist:records;
+                                       id string:${fieldName}-Waist-0;
+                                       value python:data['Waist'];
+                                       maxlength string:3;
+                                       size string:3;"/>
+                </div> 
+                <div class="clear-both"></div>   
+            </div>
+            
+                        
+        </fieldset>
+    </tal:block> 
+    </metal:use>
+    </metal:edit_macro>
+</body>
+</html>

@@ -4,3 +4,4 @@ from readonlystringwidget import ReadonlyStringWidget
 from symptomswidget import SymptomsWidget
 from casemenstrualstatuswidget import CaseMenstrualStatusWidget
 from patientmenstrualstatuswidget import PatientMenstrualStatusWidget
+from casepatientconditionwidget import CasePatientConditionWidget
