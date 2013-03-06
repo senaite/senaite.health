@@ -1,0 +1,20 @@
+fieldset#MenstrualStatus {
+	border-top:1px solid #CDCDCD;
+	margin-top:5px;
+}
+fieldset#MenstrualStatus div.fieldline {
+	margin-bottom:10px;
+	clear:both;
+}
+fieldset#MenstrualStatus div.fieldline div.fieldline-label,
+fieldset#MenstrualStatus div.fieldline div.fieldline-content {
+	float:left;
+}
+fieldset#MenstrualStatus div.fieldline div.fieldline-label {
+	width:160px;
+}
+fieldset#MenstrualStatus div.fieldline div.fieldline-content {
+}
+div.clear-both {
+	clear:both;
+}

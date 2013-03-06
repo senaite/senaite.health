@@ -43,19 +43,29 @@ $(document).ready(function(){
 					$('input[name="PatientBirthDate"]').val(ui.item.PatientBirthDate);
 					if ($('input[name="PatientGender"]').length == 0){
 						$("body").append('<input type="hidden" name="PatientGender"/>');
-						if ($("#Symptoms_table").length) {
-							// Show/Hide the symptoms according to Patient's gender
-							// Hide/shows symptoms items according to selected gender
-							$('input[name="PatientGender"]').change(function(){
-								gender = $('input[name="PatientGender"]').val();
+						
+						$('input[name="PatientGender"]').change(function(){
+							gender = $('input[name="PatientGender"]').val();
+							if ($("#Symptoms_table").length) {
+								// Show/Hide the symptoms according to Patient's gender
+								// Hide/shows symptoms items according to selected gender
 								$("#Symptoms_table tr.symptom-item").find('td').hide();
 								$("#Symptoms_table tr.symptom-item.gender-"+gender).find('td').show();
-								$("#Symptoms_table tr.symptom-item.gender-dk").find('td').show();								
-							});
-						}
+								$("#Symptoms_table tr.symptom-item.gender-dk").find('td').show();		
+							}
+							if ($('#archetypes-fieldname-MenstrualStatus').length){
+								// Show/Hide MenstrualStatus widget depending on patient's gender
+								if (gender=='female') {
+									$('#archetypes-fieldname-MenstrualStatus').show();								
+								} else {
+									$('#archetypes-fieldname-MenstrualStatus').hide();
+								}
+							}
+						});
 					}
 					$('input[name="PatientGender"]').val(ui.item.PatientGender);
 					$('input[name="PatientGender"]').change();
+					
 				}
 				return false;
 			}

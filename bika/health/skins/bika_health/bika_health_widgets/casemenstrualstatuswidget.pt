@@ -1,0 +1,102 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="bika.health">
+
+<head>
+    <title>CaseMenstrualStatus Widget</title>
+</head>
+<body>    
+    <metal:edit_macro define-macro="edit">
+    <metal:use use-macro="here/widgets/field/macros/edit">
+    <tal:block metal:fill-slot="widget_body">
+        <span tal:replace="structure context/@@authenticator/authenticator"/>                
+        
+        <fieldset tal:attributes="id string:${fieldName};
+                                  name string:${fieldName};"                
+             tal:define="values python:field.getEditAccessor(here)();
+                         session_values python:here.session_restore_value(fieldName, values);
+                         cached_values python:request.get(fieldName,session_values);
+                         values python:cached_values or values;
+                         i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone;
+                         data python:widget.getMenstrualStatus()[0]">
+        
+            <!-- First day of Last Menses -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <label tal:attributes="for string:${fieldName}.FirstDayOfLastMenses:records;"
+                       i18n:translate="">First day of last menses</label>
+                </div>
+                <div class="fieldline-content">
+                    <input type="text" 
+                       tal:attributes="name string:${fieldName}.FirstDayOfLastMenses:records;
+                                       id string:${fieldName}-FirstDayOfLastMenses-0;
+                                       value python:data['FirstDayOfLastMenses'];
+                                       class string:datepicker_nofuture;
+                                       autocomplete string:off;
+                                       maxlength string:10;
+                                       size string:10;"/>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Menstrual Cycle Type -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <label tal:attributes="for string:${fieldName}.MenstrualCycleType:records;"
+                            i18n:translate="">Menstrual cycle type</label>
+                </div>
+                <div class="fieldline-content">
+                    <select tal:attributes="name string:${fieldName}.MenstrualCycleType:records;
+                                            id string:${fieldName}-MenstrualCycleType-0"
+                            tal:define="statuses python:widget.getMenstrualStatusesList()">
+                          <tal:block repeat="key python:statuses.keys()">
+                          <option tal:attributes="value python:key"
+                                  tal:content="python:statuses[key]"
+                                  tal:condition="python:key!=data['MenstrualCycleType']"/>
+                          <option tal:attributes="value python:key"
+                                  tal:content="python:statuses[key]"
+                                  tal:condition="python:key==data['MenstrualCycleType']"
+                                  selected/>
+                          </tal:block>
+                    </select>
+                </div> 
+                <div class="clear-both"></div>      
+            </div>
+            
+            
+            <!-- Pregnant (S/N) -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <input type="checkbox" 
+                           tal:attributes="name string:${fieldName}.Pregnant:records;
+                                           id string:${fieldName}-Pregnant-0;
+                                           checked python:data['Pregnant']"/>
+                    <label tal:attributes="for string:${fieldName}.Pregnant:records;"
+                           i18n:translate="">Pregnant</label>
+                </div>
+                <div class="fieldline-content"
+                    tal:attributes="style python:data['Pregnant']==False and 'display:none' or '';">
+                    <!-- Month of pregnancy -->
+                    <label tal:attributes="for string:${fieldName}.MonthOfPregnancy:records;"
+                           i18n:translate="">Month</label>
+                    <input type="text"
+                           tal:attributes="name string:${fieldName}.MonthOfPregnancy:records;
+                                           id string:${fieldName}-MonthOfPregnancy-0;
+                                           value python:data['MonthOfPregnancy'];
+                                           size string:1;
+                                           max-length string:1;"/>
+                </div>
+                <div class="clear-both"></div>  
+            </div>
+            <input type='hidden' 
+                    tal:attributes="name string:${fieldName}.PatientGender;
+                                    id string:${fieldName}-PatientGender;
+                                    value python:widget.getPatientsGender();"/>
+        </fieldset>
+    </tal:block> 
+    </metal:use>
+    </metal:edit_macro>
+</body>
+</html>

@@ -50,7 +50,7 @@ class SymptomsWidget(ATRecordsWidget):
         patientid = self.aq_parent.getPatientID()
         if patientid:
             bpc = getToolByName(self, 'bika_patient_catalog')
-            patient = bpc(portal_type='Patient', ID=patientid)
+            patient = bpc(portal_type='Patient', id=patientid)
             casegender = len(patient) > 0 \
                         and patient[0].getObject().getGender() or 'dk'
 

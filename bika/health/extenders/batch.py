@@ -245,6 +245,12 @@ class BatchSchemaExtender(object):
                 label=_('Waist'),
             ),
         ),
+        ExtRecordsField('MenstrualStatus',
+            type='symptoms',
+            widget=CaseMenstrualStatusWidget(
+                label='Menstrual status',
+            ),
+        ),
     ]
 
     def __init__(self, context):
@@ -279,6 +285,7 @@ class BatchSchemaExtender(object):
                                 'Height',
                                 'Weight',
                                 'Waist',
+                                'MenstrualStatus',
                                 'ProvisionalDiagnosis',
                                 'Symptoms',
                                 'CaseStatus',

@@ -26,3 +26,9 @@ GENDERS_APPLY = DisplayList((
     ('female', _('Female')),
     ('dk', _("Both")),
 ))
+
+MENSTRUAL_STATUSES = DisplayList((
+    ('regular', _('Regular')),
+    ('irregular', _('Irregular')),
+    ('none', _('No menstrual cycle')),
+))
