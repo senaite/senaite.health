@@ -25,6 +25,5 @@ jQuery(function($){
 		}	
 		
 		$("#Symptoms_table tr:even").css("background-color", "#efefef");
-		
 	});
 });

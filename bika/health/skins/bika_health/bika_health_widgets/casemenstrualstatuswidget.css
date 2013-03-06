@@ -1,9 +1,11 @@
 fieldset#MenstrualStatus {
-	border-top:1px solid #CDCDCD;
+	border:1px solid #CDCDCD;
 	margin-top:5px;
+	background-color:#efefef;
+	border-top:2px solid #AEAEAE;
 }
 fieldset#MenstrualStatus div.fieldline {
-	margin-bottom:10px;
+	margin-bottom:5px;
 	clear:both;
 }
 fieldset#MenstrualStatus div.fieldline div.fieldline-label,
