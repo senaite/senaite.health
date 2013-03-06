@@ -1,0 +1,14 @@
+fieldset#Symptoms {
+    border-top:1px solid #CDCDCD;
+    margin-top:5px;
+    padding:0px;
+}
+fieldset#Symptoms #Symptoms_table {
+    width:100%;
+}
+
+fieldset#Symptoms #Symptoms_table td {
+    padding-right:10px;
+    border-bottom:1px solid #DCDCDC;
+    white-space:nowrap;
+}

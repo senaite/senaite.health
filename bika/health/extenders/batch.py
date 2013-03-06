@@ -194,7 +194,7 @@ class BatchSchemaExtender(object):
         ExtRecordsField('Symptoms',
             type='symptoms',
             subfields=('UID', 'Title', 'Description', 'Severity'),
-            widget=SymptomsWidget(
+            widget=CaseSymptomsWidget(
                 label='Symptoms',
             ),
         ),

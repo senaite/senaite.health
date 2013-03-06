@@ -8,13 +8,13 @@ from operator import itemgetter
 import json
 
 
-class SymptomsWidget(ATRecordsWidget):
+class CaseSymptomsWidget(ATRecordsWidget):
     security = ClassSecurityInfo()
     _properties = ATRecordsWidget._properties.copy()
     _properties.update({
-        'macro': "bika_health_widgets/symptomswidget",
-        'helper_js': ("bika_health_widgets/symptomswidget.js",),
-        'helper_css': ("bika_health_widgets/symptomswidget.css",),
+        'macro': "bika_health_widgets/casesymptomswidget",
+        'helper_js': ("bika_health_widgets/casesymptomswidget.js",),
+        'helper_css': ("bika_health_widgets/casesymptomswidget.css",),
         'gender': None,
         'allowDelete': False,
         'readonly': False,
@@ -94,7 +94,7 @@ class SymptomsWidget(ATRecordsWidget):
         items.sort(lambda x, y: cmp(x['Title'].lower(), y['Title'].lower()))
         return items
 
-registerWidget(SymptomsWidget,
-               title='Symptoms',
+registerWidget(CaseSymptomsWidget,
+               title='CaseSymptomsWidget',
                description='Experiencing symptoms and severity',
                )

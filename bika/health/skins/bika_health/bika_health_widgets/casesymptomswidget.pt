@@ -5,7 +5,7 @@
     i18n:domain="bika.health">
 
 <head>
-    <title>Symptoms Widget</title>
+    <title>CaseSymptoms Widget</title>
 </head>
 <body>
     <metal:view_macro define-macro="view">
@@ -18,7 +18,8 @@
     <metal:use use-macro="here/widgets/field/macros/edit">
     <tal:block metal:fill-slot="widget_body">
         <span tal:replace="structure context/@@authenticator/authenticator"/>
-        
+        <fieldset tal:attributes="id string:${fieldName};
+                                  name string:${fieldName};">
         <table tal:attributes="id string:${fieldName}_table;
                                class string:recordswidget;"                
                tal:define="values python:field.getEditAccessor(here)();
@@ -59,7 +60,8 @@
                                             id string:${fieldName}-Gender-${repeat/idx/index};
                                             value python:symptom['Gender'];"/>           
                     </td>
-                    <td tal:attributes="style python:symptom['Visible']==False and 'display:none' or ''">
+                    <td tal:attributes="style python:symptom['Visible']==False and 'display:none' or '';
+                                        width string:100%;">
                         <div tal:condition="python:symptom['SeverityAllowed']==1">
                             <input type="radio" 
                                 tal:attributes="name string:${fieldName}.Severity:records:ignore_empty;
@@ -91,6 +93,7 @@
                 </tal:block>
            </tbody>                                    
         </table>
+        </fieldset>
     </tal:block> 
     </metal:use>
     </metal:edit_macro>

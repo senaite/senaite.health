@@ -22,7 +22,9 @@ jQuery(function($){
 					$("#Symptoms_table #Symptoms-Assigned-"+idx).val(1);
 				}
 			});
-		}		
+		}	
+		
+		$("#Symptoms_table tr:even").css("background-color", "#efefef");
 		
 	});
 });
