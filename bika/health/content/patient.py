@@ -20,6 +20,7 @@ from bika.health.permissions import *
 from bika.health.widgets import ReadonlyStringWidget
 from datetime import datetime
 from zope.interface import implements
+from bika.health.widgets.patientmenstrualstatuswidget import PatientMenstrualStatusWidget
 
 schema = Person.schema.copy() + Schema((
     StringField('PatientID',
@@ -330,6 +331,12 @@ schema = Person.schema.copy() + Schema((
                    label=_('Feature'),
                ),
     ),
+    RecordsField('MenstrualStatus',
+            type='menstrualstatus',
+            widget=PatientMenstrualStatusWidget(
+                label='Menstrual status',
+            ),
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -352,6 +359,7 @@ schema.moveField('BirthDate', after='Age')
 schema.moveField('BirthDateEstimated', after='BirthDate')
 schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
+schema.moveField('MenstrualStatus', after='AgeSplitted')
 
 
 class Patient(Person):

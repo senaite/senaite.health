@@ -22,7 +22,8 @@ $(document).ready(function(){
 					   {'columnName':'Title','width':'40','label':_('Full name')},
 					   {'columnName':'AdditionalIdentifiers', 'width':'40','label':_('Additional Identifiers')},
 					   {'columnName':'PatientBirthDate','hidden':true},
-					   {'columnName':'PatientGender', 'hidden':true}],
+					   {'columnName':'PatientGender', 'hidden':true},
+					   {'columnName':'MenstrualStatus', 'hidden':true}],
 			url: window.portal_url + "/getpatients?_authenticator=" + $('input[name="_authenticator"]').val(),
             width: "650px",
 			rows:5,
@@ -56,15 +57,35 @@ $(document).ready(function(){
 							if ($('#archetypes-fieldname-MenstrualStatus').length){
 								// Show/Hide MenstrualStatus widget depending on patient's gender
 								if (gender=='female') {
-									$('#archetypes-fieldname-MenstrualStatus').show();								
+									$('#archetypes-fieldname-MenstrualStatus').show();
 								} else {
+									$("#MenstrualStatus-FirstDayOfLastMenses-0").val('');
+									$("#MenstrualCycleType-0").val('');
+									$("#MenstrualStatus-Pregnant-0").attr('checked', false);
+									$("#MenstrualStatus-MonthOfPregnancy-0").val('');
+									$("#MenstrualStatus-Hysterectomy-0").attr('checked', false);
+									$("#MenstrualStatus-HysterectomyYear-0").val('');
+									$("#MenstrualStatus-OvariesRemoved-0").attr('checked', false);
+									$("#MenstrualStatus-OvariesRemovedYear-0").val('');
 									$('#archetypes-fieldname-MenstrualStatus').hide();
 								}
 							}
-						});
+						});						
 					}
 					$('input[name="PatientGender"]').val(ui.item.PatientGender);
 					$('input[name="PatientGender"]').change();
+					
+					// Set patient's menstrual status
+					if ($('#archetypes-fieldname-MenstrualStatus').length){
+						ms = ui.item.MenstrualStatus;
+						if (ms!=null && ms.length > 0) {
+							ms = ms[0];
+							$("#MenstrualStatus-Hysterectomy-0").attr('checked', ms['Hysterectomy']);
+							$("#MenstrualStatus-HysterectomyYear-0").val(ms['HysterectomyYear']);
+							$("#MenstrualStatus-OvariesRemoved-0").attr('checked', ms['OvariesRemoved']);
+							$("#MenstrualStatus-OvariesRemovedYear-0").val(ms['OvariesRemovedYear']);										
+						}
+					}
 					
 				}
 				return false;
@@ -132,6 +153,40 @@ $(document).ready(function(){
 								$(".jsClientTitle").remove();
 								$("#archetypes-fieldname-Client").append("<span class='jsClientTitle'>"+data['ClientTitle']+"</span>");
 								$('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);
+								$('input[name="PatientBirthDate"]').val(ui.item.PatientBirthDate);
+								if ($('input[name="PatientGender"]').length == 0){
+									$("body").append('<input type="hidden" name="PatientGender"/>');
+									
+									$('input[name="PatientGender"]').change(function(){
+										gender = $('input[name="PatientGender"]').val();
+										if ($("#Symptoms_table").length) {
+											// Show/Hide the symptoms according to Patient's gender
+											// Hide/shows symptoms items according to selected gender
+											$("#Symptoms_table tr.symptom-item").find('td').hide();
+											$("#Symptoms_table tr.symptom-item.gender-"+gender).find('td').show();
+											$("#Symptoms_table tr.symptom-item.gender-dk").find('td').show();		
+										}
+										if ($('#archetypes-fieldname-MenstrualStatus').length){
+											// Show/Hide MenstrualStatus widget depending on patient's gender
+											// and set patient's menstrual status
+											if (gender=='female') {
+												$('#archetypes-fieldname-MenstrualStatus').show();								
+											} else {
+												$("#MenstrualStatus-FirstDayOfLastMenses-0").val('');
+												$("#MenstrualCycleType-0").val('');
+												$("#MenstrualStatus-Pregnant-0").attr('checked', false);
+												$("#MenstrualStatus-MonthOfPregnancy-0").val('');
+												$("#MenstrualStatus-Hysterectomy-0").attr('checked', false);
+												$("#MenstrualStatus-HysterectomyYear-0").val('');
+												$("#MenstrualStatus-OvariesRemoved-0").attr('checked', false);
+												$("#MenstrualStatus-OvariesRemovedYear-0").val('');
+												$('#archetypes-fieldname-MenstrualStatus').hide();
+											}
+										}
+									});
+								}
+								$('input[name="PatientGender"]').val(ui.item.PatientGender);
+								$('input[name="PatientGender"]').change();
 							}
 						});
 					}
@@ -240,6 +295,24 @@ $(document).ready(function(){
 	$('.template-base_edit #archetypes-fieldname-ImmunizationHistory').hide();
 	$('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
 	$('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
+	
+	// Show menstrual status only if patient is female
+	$('#archetypes-fieldname-Gender #Gender').live('change', function(){
+		if ($('#archetypes-fieldname-MenstrualStatus').length){
+			if (this.value=='female') {
+				$('#archetypes-fieldname-MenstrualStatus').show();								
+			} else {
+				$("#MenstrualStatus-Hysterectomy-0").attr('checked', false);
+				$("#MenstrualStatus-HysterectomyYear-0").val('');
+				$("#MenstrualStatus-OvariesRemoved-0").attr('checked', false);
+				$("#MenstrualStatus-OvariesRemovedYear-0").val('');
+				$('#archetypes-fieldname-MenstrualStatus').hide();
+			}
+		}
+	});
+	if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
+		$('#archetypes-fieldname-MenstrualStatus').hide();
+	}
 
 });
 }(jQuery));

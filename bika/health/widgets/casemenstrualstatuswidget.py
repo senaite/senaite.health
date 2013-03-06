@@ -11,7 +11,8 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
     _properties = ATRecordsWidget._properties.copy()
     _properties.update({
         'macro': "bika_health_widgets/casemenstrualstatuswidget",
-        'helper_js': ("bika_health_widgets/casemenstrualstatuswidget.js",),
+        'helper_js': ("bika_health_widgets/casemenstrualstatuswidget.js",
+                      "bika_health_widgets/patientmenstrualstatuswidget.js"),
         'helper_css': ("bika_health_widgets/casemenstrualstatuswidget.css",),
     })
 
@@ -24,6 +25,19 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
                               'MenstrualCycleType': value.get('MenstrualCycleType', ''),
                               'Pregnant': bool(value.get('Pregnant', False)),
                               'MonthOfPregnancy': value.get('MonthOfPregnancy', '')})
+
+        # Save patient's MenstrualStatus
+        if 'PatientID' in form:
+            bpc = getToolByName(instance, 'bika_patient_catalog')
+            patient = bpc(portal_type='Patient', id=form['PatientID'])
+            if patient and len(patient)>0:
+                patient = patient[0].getObject()
+                patient.setMenstrualStatus([{'Hysterectomy': bool(values[0].get('Hysterectomy', False)),
+                                             'HysterectomyYear': values[0].get('HysterectomyYear', ''),
+                                             'OvariesRemoved': bool(values[0].get('OvariesRemoved', False)),
+                                             'OvariesRemovedYear': values[0].get('OvariesRemovedYear', '')
+                                             }]);
+
         return outvalues, {}
 
     def jsondumps(self, val):
@@ -47,14 +61,34 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
 
     def getMenstrualStatus(self):
 
-        statuses = [{'FirstDayOfLastMenses':'',
+        statuses = {'FirstDayOfLastMenses':'',
                      'MenstrualCycleType': MENSTRUAL_STATUSES.keys()[0],
                      'Pregnant':False,
-                     'MonthOfPregnancy':0}]
+                     'MonthOfPregnancy':0,
+                     'Hysterectomy': False,
+                     'HysterectomyYear': '',
+                     'OvariesRemoved': False,
+                     'OvariesRemovedYear': ''}
 
-        return len(self.aq_parent.getMenstrualStatus()) > 0 \
-                    and self.aq_parent.getMenstrualStatus() \
-                    or statuses
+        # Fill with patient's Menstrual status info
+        bpc = getToolByName(self, 'bika_patient_catalog')
+        patientid = self.aq_parent.getPatientID()
+        if patientid:
+            patient = bpc(portal_type='Patient', id=patientid)
+            if len(patient) > 0:
+                patient = patient[0].getObject()
+                pms = patient.getMenstrualStatus()
+                if pms and len(pms) > 0:
+                    value = pms[0]
+                    statuses = dict(statuses.items() + value.items())
+
+        if len(self.aq_parent.getMenstrualStatus()) > 0:
+            cms = self.aq_parent.getMenstrualStatus()
+            if cms and len(cms) > 0:
+                value = cms[0]
+                statuses = dict(statuses.items() + value.items())
+
+        return [statuses]
 
 registerWidget(CaseMenstrualStatusWidget,
                title='CaseMenstrualStatusWidget',

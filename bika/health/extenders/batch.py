@@ -246,7 +246,7 @@ class BatchSchemaExtender(object):
             ),
         ),
         ExtRecordsField('MenstrualStatus',
-            type='symptoms',
+            type='menstrualstatus',
             widget=CaseMenstrualStatusWidget(
                 label='Menstrual status',
             ),
