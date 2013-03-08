@@ -35,6 +35,7 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
                 patient.setMenstrualStatus([{'Hysterectomy': bool(values[0].get('Hysterectomy', False)),
                                              'HysterectomyYear': values[0].get('HysterectomyYear', ''),
                                              'OvariesRemoved': bool(values[0].get('OvariesRemoved', False)),
+                                             'OvariesRemovedNum': int(value.get('OvariesRemovedNum', 0)),
                                              'OvariesRemovedYear': values[0].get('OvariesRemovedYear', '')
                                              }]);
 
@@ -68,6 +69,7 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
                      'Hysterectomy': False,
                      'HysterectomyYear': '',
                      'OvariesRemoved': False,
+                     'OvariesRemovedNum': 0,
                      'OvariesRemovedYear': ''}
 
         # Fill with patient's Menstrual status info

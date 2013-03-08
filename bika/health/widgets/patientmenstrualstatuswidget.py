@@ -22,6 +22,7 @@ class PatientMenstrualStatusWidget(ATRecordsWidget):
             outvalues.append({'Hysterectomy': bool(value.get('Hysterectomy', False)),
                               'HysterectomyYear': value.get('HysterectomyYear', ''),
                               'OvariesRemoved': bool(value.get('OvariesRemoved', False)),
+                              'OvariesRemovedNum': int(value.get('OvariesRemovedNum', 0)),
                               'OvariesRemovedYear': value.get('OvariesRemovedYear', '')})
         return outvalues, {}
 
@@ -43,6 +44,7 @@ class PatientMenstrualStatusWidget(ATRecordsWidget):
         statuses = [{'Hysterectomy': False,
                      'HysterectomyYear': '',
                      'OvariesRemoved': False,
+                     'OvariesRemovedNum': 0,
                      'OvariesRemovedYear': ''}]
 
         return len(self.aq_parent.getMenstrualStatus()) > 0 \

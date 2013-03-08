@@ -42,6 +42,7 @@
                                            id string:${fieldName}-HysterectomyYear-0;
                                            value python:data['HysterectomyYear'];
                                            size string:4;
+                                           class string:numeric;
                                            max-length string:4;"/>
                 </div>
                 <div class="clear-both"></div>  
@@ -59,6 +60,18 @@
                 </div>
                 <div class="fieldline-content"
                     tal:attributes="style python:data['OvariesRemoved']==False and 'display:none' or '';">
+                    <!-- Number of ovaries removed -->
+                    <input type="radio" 
+                        tal:attributes="name string:${fieldName}.OvariesRemovedNum:records:ignore_empty;
+                                        id string:${fieldName}-OvariesRemovedNum-0;
+                                        checked python:data['OvariesRemovedNum']==1"
+                                        value="1"/><span i18n:translate="">One</span>&nbsp;
+                    <input type="radio" 
+                        tal:attributes="name string:${fieldName}.OvariesRemovedNum:records:ignore_empty;
+                                        id string:${fieldName}-OvariesRemovedNum-0;
+                                        checked python:data['OvariesRemovedNum']==2"
+                                        value="2"/><span i18n:translate="">Both</span>&nbsp;
+                    
                     <!-- Year of ovaries removal -->
                     <label tal:attributes="for string:${fieldName}.OvariesRemovedYear:records;"
                            i18n:translate="">Year</label>
@@ -67,6 +80,7 @@
                                            id string:${fieldName}-OvariesRemovedYear-0;
                                            value python:data['OvariesRemovedYear'];
                                            size string:4;
+                                           class string:numeric;
                                            max-length string:4;"/>
                 </div>
                 <div class="clear-both"></div>  
