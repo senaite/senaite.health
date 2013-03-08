@@ -33,9 +33,9 @@
                        tal:attributes="name string:${fieldName}.Height:records;
                                        id string:${fieldName}-Height-0;
                                        value python:data['Height'];
-                                       maxlength string:3;
+                                       maxlength string:4;
                                        class string:numeric;
-                                       size string:3;"/>&nbsp;cm.
+                                       size string:4;"/>
                 </div>
                 <div class="clear-both"></div>
             </div>
@@ -53,7 +53,7 @@
                                        value python:data['Weight'];
                                        maxlength string:3;
                                        class string:numeric;
-                                       size string:3;"/>&nbsp;kg.
+                                       size string:3;"/>
                 </div> 
                 <div class="clear-both"></div>      
             </div>
@@ -70,9 +70,9 @@
                        tal:attributes="name string:${fieldName}.Waist:records;
                                        id string:${fieldName}-Waist-0;
                                        value python:data['Waist'];
-                                       maxlength string:3;
+                                       maxlength string:2;
                                        class string:numeric;
-                                       size string:3;"/>&nbsp;cm.
+                                       size string:2;"/>
                 </div> 
                 <div class="clear-both"></div>   
             </div>
