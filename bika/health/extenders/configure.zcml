@@ -8,6 +8,8 @@
 
     <adapter factory=".analysisrequest.AnalysisRequestExtender" />
     <adapter factory=".batch.BatchSchemaExtender" />
-    <adapter factory=".batch.BatchSchemaModifier" />
+    <adapter factory=".batch.BatchSchemaModifier" />    
+    <adapter factory=".analysisspec.AnalysisSpecSchemaExtender" />
+    <adapter factory=".analysisspec.AnalysisSpecSchemaModifier" />
 
 </configure>
