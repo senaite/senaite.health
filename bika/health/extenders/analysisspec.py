@@ -9,7 +9,8 @@ from Products.Archetypes.config import REFERENCE_CATALOG
 from Products.CMFCore.utils import getToolByName
 from zope.component import adapts
 from zope.interface import implements
-from bika.health.widgets.analysisspecificationwidget import AnalysisSpecificationWidget
+from bika.health.widgets.analysisspecificationwidget import \
+    AnalysisSpecificationWidget, AnalysisSpecificationPanicValidator
 
 
 class AnalysisSpecSchemaExtender(object):
@@ -86,9 +87,10 @@ class AnalysisSpecSchemaModifier(object):
     def fiddle(self, schema):
 
         # Add panic alert range columns
+        validator = AnalysisSpecificationPanicValidator()
         schema['ResultsRange'].subfields += ('minpanic', 'maxpanic')
-#        schema['ResultsRange'].subfield_validators['minpanic'] = 'analysisspecs_validator'
-#        schema['ResultsRange'].subfield_validators['maxpanic'] = 'analysisspecs_validator'
+        schema['ResultsRange'].subfield_validators['minpanic'] = validator
+        schema['ResultsRange'].subfield_validators['maxpanic'] = validator
         schema['ResultsRange'].subfield_labels['minpanic'] = _('Min panic')
         schema['ResultsRange'].subfield_labels['maxpanic'] = _('Max panic')
         srcwidget = schema['ResultsRange'].widget
