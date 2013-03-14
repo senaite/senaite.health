@@ -31,7 +31,6 @@ class AnalysisSpecificationView(BaseView):
                 items[i]['minpanic'] = ''
                 items[i]['maxpanic'] = ''
             items[i]['allow_edit'] += ['minpanic', 'maxpanic']
-
         return items
 
 
@@ -46,15 +45,16 @@ class AnalysisSpecificationWidget(BaseWidget):
         values = BaseWidget.process_form(self, instance, field, form,
                                          empty_marker, emptyReturnsMarker)
         for i in range(len(values)):
-            if len(values[i]) > 0:
-                uid = values[i][0]['uid']
+            for j in range(len(values[i])):
+                uid = values[i][j]['uid']
+                uid = values[i][j]['uid']
                 try:
                     float(form['minpanic'][0][uid])
                     float(form['maxpanic'][0][uid])
                 except:
                     continue
-                values[i][0]['minpanic'] = form['minpanic'][0][uid]
-                values[i][0]['maxpanic'] = form['maxpanic'][0][uid]
+                values[i][j]['minpanic'] = form['minpanic'][0][uid]
+                values[i][j]['maxpanic'] = form['maxpanic'][0][uid]
 
         return values
 
