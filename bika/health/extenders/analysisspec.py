@@ -97,12 +97,6 @@ class AnalysisSpecSchemaModifier(object):
         schema['ResultsRange'].widget = AnalysisSpecificationWidget(
                     checkbox_bound=srcwidget.checkbox_bound,
                     label=srcwidget.label,
-                    description=srcwidget.description + _(
-                " Set panic min and max levels to indicate a result that "
-                "could indicate life threats. Any result outside this panic "
-                "range will raise an alert and an email will be sent "
-                "automatically to the lab manager/s to consider a re-test to "
-                "confirm the panic value. The lab manager may choose "
-                "immediately alert the client or do a re-test first."),
+                    description=srcwidget.description,
         )
         return schema
