@@ -9,6 +9,7 @@
     i18n_domain="bika.health">
 
   <includeDependencies package="." />
+  <includeDependenciesOverrides package="." />
 
   <i18n:registerTranslations directory="locales" />
 

@@ -3,9 +3,13 @@
            xmlns:fss="http://namespaces.zope.org/browser"
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
-    
-    <include file="browser/batch/overrides.zcml" />
-    <!--include file="browser/doctors/overrides.zcml" /-->
-    <include file="browser/calcs/overrides.zcml" />
-          
+      
+    <browser:page
+      for="*"
+      name="listing_string_entry"
+      class="bika.health.browser.calcs.calculateanalysisentry.ajaxCalculateAnalysisEntry"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+        
 </configure>

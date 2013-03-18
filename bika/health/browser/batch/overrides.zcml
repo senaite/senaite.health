@@ -7,7 +7,7 @@
     <browser:page
       for="bika.lims.interfaces.IBatch"
       name="base_view"
-      class=".analysisrequests.BatchAnalysisRequestsView"
+      class="bika.health.browser.batch.analysisrequests.BatchAnalysisRequestsView"
       permission="zope2.View"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
@@ -15,7 +15,7 @@
     <browser:page
       for="bika.lims.interfaces.IBatch"
       name="samples"
-      class=".samples.BatchSamplesView"
+      class="bika.health.browser.batch.samples.BatchSamplesView"
       permission="zope2.View"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
@@ -23,8 +23,16 @@
     <browser:page
       for="bika.lims.interfaces.IBatch"
       name="publish"
-      class=".publish.BatchPublishView"
+      class="bika.health.browser.batch.publish.BatchPublishView"
       permission="bika.lims.Publish"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+    
+    <browser:page
+      for="bika.lims.interfaces.IBatchFolder"
+      name="base_view"
+      class="bika.health.browser.batch.batchfolder.BatchFolderContentsView"
+      permission="cmf.ListFolderContents"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
