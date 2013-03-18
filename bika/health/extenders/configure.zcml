@@ -11,5 +11,6 @@
     <adapter factory=".batch.BatchSchemaModifier" />    
     <adapter factory=".analysisspec.AnalysisSpecSchemaExtender" />
     <adapter factory=".analysisspec.AnalysisSpecSchemaModifier" />
+    <adapter factory=".bikasetup.BikaSetupSchemaExtender" />
 
 </configure>

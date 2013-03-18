@@ -9,6 +9,7 @@
 
   <include package=".aetiologicagent"/>
   <include package=".batch"/>
+  <include package=".calcs"/>
   <include package=".disease"/>
   <include package=".doctor"/>
   <include package=".doctors"/>
