@@ -4,9 +4,4 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
     
-    <include file="browser/batch/overrides.zcml" />
-    <!--include file="browser/doctors/overrides.zcml" /-->
-    <include file="browser/calcs/overrides.zcml" />
-    <include file="browser/analysisrequest/overrides.zcml" />
-          
 </configure>

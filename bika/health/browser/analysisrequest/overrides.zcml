@@ -4,9 +4,12 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
     
-    <include file="browser/batch/overrides.zcml" />
-    <!--include file="browser/doctors/overrides.zcml" /-->
-    <include file="browser/calcs/overrides.zcml" />
-    <include file="browser/analysisrequest/overrides.zcml" />
-          
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="workflow_action"
+      class="bika.health.browser.analysisrequest.AnalysisRequestWorkflowAction"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
 </configure>
