@@ -4,6 +4,7 @@ from AccessControl import ClassSecurityInfo
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
+from bika.health.fields import *
 from bika.lims.interfaces import IAnalysisSpec
 from Products.Archetypes.config import REFERENCE_CATALOG
 from Products.CMFCore.utils import getToolByName
@@ -21,6 +22,13 @@ class AnalysisSpecSchemaExtender(object):
 
     def __init__(self, context):
         self.context = context
+
+        for field in self.fields:
+            fn = field.getName()
+            if not hasattr(context, 'get' + fn):
+                context.__setattr__('get' + fn, field_getter(context, fn))
+            if not hasattr(context, 'set' + fn):
+                context.__setattr__('set' + fn, field_setter(context, fn))
 
     def getFields(self):
         return self.fields

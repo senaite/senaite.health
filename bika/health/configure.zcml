@@ -19,7 +19,6 @@
 
   <include package=".content"/>
   <include package=".controlpanel"/>
-  <include package=".extenders"/>
   <include package=".browser"/>
   <include package=".static"/>
 
