@@ -1,80 +1,15 @@
-""" http://pypi.python.org/pypi/archetypes.schemaextender
-"""
-from AccessControl import ClassSecurityInfo
-from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
-from archetypes.schemaextender.interfaces import ISchemaModifier
-from bika.health import bikaMessageFactory as _
-from bika.lims.interfaces import IAnalysisSpec
+from Products.Archetypes import atapi
 from Products.Archetypes.config import REFERENCE_CATALOG
 from Products.CMFCore.utils import getToolByName
-from zope.component import adapts
-from zope.interface import implements
+from archetypes.schemaextender.interfaces import ISchemaModifier
+from bika.health import bikaMessageFactory as _
 from bika.health.widgets.analysisspecificationwidget import \
     AnalysisSpecificationWidget, AnalysisSpecificationPanicValidator
-
-
-class AnalysisSpecSchemaExtender(object):
-    adapts(IAnalysisSpec)
-    implements(IOrderableSchemaExtender)
-    security = ClassSecurityInfo()
-    fields = []
-
-    def __init__(self, context):
-        self.context = context
-
-    def getFields(self):
-        return self.fields
-
-    def getOrder(self, schematas):
-        schematas['default'] = ['id',
-                                'title',
-                                'description',
-                                'SampleType',
-                                'SampleTypeTitle',
-                                'SampleTypeUID',
-                                'ResultsRange',
-                                'ClientUID']
-        return schematas
-
-    security.declarePublic('getPanicRangesDict')
-    def getPanicRangesDict(self):
-        specs = {}
-        for spec in self.getResultsRange():
-            keyword = spec['keyword']
-            specs[keyword] = {}
-            specs[keyword]['minpanic'] = spec['minpanic']
-            specs[keyword]['maxpanic'] = spec['maxpanic']
-        return specs
-
-    security.declarePublic('getResultsRangesSorted')
-    def getPanicRangesSorted(self):
-        tool = getToolByName(self, REFERENCE_CATALOG)
-
-        cats = {}
-        for spec in self.getResultsRange():
-            service = tool.lookupObject(spec['service'])
-            service_title = service.Title()
-            category_title = service.getCategoryTitle()
-            if category_title not in cats.keys():
-                cats[category_title] = {}
-            cat = cats[category_title]
-            cat[service_title] = {'category': category_title,
-                                  'service': service_title,
-                                  'id': service.getId(),
-                                  'uid': spec['service'],
-                                  'minpanic': spec['minpanic'],
-                                  'maxpanic': spec['maxpanic']}
-        cat_keys = cats.keys()
-        cat_keys.sort(lambda x, y: cmp(x.lower(), y.lower()))
-        sorted_specs = []
-        for cat in cat_keys:
-            services = cats[cat]
-            service_keys = services.keys()
-            service_keys.sort(lambda x, y: cmp(x.lower(), y.lower()))
-            for service_key in service_keys:
-                sorted_specs.append(services[service_key])
-
-        return sorted_specs
+from bika.lims.config import PROJECTNAME as BIKALIMS_PROJECTNAME
+from bika.lims.content.analysisspec import AnalysisSpec as BaseAnalysisSpec
+from bika.lims.interfaces import IAnalysisSpec
+from zope.component import adapts
+from zope.interface import implements
 
 
 class AnalysisSpecSchemaModifier(object):
@@ -100,3 +35,79 @@ class AnalysisSpecSchemaModifier(object):
                     description=srcwidget.description,
         )
         return schema
+
+
+class AnalysisSpec(BaseAnalysisSpec):
+    """ Inherits from bika.content.analysisspec.AnalysisSpec
+    """
+
+    def getResultsRangeDict(self):
+        """ Overrides
+            bika.content.analysisspec.AnalysisSpec.getResultRangeDict()
+            Return a dictionary with the specification fields for each
+            service. The keys of the dictionary are the keywords of each
+            analysis service. Each service contains a dictionary in which
+            each key is the name of the spec field:
+            specs['keyword'] = {'min': value,
+                                'max': value,
+                                'error': value,
+                                'minpanic': value,
+                                'maxpanic': value }
+        """
+        specs = {}
+        for spec in self.getResultsRange():
+            keyword = spec['keyword']
+            specs[keyword] = {}
+            specs[keyword]['min'] = spec['min']
+            specs[keyword]['max'] = spec['max']
+            specs[keyword]['error'] = spec['error']
+            specs[keyword]['minpanic'] = spec['minpanic']
+            specs[keyword]['maxpanic'] = spec['maxpanic']
+        return specs
+
+    def getResultsRangesSorted(self):
+        """ Overrides
+            bika.content.analysisspec.AnalysisSpec.getPanicRangesSorted()
+            Return an array of dictionaries, sorted by AS title:
+             [{'category': <title of AS category>
+               'service': <title of AS>,
+               'id': <ID of AS>
+               'uid': <UID of AS>
+               'min': <min range spec value>
+               'max': <max range spec value>
+               'error': <error spec value>
+               'minpanic': <min panic spec value>
+               'maxpanic': <max panic spec value> }]
+        """
+        tool = getToolByName(self, REFERENCE_CATALOG)
+
+        cats = {}
+        for spec in self.getResultsRange():
+            service = tool.lookupObject(spec['service'])
+            service_title = service.Title()
+            category_title = service.getCategoryTitle()
+            if category_title not in cats:
+                cats[category_title] = {}
+            cat = cats[category_title]
+            cat[service_title] = {'category': category_title,
+                                  'service': service_title,
+                                  'id': service.getId(),
+                                  'uid': spec['service'],
+                                  'min': spec['min'],
+                                  'max': spec['max'],
+                                  'error': spec['error'],
+                                  'minpanic': spec['minpanic'],
+                                  'maxpanic': spec['maxpanic']}
+        cat_keys = cats.keys()
+        cat_keys.sort(lambda x, y: cmp(x.lower(), y.lower()))
+        sorted_specs = []
+        for cat in cat_keys:
+            services = cats[cat]
+            service_keys = services.keys()
+            service_keys.sort(lambda x, y: cmp(x.lower(), y.lower()))
+            for service_key in service_keys:
+                sorted_specs.append(services[service_key])
+
+        return sorted_specs
+
+atapi.registerType(AnalysisSpec, BIKALIMS_PROJECTNAME)

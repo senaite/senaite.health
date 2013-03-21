@@ -7,8 +7,24 @@
     <browser:page
       for="bika.lims.interfaces.IAnalysisRequest"
       name="workflow_action"
-      class="bika.health.browser.analysisrequest.AnalysisRequestWorkflowAction"
+      class="bika.health.browser.analysisrequest.workflow.WorkflowAction"
       permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+    
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="base_view"
+      class="bika.health.browser.analysisrequest.view.AnalysisRequestView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+    
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="manage_results"
+      class="bika.health.browser.analysisrequest.manageresults.ManageResultsView"
+      permission="bika.lims.EditResults"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
