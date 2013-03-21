@@ -126,6 +126,10 @@ def setupPermissions(context):
     mp(ManageAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 1)
     mp(ManageDoctors, ['Manager', 'LabManager', 'Owner', 'LabClerk'], 1)
     mp(ManagePatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    
+    mp(ViewBatches, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     portal.bika_setup.laboratory.reindexObject()
 
     # /clients folder permissions

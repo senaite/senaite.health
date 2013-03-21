@@ -11,5 +11,14 @@
         handler="bika.health.upgrade.to1001.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+ <genericsetup:upgradeStep
+        title="Set permissions to Manager, Owner, LabManager, LabClerk"
+        description="Permissions:ViewBatches, ViewSamples, ViewAnalysisRequests"
+        source="1001"
+        destination="1002"
+        handler="bika.health.upgrade.to1002.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
         
 </configure>
