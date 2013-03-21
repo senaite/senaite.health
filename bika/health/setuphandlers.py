@@ -16,7 +16,6 @@ from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
 from Products.CMFEditions.Permissions import AccessPreviousVersions
 
-
 class Empty:
     pass
 
@@ -112,6 +111,13 @@ def setupPermissions(context):
     mp(AddSamplePartition, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
     mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddPatient, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddAetiologicAgent, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddTreatment, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddDrug, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddImmunization, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddVaccinationCenter, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddSymptom, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddDrugProhibition, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
 
     mp(ApplyVersionControl, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
     mp(SaveNewVersion, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
@@ -267,4 +273,3 @@ def setupCatalogs(context):
     addColumn(bpc, 'getPatientID')
     addColumn(bpc, 'getPrimaryReferrerUID')
     addColumn(bpc, 'review_state')
-
