@@ -30,7 +30,7 @@ class CaseSymptomsWidget(ATRecordsWidget):
                 outvalues.append({'UID': value['UID'],
                                   'Title': value.get('Title', ''),
                                   'Description': value.get('Description', ''),
-                                  'Severity': value.get('Severity', '0'),
+                                  'Severity': value.get(value['UID'], '0'),
                                   'SeverityAllowed':value.get('SeverityAllowed', '0'),
                                   'Gender':value.get('Gender', 'dk')})
         return outvalues, {}
@@ -56,7 +56,6 @@ class CaseSymptomsWidget(ATRecordsWidget):
 
         symptoms = self.bika_setup_catalog(portal_type='Symptom',
                                          inactive_state='active')
-
         for symptom in symptoms:
             symptom = symptom.getObject()
             if not gender \
