@@ -1,6 +1,23 @@
 from Products.Archetypes import atapi
 from bika.lims.config import PROJECTNAME as BIKALIMS_PROJECTNAME
 from bika.lims.content.analysis import Analysis as BaseAnalysis
+from archetypes.schemaextender.interfaces import ISchemaExtender
+from bika.lims.interfaces import IAnalysis
+from zope.component import adapts
+from zope.interface import implements
+
+
+class AnalysisSchemaExtender(object):
+    adapts(IAnalysis)
+    implements(ISchemaExtender)
+
+    fields = []
+
+    def __init__(self, context):
+        self.context = context
+
+    def getFields(self):
+        return self.fields
 
 
 class Analysis(BaseAnalysis):

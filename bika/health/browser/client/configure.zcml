@@ -4,116 +4,11 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="bika">
 
-    <!-- Workflow action button clicked -->
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="workflow_action"
-      class="bika.lims.browser.client.ClientWorkflowAction"
-      permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="batches"
-      class="bika.lims.browser.client.ClientBatchesView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
     <browser:page
       for="bika.lims.interfaces.IClient"
       name="patients"
-      class="bika.lims.browser.client.ClientPatientsView"
-      permission="bika.lims.ManagePatients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="base_view"
-      class="bika.lims.browser.client.ClientAnalysisRequestsView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="samples"
-      class="bika.lims.browser.client.ClientSamplesView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="arimports"
-      class="bika.lims.browser.client.ClientARImportsView"
-      permission="bika.lims.ManageARImport"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="analysisprofiles"
-      class="bika.lims.browser.client.ClientAnalysisProfilesView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="artemplates"
-      class="bika.lims.browser.client.ClientARTemplatesView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="samplepoints"
-      class="bika.lims.browser.client.ClientSamplePointsView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="analysisspecs"
-      class="bika.lims.browser.client.ClientAnalysisSpecsView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="set_to_lab_defaults"
-      class="bika.lims.browser.client.SetSpecsToLabDefaults"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="attachments"
-      class="bika.lims.browser.client.ClientAttachmentsView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="orders"
-      class="bika.lims.browser.client.ClientOrdersView"
-      permission="bika.lims.ManageClients"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="contacts"
-      class="bika.lims.browser.client.ClientContactsView"
-      permission="bika.lims.ManageClients"
+      class="bika.health.browser.client.patients.ClientPatientsView"
+      permission="bika.health.ManagePatients"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 

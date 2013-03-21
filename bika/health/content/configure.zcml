@@ -7,4 +7,13 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="bika.health">
 
+    <include package="archetypes.schemaextender" />
+
+    <adapter factory=".analysisrequest.AnalysisRequestExtender" />
+    <adapter factory=".batch.BatchSchemaExtender" />
+    <adapter factory=".batch.BatchSchemaModifier" />
+    <adapter factory=".analysis.AnalysisSchemaExtender" />
+    <adapter factory=".analysisspec.AnalysisSpecSchemaModifier" />
+    <adapter factory=".bikasetup.BikaSetupSchemaExtender" />
+
 </configure>
