@@ -41,5 +41,7 @@
       handler="bika.health.setuphandlers.setupCatalogs">
     <depends name="toolset" />
   </genericsetup:importStep>
+  
+  <include package=".upgrade"/>
 
 </configure>

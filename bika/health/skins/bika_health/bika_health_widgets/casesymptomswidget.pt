@@ -62,19 +62,20 @@
                     </td>
                     <td tal:attributes="style python:symptom['Visible']==False and 'display:none' or '';
                                         width string:100%;">
-                        <div tal:condition="python:symptom['SeverityAllowed']==1">
+                        <div tal:condition="python:symptom['SeverityAllowed']==1"
+                             tal:define="suid python:symptom['UID']">
                             <input type="radio" 
-                                tal:attributes="name string:${fieldName}.Severity:records:ignore_empty;
+                                tal:attributes="name string:${fieldName}.${suid}:records:ignore_empty;
                                                 id string:${fieldName}-Severity-${repeat/idx/index};
                                                 checked python:symptom['Severity']=='1'"
                                                 value="1"/><span i18n:translate="">Mild</span>&nbsp;
                             <input type="radio" 
-                                tal:attributes="name string:${fieldName}.Severity:records:ignore_empty;
+                                tal:attributes="name string:${fieldName}.${suid}:records:ignore_empty;
                                                 id string:${fieldName}-Severity-${repeat/idx/index};
                                                 checked python:symptom['Severity']=='2'"
                                                 value="2"/><span i18n:translate="">Moderate</span>&nbsp;
                             <input type="radio" 
-                                tal:attributes="name string:${fieldName}.Severity:records:ignore_empty;
+                                tal:attributes="name string:${fieldName}.${suid}:records:ignore_empty;
                                                 id string:${fieldName}-Severity-${repeat/idx/index};
                                                 checked python:symptom['Severity']=='3'"
                                                 value="3"/><span i18n:translate="">Severe</span>&nbsp;

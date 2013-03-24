@@ -1,0 +1,24 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="bika">
+
+ <genericsetup:upgradeStep
+        title="Set permissions to Manager, Owner, LabManager, LabClerk"
+        description="Permissions:AddAetiologicAgent, AddTreatment, AddDrug, AddImmunization, AddVaccinationCenter, AddSymptom, AddDrugProhibition"
+        source="*"
+        destination="1001"
+        handler="bika.health.upgrade.to1001.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
+ <genericsetup:upgradeStep
+        title="Set permissions to Manager, Owner, LabManager, LabClerk"
+        description="Permissions:ViewBatches, ViewSamples, ViewAnalysisRequests"
+        source="1001"
+        destination="1002"
+        handler="bika.health.upgrade.to1002.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+        
+</configure>

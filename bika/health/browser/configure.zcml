@@ -8,6 +8,7 @@
     i18n_domain="bika.health">
 
   <include package=".aetiologicagent"/>
+  <include package=".analysisrequest"/>
   <include package=".batch"/>
   <include package=".client"/>
   <include package=".calcs"/>
