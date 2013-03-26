@@ -30,8 +30,9 @@ class AnalysisRequestExtender(object):
                 label=_('Doctor'),
                 size=12,
                 render_own_label=True,
-                visible={'edit': 'visible', 'view':
-                         'visible', 'add': 'visible'},
+                visible={'edit': 'visible',
+                         'view': 'visible',
+                         'add': 'visible'},
                 catalog_name='portal_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
@@ -56,8 +57,9 @@ class AnalysisRequestExtender(object):
                 label=_('Patient'),
                 size=12,
                 render_own_label=True,
-                visible={'edit': 'visible', 'view':
-                         'visible', 'add': 'visible'},
+                visible={'edit': 'visible',
+                         'view': 'visible',
+                         'add': 'visible'},
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
