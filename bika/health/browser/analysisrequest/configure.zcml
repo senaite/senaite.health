@@ -3,5 +3,12 @@
            xmlns:fss="http://namespaces.zope.org/browser"
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
-           
+      
+   <browser:page
+      for="*"
+      name="email_popup"
+      class="bika.health.browser.analysisrequest.emailpopup.EmailPopupView"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+   />
 </configure>

@@ -1,0 +1,88 @@
+<html
+    i18n:domain="bika"
+    tal:define="portal_state context/@@plone_portal_state;
+                portal_url portal_state/portal_url;
+                locale portal_state/locale;">
+    <head>    
+        <style>
+            div.fieldline {
+                margin-bottom:5px;
+                clear:both;
+            }
+            div.fieldline div.fieldline-label,
+            div.fieldline div.fieldline-content {
+                float:left;
+            }
+            div.fieldline div.fieldline-label {
+                width:80px;
+            }
+            div.fieldline div.fieldline-content {
+            }
+            div.clear-both {
+                clear:both;
+            }
+        </style>    
+    </head>
+    <body>    
+        
+        <h1>
+            <img tal:condition="view/icon | nothing"
+                src="" tal:attributes="src view/icon"/>
+            <span i18n:translate="">Alert client</span>
+        </h1>
+        
+        <p i18n:translate="">
+            Some values are exceeding the panic levels. Send an email to the 
+            client or close this window if you want to re-test to confirm the 
+            panic value.
+        </p>
+            
+        <form id="analysisrequest_email_form"
+              name="analysisrequest_email_form"
+              method="POST"
+              enctype="multipart/form-data"
+              tal:define="recipients view/recipients;
+                          ccs view/ccs">
+            
+            
+            <!-- Subject -->
+            <div class='fieldline'>
+                <div class='fieldline-label'>
+                    <label for="subject" i18n:translate="">Subject</label>
+                </div>
+                <div class='fieldline-content'>
+                    <input type="text" class="required"
+                        tal:attributes="id string:subject;
+                                        name string:subject;
+                                        value view/subject;
+                                        size string:35;"/>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Recipients -->
+            <div class='fieldline'>
+                <div class='fieldline-label'>
+                    <label for="to" i18n:translate="">To</label>
+                </div>
+                <div class='fieldline-content'>
+                    <input type="text" class="required"
+                        tal:attributes="id string:to;
+                                name string:to; 
+                                value view/getFormattedRecipients;
+                                size string:35;"/>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Body -->
+            <label for="body" i18n:translate="">Body</label>
+            <textarea class="textarea-widget required" name="body" id="body" tal:content="view/body"cols="42" rows="8"/>
+            <br/>
+            <input class="context workflow_action_button action_button" 
+                type="submit" value="Send" name="email_popup_submit"
+                id="email_popup_submit">          
+            
+        </form>
+    </body>
+</html>
