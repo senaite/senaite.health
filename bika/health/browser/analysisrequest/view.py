@@ -49,7 +49,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
                                        "analysis %s" % analysis.UID())
                         pass
 
-                    if inpanic[0]:
+                    if inpanic[0] == True:
                         inpanic = True
                         break
         return inpanic
