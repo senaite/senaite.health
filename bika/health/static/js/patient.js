@@ -6,6 +6,100 @@ $(document).ready(function(){
     _ = jarn.i18n.MessageFactory('bika.health');
 
 	dateFormat = _b("date_format_short_datepicker");
+	
+	editpatient_overlay = {
+			subtype: 'ajax',
+			filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
+			formselector: '#patient-base-edit',
+			closeselector: '[name="form.button.cancel"]',
+			width:'70%',
+			noform:'close',
+			config: {
+				onLoad: function() {
+					// manually remove remarks
+					this.getOverlay().find("#archetypes-fieldname-Remarks").remove();
+					// remove menstrual status widget (accesible from case)
+					this.getOverlay().find("#archetypes-fieldname-MenstrualStatus").remove();
+					// reapply datepicker widget
+					this.getOverlay().find("#BirthDate").live('click', function() {
+						$(this).datepicker({
+							showOn:'focus',
+							showAnim:'',
+							changeMonth:true,
+							changeYear:true,
+							maxDate: '+0d',
+							dateFormat: dateFormat,
+							yearRange: "-100:+0"
+						})
+						.click(function(){$(this).attr('value', '');})
+						.focus();
+					});
+
+					// Address widget
+					$.ajax({
+						url: 'bika_widgets/addresswidget.js',
+						dataType: 'script',
+						async: false
+					});
+
+				},
+				onClose: function() {
+					var Fullname = $("#Firstname").val() + " " + $("#Surname").val();
+					if (Fullname.length > 1) {
+						$.ajax({
+							url: window.portal_url + "/getpatientinfo",
+							type: 'POST',
+							data: {'_authenticator': $('input[name="_authenticator"]').val(),
+									'Fullname': Fullname},
+							dataType: "json",
+							success: function(data, textStatus, $XHR){
+								$("#PatientID").val(data['PatientID']);
+								$(".jsPatientTitle").remove();
+								$("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'><a class='edit_patient' href='"+window.portal_url+"/patients/"+data['PatientID']+"/edit'>"+Fullname+"</a></span>");
+								$('a.edit_patient').prepOverlay(editpatient_overlay);
+								$("#Client").val(data['ClientID']);
+								$(".jsClientTitle").remove();
+								$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'><a href='"+window.portal_url+"/clients/"+data['ClientSysID']+"/base_edit'>"+data['ClientTitle']+"</a></span>");
+								$('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);
+								if ($('input[name="PatientGender"]').length == 0){
+									$("body").append('<input type="hidden" name="PatientGender"/>');
+									
+									$('input[name="PatientGender"]').change(function(){
+										gender = $('input[name="PatientGender"]').val();
+										if ($("#Symptoms_table").length) {
+											// Show/Hide the symptoms according to Patient's gender
+											// Hide/shows symptoms items according to selected gender
+											$("#Symptoms_table tr.symptom-item").find('td').hide();
+											$("#Symptoms_table tr.symptom-item.gender-"+gender).find('td').show();
+											$("#Symptoms_table tr.symptom-item.gender-dk").find('td').show();		
+										}
+										if ($('#archetypes-fieldname-MenstrualStatus').length){
+											// Show/Hide MenstrualStatus widget depending on patient's gender
+											if (gender=='female') {
+												$('#archetypes-fieldname-MenstrualStatus').show();
+											} else {
+												$("#MenstrualStatus-FirstDayOfLastMenses-0").val('');
+												$("#MenstrualCycleType-0").val('');
+												$("#MenstrualStatus-Pregnant-0").attr('checked', false);
+												$("#MenstrualStatus-MonthOfPregnancy-0").val('');
+												$("#MenstrualStatus-Hysterectomy-0").attr('checked', false);
+												$("#MenstrualStatus-HysterectomyYear-0").val('');
+												$("#MenstrualStatus-OvariesRemoved-0").attr('checked', false);
+												$("#MenstrualStatus-OvariesRemovedNum-0:radio").attr('checked', false);
+												$("#MenstrualStatus-OvariesRemovedYear-0").val('');
+												$('#archetypes-fieldname-MenstrualStatus').hide();
+											}
+										}
+									});						
+								}
+								$('input[name="PatientGender"]').val(data['PatientGender']);
+								$('input[name="PatientGender"]').change();
+							}
+						});
+					}
+				}
+			}
+		}
 
 	// Add Patient popup
 	if($(".portaltype-patient").length == 0 &&
@@ -34,10 +128,11 @@ $(document).ready(function(){
 				$(this).change();
 				if($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
 					$(".jsPatientTitle").remove();
-					$("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'>"+ui.item.Title+"</span>");
+					$("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'><a class='edit_patient' href='"+window.portal_url+"/patients/"+ui.item.PatientID+"/edit'>"+ui.item.Title+"</a></span>");
+					$('a.edit_patient').prepOverlay(editpatient_overlay);
 					$("#ClientID").val(ui.item.ClientID);
 					$(".jsClientTitle").remove();
-					$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'>"+ui.item.ClientTitle+"</span>");
+					$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'><a href='"+window.portal_url+"/clients/"+ui.item.ClientSysID+"/base_edit'>"+ui.item.ClientTitle+"</a></span>");
 					if($('input[name="PatientBirthDate"]').length == 0){
 						$("body").append('<input type="hidden" name="PatientBirthDate"/>');
 					}
@@ -114,108 +209,8 @@ $(document).ready(function(){
 		});
 	}
 
-	$('a.add_patient').prepOverlay(
-		{
-			subtype: 'ajax',
-			filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
-			formselector: '#patient-base-edit',
-			closeselector: '[name="form.button.cancel"]',
-			width:'70%',
-			noform:'close',
-			config: {
-				onLoad: function() {
-					// manually remove remarks
-					this.getOverlay().find("#archetypes-fieldname-Remarks").remove();
-					// remove menstrual status widget (accesible from case)
-					this.getOverlay().find("#archetypes-fieldname-MenstrualStatus").remove();
-					// reapply datepicker widget
-					this.getOverlay().find("#BirthDate").live('click', function() {
-						$(this).datepicker({
-							showOn:'focus',
-							showAnim:'',
-							changeMonth:true,
-							changeYear:true,
-							maxDate: '+0d',
-							dateFormat: dateFormat,
-							yearRange: "-100:+0"
-						})
-						.click(function(){$(this).attr('value', '');})
-						.focus();
-					});
-
-					// Address widget
-					$.ajax({
-						url: 'bika_widgets/addresswidget.js',
-						dataType: 'script',
-						async: false
-					});
-
-					// These are not meant to show up in the main patient base_edit form.
-					// they are flagged 'visible' though, so they do show up when requested.
-					$('.template-base_edit #archetypes-fieldname-Allergies').hide();
-					$('.template-base_edit #archetypes-fieldname-TreatmentHistory').hide();
-					$('.template-base_edit #archetypes-fieldname-ImmunizationHistory').hide();
-					$('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
-					$('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
-
-				},
-				onClose: function() {
-					var Fullname = $("#Firstname").val() + " " + $("#Surname").val();
-					if (Fullname.length > 1) {
-						$.ajax({
-							url: window.portal_url + "/getpatientinfo",
-							type: 'POST',
-							data: {'_authenticator': $('input[name="_authenticator"]').val(),
-									'Fullname': Fullname},
-							dataType: "json",
-							success: function(data, textStatus, $XHR){
-								$("#Patient").val(data['PatientID']);
-								$(".jsPatientTitle").remove();
-								$("#archetypes-fieldname-Patient").append("<span class='jsPatientTitle'>"+Fullname+"</span>");
-								$("#Client").val(data['ClientID']);
-								$(".jsClientTitle").remove();
-								$("#archetypes-fieldname-Client").append("<span class='jsClientTitle'>"+data['ClientTitle']+"</span>");
-								$('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);
-								if ($('input[name="PatientGender"]').length == 0){
-									$("body").append('<input type="hidden" name="PatientGender"/>');
-									
-									$('input[name="PatientGender"]').change(function(){
-										gender = $('input[name="PatientGender"]').val();
-										if ($("#Symptoms_table").length) {
-											// Show/Hide the symptoms according to Patient's gender
-											// Hide/shows symptoms items according to selected gender
-											$("#Symptoms_table tr.symptom-item").find('td').hide();
-											$("#Symptoms_table tr.symptom-item.gender-"+gender).find('td').show();
-											$("#Symptoms_table tr.symptom-item.gender-dk").find('td').show();		
-										}
-										if ($('#archetypes-fieldname-MenstrualStatus').length){
-											// Show/Hide MenstrualStatus widget depending on patient's gender
-											if (gender=='female') {
-												$('#archetypes-fieldname-MenstrualStatus').show();
-											} else {
-												$("#MenstrualStatus-FirstDayOfLastMenses-0").val('');
-												$("#MenstrualCycleType-0").val('');
-												$("#MenstrualStatus-Pregnant-0").attr('checked', false);
-												$("#MenstrualStatus-MonthOfPregnancy-0").val('');
-												$("#MenstrualStatus-Hysterectomy-0").attr('checked', false);
-												$("#MenstrualStatus-HysterectomyYear-0").val('');
-												$("#MenstrualStatus-OvariesRemoved-0").attr('checked', false);
-												$("#MenstrualStatus-OvariesRemovedNum-0:radio").attr('checked', false);
-												$("#MenstrualStatus-OvariesRemovedYear-0").val('');
-												$('#archetypes-fieldname-MenstrualStatus').hide();
-											}
-										}
-									});						
-								}
-								$('input[name="PatientGender"]').val(data['PatientGender']);
-								$('input[name="PatientGender"]').change();
-							}
-						});
-					}
-				}
-			}
-		}
-	);
+	$('a.add_patient').prepOverlay(editpatient_overlay);
+	$('a.edit_patient').prepOverlay(editpatient_overlay);
 
 	// Mod the Age if DOB is selected
 	$("#Age").live('change', function(){

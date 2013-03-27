@@ -58,6 +58,7 @@ class ajaxGetPatients(BrowserView):
                              'PatientID': patient.getPatientID(),
                              'ClientTitle': patient.getPrimaryReferrer().Title(),
                              'ClientID': patient.getPrimaryReferrer().getClientID(),
+                             'ClientSysID': patient.getPrimaryReferrer().id,
                              'PatientUID': patient.UID(),
                              'AdditionalIdentifiers': patient.getPatientIdentifiersStrHtml(),
                              'PatientBirthDate': self.ulocalized_time(patient.getBirthDate(), long_format=0),

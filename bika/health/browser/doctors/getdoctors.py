@@ -31,6 +31,7 @@ class ajaxGetDoctors(BrowserView):
             or doctor.getDoctorID().lower().find(searchTerm) > -1:
                 rows.append({'Title': doctor.Title() or '',
                              'DoctorID': doctor.getDoctorID(),
+                             'DoctorSysID': doctor.id,
                              'DoctorUID': doctor.UID()})
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key = itemgetter(sidx and sidx or 'Title'))

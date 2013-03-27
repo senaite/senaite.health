@@ -34,6 +34,7 @@ class ajaxGetPatientInfo(BrowserView):
         ret = {'PatientID': patient.getPatientID(),
                'ClientID': PR and PR.getClientID() or '',
                'ClientTitle': PR and PR.Title() or '',
+               'ClientSysID' : PR and PR.id or '',
                'PatientFullname': Fullname,
                'PatientBirthDate': self.ulocalized_time(patient.getBirthDate()),
                'PatientGender': patient.getGender()}

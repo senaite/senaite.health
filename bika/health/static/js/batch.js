@@ -64,11 +64,11 @@ $(document).ready(function(){
             dataType: "json",
             success: function(data, textStatus, $XHR){
                 $(".jsClientTitle").remove();
-                $("#archetypes-fieldname-Client").append("<span class='jsClientTitle'>"+data['Client']+"</span>");
+                $("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'>"+data['Client']+"</span>");
                 $(".jsPatientTitle").remove();
-                $("#archetypes-fieldname-Patient").append("<span class='jsPatientTitle'>"+data['Patient']+"</span>");
+                $("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'>"+data['Patient']+"</span>");
                 $(".jsDoctorTitle").remove();
-                $("#archetypes-fieldname-Doctor").append("<span class='jsDoctorTitle'>"+data['Doctor']+"</span>");
+                $("#archetypes-fieldname-DoctorID").append("<span class='jsDoctorTitle'>"+data['Doctor']+"</span>");
             }
         });
     }

@@ -20,4 +20,5 @@ class ajaxGetDoctorID(BrowserView):
             pass
         if not proxies:
             return json.dumps({'DoctorID': ''})
-        return json.dumps({'DoctorID': proxies[0].getObject().getDoctorID()})
+        return json.dumps({'DoctorID': proxies[0].getObject().getDoctorID(),
+                           'DoctorSysID': proxies[0].getObject().id})
