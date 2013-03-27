@@ -32,7 +32,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
         return self.template()
 
     def hasAnalysesInPanic(self):
-        inpanic = False
+        panic = False
         bs = self.context.bika_setup
         if not hasattr(bs, 'getEnablePanicAlert') or bs.getEnablePanicAlert():
             workflow = getToolByName(self.context, 'portal_workflow')
@@ -45,14 +45,15 @@ class AnalysisRequestView(AnalysisRequestViewView):
                     try:
                         inpanic = analysis.isInPanicRange()
                     except:
+                        inpanic = (False, None, None)
                         logger.warning("Call error: isInPanicRange for "
                                        "analysis %s" % analysis.UID())
                         pass
 
                     if inpanic[0] == True:
-                        inpanic = True
+                        panic = True
                         break
-        return inpanic
+        return panic
 
     def addEmailLink(self, autopopup=False):
         self.header_rows.append(
