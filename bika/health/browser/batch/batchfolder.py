@@ -74,6 +74,15 @@ class BatchFolderContentsView(BaseView):
             doctor = self.portal_catalog(portal_type='Doctor', 
                                          getDoctorID=obj.getDoctorID())
 
+            if 'Doctor' not in items[x]:
+                items[x]['Doctor'] = ''
+
+            if 'Patient' not in items[x]:
+                items[x]['Patient'] = ''
+
+            if 'Client' not in items[x]:
+                items[x]['Client'] = ''
+
             items[x]['replace']['Patient'] = patient \
                 and "<a href='%s'>%s</a>" % \
                 (patient[0].getObject().absolute_url(),
