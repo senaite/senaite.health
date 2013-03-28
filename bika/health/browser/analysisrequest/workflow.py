@@ -46,6 +46,7 @@ class WorkflowAction(BaseClass):
                     inpanic = analysis.isInPanicRange()
                 except:
                     logger.warning("Call error: isInPanicRange for analysis %s" % uid)
+                    inpanic = [False, None, None]
                     pass
 
                 if inpanic[0] == True:

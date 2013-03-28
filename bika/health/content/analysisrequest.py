@@ -73,6 +73,16 @@ class AnalysisRequestExtender(object):
                 visible=False,
             ),
         ),
+
+        BooleanField(
+            'PanicEmailAlertToClientSent',
+            default=False,
+            widget=BooleanWidget(
+                visible={'edit': 'invisible', 
+                         'view': 'invisible', 
+                         'add': 'invisible'},
+            ),
+        ),
     ]
 
     def getOrder(self, schematas):

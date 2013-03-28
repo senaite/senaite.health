@@ -15,10 +15,9 @@ class AnalysisRequestView(AnalysisRequestViewView):
     def __call__(self):
 
         super(AnalysisRequestView, self).__call__()
-        autopopup = True
-        # TODO Needs to create an adapter for AnalysisRequest with new
-        #    getPanicEmailAlertToClientSent()
-        # autopopup = not self.context.getPanicEmailAlertToClientSent()
+        autopopup = hasattr(self.context, 'getPanicEmailAlertToClientSent') \
+                    and not self.context.getPanicEmailAlertToClientSent() \
+                    or True
         if "email_popup_submit" in self.request:
             autopopup = False
             self.sendAlertEmail()
@@ -32,28 +31,20 @@ class AnalysisRequestView(AnalysisRequestViewView):
         return self.template()
 
     def hasAnalysesInPanic(self):
-        panic = False
         bs = self.context.bika_setup
         if not hasattr(bs, 'getEnablePanicAlert') or bs.getEnablePanicAlert():
-            workflow = getToolByName(self.context, 'portal_workflow')
-            for analysis in self.context.getAnalyses(full_objects=True):
-                inpanic = (False, None, None)
-                if not analysis or \
-                    workflow.getInfoFor(analysis,
-                                        'review_state') == 'retracted':
-                    continue
+            wf = getToolByName(self.context, 'portal_workflow')
+            for an in self.context.getAnalyses(full_objects=True):
+                if an and wf.getInfoFor(an, 'review_state') != 'retracted':
                     try:
-                        inpanic = analysis.isInPanicRange()
+                        inpanic = an.isInPanicRange()
+                        if inpanic and inpanic[0] == True:
+                            return True
                     except:
-                        inpanic = (False, None, None)
                         logger.warning("Call error: isInPanicRange for "
-                                       "analysis %s" % analysis.UID())
+                                       "analysis %s" % an.UID())
                         pass
-
-                    if inpanic[0] == True:
-                        panic = True
-                        break
-        return panic
+        return False
 
     def addEmailLink(self, autopopup=False):
         self.header_rows.append(
@@ -108,10 +99,8 @@ class AnalysisRequestView(AnalysisRequestViewView):
         if succeed:
             # Update AR (a panic alert email has been sent)
             ar = self.context
-            # TODO Needs to create an adapter for AnalysisRequest with new
-            #    setPanicEmailAlertToClientSent()
-            #ar.setPanicEmailAlertToClientSent(True)
-            #ar.reindexObject()
+            ar.setPanicEmailAlertToClientSent(True)
+            ar.reindexObject()
         return succeed
 
     def createAnalysesView(self, context, request, **kwargs):
