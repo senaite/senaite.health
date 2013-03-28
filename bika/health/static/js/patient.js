@@ -57,7 +57,7 @@ $(document).ready(function(){
 								$(".jsPatientTitle").remove();
 								$("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'><a class='edit_patient' href='"+window.portal_url+"/patients/"+data['PatientID']+"/edit'>"+Fullname+"</a></span>");
 								$('a.edit_patient').prepOverlay(editpatient_overlay);
-								$("#Client").val(data['ClientID']);
+								$("#ClientID").val(data['ClientID']);
 								$(".jsClientTitle").remove();
 								$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'><a href='"+window.portal_url+"/clients/"+data['ClientSysID']+"/base_edit'>"+data['ClientTitle']+"</a></span>");
 								$('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);

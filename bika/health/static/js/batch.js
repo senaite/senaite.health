@@ -8,8 +8,9 @@ $(document).ready(function(){
     _b = jarn.i18n.MessageFactory('bika');
     _ = jarn.i18n.MessageFactory('bika.health');
 
-    isaraddview = window.location.href.search('/ar_add');
-    isfrombatch = window.location.href.search('batches/');
+    isaraddview = (window.location.href.search('/ar_add') >= 0);
+    isfrombatch = (window.location.href.search('batches/') >= 0);
+    comesfromclient = (document.referrer.search('/clients/') >= 0);
         
     if (isaraddview && isfrombatch) {
     	/* AR Add View. Automatically fill the Patient, Client and Doctor fields */ 
@@ -135,10 +136,26 @@ $(document).ready(function(){
         setPatientAgeAtCaseOnsetDate();
         if($(this).val() == ''){
             $(".jsPatientTitle").remove();
-            $("#Client").val('');
+            $("#ClientID").val('');
             $(".jsClientTitle").remove();
         }
     });
+        
+    if (comesfromclient) {
+    	/* Set automatically the client to the batch */
+    	clientid = document.referrer.split("clients")[1].split("/")[1];
+    	$.ajax({
+    		url: window.portal_url+"/clients/"+clientid+"/getClientInfo",
+    		type: 'POST',
+    		data: {'_authenticator': $('input[name="_authenticator"]').val()},
+            dataType: "json",
+            success: function(data, textStatus, $XHR){            	
+            	$("#ClientID").val(data['ClientID']);
+				$(".jsClientTitle").remove();
+				$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'><a href='"+window.portal_url+"/clients/"+data['ClientSysID']+"/base_edit'>"+data['ClientTitle']+"</a></span>");    
+            }
+    	})
+    }
 
     function setPatientAgeAtCaseOnsetDate() {
         var now = new Date($("#OnsetDate").val());

@@ -22,6 +22,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
                         or True
         except:
             autopopup = True
+            pass
 
         if "email_popup_submit" in self.request:
             autopopup = False
