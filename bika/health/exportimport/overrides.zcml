@@ -1,0 +1,15 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/browser"
+           xmlns:fss="http://namespaces.zope.org/browser"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+           
+  <browser:page
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    name="import"
+    class="bika.health.exportimport.dataimport.ImportView"
+    permission="bika.lims.ImportInstrumentResults"
+    layer="bika.lims.interfaces.IBikaLIMS"
+  />
+  
+</configure>
