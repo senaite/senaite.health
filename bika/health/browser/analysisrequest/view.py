@@ -15,9 +15,14 @@ class AnalysisRequestView(AnalysisRequestViewView):
     def __call__(self):
 
         super(AnalysisRequestView, self).__call__()
-        autopopup = hasattr(self.context, 'getPanicEmailAlertToClientSent') \
-                    and not self.context.getPanicEmailAlertToClientSent() \
-                    or True
+        autopopup = True
+        try:
+            autopopup = hasattr(self.context, 'getPanicEmailAlertToClientSent') \
+                        and not self.context.getPanicEmailAlertToClientSent() \
+                        or True
+        except:
+            autopopup = True
+
         if "email_popup_submit" in self.request:
             autopopup = False
             self.sendAlertEmail()
@@ -99,8 +104,11 @@ class AnalysisRequestView(AnalysisRequestViewView):
         if succeed:
             # Update AR (a panic alert email has been sent)
             ar = self.context
-            ar.setPanicEmailAlertToClientSent(True)
-            ar.reindexObject()
+            try:
+                ar.setPanicEmailAlertToClientSent(True)
+                ar.reindexObject()
+            except:
+                pass
         return succeed
 
     def createAnalysesView(self, context, request, **kwargs):
