@@ -28,7 +28,8 @@
                     <label tal:attributes="for string:${fieldName}.Height:records;"
                        i18n:translate="">Height</label>
                 </div>
-                <div class="fieldline-content">
+                <div class="fieldline-content"
+                    tal:define="units python:context.bika_setup.getPatientConditionsHeightUnits();">
                     <input type="text" 
                        tal:attributes="name string:${fieldName}.Height:records;
                                        id string:${fieldName}-Height-0;
@@ -36,6 +37,7 @@
                                        maxlength string:4;
                                        class string:numeric;
                                        size string:4;"/>
+                    &nbsp;<span tal:content="units"/>
                 </div>
                 <div class="clear-both"></div>
             </div>
@@ -46,7 +48,8 @@
                     <label tal:attributes="for string:${fieldName}.Weight:records;"
                             i18n:translate="">Weight</label>
                 </div>
-                <div class="fieldline-content">
+                <div class="fieldline-content"
+                    tal:define="units python:context.bika_setup.getPatientConditionsWeightUnits();">
                     <input type="text" 
                        tal:attributes="name string:${fieldName}.Weight:records;
                                        id string:${fieldName}-Weight-0;
@@ -54,6 +57,7 @@
                                        maxlength string:3;
                                        class string:numeric;
                                        size string:3;"/>
+                    &nbsp;<span tal:content="units"/>
                 </div> 
                 <div class="clear-both"></div>      
             </div>
@@ -65,7 +69,8 @@
                     <label tal:attributes="for string:${fieldName}.Waist:records;"
                             i18n:translate="">Waist</label>
                 </div>
-                <div class="fieldline-content">
+                <div class="fieldline-content"
+                    tal:define="units python:context.bika_setup.getPatientConditionsWaistUnits();">
                     <input type="text" 
                        tal:attributes="name string:${fieldName}.Waist:records;
                                        id string:${fieldName}-Waist-0;
@@ -73,6 +78,7 @@
                                        maxlength string:2;
                                        class string:numeric;
                                        size string:2;"/>
+                    &nbsp;<span tal:content="units"/>
                 </div> 
                 <div class="clear-both"></div>   
             </div>

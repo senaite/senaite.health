@@ -20,7 +20,28 @@ class BikaSetupSchemaExtender(object):
                 description=_("Alert labmanagers with an email when an "
                               "analysis result exceeding a panic level is "
                               "submitted"))
+        ),
+        ExtStringField('PatientConditionsHeightUnits',
+            schemata="Cases",
+            default="Feet/inches",
+            widget=StringWidget(
+                label=_("Patient condition height units")
             )
+        ),
+        ExtStringField('PatientConditionsWeightUnits',
+            schemata="Cases",
+            default="Lbs",
+            widget=StringWidget(
+                label=_("Patient condition weight units")
+            )
+        ),
+        ExtStringField('PatientConditionsWaistUnits',
+            schemata="Cases",
+            default="Inches",
+            widget=StringWidget(
+                label=_("Patient condition waist units")
+            )
+        ),
     ]
 
     def __init__(self, context):
