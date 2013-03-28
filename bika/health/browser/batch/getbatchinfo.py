@@ -32,7 +32,17 @@ class ajaxGetBatchInfo(BrowserView):
 
         ret = {'Client': client and "<a class='edit_client' href='%s/base_edit'>%s</a>"%(client.absolute_url(), client.Title()) or '',
                'Patient': patient and "<a class='edit_patient' href='%s/edit'>%s</a> %s"%(patient.absolute_url(), patient.Title(), patientids) or '',
-               'Doctor': doctor and "<a class='edit_doctor' href='%s/edit'>%s</a>"%(doctor.absolute_url(), doctor.Title()) or ''}
+               'Doctor': doctor and "<a class='edit_doctor' href='%s/edit'>%s</a>"%(doctor.absolute_url(), doctor.Title()) or '',
+               'ClientID': batch.getClientID(),
+               'PatientID': batch.getPatientID(),
+               'DoctorID': batch.getDoctorID(),
+               'ClientUID': client and client.UID() or '',
+               'PatientUID': patient and batch.UID() or '',
+               'DoctorUID': patient and patient.UID() or '',
+               'ClientTitle': client and client.Title() or '',
+               'PatientTitle': patient and patient.Title() or '',
+               'DoctorTitle': doctor and doctor.Title() or '',
+               }
 
         return json.dumps(ret)
 

@@ -8,8 +8,36 @@ $(document).ready(function(){
     _b = jarn.i18n.MessageFactory('bika');
     _ = jarn.i18n.MessageFactory('bika.health');
 
-     if($(".portaltype-batch").length == 0 &&
+    isaraddview = window.location.href.search('/ar_add');
+    isfrombatch = window.location.href.search('batches/');
+        
+    if (isaraddview && isfrombatch) {
+    	/* AR Add View. Automatically fill the Patient, Client and Doctor fields */ 
+    	batchid = window.location.href.split("batches")[1].split("/")[1];
+    	$.ajax({
+            url: window.portal_url+"/batches/"+batchid+"/getBatchInfo",
+            type: 'POST',
+            data: {'_authenticator': $('input[name="_authenticator"]').val()},
+            dataType: "json",
+            success: function(data, textStatus, $XHR){
+            	$("#ar_0_Client").val(data['ClientTitle']);
+            	$("#ar_0_Patient").val(data['PatientTitle']);
+            	$("#ar_0_Doctor").val(data['DoctorTitle']);
+            	$("#ar_0_Client_uid").val(data['ClientUID']);
+            	$("#ar_0_Patient_uid").val(data['PatientUID']);
+            	$("#ar_0_Doctor_uid").val(data['DoctorUID']);            	
+            	$("#ar_0_Client").attr('readonly', true);
+            	$("#ar_0_Patient").attr('readonly', true);
+            	$("#ar_0_Doctor").attr('readonly', true);
+            }
+        });
+    	
+    	
+    }
+    
+    if ($(".portaltype-batch").length == 0 &&
        window.location.href.search('portal_factory/Batch') == -1){
+    	
         $("input[id=BatchID]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
                     ' class="add_batch"' +
                     ' href="'+window.portal_url+'/batches/portal_factory/Batch/new/edit"' +
@@ -51,9 +79,10 @@ $(document).ready(function(){
                 return false;
             }
         });
+        
     }
-
-    if($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
+    
+    if ($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
         $.ajax({
             url: window.location.href
                        .split("?")[0]
