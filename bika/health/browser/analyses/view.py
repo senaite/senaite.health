@@ -34,6 +34,7 @@ class AnalysesView(BaseView):
                             + ' (%s)' % rngstr
 
                 alerts[obj.UID()] = {'result': obj.getResult(),
-                                     'icon': 'exclamation2',
+                                     'icon': 'lifethreat',
+                                     'product': 'bika.health',
                                      'msg': message}
         return alerts

@@ -15,7 +15,7 @@ class EmailPopupView(BrowserView):
 
     def __init__(self, context, request):
         super(EmailPopupView, self).__init__(context, request)
-        self.icon = self.portal_url + "/++resource++bika.lims.images/email_big.png"
+        self.icon = self.portal_url + "/++resource++bika.health.images/lifethreat_big.png"
         self.recipients = []
         self.ccs = ''
         self.subject = ''

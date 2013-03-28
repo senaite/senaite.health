@@ -28,7 +28,8 @@ class ajaxCalculateAnalysisEntry(BaseClass):
                 msg = _("Result exceeds panic levels") + " (%s)" % range_str
                 alert = {'uid': uid,
                          'field': 'Result',
-                         'icon': 'exclamation2',
+                         'icon': 'lifethreat',
+                         'product': 'bika.health',
                          'msg': msg}
 
                 aalerts = [alert for alert in self.alerts \
