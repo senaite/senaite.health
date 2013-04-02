@@ -58,11 +58,11 @@ class AnalysisSpec(BaseAnalysisSpec):
         for spec in self.getResultsRange():
             keyword = spec['keyword']
             specs[keyword] = {}
-            specs[keyword]['min'] = spec['min']
-            specs[keyword]['max'] = spec['max']
-            specs[keyword]['error'] = spec['error']
-            specs[keyword]['minpanic'] = spec['minpanic']
-            specs[keyword]['maxpanic'] = spec['maxpanic']
+            specs[keyword]['min'] = spec.get('min', '')
+            specs[keyword]['max'] = spec.get('max', '')
+            specs[keyword]['error'] = spec.get('error', '')
+            specs[keyword]['minpanic'] = spec.get('minpanic', '')
+            specs[keyword]['maxpanic'] = spec.get('maxpanic', '')
         return specs
 
     def getResultsRangesSorted(self):
@@ -93,11 +93,11 @@ class AnalysisSpec(BaseAnalysisSpec):
                                   'service': service_title,
                                   'id': service.getId(),
                                   'uid': spec['service'],
-                                  'min': spec['min'],
-                                  'max': spec['max'],
-                                  'error': spec['error'],
-                                  'minpanic': spec['minpanic'],
-                                  'maxpanic': spec['maxpanic']}
+                                  'min': spec.get('min', ''),
+                                  'max': spec.get('max', ''),
+                                  'error': spec.get('error', ''),
+                                  'minpanic': spec.get('minpanic', ''),
+                                  'maxpanic': spec.get('maxpanic', '')}
         cat_keys = cats.keys()
         cat_keys.sort(lambda x, y: cmp(x.lower(), y.lower()))
         sorted_specs = []

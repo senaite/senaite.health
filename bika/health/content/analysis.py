@@ -31,7 +31,7 @@ class Analysis(BaseAnalysis):
             Return True, False, spec if in panic range
             Return False, None, None if the result is in safe range
         """
-        result = result and result or self.getResult()
+        result = result is not None and str(result) or self.getResult()
         # if analysis result is not a number, then we assume in range
         try:
             result = float(str(result))
@@ -39,6 +39,8 @@ class Analysis(BaseAnalysis):
             return False, None, None
 
         specs = self.getAnalysisSpecs(specification)
+        spec_min = None
+        spec_max = None
         if specs == None:
             # No specs available, assume in range
             return False, None, None
@@ -46,15 +48,35 @@ class Analysis(BaseAnalysis):
         keyword = self.getService().getKeyword()
         spec = specs.getResultsRangeDict()
         if keyword in spec:
-            spec_min = float(spec[keyword]['minpanic'])
-            spec_max = float(spec[keyword]['maxpanic'])
+            try:
+                spec_min = float(spec[keyword]['minpanic'])
+            except:
+                spec_min = None
+                pass
 
-            if spec_min <= result <= spec_max:
+            try:
+                spec_max = float(spec[keyword]['maxpanic'])
+            except:
+                spec_max = None
+                pass
+
+            if (not spec_min and not spec_max):
+                # No min and max values defined
                 return False, None, None
 
-            if (not spec_min or spec_min <= result) \
-                and (not spec_max or result <= spec_max):
+            elif spec_min and spec_max \
+                and spec_min <= result <= spec_max:
+                # min and max values defined
                 return False, None, None
+
+            elif spec_min and not spec_max and spec_min <= result:
+                # max value not defined
+                return False, None, None
+
+            elif not spec_min and spec_max and spec_max >= result:
+                # min value not defined
+                return False, None, None
+
             else:
                 return True, False, spec[keyword]
 
