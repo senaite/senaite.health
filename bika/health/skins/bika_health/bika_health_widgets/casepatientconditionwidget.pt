@@ -96,8 +96,8 @@
                 </div>
                 <div class="fieldline-content"
                     tal:define="units python:widget.getWaistUnits();
-                                baseidx python:len(widget.getHeightUnits())+len(widget.getWaistUnits());">                                    
-                    <tal:weights tal:repeat="idx python:range(len(units))">
+                                baseidx python:len(widget.getHeightUnits())+len(widget.getHeightUnits());">                                    
+                    <tal:waists tal:repeat="idx python:range(len(units))">
                     
                         <input type="text"
                             tal:attributes="name string:${fieldName}.Value:records;
@@ -116,7 +116,7 @@
                                             id python:'%s-Unit-%s' % (fieldName, baseidx+idx);
                                             value python:units[idx];"/>
                             
-                    </tal:weights> 
+                    </tal:waists> 
                 </div>
                 <div class="clear-both"></div>
             </div>
