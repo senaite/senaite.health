@@ -15,24 +15,84 @@ class CasePatientConditionWidget(ATRecordsWidget):
 
     def process_form(self, instance, field, form, empty_marker=None,
                      emptyReturnsMarker=False):
+        # ignore records with empty values
         outvalues = []
         values = form.get(field.getName(), empty_marker)
         for value in values:
-            outvalues.append({'Height': value.get('Height', ''),
-                              'Weight': value.get('Weight', ''),
-                              'Waist': value.get('Waist', '')})
+            if value.get('Value', '').strip() != '':
+                outvalues.append(value)
         return outvalues, {}
 
     def jsondumps(self, val):
         return json.dumps(val)
 
     def getPatientCondition(self):
-        conditions = [{'Height': '',
-                     'Weight': '',
-                     'Waist': ''}]
-        return len(self.aq_parent.getPatientCondition()) > 0 \
+        conditions = len(self.aq_parent.getPatientCondition()) > 0 \
                     and self.aq_parent.getPatientCondition() \
-                    or conditions
+                    or []
+
+        # Allow multiple units for each condition. Check if existing conditions
+        # don't have bika_setup already defined units
+        heightunits = self.getHeightUnits()
+        for unit in heightunits:
+            exists = False
+            for condition in conditions:
+                if condition['Condition'] == 'Height' \
+                    and condition['Unit'] == unit:
+                    exists = True
+                    break
+            if not exists:
+                conditions.append({'Condition': 'Height',
+                               'Unit': unit,
+                               'Value': ''})
+
+        weightunits = self.getWeightUnits()
+        for unit in weightunits:
+            exists = False
+            for condition in conditions:
+                if condition['Condition'] == 'Weight' \
+                    and condition['Unit'] == unit:
+                    exists = True
+                    break
+            if not exists:
+                conditions.append({'Condition': 'Weight',
+                               'Unit': unit,
+                               'Value': ''})
+
+        weightunits = self.getWaistUnits()
+        for unit in weightunits:
+            exists = False
+            for condition in conditions:
+                if condition['Condition'] == 'Waist' \
+                    and condition['Unit'] == unit:
+                    exists = True
+                    break
+            if not exists:
+                conditions.append({'Condition': 'Waist',
+                               'Unit': unit,
+                               'Value': ''})
+
+        return conditions
+
+    def getUnits(self, units=None):
+        return (units and "/" in units) and units.split('/') or [units]
+
+    def getHeightUnits(self):
+        return self.getUnits(self.bika_setup.getPatientConditionsHeightUnits())
+
+    def getWeightUnits(self):
+        return self.getUnits(self.bika_setup.getPatientConditionsWeightUnits())
+
+    def getWaistUnits(self):
+        return self.getUnits(self.bika_setup.getPatientConditionsWaistUnits())
+
+    def getConditionValue(self, condition, unit):
+        conditions = self.getPatientCondition()
+        for cond in conditions:
+            if cond['Condition'] == condition \
+                and cond['Unit'] == unit:
+                return cond['Value']
+        return ''
 
 registerWidget(CasePatientConditionWidget,
                title='CasePatientConditionWidget',

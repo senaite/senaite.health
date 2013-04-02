@@ -20,7 +20,8 @@
                          cached_values python:request.get(fieldName,session_values);
                          values python:cached_values or values;
                          i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone;
-                         data python:widget.getPatientCondition()[0]">
+                         data python:widget.getPatientCondition();
+                         mainidx python:0;">
         
             <!-- Height -->
             <div class="fieldline">
@@ -28,16 +29,28 @@
                     <label tal:attributes="for string:${fieldName}.Height:records;"
                        i18n:translate="">Height</label>
                 </div>
-                <div class="fieldline-content"
-                    tal:define="units python:context.bika_setup.getPatientConditionsHeightUnits();">
-                    <input type="text" 
-                       tal:attributes="name string:${fieldName}.Height:records;
-                                       id string:${fieldName}-Height-0;
-                                       value python:data['Height'];
-                                       maxlength string:4;
-                                       class string:numeric;
-                                       size string:4;"/>
-                    &nbsp;<span tal:content="units"/>
+                <div class="fieldline-content"                                  
+                     tal:define="units python:widget.getHeightUnits()">                                    
+                    <tal:heights tal:repeat="idx python:range(len(units))">
+                    
+                        <input type="text"
+                            tal:attributes="name string:${fieldName}.Value:records;
+                                            id string:${fieldName}-Value-${repeat/idx/index};
+                                            maxlength string:4;
+                                            class string:numeric;
+                                            value python:widget.getConditionValue('Height', units[idx]);
+                                            size string:4;"/>
+                        &nbsp;<span tal:content="python:units[idx]"/>&nbsp;&nbsp;
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Condition:records;
+                                            id string:${fieldName}-Condition-${repeat/idx/index};
+                                            value string:Height"/>
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Unit:records;
+                                            id string:${fieldName}-Unit-${repeat/idx/index};
+                                            value python:units[idx];"/>
+                            
+                    </tal:heights> 
                 </div>
                 <div class="clear-both"></div>
             </div>
@@ -46,43 +59,67 @@
             <div class="fieldline">
                 <div class="fieldline-label">
                     <label tal:attributes="for string:${fieldName}.Weight:records;"
-                            i18n:translate="">Weight</label>
+                       i18n:translate="">Height</label>
                 </div>
                 <div class="fieldline-content"
-                    tal:define="units python:context.bika_setup.getPatientConditionsWeightUnits();">
-                    <input type="text" 
-                       tal:attributes="name string:${fieldName}.Weight:records;
-                                       id string:${fieldName}-Weight-0;
-                                       value python:data['Weight'];
-                                       maxlength string:3;
-                                       class string:numeric;
-                                       size string:3;"/>
-                    &nbsp;<span tal:content="units"/>
-                </div> 
-                <div class="clear-both"></div>      
+                    tal:define="units python:widget.getWeightUnits();
+                                baseidx python:len(widget.getHeightUnits());">                                    
+                    <tal:weights tal:repeat="idx python:range(len(units))">
+                    
+                        <input type="text"
+                            tal:attributes="name string:${fieldName}.Value:records;
+                                            id python:'%s-Value-%s' % (fieldName, baseidx+idx);
+                                            maxlength string:4;
+                                            class string:numeric;
+                                            value python:widget.getConditionValue('Weight', units[idx]);
+                                            size string:4;"/>
+                        &nbsp;<span tal:content="python:units[idx]"/>&nbsp;&nbsp;
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Condition:records;
+                                            id python:'%s-Condition-%s' % (fieldName, baseidx+idx);
+                                            value string:Weight"/>
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Unit:records;
+                                            id python:'%s-Unit-%s' % (fieldName, baseidx+idx);
+                                            value python:units[idx];"/>
+                            
+                    </tal:weights> 
+                </div>
+                <div class="clear-both"></div>
             </div>
-            
             
             <!-- Waist -->
             <div class="fieldline">
                 <div class="fieldline-label">
                     <label tal:attributes="for string:${fieldName}.Waist:records;"
-                            i18n:translate="">Waist</label>
+                       i18n:translate="">Waist</label>
                 </div>
                 <div class="fieldline-content"
-                    tal:define="units python:context.bika_setup.getPatientConditionsWaistUnits();">
-                    <input type="text" 
-                       tal:attributes="name string:${fieldName}.Waist:records;
-                                       id string:${fieldName}-Waist-0;
-                                       value python:data['Waist'];
-                                       maxlength string:2;
-                                       class string:numeric;
-                                       size string:2;"/>
-                    &nbsp;<span tal:content="units"/>
-                </div> 
-                <div class="clear-both"></div>   
+                    tal:define="units python:widget.getWaistUnits();
+                                baseidx python:len(widget.getHeightUnits())+len(widget.getWaistUnits());">                                    
+                    <tal:weights tal:repeat="idx python:range(len(units))">
+                    
+                        <input type="text"
+                            tal:attributes="name string:${fieldName}.Value:records;
+                                            id python:'%s-Value-%s' % (fieldName, baseidx+idx);
+                                            maxlength string:4;
+                                            class string:numeric;
+                                            value python:widget.getConditionValue('Waist', units[idx]);
+                                            size string:4;"/>
+                        &nbsp;<span tal:content="python:units[idx]"/>&nbsp;&nbsp;
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Condition:records;
+                                            id python:'%s-Condition-%s' % (fieldName, baseidx+idx);
+                                            value string:Waist"/>
+                        <input type="hidden"
+                            tal:attributes="name string:${fieldName}.Unit:records;
+                                            id python:'%s-Unit-%s' % (fieldName, baseidx+idx);
+                                            value python:units[idx];"/>
+                            
+                    </tal:weights> 
+                </div>
+                <div class="clear-both"></div>
             </div>
-            
                         
         </fieldset>
     </tal:block> 

@@ -25,21 +25,24 @@ class BikaSetupSchemaExtender(object):
             schemata="Cases",
             default="Feet/inches",
             widget=StringWidget(
-                label=_("Patient condition height units")
+                label=_("Patient condition height units"),
+                description=_("Use '/' symbol to allow multiple-units submission")
             )
         ),
         ExtStringField('PatientConditionsWeightUnits',
             schemata="Cases",
             default="Lbs",
             widget=StringWidget(
-                label=_("Patient condition weight units")
+                label=_("Patient condition weight units"),
+                description=_("Use '/' symbol to allow multiple-units submission")
             )
         ),
         ExtStringField('PatientConditionsWaistUnits',
             schemata="Cases",
             default="Inches",
             widget=StringWidget(
-                label=_("Patient condition waist units")
+                label=_("Patient condition waist units"),
+                description=_("Use '/' symbol to allow multiple-units submission")
             )
         ),
     ]

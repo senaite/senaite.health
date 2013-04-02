@@ -21,4 +21,13 @@
         sortkey="1"
         profile="bika.health:default"/>
         
+ <genericsetup:upgradeStep
+        title="Reset patient conditions to multivalued"
+        description="Reset old values of Batche's patient condition widget to multivalued"
+        source="1002"
+        destination="1003"
+        handler="bika.health.upgrade.to1003.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+            
 </configure>
