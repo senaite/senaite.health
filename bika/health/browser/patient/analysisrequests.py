@@ -45,6 +45,11 @@ class AnalysisRequestsView(AnalysisRequestsView):
         outitems = []
         items = super(AnalysisRequestsView, self).folderitems(full_objects)
         for item in items:
-            if item.get('obj').getBatchUID() in buids:
-                outitems.append(item)
+            try:
+                if 'obj' in item \
+                    and item.get('obj') \
+                    and item.get('obj').getBatchUID() in buids:
+                    outitems.append(item)
+            except:
+                pass
         return outitems
