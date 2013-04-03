@@ -21,6 +21,7 @@ class AnalysisRequestsView(AnalysisRequestsView):
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)
         #self.contentFilter['getPatientUID'] = self.context.UID()
+        self.columns['BatchID']['title'] = _('Case ID')
 
     def __call__(self):
         self.context_actions = {}

@@ -15,6 +15,11 @@ class AnalysisRequestView(AnalysisRequestViewView):
     def __call__(self):
 
         super(AnalysisRequestView, self).__call__()
+        for row in self.header_rows:
+            if row.get('id', '') == 'BatchID':
+                row['title'] = _('Case ID')
+                break
+
         autopopup = True
         try:
             autopopup = hasattr(self.context, 'getPanicEmailAlertToClientSent') \
