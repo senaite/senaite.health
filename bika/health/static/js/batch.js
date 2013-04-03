@@ -8,20 +8,20 @@ $(document).ready(function(){
     _b = jarn.i18n.MessageFactory('bika');
     _ = jarn.i18n.MessageFactory('bika.health');
 
-    
+
     // Load child scripts depending on current view
     js_baseurl = "++resource++bika.health.js/";
-    is_batchedit = $('form[id="batch-base-edit"]').length > 0    
-    
+    is_batchedit = $('form[id="batch-base-edit"]').length > 0
+
     if (is_batchedit) { // Loads batch_edit javascript
-    	addJavascript(js_baseurl + "batch_edit.js"); 
+    	addJavascript(js_baseurl + "batch_edit.js");
     }
-    
+
     isaraddview = (window.location.href.search('/ar_add') >= 0);
     isfrombatch = (window.location.href.search('batches/') >= 0);
-        
+
     if (isaraddview && isfrombatch) {
-    	/* AR Add View. Automatically fill the Patient, Client and Doctor fields */ 
+    	/* AR Add View. Automatically fill the Patient, Client and Doctor fields */
     	batchid = window.location.href.split("batches")[1].split("/")[1];
     	$.ajax({
             url: window.portal_url+"/batches/"+batchid+"/getBatchInfo",
@@ -29,22 +29,24 @@ $(document).ready(function(){
             data: {'_authenticator': $('input[name="_authenticator"]').val()},
             dataType: "json",
             success: function(data, textStatus, $XHR){
-            	$("#ar_0_Client").val(data['ClientTitle']);
-            	$("#ar_0_Patient").val(data['PatientTitle']);
-            	$("#ar_0_Doctor").val(data['DoctorTitle']);
-            	$("#ar_0_Client_uid").val(data['ClientUID']);
-            	$("#ar_0_Patient_uid").val(data['PatientUID']);
-            	$("#ar_0_Doctor_uid").val(data['DoctorUID']);            	
-            	$("#ar_0_Client").attr('readonly', true);
-            	$("#ar_0_Patient").attr('readonly', true);
-            	$("#ar_0_Doctor").attr('readonly', true);
+                for (var col=0; col<parseInt($("#col_count").val()); col++) {
+                	$("#ar_"+col+"_Client").val(data['ClientTitle']);
+                	$("#ar_"+col+"_Patient").val(data['PatientTitle']);
+                	$("#ar_"+col+"_Doctor").val(data['DoctorTitle']);
+                	$("#ar_"+col+"_Client_uid").val(data['ClientUID']);
+                	$("#ar_"+col+"_Patient_uid").val(data['PatientUID']);
+                	$("#ar_"+col+"_Doctor_uid").val(data['DoctorUID']);
+                	$("#ar_"+col+"_Client").attr('readonly', true);
+                	$("#ar_"+col+"_Patient").attr('readonly', true);
+                	$("#ar_"+col+"_Doctor").attr('readonly', true);
+                }
             }
         });
     }
-    
+
     if ($(".portaltype-batch").length == 0 &&
        window.location.href.search('portal_factory/Batch') == -1){
-    	
+
         $("input[id=BatchID]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
                     ' class="add_batch"' +
                     ' href="'+window.portal_url+'/batches/portal_factory/Batch/new/edit"' +
@@ -86,7 +88,7 @@ $(document).ready(function(){
                 return false;
             }
         });
-        
+
     }
 
     $('a.add_batch').prepOverlay(
