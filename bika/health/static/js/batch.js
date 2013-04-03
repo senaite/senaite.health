@@ -8,9 +8,17 @@ $(document).ready(function(){
     _b = jarn.i18n.MessageFactory('bika');
     _ = jarn.i18n.MessageFactory('bika.health');
 
+    
+    // Load child scripts depending on current view
+    js_baseurl = "++resource++bika.health.js/";
+    is_batchedit = $('form[id="batch-base-edit"]').length > 0    
+    
+    if (is_batchedit) { // Loads batch_edit javascript
+    	addJavascript(js_baseurl + "batch_edit.js"); 
+    }
+    
     isaraddview = (window.location.href.search('/ar_add') >= 0);
     isfrombatch = (window.location.href.search('batches/') >= 0);
-    comesfromclient = (document.referrer.search('/clients/') >= 0);
         
     if (isaraddview && isfrombatch) {
     	/* AR Add View. Automatically fill the Patient, Client and Doctor fields */ 
@@ -32,8 +40,6 @@ $(document).ready(function(){
             	$("#ar_0_Doctor").attr('readonly', true);
             }
         });
-    	
-    	
     }
     
     if ($(".portaltype-batch").length == 0 &&
@@ -82,27 +88,6 @@ $(document).ready(function(){
         });
         
     }
-    
-    if ($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
-        $.ajax({
-            url: window.location.href
-                       .split("?")[0]
-                       .replace("/base_edit", "")
-                       .replace("/edit", "") + "/getBatchInfo",
-            type: 'POST',
-            data: {'_authenticator': $('input[name="_authenticator"]').val()},
-            dataType: "json",
-            success: function(data, textStatus, $XHR){
-                $(".jsClientTitle").remove();
-                $("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'>"+data['Client']+"</span>");
-                $(".jsPatientTitle").remove();
-                $("#archetypes-fieldname-PatientID").append("<span class='jsPatientTitle'>"+data['Patient']+"</span>");
-                $(".jsDoctorTitle").remove();
-                $("#archetypes-fieldname-DoctorID").append("<span class='jsDoctorTitle'>"+data['Doctor']+"</span>");
-            }
-        });
-    }
-
 
     $('a.add_batch').prepOverlay(
         {
@@ -123,92 +108,6 @@ $(document).ready(function(){
             }
         }
     );
-
-    $('input[name="PatientBirthDate"]').live('change', function(){
-        setPatientAgeAtCaseOnsetDate();
-    });
-
-    $("#OnsetDate").live('change', function(){
-        setPatientAgeAtCaseOnsetDate();
-    });
-
-    $("#Patient").live('change', function(){
-        setPatientAgeAtCaseOnsetDate();
-        if($(this).val() == ''){
-            $(".jsPatientTitle").remove();
-            $("#ClientID").val('');
-            $(".jsClientTitle").remove();
-        }
-    });
-        
-    if (comesfromclient) {
-    	/* Set automatically the client to the batch */
-    	clientid = document.referrer.split("clients")[1].split("/")[1];
-    	$.ajax({
-    		url: window.portal_url+"/clients/"+clientid+"/getClientInfo",
-    		type: 'POST',
-    		data: {'_authenticator': $('input[name="_authenticator"]').val()},
-            dataType: "json",
-            success: function(data, textStatus, $XHR){            	
-            	$("#ClientID").val(data['ClientID']);
-				$(".jsClientTitle").remove();
-				$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'><a href='"+window.portal_url+"/clients/"+data['ClientSysID']+"/base_edit'>"+data['ClientTitle']+"</a></span>");    
-            }
-    	})
-    }
-
-    function setPatientAgeAtCaseOnsetDate() {
-        var now = new Date($("#OnsetDate").val());
-        var dob = new Date($('input[name="PatientBirthDate"]').val());
-        if (now!= undefined && now != null && dob!=undefined && dob != null && now >= dob){
-            var currentday=now.getDate();
-            var currentmonth=now.getMonth()+1;
-            var currentyear=now.getFullYear();
-            var birthday=dob.getDate();
-            var birthmonth=dob.getMonth()+1;
-            var birthyear=dob.getFullYear();
-            var ageday = currentday-birthday;
-            var agemonth=0;
-            var ageyear=0;
-
-            if (ageday < 0) {
-                currentmonth--;
-                if (currentmonth < 1) {
-                    currentyear--;
-                    currentmonth = currentmonth + 12;
-                }
-                dayspermonth = 30;
-                if (currentmonth==1 || currentmonth==3 ||
-                    currentmonth==5 || currentmonth==7 ||
-                    currentmonth==8 || currentmonth==10||
-                    currentmonth==12) {
-                    dayspermonth = 31;
-                } else if (currentmonth == 2) {
-                    dayspermonth = 28;
-                    if(!(currentyear%4) && (currentyear%100 || !(currentyear%400))) {
-                        dayspermonth++;
-                    }
-                }
-                ageday = ageday + dayspermonth;
-            }
-
-            agemonth = currentmonth - birthmonth;
-            if (agemonth < 0) {
-                currentyear--;
-                agemonth = agemonth + 12;
-            }
-            ageyear = currentyear - birthyear;
-
-            $("#PatientAgeAtCaseOnsetDate_year").val(ageyear);
-            $("#PatientAgeAtCaseOnsetDate_month").val(agemonth);
-            $("#PatientAgeAtCaseOnsetDate_day").val(ageday);
-
-        } else {
-            $("#PatientAgeAtCaseOnsetDate_year").val('');
-            $("#PatientAgeAtCaseOnsetDate_month").val('');
-            $("#PatientAgeAtCaseOnsetDate_day").val('');
-        }
-    }
 
 });
 }(jQuery));

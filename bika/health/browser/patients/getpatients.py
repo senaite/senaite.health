@@ -24,6 +24,7 @@ class ajaxGetPatients(BrowserView):
         nr_rows = self.request['rows']
         sord = self.request['sord']
         sidx = self.request['sidx']
+        clientid = 'clientid' in self.request and self.request['clientid'] or ''
 
         rows = []
 
@@ -53,17 +54,18 @@ class ajaxGetPatients(BrowserView):
 
             if patient.Title().lower().find(searchTerm) > -1 \
                 or patient.getPatientID().lower().find(searchTerm) > -1 \
-                    or addidfound:
-                rows.append({'Title': patient.Title() or '',
-                             'PatientID': patient.getPatientID(),
-                             'ClientTitle': patient.getPrimaryReferrer().Title(),
-                             'ClientID': patient.getPrimaryReferrer().getClientID(),
-                             'ClientSysID': patient.getPrimaryReferrer().id,
-                             'PatientUID': patient.UID(),
-                             'AdditionalIdentifiers': patient.getPatientIdentifiersStrHtml(),
-                             'PatientBirthDate': self.ulocalized_time(patient.getBirthDate(), long_format=0),
-                             'PatientGender': patient.getGender(),
-                             'MenstrualStatus':patient.getMenstrualStatus()})
+                or addidfound:
+                if clientid == '' or clientid == patient.getPrimaryReferrer().id:
+                    rows.append({'Title': patient.Title() or '',
+                                 'PatientID': patient.getPatientID(),
+                                 'ClientTitle': patient.getPrimaryReferrer().Title(),
+                                 'ClientID': patient.getPrimaryReferrer().getClientID(),
+                                 'ClientSysID': patient.getPrimaryReferrer().id,
+                                 'PatientUID': patient.UID(),
+                                 'AdditionalIdentifiers': patient.getPatientIdentifiersStrHtml(),
+                                 'PatientBirthDate': self.ulocalized_time(patient.getBirthDate(), long_format=0),
+                                 'PatientGender': patient.getGender(),
+                                 'MenstrualStatus':patient.getMenstrualStatus()})
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'Title'))
         if sord == 'desc':

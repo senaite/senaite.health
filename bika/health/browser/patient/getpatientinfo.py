@@ -11,31 +11,45 @@ class ajaxGetPatientInfo(BrowserView):
     def __call__(self):
         plone.protect.CheckAuthenticator(self.request)
         Fullname = self.request.get('Fullname', '')
+        PatientID = self.request.get('PatientID', '')
         ret = {'PatientID': '',
                'ClientID': '',
                'ClientTitle': '',
-               'PatientFullname': Fullname,
+               'ClientSysID': '',
+               'PatientFullname': '',
                'PatientBirthDate': '',
-               'PatientGender':'dk'}
-        if not Fullname:
-            return json.dumps(ret)
+               'PatientGender':'dk',
+               'PatientMenstrualStatus':''}
+
         proxies = None
-        try:
-            bpc = getToolByName(self.context, 'bika_patient_catalog')
-            proxies = bpc(Title=Fullname,
-                          sort_on='created',
-                          sort_order='reverse')
-        except ParseError:
-            pass
+        if PatientID:
+            try:
+                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                proxies = bpc(getPatientID=PatientID,
+                              sort_on='created',
+                              sort_order='reverse')
+            except ParseError:
+                pass
+        elif Fullname:
+            try:
+                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                proxies = bpc(Title=Fullname,
+                              sort_on='created',
+                              sort_order='reverse')
+            except ParseError:
+                pass
+
         if not proxies:
             return json.dumps(ret)
+
         patient = proxies[0].getObject()
         PR = patient.getPrimaryReferrer()
         ret = {'PatientID': patient.getPatientID(),
                'ClientID': PR and PR.getClientID() or '',
                'ClientTitle': PR and PR.Title() or '',
                'ClientSysID' : PR and PR.id or '',
-               'PatientFullname': Fullname,
+               'PatientFullname': patient.Title(),
                'PatientBirthDate': self.ulocalized_time(patient.getBirthDate()),
-               'PatientGender': patient.getGender()}
+               'PatientGender': patient.getGender(),
+               'PatientMenstrualStatus':patient.getMenstrualStatus()}
         return json.dumps(ret)
