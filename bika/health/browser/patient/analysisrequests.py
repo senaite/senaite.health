@@ -20,7 +20,7 @@ class AnalysisRequestsView(AnalysisRequestsView):
 
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)
-        self.contentFilter['getPatientUID'] = self.context.UID()
+        #self.contentFilter['getPatientUID'] = self.context.UID()
 
     def __call__(self):
         self.context_actions = {}
@@ -34,3 +34,16 @@ class AnalysisRequestsView(AnalysisRequestsView):
                     'url': self.context.absolute_url() + '/ar_add',
                     'icon': '++resource++bika.lims.images/add.png'}
         return super(AnalysisRequestsView, self).__call__()
+
+    def folderitems(self, full_objects=False):
+        #HACK pending to solve by using getPatientUID directly in __init__
+        #https://github.com/bikalabs/Bika-LIMS/issues/678
+        bc = getToolByName(self.context, 'bika_catalog')
+        buids = [b.UID for b in bc(portal_type='Batch',
+                                   getPatientID=self.context.id)]
+        outitems = []
+        items = super(AnalysisRequestsView, self).folderitems(full_objects)
+        for item in items:
+            if item.get('obj').getBatchUID() in buids:
+                outitems.append(item)
+        return outitems

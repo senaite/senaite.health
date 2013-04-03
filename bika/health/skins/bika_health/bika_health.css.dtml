@@ -128,6 +128,9 @@ table.bika-listing-table,
 .bika-listing-table tbody tr td input[type="text"] {
     width: 97%;
 }
+.bika-listing-table tbody tr td input[type="text"].numeric {
+    width:auto;
+}
 .bika-listing-table tbody tr td input[readonly], textarea[readonly] {
   border: 1px solid #CCCCCC;
   border-radius: 2px 2px 2px 2px;

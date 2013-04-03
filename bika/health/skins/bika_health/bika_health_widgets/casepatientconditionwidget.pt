@@ -59,7 +59,7 @@
             <div class="fieldline">
                 <div class="fieldline-label">
                     <label tal:attributes="for string:${fieldName}.Weight:records;"
-                       i18n:translate="">Height</label>
+                       i18n:translate="">Weight</label>
                 </div>
                 <div class="fieldline-content"
                     tal:define="units python:widget.getWeightUnits();
