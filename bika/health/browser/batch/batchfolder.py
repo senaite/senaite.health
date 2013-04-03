@@ -13,6 +13,7 @@ class BatchFolderContentsView(BaseView):
             'Patient': {'title': _('Patient')},
             'Doctor': {'title': _('Doctor')},
             'Client': {'title': _('Client')},
+            'OnsetDate': {'title': _('Onset Date')},
             'state_title': {'title': _('State'), 'sortable': False},
         }
         self.review_states = [  # leave these titles and ids alone
@@ -24,6 +25,7 @@ class BatchFolderContentsView(BaseView):
                         'Patient',
                         'Doctor',
                         'Client',
+                        'OnsetDate',
                         'state_title', ]
              },
             {'id':'closed',
@@ -33,6 +35,7 @@ class BatchFolderContentsView(BaseView):
                         'Patient',
                         'Doctor',
                         'Client',
+                        'OnsetDate',
                         'state_title', ]
              },
             {'id':'cancelled',
@@ -42,6 +45,7 @@ class BatchFolderContentsView(BaseView):
                         'Patient',
                         'Doctor',
                         'Client',
+                        'OnsetDate',
                         'state_title', ]
              },
             {'id':'all',
@@ -51,6 +55,7 @@ class BatchFolderContentsView(BaseView):
                         'Patient',
                         'Doctor',
                         'Client',
+                        'OnsetDate',
                         'state_title', ]
              },
         ]
@@ -83,6 +88,9 @@ class BatchFolderContentsView(BaseView):
             if 'Client' not in items[x]:
                 items[x]['Client'] = ''
 
+            if 'OnsetDate' not in items[x]:
+                items[x]['OnsetDate'] = ''
+
             items[x]['replace']['Patient'] = patient \
                 and "<a href='%s'>%s</a>" % \
                 (patient[0].getObject().absolute_url(),
@@ -97,5 +105,8 @@ class BatchFolderContentsView(BaseView):
                 and "<a href='%s'>%s</a>" % \
                 (client[0].getObject().absolute_url(),
                  client[0].getObject().Title()) or ''
+
+            items[x]['replace']['OnsetDate'] = obj.getOnsetDate() \
+                and self.ulocalized_time(obj.getOnsetDate())
 
         return items
