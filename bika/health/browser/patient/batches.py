@@ -14,7 +14,7 @@ class BatchesView(BatchFolderContentsView):
         state = [x for x in self.review_states if x['id'] == self.review_state][0]
         batches = []
         for batch in bc(portal_type='Batch',
-                        getPatientUID=self.context.UID()):
+                        getPatientID=self.context.id):
             batch = batch.getObject()
             batches.append(batch)
         return batches
