@@ -1,11 +1,18 @@
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
-from Products.Archetypes.references import HoldingReference
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
 from bika.health.fields import *
+from bika.lims import bikaMessageFactory as _b
+from bika.lims.adapters.widgetvisibility import WidgetVisibility as _WV
+from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.interfaces import IAnalysisRequest
+from bika.lims.vocabularies import CatalogVocabulary
+from Products.Archetypes.public import ComputedWidget
+from Products.Archetypes.references import HoldingReference
+from Products.ATContentTypes.interface import IATDocument
 from zope.component import adapts
 from zope.interface import implements
 
