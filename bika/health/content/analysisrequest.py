@@ -1,22 +1,16 @@
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
+from Products.Archetypes.references import HoldingReference
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
-from archetypes.schemaextender.interfaces import ISchemaExtender
+from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
 from bika.health.fields import *
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.adapters.widgetvisibility import WidgetVisibility as _WV
-from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.interfaces import IAnalysisRequest
-from bika.lims.vocabularies import CatalogVocabulary
-from Products.Archetypes.public import ComputedWidget
-from Products.Archetypes.references import HoldingReference
-from Products.ATContentTypes.interface import IATDocument
 from zope.component import adapts
 from zope.interface import implements
 
 
-class AnalysisRequestExtender(object):
+class AnalysisRequestSchemaExtender(object):
     adapts(IAnalysisRequest)
     implements(IOrderableSchemaExtender)
 
@@ -106,3 +100,15 @@ class AnalysisRequestExtender(object):
 
     def getFields(self):
         return self.fields
+
+
+class AnalysisRequestSchemaModifier(object):
+    adapts(IAnalysisRequest)
+    implements(ISchemaModifier)
+
+    def __init__(self, context):
+        self.context = context
+
+    def fiddle(self, schema):
+        schema['Batch'].widget.label = _("Case")
+        return schema

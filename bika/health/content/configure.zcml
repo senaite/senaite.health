@@ -9,7 +9,8 @@
 
     <include package="archetypes.schemaextender" />
 
-    <adapter factory=".analysisrequest.AnalysisRequestExtender" />
+    <adapter factory=".analysisrequest.AnalysisRequestSchemaExtender" />
+    <adapter factory=".analysisrequest.AnalysisRequestSchemaModifier" />
     <adapter factory=".batch.BatchSchemaExtender" />
     <adapter factory=".batch.BatchSchemaModifier" />
     <adapter factory=".analysis.AnalysisSchemaExtender" />
