@@ -29,5 +29,13 @@
         handler="bika.health.upgrade.to1003.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
-            
+
+ <genericsetup:upgradeStep
+        title="Reset patient and doctor in ARs created from Cases"
+        description="Reset patient and doctor in ARs created from Cases"
+        source="1003"
+        destination="1004"
+        handler="bika.health.upgrade.to1004.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>          
 </configure>
