@@ -30,7 +30,7 @@ class AnalysesView(BaseView):
                     message = _('Result in shoulder panic range') \
                             + " (%s)" % rngstr
                 else:
-                    message = _('Result exceed panic level') \
+                    message = _('Result exceeded panic level') \
                             + ' (%s)' % rngstr
 
                 alerts[obj.UID()] = {'result': obj.getResult(),

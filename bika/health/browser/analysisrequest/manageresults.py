@@ -14,9 +14,9 @@ class ManageResultsView(BaseView):
 
         # If there's analyses that exceed panic levels, show an alert message
         if self.hasAnalysesInPanic():
-            message = self.context.translate(_('Some results exceed the '
+            message = self.context.translate(_('Some results exceeded the '
                                    'panic levels that may '
-                                   'indicate an inminent '
+                                   'indicate an imminent '
                                    'life-threatening condition.'
                                    ))
             self.context.plone_utils.addPortalMessage(message, 'warning')
