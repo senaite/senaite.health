@@ -58,7 +58,7 @@ schema = Person.schema.copy() + Schema((
     StringField('Age',
                 widget=StringWidget(
                     label=_('Age'),
-                    visible=1,
+                    visible=0,
                     width=3,
                 ),
     ),

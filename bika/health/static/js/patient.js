@@ -6,19 +6,21 @@ $(document).ready(function(){
     _ = jarn.i18n.MessageFactory('bika.health');
 
 	// Mod the Age if DOB is selected
-	$("#Age").live('change', function(){
-		if (parseInt($(this).val()) > 0) {
-			var d = new Date();
-			year = d.getFullYear() - $(this).val();
-			var dob = year + "-01-01";
-			$("#BirthDate").val(dob);
-			calculateAge();
-			$("#BirthDateEstimated").attr('checked', true);
-		} else {
-			$("#BirthDate".val(""));
-			calculateAge();
-		}
-	});
+    if ($("#Age").length) {
+		$("#Age").live('change', function(){
+			if (parseInt($(this).val()) > 0) {
+				var d = new Date();
+				year = d.getFullYear() - $(this).val();
+				var dob = year + "-01-01";
+				$("#BirthDate").val(dob);
+				calculateAge();
+				$("#BirthDateEstimated").attr('checked', true);
+			} else {
+				$("#BirthDate".val(""));
+				calculateAge();
+			}
+		});
+    }
 
 	// Mod the Age if DOB is selected
 	$("#BirthDate").live('change', function(){
@@ -83,14 +85,14 @@ $(document).ready(function(){
 			}
 			ageyear = currentyear - birthyear;
 
-			$("#Age").val(ageyear);
+		    if ($("#Age").length) { $("#Age").val(ageyear); }
 			$("#AgeSplitted_year").val(ageyear);
 			$("#AgeSplitted_month").val(agemonth);
 			$("#AgeSplitted_day").val(ageday);
 
 		} else {
 
-			$("#Age").val('');
+		    if ($("#Age").length) { $("#Age").val(''); }
 			$("#AgeSplitted_year").val('');
 			$("#AgeSplitted_month").val('');
 			$("#AgeSplitted_day").val('');
