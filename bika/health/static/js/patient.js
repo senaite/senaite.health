@@ -4,6 +4,28 @@ $(document).ready(function(){
     _p = jarn.i18n.MessageFactory('plone');
     _b = jarn.i18n.MessageFactory('bika');
     _ = jarn.i18n.MessageFactory('bika.health');
+    
+    isaraddview = (window.location.href.search('/ar_add') >= 0);
+    comefrompatient = (document.referrer.search('patients/') >= 0);
+
+    if (isaraddview && comefrompatient) {
+    	/* AR Add View. Automatically fill the Patient, and Client fields */
+    	patientid = document.referrer.split("patients")[1].split("/")[1];
+    	$.ajax({
+			url: window.portal_url + "/getpatientinfo",
+			type: 'POST',
+			data: {'_authenticator': $('input[name="_authenticator"]').val(),
+					'PatientID': patientid},
+			dataType: "json",
+			success: function(data, textStatus, $XHR){
+                for (var col=0; col<parseInt($("#col_count").val()); col++) {
+                	$("#ar_"+col+"_Patient").val(data['PatientFullname']);
+                	$("#ar_"+col+"_Patient_uid").val(data['PatientUID']);
+                	$("#ar_"+col+"_Patient").attr('readonly', true);
+                }
+            }
+        });
+    }
 
 	// Mod the Age if DOB is selected
     if ($("#Age").length) {
