@@ -64,16 +64,16 @@ class EmailPopupView(BrowserView):
                     inpanicanalyses.append(analysis)
 
             laboratory = self.context.bika_setup.laboratory
-            lab_address = "<br/>".join(laboratory.getPrintAddress())
+            lab_address = "\n".join(laboratory.getPrintAddress())
             strans = []
             for an in inpanicanalyses:
                 serviceTitle = an.getServiceTitle()
                 result = an.getResult()
-                strans.append("- %s, result:%s" % (serviceTitle, result))
+                strans.append("- %s, result: %s" % (serviceTitle, result))
             stran = "\n".join(strans)
             self.body = _("Some results from the Analysis Request %s exceeded "
                          "the panic levels that may indicate an immminent "
-                         "life-threatening condition: \n%s\n"
+                         "life-threatening condition: \n\n%s\n"
                          "\n\n%s"
                          ) % (ar.getRequestID(),
                               stran,
