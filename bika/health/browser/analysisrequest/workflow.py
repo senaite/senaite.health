@@ -88,7 +88,7 @@ class WorkflowAction(BaseClass):
                         strans.append("- %s, result:%s" % (serviceTitle, result))
                     stran = "<br/>".join(strans)
                     text = _("Some results from the Analysis Request %s exceeded "
-                             "the panic levels that may indicate an inmminent "
+                             "the panic levels that may indicate an imminent "
                              "life-threatening condition:<br/><br/>"
                              "%s<br/><br/>"
                              "<b>Please, check the Analysis Request if you "
