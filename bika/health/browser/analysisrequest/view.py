@@ -20,13 +20,17 @@ class AnalysisRequestView(AnalysisRequestViewView):
                 row['title'] = _('Case ID')
                 break
 
-        autopopup = True
+        autopopup = False
+        bs = self.context.bika_setup
+        sc = self.context
         try:
-            autopopup = hasattr(self.context, 'getPanicEmailAlertToClientSent') \
-                        and not self.context.getPanicEmailAlertToClientSent() \
-                        or True
+            autopopup = (hasattr(bs, 'getAutoShowPanicAlertEmailPopup') \
+                        and bs.getAutoShowPanicAlertEmailPopup() \
+                        and hasattr(sc, 'getPanicEmailAlertToClientSent') \
+                        and not sc.Schema().getField('PanicEmailAlertToClientSent').get(sc)) \
+                        or False
         except:
-            autopopup = True
+            autopopup = False
             pass
 
         if "email_popup_submit" in self.request:
