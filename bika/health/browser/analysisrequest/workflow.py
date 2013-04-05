@@ -23,7 +23,6 @@ class WorkflowAction(BaseClass):
     def __call__(self):
         # Do generic bika.lims stuff
         BaseClass.__call__(self)
-
         # Do bika-health specific actions when submit
         action = BaseClass._get_form_workflow_action(self)
         if action[0] == 'submit' and isActive(self.context):
@@ -69,7 +68,7 @@ class WorkflowAction(BaseClass):
                     or bs.getEnablePanicAlert():
                     laboratory = self.context.bika_setup.laboratory
                     lab_address = "<br/>".join(laboratory.getPrintAddress())
-                    managers = analysis.aq_parent.getManagers()
+                    managers = self.context.portal_groups.getGroupMembers('LabManagers')
                     mime_msg = MIMEMultipart('related')
                     mime_msg['Subject'] = _("Panic alert")
                     mime_msg['From'] = formataddr(
@@ -77,8 +76,10 @@ class WorkflowAction(BaseClass):
                          laboratory.getEmailAddress()))
                     to = []
                     for manager in managers:
-                        to.append(formataddr((encode_header(manager.getFullname()),
-                                             manager.getEmailAddress())))
+                        user = self.portal.acl_users.getUser(manager)
+                        uemail = user.getProperty('email')
+                        ufull = user.getProperty('fullname')
+                        to.append(formataddr((encode_header(ufull), uemail)))
                     mime_msg['To'] = ','.join(to)
                     strans = []
                     for an in inpanicanalyses:
@@ -88,10 +89,8 @@ class WorkflowAction(BaseClass):
                     stran = "<br/>".join(strans)
                     text = _("Some results from the Analysis Request %s exceeded "
                              "the panic levels that may indicate an inmminent "
-                             "life-threatening condition<br/>: "
-                             ""
-                             "%s<br/>"
-                             ""
+                             "life-threatening condition:<br/><br/>"
+                             "%s<br/><br/>"
                              "<b>Please, check the Analysis Request if you "
                              "want to re-test the analysis or immediately "
                              "alert the client.</b><br/><br/>%s"
