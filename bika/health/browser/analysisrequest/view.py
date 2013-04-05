@@ -87,6 +87,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
         subject = self.request.get('subject')
         to = self.request.get('to')
         body = self.request.get('body')
+        body = "<br/>".join(body.split("\n"))
         mime_msg = MIMEMultipart('related')
         mime_msg['Subject'] = subject
         mime_msg['From'] = formataddr(

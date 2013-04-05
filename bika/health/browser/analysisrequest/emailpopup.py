@@ -70,11 +70,11 @@ class EmailPopupView(BrowserView):
                 serviceTitle = an.getServiceTitle()
                 result = an.getResult()
                 strans.append("- %s, result:%s" % (serviceTitle, result))
-            stran = "<br/>".join(strans)
+            stran = "\n".join(strans)
             self.body = _("Some results from the Analysis Request %s exceeded "
                          "the panic levels that may indicate an immminent "
-                         "life-threatening condition<br/>: %s<br/>"
-                         "<br/><br/>%s"
+                         "life-threatening condition: \n%s\n"
+                         "\n\n%s"
                          ) % (ar.getRequestID(),
                               stran,
                               lab_address)
