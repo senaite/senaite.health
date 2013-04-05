@@ -25,7 +25,7 @@ class ajaxCalculateAnalysisEntry(BaseClass):
                             str(inpanic[2]['maxpanic'])
 
                 # Check if already an alert for this result
-                msg = _("Result exceeds panic levels") + " (%s)" % range_str
+                msg = _("Result exceeded panic levels") + " (%s)" % range_str
                 alert = {'uid': uid,
                          'field': 'Result',
                          'icon': 'lifethreat',

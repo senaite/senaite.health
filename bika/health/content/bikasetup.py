@@ -28,7 +28,7 @@ class BikaSetupSchemaExtender(object):
                 label=_("Show client email pop-up when panic level"),
                 description=_("If enabled, shows automatically an email form "
                               "pop-up for alerting the client about a panic "
-                              "level exceed when Analysis Request view is "
+                              "level exceeded when Analysis Request view is "
                               "loaded"))
         ),
         ExtStringField('PatientConditionsHeightUnits',
