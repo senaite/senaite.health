@@ -35,13 +35,13 @@ msgid "time_format"
 msgstr "${I}:${M} ${p}"
 #
 msgid "Client"
-msgstr "Referring Institution"
+msgstr ""
 #
 msgid "Clients"
-msgstr "Referring Institutions"
+msgstr ""
 #
 msgid "Client ID"
-msgstr "Referring Institution ID"
+msgstr ""
 #
 # File: ../content/aetiologicagent/__init__.py, line: 21
 msgid "A list of aetiologic agent subtypes."

@@ -86,15 +86,15 @@ msgstr ""
 
 # 
 msgid "Client"
-msgstr "Referring Institution"
+msgstr ""
 
 # 
 msgid "Client ID"
-msgstr "Referring Institution ID"
+msgstr ""
 
 # 
 msgid "Clients"
-msgstr "Referring Institutions"
+msgstr ""
 
 # 
 # File: ../profiles/default/types/VaccinationCenter.xml, line: -1

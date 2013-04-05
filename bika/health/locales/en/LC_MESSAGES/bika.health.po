@@ -190,15 +190,15 @@ msgstr ""
 
 # 
 msgid "Client"
-msgstr "Referring Institution"
+msgstr ""
 
 # 
 msgid "Client ID"
-msgstr "Referring Institution ID"
+msgstr ""
 
 # 
 msgid "Clients"
-msgstr "Referring Institutions"
+msgstr ""
 
 # 
 # File: ../content/immunization/__init__.py, line: 74

@@ -15,13 +15,13 @@ msgstr ""
 "Domain: plone\n"
 #
 msgid "Client"
-msgstr "Referring Institution"
+msgstr ""
 #
 msgid "Client ID"
-msgstr "Referring Institution ID"
+msgstr ""
 #
 msgid "Clients"
-msgstr "Referring Institutions"
+msgstr ""
 #
 msgid "Batch"
 msgstr "Case"
