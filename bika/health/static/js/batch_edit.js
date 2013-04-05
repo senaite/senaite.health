@@ -142,6 +142,7 @@ $(document).ready(function(){
 					}
 					setPatientAgeAtCaseOnsetDate();
 					loadMenstrualStatus();
+					loadSymptoms();
 				}
 			});
 		}
