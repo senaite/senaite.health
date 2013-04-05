@@ -70,7 +70,15 @@ $(document).ready(function(){
 					$("#archetypes-fieldname-ClientID").append("<span class='jsClientTitle'><a class='anchor_client' href='"+window.portal_url+"/clients/"+data['ClientSysID']+"/base_edit'>"+data['ClientTitle']+"</a></span>");
 	            }
 	    	});
-		}
+	    	
+		} else if (document.referrer.search('/patients/') >= 0) {
+			/* Set automatically the patient to the batch and only show
+			 * the patients for that client in patients combogrid */
+	    	patientid = document.referrer.split("patients")[1].split("/")[1];
+	    	$("input[id=PatientID]").val(patientid);
+	    }
+		
+		
 		$("input[id=PatientID]").combogrid({
 			colModel: [{'columnName':'PatientUID','hidden':true},
 					   {'columnName':'PatientID','width':'20','label':_('Patient ID')},
