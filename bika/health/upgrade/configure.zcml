@@ -20,7 +20,7 @@
         handler="bika.health.upgrade.to1002.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
-        
+
  <genericsetup:upgradeStep
         title="Reset patient conditions to multivalued"
         description="Reset old values of Batche's patient condition widget to multivalued"
@@ -37,5 +37,14 @@
         destination="1004"
         handler="bika.health.upgrade.to1004.upgrade"
         sortkey="1"
-        profile="bika.health:default"/>          
+        profile="bika.health:default"/>
+
+ <genericsetup:upgradeStep
+        title="Add sort indexes for Case in bika_catalog"
+        description="Allow catalog indexes for sorting batches on Patient, Doctor, Client"
+        source="1004"
+        destination="1005"
+        handler="bika.health.upgrade.to1005.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>

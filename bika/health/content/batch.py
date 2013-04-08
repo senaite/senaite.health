@@ -10,7 +10,7 @@ from bika.lims.browser.widgets import RecordsWidget
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
-from bika.health.fields import *
+from bika.lims.fields import *
 from bika.lims.browser.widgets import DateTimeWidget
 from bika.health import bikaMessageFactory as _
 from bika.lims import bikaMessageFactory as _b
@@ -81,6 +81,9 @@ class BatchSchemaExtender(object):
         ExtComputedField('ClientUID',
             expression="context.getClient() and context.getClient().UID() or None",
         ),
+        ExtComputedField('ClientTitle',
+            expression="context.getClient() and context.getClient().Title() or None",
+        ),
         ExtReferenceField('Doctor',
             required = 1,
             multiValued=0,
@@ -101,6 +104,9 @@ class BatchSchemaExtender(object):
         ExtComputedField('DoctorUID',
             expression="context.getDoctor() and context.getDoctor().UID() or None",
         ),
+        ExtComputedField('DoctorTitle',
+            expression="context.getDoctor() and context.getDoctor().Title() or None",
+        ),
         ExtReferenceField('Patient',
             required = 1,
             multiValued=0,
@@ -120,6 +126,9 @@ class BatchSchemaExtender(object):
         ),
         ExtComputedField('PatientUID',
             expression="context.getPatient() and context.getPatient().UID() or None",
+        ),
+        ExtComputedField('PatientTitle',
+            expression="context.getPatient() and context.getPatient().Title() or None",
         ),
         ExtDateTimeField('OnsetDate',
               widget=DateTimeWidget(
@@ -263,13 +272,16 @@ class BatchSchemaExtender(object):
                                 'Patient',
                                 'PatientID',
                                 'PatientUID',
+                                'PatientTitle',
                                 'Client',
                                 'ClientID',
                                 'ClientUID',
+                                'ClientTitle',
                                 'ClientBatchID',
                                 'Doctor',
                                 'DoctorID',
                                 'DoctorUID',
+                                'DoctorTitle',
                                 'OnsetDate',
                                 'PatientAgeAtCaseOnsetDate',
                                 'OnsetDateEstimated',
@@ -327,7 +339,6 @@ class BatchSchemaExtender(object):
             if doctor:
                 doctor = doctor[0].getObject()
                 self.setDoctor(doctor.UID())
-
 
 class BatchSchemaModifier(object):
     adapts(IBatch)

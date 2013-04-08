@@ -10,12 +10,15 @@ class BatchFolderContentsView(BaseView):
         self.title = _("Cases")
         self.columns = {
             'BatchID': {'title': _('Case ID')},
-            'Patient': {'title': _('Patient')},
-            'Doctor': {'title': _('Doctor')},
-            'Client': {'title': _('Client')},
+            'Patient': {'title': _('Patient'),
+                        'index': 'getPatientTitle'},
+            'Doctor': {'title': _('Doctor'),
+                       'index': 'getDoctorTitle'},
+            'Client': {'title': _('Client'),
+                       'index': 'getClientTitle'},
             'OnsetDate': {'title': _('Onset Date')},
             'state_title': {'title': _('State'), 'sortable': False},
-        }
+         }
         self.review_states = [  # leave these titles and ids alone
             {'id':'default',
              'contentFilter': {'cancellation_state':'active',

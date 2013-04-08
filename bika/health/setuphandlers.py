@@ -126,7 +126,7 @@ def setupPermissions(context):
     mp(ManageAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 1)
     mp(ManageDoctors, ['Manager', 'LabManager', 'Owner', 'LabClerk'], 1)
     mp(ManagePatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
-    
+
     mp(ViewBatches, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
@@ -210,18 +210,21 @@ def setupCatalogs(context):
     if bc == None:
         logger.warning('Could not find the bika_catalog tool.')
         return
+    addIndex(bc, 'getClientTitle', 'FieldIndex')
     addIndex(bc, 'getPatientID', 'FieldIndex')
     addIndex(bc, 'getPatientUID', 'FieldIndex')
+    addIndex(bc, 'getPatientTitle', 'FieldIndex')
     addIndex(bc, 'getDoctorID', 'FieldIndex')
     addIndex(bc, 'getDoctorUID', 'FieldIndex')
+    addIndex(bc, 'getDoctorTitle', 'FieldIndex')
 
     # portal_catalog
     pc = getToolByName(portal, 'portal_catalog', None)
     if pc == None:
         logger.warning('Could not find the portal_catalog tool.')
         return
-    addIndex(pc, 'getDoctorUID', 'FieldIndex')
     addIndex(pc, 'getDoctorID', 'FieldIndex')
+    addIndex(pc, 'getDoctorUID', 'FieldIndex')
     addIndex(pc, 'getClientUID', 'FieldIndex')
     addIndex(pc, 'getClientID', 'FieldIndex')
 
