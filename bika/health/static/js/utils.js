@@ -6,7 +6,8 @@ $(document).ready(function(){
     _ = jarn.i18n.MessageFactory('bika.health');
     
 	// Analysis Service popup trigger    
-	$("#email_popup").live('click', function(){
+	$("#email_popup").click(function(event){
+		event.preventDefault();
 		var dialog = $('<div></div>');
 		dialog
 			.load(window.portal_url + "/email_popup",

@@ -64,8 +64,8 @@ class WorkflowAction(BaseClass):
                 # If panic levels alert email enabled, send an email to 
                 # labmanagers
                 bs = self.context.bika_setup
-                if not hasattr(bs, 'getEnablePanicAlert') \
-                    or bs.getEnablePanicAlert():
+                if hasattr(bs, 'getEnablePanicAlert') \
+                    and bs.getEnablePanicAlert():
                     laboratory = self.context.bika_setup.laboratory
                     lab_address = "<br/>".join(laboratory.getPrintAddress())
                     managers = self.context.portal_groups.getGroupMembers('LabManagers')
