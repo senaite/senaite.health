@@ -103,8 +103,8 @@ class LoadSetupData(BaseClass):
             values[row['Field']] = row['Value']
 
         self.context.bika_setup.edit(
-            EnablePanicAlert=self.to_bool(values['EnablePanicAlert']),
-            EnableAnalysisRemarks=self.to_bool(values['EnableAnalysisRemarks'])
+            EnablePanicAlert=self.to_bool(values.get('EnablePanicAlert', True)),
+            EnableAnalysisRemarks=self.to_bool(values.get('EnableAnalysisRemarks', True))
         )
 
     def load_diseases(self, sheet):
