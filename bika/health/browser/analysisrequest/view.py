@@ -47,18 +47,17 @@ class AnalysisRequestView(AnalysisRequestViewView):
 
     def hasAnalysesInPanic(self):
         bs = self.context.bika_setup
-        if not hasattr(bs, 'getEnablePanicAlert') or bs.getEnablePanicAlert():
-            wf = getToolByName(self.context, 'portal_workflow')
-            for an in self.context.getAnalyses(full_objects=True):
-                if an and wf.getInfoFor(an, 'review_state') != 'retracted':
-                    try:
-                        inpanic = an.isInPanicRange()
-                        if inpanic and inpanic[0] == True:
-                            return True
-                    except:
-                        logger.warning("Call error: isInPanicRange for "
-                                       "analysis %s" % an.UID())
-                        pass
+        wf = getToolByName(self.context, 'portal_workflow')
+        for an in self.context.getAnalyses(full_objects=True):
+            if an and wf.getInfoFor(an, 'review_state') != 'retracted':
+                try:
+                    inpanic = an.isInPanicRange()
+                    if inpanic and inpanic[0] == True:
+                        return True
+                except:
+                    logger.warning("Call error: isInPanicRange for "
+                                   "analysis %s" % an.UID())
+                    pass
         return False
 
     def addEmailLink(self, autopopup=False):
@@ -66,7 +65,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
                 {'id': 'Contact',
                  'title': "<a href='#' id='email_popup'>%s</a>" % \
                   (self.context.translate(_('Alert client about panic '
-                                            'levels exceed'))),
+                                            'levels exceeded'))),
                  'allow_edit': False,
                  'value': "<input name='email_popup_uid' autoshow='%s' "
                           "type='hidden' id='ar_uid' value='%s'/>" \

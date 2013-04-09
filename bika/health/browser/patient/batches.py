@@ -69,6 +69,14 @@ class BatchesView(BatchFolderContentsView):
              },
         ]
 
+    def __call__(self):
+        self.context_actions[_('Add')] = \
+                {'url': self.portal.absolute_url() \
+                        + '/batches/createObject?type_name=Batch',
+                 'icon': self.portal.absolute_url() \
+                        + '/++resource++bika.lims.images/add.png'}
+        return BatchFolderContentsView.__call__(self)
+
     def folderitems(self):
         self.filter_indexes = None
 

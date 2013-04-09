@@ -24,18 +24,17 @@ class ManageResultsView(BaseView):
 
     def hasAnalysesInPanic(self):
         bs = self.context.bika_setup
-        if not hasattr(bs, 'getEnablePanicAlert') or bs.getEnablePanicAlert():
-            wf = getToolByName(self.context, 'portal_workflow')
-            for an in self.context.getAnalyses(full_objects=True):
-                if an and wf.getInfoFor(an, 'review_state') != 'retracted':
-                    try:
-                        inpanic = an.isInPanicRange()
-                        if inpanic and inpanic[0] == True:
-                            return True
-                    except:
-                        logger.warning("Call error: isInPanicRange for "
-                                       "analysis %s" % an.UID())
-                        pass
+        wf = getToolByName(self.context, 'portal_workflow')
+        for an in self.context.getAnalyses(full_objects=True):
+            if an and wf.getInfoFor(an, 'review_state') != 'retracted':
+                try:
+                    inpanic = an.isInPanicRange()
+                    if inpanic and inpanic[0] == True:
+                        return True
+                except:
+                    logger.warning("Call error: isInPanicRange for "
+                                   "analysis %s" % an.UID())
+                    pass
         return False
 
     def createAnalysesView(self, context, request, **kwargs):

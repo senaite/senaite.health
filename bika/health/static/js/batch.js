@@ -43,7 +43,7 @@ $(document).ready(function(){
             }
         });
     }
-
+    
     if ($(".portaltype-batch").length == 0 &&
        window.location.href.search('portal_factory/Batch') == -1){
 
