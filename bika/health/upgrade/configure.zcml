@@ -47,4 +47,14 @@
         handler="bika.health.upgrade.to1005.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+ <genericsetup:upgradeStep
+        title="Add sort indexes for Patients"
+        description="Some missing indexes"
+        source="1005"
+        destination="1006"
+        handler="bika.health.upgrade.to1006.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>

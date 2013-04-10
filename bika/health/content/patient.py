@@ -42,8 +42,13 @@ schema = Person.schema.copy() + Schema((
                        label=_('Primary Referrer'),
                    ),
     ),
-    ComputedField('PrimaryReferrerUID',
-                  expression='here.getPrimaryReferrer() and here.getPrimaryReferrer().UID() or None',
+    ComputedField('PrimaryReferrerTitle',
+                  expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).Title() or None",
+                  widget=ComputedWidget(
+                  ),
+    ),
+     ComputedField('PrimaryReferrerUID',
+                  expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).UID() or None",
                   widget=ComputedWidget(
                   ),
     ),

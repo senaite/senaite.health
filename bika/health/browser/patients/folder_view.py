@@ -58,7 +58,7 @@ class PatientsView(BikaListingView):
                                'toggle': True},
 
             'getPrimaryReferrer': {'title': _('Primary Referrer'),
-                                   'index': 'getPrimaryReferrer',
+                                   'index': 'getPrimaryReferrerTitle',
                                    'toggle': True},
 
         }
