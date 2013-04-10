@@ -32,12 +32,16 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
             patient = bpc(portal_type='Patient', id=form['PatientID'])
             if patient and len(patient)>0:
                 patient = patient[0].getObject()
-                patient.setMenstrualStatus([{'Hysterectomy': bool(values[0].get('Hysterectomy', False)),
-                                             'HysterectomyYear': values[0].get('HysterectomyYear', ''),
-                                             'OvariesRemoved': bool(values[0].get('OvariesRemoved', False)),
-                                             'OvariesRemovedNum': int(value.get('OvariesRemovedNum', 0)),
-                                             'OvariesRemovedYear': values[0].get('OvariesRemovedYear', '')
-                                             }]);
+                field = patient.Schema()['MenstrualStatus']
+                field.set(
+                    patient,
+                    [{'Hysterectomy': bool(values[0].get('Hysterectomy', False)),
+                     'HysterectomyYear': values[0].get('HysterectomyYear', ''),
+                     'OvariesRemoved': bool(values[0].get('OvariesRemoved', False)),
+                     'OvariesRemovedNum': int(value.get('OvariesRemovedNum', 0)),
+                     'OvariesRemovedYear': values[0].get('OvariesRemovedYear', '')
+                     }]
+                )
 
         return outvalues, {}
 
@@ -52,12 +56,15 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
 
     def getPatientsGender(self):
         gender = 'dk'
-        patientid = self.aq_parent.getPatientID()
+        field = self.aq_parent.Schema()['PatientID']
+        patientid = field.get(self.aq_parent)
         if patientid:
             bpc = getToolByName(self, 'bika_patient_catalog')
             patient = bpc(portal_type='Patient', id=patientid)
-            gender = len(patient) > 0 \
-                        and patient[0].getObject().getGender() or 'dk'
+            if len(patient) > 0:
+                patient = patient[0].getObject()
+                field = patient.Schema()['Gender']
+                gender = field.get(patient) or 'dk'
         return gender
 
     def getMenstrualStatus(self):
@@ -74,21 +81,23 @@ class CaseMenstrualStatusWidget(ATRecordsWidget):
 
         # Fill with patient's Menstrual status info
         bpc = getToolByName(self, 'bika_patient_catalog')
-        patientid = self.aq_parent.getPatientID()
+        field = self.aq_parent.Schema()['PatientID']
+        patientid = field.get(self.aq_parent)
         if patientid:
             patient = bpc(portal_type='Patient', id=patientid)
             if len(patient) > 0:
                 patient = patient[0].getObject()
-                pms = patient.getMenstrualStatus()
+                field = patient.Schema()['MenstrualStatus']
+                pms = field.get(patient)
                 if pms and len(pms) > 0:
                     value = pms[0]
                     statuses = dict(statuses.items() + value.items())
 
-        if len(self.aq_parent.getMenstrualStatus()) > 0:
-            cms = self.aq_parent.getMenstrualStatus()
-            if cms and len(cms) > 0:
-                value = cms[0]
-                statuses = dict(statuses.items() + value.items())
+        field = self.aq_parent.Schema()['MenstrualStatus']
+        cms = field.get(self.aq_parent)
+        if cms and len(cms) > 0:
+            value = cms[0]
+            statuses = dict(statuses.items() + value.items())
 
         return [statuses]
 

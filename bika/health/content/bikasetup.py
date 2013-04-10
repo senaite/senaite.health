@@ -1,6 +1,6 @@
 from Products.Archetypes.Widget import BooleanWidget
 from archetypes.schemaextender.interfaces import ISchemaExtender
-from bika.health.fields import *
+from bika.lims.fields import *
 from bika.lims import bikaMessageFactory as _
 from bika.lims.interfaces import IBikaSetup
 from zope.component import adapts
@@ -59,13 +59,6 @@ class BikaSetupSchemaExtender(object):
 
     def __init__(self, context):
         self.context = context
-
-        for field in self.fields:
-            fn = field.getName()
-            if not hasattr(context, 'get' + fn):
-                context.__setattr__('get' + fn, field_getter(context, fn))
-            if not hasattr(context, 'set' + fn):
-                context.__setattr__('set' + fn, field_setter(context, fn))
 
     def getFields(self):
         return self.fields

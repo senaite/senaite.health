@@ -4,7 +4,7 @@ from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
-from bika.health.fields import *
+from bika.lims.fields import *
 from bika.lims import bikaMessageFactory as _b
 from bika.lims.adapters.widgetvisibility import WidgetVisibility as _WV
 from bika.lims.browser.widgets import ReferenceWidget
@@ -69,7 +69,7 @@ class AnalysisRequestSchemaExtender(object):
 
         ExtComputedField(
             'PatientUID',
-            expression='context.getPatient() and context.getPatient().UID() or None',
+            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).UID() or None",
             widget=ComputedWidget(
                 visible=False,
             ),
@@ -79,8 +79,8 @@ class AnalysisRequestSchemaExtender(object):
             'PanicEmailAlertToClientSent',
             default=False,
             widget=BooleanWidget(
-                visible={'edit': 'invisible', 
-                         'view': 'invisible', 
+                visible={'edit': 'invisible',
+                         'view': 'invisible',
                          'add': 'invisible'},
             ),
         ),
@@ -97,13 +97,6 @@ class AnalysisRequestSchemaExtender(object):
 
     def __init__(self, context):
         self.context = context
-
-        for field in self.fields:
-            fn = field.getName()
-            if not hasattr(context, 'get' + fn):
-                context.__setattr__('get' + fn, field_getter(context, fn))
-            if not hasattr(context, 'set' + fn):
-                context.__setattr__('set' + fn, field_setter(context, fn))
 
     def getFields(self):
         return self.fields

@@ -82,12 +82,9 @@ class BatchFolderContentsView(BaseView):
             bid = obj.getBatchID()
             items[x]['BatchID'] = bid
 
-            bpc = getToolByName(self.context, 'bika_patient_catalog')
-            patient = bpc(portal_type='Patient', id=obj.getPatientID())
-            client = self.portal_catalog(portal_type='Client', 
-                                         getClientID=obj.getClientID())
-            doctor = self.portal_catalog(portal_type='Doctor', 
-                                         getDoctorID=obj.getDoctorID())
+            client = obj.Schema()['Client'].get(obj)
+            doctor = obj.Schema()['Doctor'].get(obj)
+            patient = obj.Schema()['Patient'].get(obj)
 
             if 'Doctor' not in items[x]:
                 items[x]['Doctor'] = ''
@@ -103,20 +100,21 @@ class BatchFolderContentsView(BaseView):
 
             items[x]['replace']['Patient'] = patient \
                 and "<a href='%s'>%s</a>" % \
-                (patient[0].getObject().absolute_url(),
-                 patient[0].getObject().Title()) or ''
+                (patient.absolute_url(),
+                 patient.Title()) or ''
 
             items[x]['replace']['Doctor'] = doctor \
                 and "<a href='%s'>%s</a>" % \
-                (doctor[0].getObject().absolute_url(),
-                 doctor[0].getObject().Title()) or ''
+                (doctor.absolute_url(),
+                 doctor.Title()) or ''
 
             items[x]['replace']['Client'] = client \
                 and "<a href='%s'>%s</a>" % \
-                (client[0].getObject().absolute_url(),
-                 client[0].getObject().Title()) or ''
+                (client.absolute_url(),
+                 client.Title()) or ''
 
-            items[x]['replace']['OnsetDate'] = obj.getOnsetDate() \
-                and self.ulocalized_time(obj.getOnsetDate())
+            OnsetDate = obj.Schema()['OnsetDate'].get(obj)
+            items[x]['replace']['OnsetDate'] = OnsetDate \
+                and self.ulocalized_time(OnsetDate) or ''
 
         return items

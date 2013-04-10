@@ -30,9 +30,9 @@ class CaseBasalBodyTempWidget(ATRecordsWidget):
         conditions = [{'Day1': '',
                        'Day2': '',
                        'Day3': ''}]
-        return len(self.aq_parent.getBasalBodyTemperature()) > 0 \
-                    and self.aq_parent.getBasalBodyTemperature() \
-                    or conditions
+        field = self.aq_parent.Schema()['BasalBodyTemperature']
+        value = field.get(self.aq_parent)
+        return value and value or conditions
 
 registerWidget(CaseBasalBodyTempWidget,
                title='CaseBasalBodyTempWidget',

@@ -27,9 +27,9 @@ class CasePatientConditionWidget(ATRecordsWidget):
         return json.dumps(val)
 
     def getPatientCondition(self):
-        conditions = len(self.aq_parent.getPatientCondition()) > 0 \
-                    and self.aq_parent.getPatientCondition() \
-                    or []
+        # self.aq_parent.Schema()['Patient'].set(self.aq_parent.patients.objectValues()[0].UID())
+        value = self.aq_parent.Schema()['PatientCondition'].get(self.aq_parent)
+        conditions = len(value) > 0 and value or []
 
         # Allow multiple units for each condition. Check if existing conditions
         # don't have bika_setup already defined units
@@ -78,13 +78,16 @@ class CasePatientConditionWidget(ATRecordsWidget):
         return (units and "/" in units) and units.split('/') or [units]
 
     def getHeightUnits(self):
-        return self.getUnits(self.bika_setup.getPatientConditionsHeightUnits())
+        field = self.bika_setup.Schema()['PatientConditionsHeightUnits']
+        return self.getUnits(field.get(self.bika_setup))
 
     def getWeightUnits(self):
-        return self.getUnits(self.bika_setup.getPatientConditionsWeightUnits())
+        field = self.bika_setup.Schema()['PatientConditionsWeightUnits']
+        return self.getUnits(field.get(self.bika_setup))
 
     def getWaistUnits(self):
-        return self.getUnits(self.bika_setup.getPatientConditionsWaistUnits())
+        field = self.bika_setup.Schema()['PatientConditionsWaistUnits']
+        return self.getUnits(field.get(self.bika_setup))
 
     def getConditionValue(self, condition, unit):
         conditions = self.getPatientCondition()

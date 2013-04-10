@@ -11,11 +11,14 @@ from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.lims.fields import *
+from bika.lims.interfaces import IBatch
+from bika.health.interfaces import IBikaPatientCatalog
 from bika.lims.browser.widgets import DateTimeWidget
+from bika.lims.browser.widgets import ReferenceWidget
 from bika.health import bikaMessageFactory as _
 from bika.lims import bikaMessageFactory as _b
 from bika.health.widgets import *
-from bika.lims.interfaces import IBatch
+from plone.indexer.decorator import indexer
 from zope.component import adapts
 from zope.interface import implements
 from bika.health.widgets.casepatientconditionwidget import CasePatientConditionWidget
@@ -55,6 +58,37 @@ class getCaseOutcome:
                       sort_on = 'sortable_title'):
             ret.append((p.UID, p.Title))
         return DisplayList(ret)
+
+@indexer(IBatch)
+def getPatientID(instance):
+    patient = instance.Schema()['Patient'].get(instance)
+    return patient and patient.getPatientID() or ''
+
+@indexer(IBatch)
+def getPatientTitle(instance):
+    patient = instance.Schema()['Patient'].get(instance)
+    return patient and patient.getPatientTitle() or ''
+
+@indexer(IBatch)
+def getDoctorID(instance):
+    doctor = instance.Schema()['Doctor'].get(instance)
+    return doctor and doctor.getDoctorID() or ''
+
+@indexer(IBatch)
+def getDoctorTitle(instance):
+    doctor = instance.Schema()['Doctor'].get(instance)
+    return doctor and doctor.getDoctorTitle() or ''
+
+@indexer(IBatch)
+def getClientID(instance):
+    client = instance.Schema()['Client'].get(instance)
+    return client and client.getClientID() or ''
+
+@indexer(IBatch)
+def getClientTitle(instance):
+    client = instance.Schema()['Client'].get(instance)
+    return client and client.getClientTitle() or ''
+
 
 class BatchSchemaExtender(object):
     adapts(IBatch)
@@ -113,22 +147,24 @@ class BatchSchemaExtender(object):
             allowed_types = ('Patient',),
             referenceClass = HoldingReference,
             relationship = 'BatchPatient',
-            widget=StringWidget(
-                label=_('Patient'),
-                visible=False,
+            widget=ReferenceWidget(
+                label=_("Patient"),
+                description="",
+                render_own_label=False,
+                visible={'edit': 'visible', 'view': 'visible'},
+                base_query={'inactive_state': 'active'},
+                catalog_name='bika_patient_catalog',
+                showOn=True,
             ),
         ),
-        ExtStringField('PatientID',
-            required = 1,
-            widget=StringWidget(
-                label=_('Patient'),
-            ),
+        ExtComputedField('PatientID',
+            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).ID() or None",
         ),
         ExtComputedField('PatientUID',
-            expression="context.getPatient() and context.getPatient().UID() or None",
+            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).UID() or None",
         ),
         ExtComputedField('PatientTitle',
-            expression="context.getPatient() and context.getPatient().Title() or None",
+            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).Title() or None",
         ),
         ExtDateTimeField('OnsetDate',
               widget=DateTimeWidget(
@@ -257,13 +293,6 @@ class BatchSchemaExtender(object):
     def __init__(self, context):
         self.context = context
 
-        for field in self.fields:
-            fn = field.getName()
-            if not hasattr(context, 'get'+fn):
-                context.__setattr__('get'+fn, field_getter(context, fn))
-            if not hasattr(context, 'set'+fn):
-                context.__setattr__('set'+fn, field_setter(context, fn))
-
     def getOrder(self, schematas):
         schematas['default'] = ['id',
                                 'title',
@@ -306,40 +335,6 @@ class BatchSchemaExtender(object):
     def getFields(self):
         return self.fields
 
-    def getClientID(self):
-        return self.getClient() and self.getClient().ID() or None
-
-    def setClientID(self, value=None):
-        self.setClient(None)
-        if value:
-            client = self.portal_catalog(portal_type='Client', ID=value)
-            if client:
-                client = client[0].getObject()
-                self.setClient(client.UID())
-
-    def getPatientID(self):
-        return self.getPatient() and self.getPatient().ID() or None
-
-    def setPatientID(self, value=None):
-        self.setPatient(None)
-        if value:
-            bpc = getToolByName(self.context, 'bika_patient_catalog')
-            patient = bpc(portal_type='Patient', ID=value)
-            if patient:
-                patient = patient[0].getObject()
-                self.setPatient(patient.UID())
-
-    def getDoctorID(self):
-        return self.getClient() and self.getClient().ID() or None
-
-    def setDoctorID(self, value=None):
-        self.setDoctor(None)
-        if value:
-            doctor = self.portal_catalog(portal_type='Doctor', ID=value)
-            if doctor:
-                doctor = doctor[0].getObject()
-                self.setDoctor(doctor.UID())
-
 class BatchSchemaModifier(object):
     adapts(IBatch)
     implements(ISchemaModifier)
@@ -355,5 +350,3 @@ class BatchSchemaModifier(object):
         schema['BatchLabels'].widget.visible = False
         schema['ClientBatchID'].widget.label = _("Client Case ID")
         return schema
-
-

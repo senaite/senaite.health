@@ -43,32 +43,37 @@ class CaseSymptomsWidget(ATRecordsWidget):
             active from bika setup, with severity values assigned to default 0
         """
         outsymptoms = {}
-        casesymptoms = len(self.aq_parent.getSymptoms()) > 0 \
-                        and self.aq_parent.getSymptoms() or []
+        field = self.aq_parent.Schema()['Symptoms']
+        value = field.get(self.aq_parent)
+        casesymptoms = value and value or []
 
         casegender = 'dk'
-        patientid = self.aq_parent.getPatientID()
+        field = self.aq_parent.Schema()['PatientID']
+        patientid = field.get(self.aq_parent)
         if patientid:
             bpc = getToolByName(self, 'bika_patient_catalog')
             patient = bpc(portal_type='Patient', id=patientid)
-            casegender = len(patient) > 0 \
-                        and patient[0].getObject().getGender() or 'dk'
+            gender = 'dk'
+            if len(patient) > 0:
+                patient = patient[0].getObject()
+                gender = patient.getGender()
+            casegender = gender
 
         symptoms = self.bika_setup_catalog(portal_type='Symptom',
                                          inactive_state='active')
         for symptom in symptoms:
             symptom = symptom.getObject()
-            if not gender \
-                or symptom.getGender() == 'dk' \
-                or symptom.getGender() == gender:
-                outsymptoms[symptom.UID()] = {'UID': symptom.UID(),
-                                              'Title': symptom.Title(),
-                                              'Description':symptom.Description(),
-                                              'SeverityAllowed':symptom.getSeverityAllowed() and 1 or 0,
-                                              'Severity':'0',
-                                              'Assigned':0,
-                                              'Gender':symptom.getGender(),
-                                              'Visible':symptom.getGender()=='dk' or symptom.getGender()==casegender}
+            s_gender = symptom.getGender()
+            if not gender or s_gender == 'dk' or s_gender == gender:
+                outsymptoms[symptom.UID()] = {
+                    'UID': symptom.UID(),
+                    'Title': symptom.Title(),
+                    'Description':symptom.Description(),
+                    'SeverityAllowed':symptom.getSeverityAllowed() and 1 or 0,
+                    'Severity':'0',
+                    'Assigned':0,
+                    'Gender':symptom.getGender(),
+                    'Visible':symptom.getGender()=='dk' or symptom.getGender()==casegender}
         for symptom in casesymptoms:
             if 'UID' in symptom:
                 if symptom['UID'] in outsymptoms \

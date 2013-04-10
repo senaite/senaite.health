@@ -16,31 +16,25 @@ class ajaxGetBatchInfo(BrowserView):
         bpc = getToolByName(self.context, 'bika_patient_catalog')
         batch = self.context
         patientids = ''
-        client = self.portal_catalog(portal_type='Client',
-                                     getClientID=batch.getClientID())
-        if client:
-            client = client[0].getObject()
-        patient = bpc(portal_type='Patient',
-                      id=batch.getPatientID())
+
+        client = batch.Schema()['Client'].get(batch)
+        doctor = batch.Schema()['Doctor'].get(batch)
+        patient = batch.Schema()['Patient'].get(batch)
         if patient:
-            patient = patient[0].getObject()
-            patientids = len(patient.getPatientIdentifiersStr()) > 0 and "("+patient.getPatientIdentifiersStr()+")" or ''
-        doctor = self.portal_catalog(portal_type='Doctor',
-                                     getDoctorID=batch.getDoctorID())
-        if doctor:
-            doctor = doctor[0].getObject()
+            value = patient.getPatientIdentifiersStr()
+            patientids = len(value) > 0 and "("+value+")" or ''
 
         ret = {'Client': client and "<a class='edit_client' href='%s/base_edit'>%s</a>"%(client.absolute_url(), client.Title()) or '',
-               'Patient': patient and "<a class='edit_patient' href='%s/edit'>%s</a> %s"%(patient.absolute_url(), patient.Title(), patientids) or '',
-               'Doctor': doctor and "<a class='edit_doctor' href='%s/edit'>%s</a>"%(doctor.absolute_url(), doctor.Title()) or '',
-               'ClientID': batch.getClientID(),
-               'PatientID': batch.getPatientID(),
-               'DoctorID': batch.getDoctorID(),
+               'ClientID': client and client.getClientID() or '',
                'ClientUID': client and client.UID() or '',
-               'PatientUID': patient and patient.UID() or '',
-               'DoctorUID': doctor and doctor.UID() or '',
                'ClientTitle': client and client.Title() or '',
+               'Patient': patient and "<a class='edit_patient' href='%s/edit'>%s</a> %s"%(patient.absolute_url(), patient.Title(), patientids) or '',
+               'PatientID': patient and patient.getPatientID() or '',
+               'PatientUID': patient and patient.getPatientID() or '',
                'PatientTitle': patient and patient.Title() or '',
+               'Doctor': doctor and "<a class='edit_doctor' href='%s/edit'>%s</a>"%(doctor.absolute_url(), doctor.Title()) or '',
+               'DoctorID': doctor and doctor.getDoctorID(),
+               'DoctorUID': doctor and doctor.UID() or '',
                'DoctorTitle': doctor and doctor.Title() or '',
                }
 
