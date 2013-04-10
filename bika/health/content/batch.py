@@ -12,7 +12,6 @@ from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.lims.fields import *
 from bika.lims.interfaces import IBatch
-from bika.health.interfaces import IBikaPatientCatalog
 from bika.lims.browser.widgets import DateTimeWidget
 from bika.lims.browser.widgets import ReferenceWidget
 from bika.health import bikaMessageFactory as _
@@ -65,6 +64,11 @@ def getPatientID(instance):
     return patient and patient.getPatientID() or ''
 
 @indexer(IBatch)
+def getPatientUID(instance):
+    patient = instance.Schema()['Patient'].get(instance)
+    return patient and patient.getPatientUID() or ''
+
+@indexer(IBatch)
 def getPatientTitle(instance):
     patient = instance.Schema()['Patient'].get(instance)
     return patient and patient.getPatientTitle() or ''
@@ -75,6 +79,11 @@ def getDoctorID(instance):
     return doctor and doctor.getDoctorID() or ''
 
 @indexer(IBatch)
+def getDoctorUID(instance):
+    doctor = instance.Schema()['Doctor'].get(instance)
+    return doctor and doctor.getDoctorUID() or ''
+
+@indexer(IBatch)
 def getDoctorTitle(instance):
     doctor = instance.Schema()['Doctor'].get(instance)
     return doctor and doctor.getDoctorTitle() or ''
@@ -83,6 +92,11 @@ def getDoctorTitle(instance):
 def getClientID(instance):
     client = instance.Schema()['Client'].get(instance)
     return client and client.getClientID() or ''
+
+@indexer(IBatch)
+def getClientUID(instance):
+    client = instance.Schema()['Client'].get(instance)
+    return client and client.getClientUID() or ''
 
 @indexer(IBatch)
 def getClientTitle(instance):
