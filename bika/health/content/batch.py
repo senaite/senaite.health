@@ -60,48 +60,56 @@ class getCaseOutcome:
 
 @indexer(IBatch)
 def getPatientID(instance):
-    patient = instance.Schema()['Patient'].get(instance)
-    return patient and patient.getPatientID() or ''
+    item = instance.Schema()['Patient'].get(instance)
+    value = item and item.Schema()['PatientID'].get(item) or ''
+    return value
 
 @indexer(IBatch)
 def getPatientUID(instance):
-    patient = instance.Schema()['Patient'].get(instance)
-    return patient and patient.getPatientUID() or ''
+    item = instance.Schema()['Patient'].get(instance)
+    value = item and item.UID() or ''
+    return value
 
 @indexer(IBatch)
 def getPatientTitle(instance):
-    patient = instance.Schema()['Patient'].get(instance)
-    return patient and patient.getPatientTitle() or ''
+    item = instance.Schema()['Patient'].get(instance)
+    value = item and item.Title() or ''
+    return value
 
 @indexer(IBatch)
 def getDoctorID(instance):
-    doctor = instance.Schema()['Doctor'].get(instance)
-    return doctor and doctor.getDoctorID() or ''
+    item = instance.Schema()['Doctor'].get(instance)
+    value = item and item.Schema()['DoctorID'].get(item) or ''
+    return value
 
 @indexer(IBatch)
 def getDoctorUID(instance):
-    doctor = instance.Schema()['Doctor'].get(instance)
-    return doctor and doctor.getDoctorUID() or ''
+    item = instance.Schema()['Doctor'].get(instance)
+    value = item and item.UID() or ''
 
 @indexer(IBatch)
 def getDoctorTitle(instance):
-    doctor = instance.Schema()['Doctor'].get(instance)
-    return doctor and doctor.getDoctorTitle() or ''
+    item = instance.Schema()['Doctor'].get(instance)
+    value = item and item.Title() or ''
+    return value
 
 @indexer(IBatch)
 def getClientID(instance):
-    client = instance.Schema()['Client'].get(instance)
-    return client and client.getClientID() or ''
+    item = instance.Schema()['Client'].get(instance)
+    value = item and item.Schema()['ClientID'].get(item) or ''
+    return value
 
 @indexer(IBatch)
 def getClientUID(instance):
-    client = instance.Schema()['Client'].get(instance)
-    return client and client.getClientUID() or ''
+    item = instance.Schema()['Client'].get(instance)
+    value = item and item.UID() or ''
+    return value
 
 @indexer(IBatch)
 def getClientTitle(instance):
-    client = instance.Schema()['Client'].get(instance)
-    return client and client.getClientTitle() or ''
+    item = instance.Schema()['Client'].get(instance)
+    value = item and item.Title() or ''
+    return value
 
 
 class BatchSchemaExtender(object):
@@ -115,46 +123,56 @@ class BatchSchemaExtender(object):
             allowed_types = ('Client',),
             referenceClass = HoldingReference,
             relationship = 'BatchClient',
-            widget=StringWidget(
-                label=_('Client'),
-                visible=False,
+            widget=ReferenceWidget(
+                label=_("Client"),
+                description="",
+                render_own_label=False,
+                visible={'edit': 'visible', 'view': 'visible'},
+                base_query={'inactive_state': 'active'},
+                catalog_name='portal_catalog',
+                showOn=False,
+                colModel = [{'columnName':'ClientID','width':'20','label':_('Client ID')},
+                            {'columnName':'Title','width':'80','label':_('Title')}
+                           ],
             ),
         ),
-        ExtStringField('ClientID',
-            required = 1,
-            widget=StringWidget(
-                label=_('Client'),
-            ),
-        ),
-        ExtComputedField('ClientUID',
-            expression="context.getClient() and context.getClient().UID() or None",
-        ),
-        ExtComputedField('ClientTitle',
-            expression="context.getClient() and context.getClient().Title() or None",
-        ),
+        # ExtComputedField('ClientID',
+        #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).ID() or None",
+        # ),
+        # ExtComputedField('ClientUID',
+        #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).UID() or None",
+        # ),
+        # ExtComputedField('ClientTitle',
+        #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).Title() or None",
+        # ),
         ExtReferenceField('Doctor',
             required = 1,
             multiValued=0,
             allowed_types = ('Doctor',),
             referenceClass = HoldingReference,
             relationship = 'BatchDoctor',
-            widget=StringWidget(
-                label=_('Doctor'),
-                visible=False,
+            widget=ReferenceWidget(
+                label=_("Doctor"),
+                description="",
+                render_own_label=False,
+                visible={'edit': 'visible', 'view': 'visible'},
+                base_query={'inactive_state': 'active'},
+                catalog_name='portal_catalog',
+                showOn=False,
+                colModel = [{'columnName':'DoctorID','width':'20','label':_('Doctor ID')},
+                            {'columnName':'Title','width':'80','label':_('Full Name')},
+                            ],
             ),
         ),
-        ExtStringField('DoctorID',
-            required = 1,
-            widget=StringWidget(
-                label=_('Doctor'),
-            ),
-        ),
-        ExtComputedField('DoctorUID',
-            expression="context.getDoctor() and context.getDoctor().UID() or None",
-        ),
-        ExtComputedField('DoctorTitle',
-            expression="context.getDoctor() and context.getDoctor().Title() or None",
-        ),
+        # ExtComputedField('DoctorID',
+        #     expression="context.Schema()['Doctor'].get(context) and context.Schema()['Doctor'].get(context).ID() or None",
+        # ),
+        # ExtComputedField('DoctorUID',
+        #     expression="context.Schema()['Doctor'].get(context) and context.Schema()['Doctor'].get(context).UID() or None",
+        # ),
+        # ExtComputedField('DoctorTitle',
+        #     expression="context.Schema()['Doctor'].get(context) and context.Schema()['Doctor'].get(context).Title() or None",
+        # ),
         ExtReferenceField('Patient',
             required = 1,
             multiValued=0,
@@ -168,18 +186,21 @@ class BatchSchemaExtender(object):
                 visible={'edit': 'visible', 'view': 'visible'},
                 base_query={'inactive_state': 'active'},
                 catalog_name='bika_patient_catalog',
-                showOn=True,
+                showOn=False,
+                colModel = [{'columnName':'getPatientID','width':'20','label':_('Patient ID')},
+                            {'columnName':'Title','width':'40','label':_('Full Name')},
+                            {'columnName':'PatientIdentifiers', 'width':'40','label':_('Additional Identifiers')}]
             ),
         ),
-        ExtComputedField('PatientID',
-            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).ID() or None",
-        ),
-        ExtComputedField('PatientUID',
-            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).UID() or None",
-        ),
-        ExtComputedField('PatientTitle',
-            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).Title() or None",
-        ),
+        # ExtComputedField('PatientID',
+        #     expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).ID() or None",
+        # ),
+        # ExtComputedField('PatientUID',
+        #     expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).UID() or None",
+        # ),
+        # ExtComputedField('PatientTitle',
+        #     expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).Title() or None",
+        # ),
         ExtDateTimeField('OnsetDate',
               widget=DateTimeWidget(
                   label=_('Onset Date'),
@@ -313,18 +334,18 @@ class BatchSchemaExtender(object):
                                 'description',
                                 'BatchID',
                                 'Patient',
-                                'PatientID',
-                                'PatientUID',
-                                'PatientTitle',
+                                # 'PatientID',
+                                # 'PatientUID',
+                                # 'PatientTitle',
                                 'Client',
-                                'ClientID',
-                                'ClientUID',
-                                'ClientTitle',
+                                # 'ClientID',
+                                # 'ClientUID',
+                                # 'ClientTitle',
                                 'ClientBatchID',
                                 'Doctor',
-                                'DoctorID',
-                                'DoctorUID',
-                                'DoctorTitle',
+                                # 'DoctorID',
+                                # 'DoctorUID',
+                                # 'DoctorTitle',
                                 'OnsetDate',
                                 'PatientAgeAtCaseOnsetDate',
                                 'OnsetDateEstimated',
@@ -339,9 +360,6 @@ class BatchSchemaExtender(object):
                                 'AetiologicAgents',
                                 'AdditionalNotes',
                                 'Remarks',
-                                'ClientUID',
-                                'DoctorUID',
-                                'PatientUID',
                                 'PatientBirthDate',
                                 'BatchLabels']
         return schematas

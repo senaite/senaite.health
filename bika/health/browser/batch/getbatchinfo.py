@@ -15,11 +15,12 @@ class ajaxGetBatchInfo(BrowserView):
 
         bpc = getToolByName(self.context, 'bika_patient_catalog')
         batch = self.context
-        patientids = ''
 
         client = batch.Schema()['Client'].get(batch)
         doctor = batch.Schema()['Doctor'].get(batch)
         patient = batch.Schema()['Patient'].get(batch)
+
+        patientids = ''
         if patient:
             value = patient.getPatientIdentifiersStr()
             patientids = len(value) > 0 and "("+value+")" or ''
@@ -30,7 +31,7 @@ class ajaxGetBatchInfo(BrowserView):
                'ClientTitle': client and client.Title() or '',
                'Patient': patient and "<a class='edit_patient' href='%s/edit'>%s</a> %s"%(patient.absolute_url(), patient.Title(), patientids) or '',
                'PatientID': patient and patient.getPatientID() or '',
-               'PatientUID': patient and patient.getPatientID() or '',
+               'PatientUID': patient and patient.UID() or '',
                'PatientTitle': patient and patient.Title() or '',
                'Doctor': doctor and "<a class='edit_doctor' href='%s/edit'>%s</a>"%(doctor.absolute_url(), doctor.Title()) or '',
                'DoctorID': doctor and doctor.getDoctorID(),

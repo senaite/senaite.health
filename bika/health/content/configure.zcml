@@ -24,6 +24,8 @@
     <adapter factory=".batch.getClientUID" name="getClientUID" />
     <adapter factory=".batch.getClientTitle" name="getClientTitle" />
 
+    <adapter factory=".client.getClientID" name="getClientID" />
+
     <adapter factory=".analysis.AnalysisSchemaExtender" />
     <adapter factory=".analysisspec.AnalysisSpecSchemaModifier" />
     <adapter factory=".bikasetup.BikaSetupSchemaExtender" />

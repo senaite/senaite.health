@@ -225,8 +225,6 @@ def setupCatalogs(context):
         return
     addIndex(pc, 'getDoctorID', 'FieldIndex')
     addIndex(pc, 'getDoctorUID', 'FieldIndex')
-    addIndex(pc, 'getClientUID', 'FieldIndex')
-    addIndex(pc, 'getClientID', 'FieldIndex')
 
     # bika_setup_catalog
     bsc = getToolByName(portal, 'bika_setup_catalog', None)

@@ -48,19 +48,15 @@ class CaseSymptomsWidget(ATRecordsWidget):
         casesymptoms = value and value or []
 
         casegender = 'dk'
-        field = self.aq_parent.Schema()['PatientID']
-        patientid = field.get(self.aq_parent)
-        if patientid:
-            bpc = getToolByName(self, 'bika_patient_catalog')
-            patient = bpc(portal_type='Patient', id=patientid)
+        patient = self.aq_parent.Schema()['Patient'].get(self.aq_parent)
+        if patient:
             gender = 'dk'
             if len(patient) > 0:
-                patient = patient[0].getObject()
                 gender = patient.getGender()
             casegender = gender
 
         symptoms = self.bika_setup_catalog(portal_type='Symptom',
-                                         inactive_state='active')
+                                           inactive_state='active')
         for symptom in symptoms:
             symptom = symptom.getObject()
             s_gender = symptom.getGender()

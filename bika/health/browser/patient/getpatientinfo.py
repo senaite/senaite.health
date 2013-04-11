@@ -11,7 +11,7 @@ class ajaxGetPatientInfo(BrowserView):
     def __call__(self):
         plone.protect.CheckAuthenticator(self.request)
         Fullname = self.request.get('Fullname', '')
-        PatientID = self.request.get('PatientID', '')
+        PatientUID = self.request.get('PatientUID', '')
         ret = {'PatientID': '',
                'PatientUID': '',
                'ClientID': '',
@@ -24,12 +24,10 @@ class ajaxGetPatientInfo(BrowserView):
                'PatientMenstrualStatus':''}
 
         proxies = None
-        if PatientID:
+        if PatientUID:
             try:
                 bpc = getToolByName(self.context, 'bika_patient_catalog')
-                proxies = bpc(getPatientID=PatientID,
-                              sort_on='created',
-                              sort_order='reverse')
+                proxies = bpc(UID=PatientUID)
             except ParseError:
                 pass
         elif Fullname:
