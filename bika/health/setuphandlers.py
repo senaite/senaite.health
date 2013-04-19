@@ -283,3 +283,4 @@ def setupCatalogs(context):
     addColumn(bpc, 'getPatientID')
     addColumn(bpc, 'getPrimaryReferrerUID')
     addColumn(bpc, 'review_state')
+    addColumn(bpc, 'inactive_state')
