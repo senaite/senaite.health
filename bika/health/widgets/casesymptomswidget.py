@@ -47,29 +47,25 @@ class CaseSymptomsWidget(ATRecordsWidget):
         value = field.get(self.aq_parent)
         casesymptoms = value and value or []
 
-        casegender = 'dk'
-        patient = self.aq_parent.Schema()['Patient'].get(self.aq_parent)
-        if patient:
-            gender = 'dk'
-            if len(patient) > 0:
-                gender = patient.getGender()
-            casegender = gender
+        if not gender:
+            patient = self.aq_parent.Schema()['Patient'].get(self.aq_parent)
+            gender = patient and patient.getGender() or 'dk'
 
         symptoms = self.bika_setup_catalog(portal_type='Symptom',
                                            inactive_state='active')
         for symptom in symptoms:
             symptom = symptom.getObject()
             s_gender = symptom.getGender()
-            if not gender or s_gender == 'dk' or s_gender == gender:
-                outsymptoms[symptom.UID()] = {
-                    'UID': symptom.UID(),
-                    'Title': symptom.Title(),
-                    'Description':symptom.Description(),
-                    'SeverityAllowed':symptom.getSeverityAllowed() and 1 or 0,
-                    'Severity':'0',
-                    'Assigned':0,
-                    'Gender':symptom.getGender(),
-                    'Visible':symptom.getGender()=='dk' or symptom.getGender()==casegender}
+            outsymptoms[symptom.UID()] = {
+                'UID': symptom.UID(),
+                'Title': symptom.Title(),
+                'Description':symptom.Description(),
+                'SeverityAllowed':symptom.getSeverityAllowed() and 1 or 0,
+                'Severity':'0',
+                'Assigned':0,
+                'Gender':symptom.getGender(),
+                'Visible':symptom.getGender()=='dk' or symptom.getGender()==gender}
+
         for symptom in casesymptoms:
             if 'UID' in symptom:
                 if symptom['UID'] in outsymptoms \
@@ -87,7 +83,7 @@ class CaseSymptomsWidget(ATRecordsWidget):
                                                    'Severity': symptom.get('Severity','0'),
                                                    'Assigned': 1,
                                                    'Gender':symptom.get('Gender', 'dk'),
-                                                   'Visible':symptom.get('Gender', 'dk')=='dk' or symptom.get('Gender', 'dk')==casegender}
+                                                   'Visible':symptom.get('Gender', 'dk')=='dk' or symptom.get('Gender', 'dk')==gender}
         items=[]
         for symptom in outsymptoms.values():
             items.append(symptom)
