@@ -129,8 +129,9 @@ class BatchesView(BatchFolderContentsView):
     def contentsMethod(self, contentFilter):
         bc = getToolByName(self.context, "bika_catalog")
         batches = []
-        for batch in bc(portal_type='Batch',
-                        getPatientID=self.context.id):
+        proxies = bc(portal_type='Batch',
+                     getPatientID=self.context.getPatientID())
+        for batch in proxies:
             batch = batch.getObject()
             batches.append(batch)
         return batches

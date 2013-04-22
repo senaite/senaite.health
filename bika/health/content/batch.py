@@ -61,7 +61,7 @@ class getCaseOutcome:
 @indexer(IBatch)
 def getPatientID(instance):
     item = instance.Schema()['Patient'].get(instance)
-    value = item and item.Schema()['PatientID'].get(item) or ''
+    value = item and item.getPatientID() or ''
     return value
 
 @indexer(IBatch)
