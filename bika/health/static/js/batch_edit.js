@@ -14,7 +14,7 @@ function loadEventHandlers() {
     	loadPatientData();
     });
     $("#Doctor").bind("selected", function(){
-    	loadDoctorData();
+    	loadDoctorOverlay(null);
     });
     $("#OnsetDate").live('change', function() {
         setPatientAgeAtCaseOnsetDate();
@@ -23,7 +23,6 @@ function loadEventHandlers() {
 
 
 function loadPatientData() {
-    $('input[name="Client"]').val('');
     $('input[name="PatientBirthDate"]').val('');
     $('input[name="PatientGender"]').val('');
     $('a.edit_patient').remove();
@@ -36,17 +35,15 @@ function loadPatientData() {
                     'PatientUID': patientuid},
             dataType: "json",
             success: function(data, textStatus, $XHR){
-                $('input[name="Client"]').val(data['ClientTitle']);
+                // Override client values only if client hasn't been selected
+	            if ($('input[name="Client_uid"]').val().length == 0) {
+	                $('input[name="Client"]').val(data['ClientTitle']);
+	                $('input[name="Client"]').attr('uid', data['ClientUID']);
+	                $('input[name="Client_uid"]').val(data['ClientUID']);
+        		}
                 $('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);
                 $('input[name="PatientGender"]').val(data['PatientGender']);
-                
-                $("a.add_patient").after('<a style="border-bottom:none !important;margin-left:.5;"' +
-                        ' class="edit_patient"' +
-                        ' href="'+window.portal_url+'/patients/portal_factory/Patient/'+data['PatientID']+'/edit"' +
-                        ' rel="#overlay">Edit' +
-                    ' </a>');
-                $('a.edit_patient').prepOverlay(getPatientOverlay());
-
+            
                 // Set patient's menstrual status
                 if (data['PatientGender'] == 'female'
                     && data['PatientMenstrualStatus'] != null
@@ -76,32 +73,10 @@ function loadPatientData() {
                         $("#MenstrualStatus-OvariesRemovedYear-0").parent().show();
                     }
                 }
+                loadPatientOverlay(data['PatientID']);
                 setPatientAgeAtCaseOnsetDate();
                 loadMenstrualStatus();
                 loadSymptoms();
-            }
-        });
-    }
-}
-
-function loadDoctorData() {
-	$('a.edit_doctor').remove();
-    uid = $("#Doctor").attr('uid');
-    if (uid) {
-        $.ajax({
-            url: window.portal_url + "/getdoctorinfo",
-            type: 'POST',
-            data: {'_authenticator': $('input[name="_authenticator"]').val(),
-                    'UID': uid},
-            dataType: "json",
-            success: function(data, textStatus, $XHR){
-                
-                $("a.add_doctor").after('<a style="border-bottom:none !important;margin-left:.5;"' +
-                        ' class="edit_doctor"' +
-                        ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/'+data['id']+'/edit"' +
-                        ' rel="#overlay">Edit' +
-                    ' </a>');
-                $('a.edit_doctor').prepOverlay(getDoctorOverlay());
             }
         });
     }
@@ -191,7 +166,7 @@ function setPatientAgeAtCaseOnsetDate() {
     }
 }
 
-function loadPatientOverlay() {
+function loadPatientOverlay(patientId) {
     if (!$('a.add_patient').length) {
         $("input[id=Patient]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
                 ' class="add_patient"' +
@@ -201,9 +176,30 @@ function loadPatientOverlay() {
             ' </a>');
     }
     $('a.add_patient').prepOverlay(getPatientOverlay());
+    
+    $('a.edit_patient').remove();
+	if (patientId == null && $('input[name="Patient_uid"]').val().length > 0) {
+		$.ajax({
+            url: window.portal_url + "/getpatientinfo",
+            type: 'POST',
+            data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                    'PatientUID': $('input[name="Patient_uid"]').val()},
+            dataType: "json",
+            success: function(data, textStatus, $XHR){
+            	loadPatientOverlay(data['PatientID']);
+            }
+        });
+	} else {
+		$("a.add_patient").after('<a style="border-bottom:none !important;margin-left:.5;"' +
+	            ' class="edit_patient"' +
+	            ' href="'+window.portal_url+'/patients/portal_factory/Patient/'+patientId+'/edit"' +
+	            ' rel="#overlay">Edit' +
+        ' </a>');
+	    $('a.edit_patient').prepOverlay(getPatientOverlay());
+	}
 }
 
-function loadDoctorOverlay() {
+function loadDoctorOverlay(doctorId) {
 	if (!$('a.add_doctor').length) {
         $("input[id=Doctor]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
                 ' class="add_doctor"' +
@@ -213,6 +209,27 @@ function loadDoctorOverlay() {
             ' </a>');
     }
 	$('a.add_doctor').prepOverlay(getDoctorOverlay());
+
+	$('a.edit_doctor').remove();
+	if (doctorId == null && $('input[name="Doctor_uid"]').val().length > 0) {
+		$.ajax({
+            url: window.portal_url + "/getdoctorinfo",
+            type: 'POST',
+            data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                    'UID': $('input[name="Doctor_uid"]').val()},
+            dataType: "json",
+            success: function(data, textStatus, $XHR){
+            	loadDoctorOverlay(data['id']);            	
+            }
+        });
+	} else {
+		$("a.add_doctor").after('<a style="border-bottom:none !important;margin-left:.5;"' +
+	            ' class="edit_doctor"' +
+	            ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/'+doctorId+'/edit"' +
+	            ' rel="#overlay">Edit' +
+        ' </a>');
+	    $('a.edit_doctor').prepOverlay(getDoctorOverlay());
+	}
 }
 
 function getDoctorOverlay() {
@@ -248,7 +265,7 @@ function getDoctorOverlay() {
                             $("#Doctor").val(data['Fullname']);
                             $("#Doctor").attr('uid', data['UID']);
                             $("#Doctor_uid").val(data['UID']);
-                            loadDoctorData();
+                            loadDoctorOverlay(data['id']);
                         }
                     });
                 }
@@ -347,15 +364,15 @@ $(document).ready(function(){
     }
 
 	// Load additional Patient data, like birth date, age, etc.
-	// if we do this here (too early) it overrides Case values with
-	// patient values, even when no patient changes have been made
-	// loadPatientData();
+	// If a client has already been selected, it doesn't get overrided
+	loadPatientData();
 
 	// Load patient add/edit overlay
-	loadPatientOverlay();
+	// Patient overlay is already loaded by loadPatientData()
+	//loadPatientOverlay(null);
 	
 	// Load doctor add/edit overlay
-	loadDoctorOverlay();
+	loadDoctorOverlay(null);
 
 });
 }(jQuery));
