@@ -39,11 +39,9 @@ class ajaxGetPatients(BrowserView):
         # brains = bika_patient_catalog.evalAdvancedQuery(aq)
 
         bpc = getToolByName(self.context, 'bika_patient_catalog')
-        proxies = bpc(portal_type='Patient')
+        proxies = bpc(portal_type='Patient', inactive_state='active')
         for patient in proxies:
             patient = patient.getObject()
-            if self.context.portal_workflow.getInfoFor(patient, 'inactive_state', 'active') == 'inactive':
-                continue
             addidfound = False
             addids = patient.getPatientIdentifiers()
 

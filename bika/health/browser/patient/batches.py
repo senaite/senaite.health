@@ -20,7 +20,7 @@ class BatchesView(BatchFolderContentsView):
         self.review_states = [  # leave these titles and ids alone
             {'id':'default',
              'contentFilter': {'cancellation_state':'active',
-                               'review_state': ['open', 'received',
+                               'review_state': ['open', 'sample_received',
                                                 'to_be_verified', 'verified'],
                                'sort_on':'created',
                                'sort_order': 'reverse'},
@@ -129,8 +129,9 @@ class BatchesView(BatchFolderContentsView):
     def contentsMethod(self, contentFilter):
         bc = getToolByName(self.context, "bika_catalog")
         batches = []
-        for batch in bc(portal_type='Batch',
-                        getPatientID=self.context.id):
+        proxies = bc(portal_type='Batch',
+                     getPatientID=self.context.getPatientID())
+        for batch in proxies:
             batch = batch.getObject()
             batches.append(batch)
         return batches

@@ -22,7 +22,7 @@ class BatchFolderContentsView(BaseView):
         self.review_states = [  # leave these titles and ids alone
             {'id':'default',
              'contentFilter': {'cancellation_state':'active',
-                               'review_state': ['open', 'received', 'to_be_verified', 'verified'],
+                               'review_state': ['open', 'sample_received', 'to_be_verified', 'verified'],
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'title': _('Open'),

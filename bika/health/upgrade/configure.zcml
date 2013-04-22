@@ -57,4 +57,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="Add inactive_state index to patient catalog"
+        description="Some missing indexes"
+        source="1006"
+        destination="1007"
+        handler="bika.health.upgrade.to1007.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>
