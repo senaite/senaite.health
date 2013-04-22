@@ -23,8 +23,8 @@ function loadPatientData() {
     $('input[name="Client"]').val('');
     $('input[name="PatientBirthDate"]').val('');
     $('input[name="PatientGender"]').val('');
-    patientuid = $("#Patient").attr("uid");
-    if (patientuid.length > 0) {
+    patientuid = $("#Patient").attr('uid');
+    if (patientuid) {
         $.ajax({
             url: window.portal_url + "/getpatientinfo",
             type: 'POST',
@@ -270,6 +270,3 @@ $(document).ready(function(){
 
 });
 }(jQuery));
-
-
-
