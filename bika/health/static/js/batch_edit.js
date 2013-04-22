@@ -13,6 +13,9 @@ function loadEventHandlers() {
     $("#Patient").bind("selected", function(){
     	loadPatientData();
     });
+    $("#Doctor").bind("selected", function(){
+    	loadDoctorData();
+    });
     $("#OnsetDate").live('change', function() {
         setPatientAgeAtCaseOnsetDate();
     });
@@ -76,6 +79,29 @@ function loadPatientData() {
                 setPatientAgeAtCaseOnsetDate();
                 loadMenstrualStatus();
                 loadSymptoms();
+            }
+        });
+    }
+}
+
+function loadDoctorData() {
+	$('a.edit_doctor').remove();
+    uid = $("#Doctor").attr('uid');
+    if (uid) {
+        $.ajax({
+            url: window.portal_url + "/getdoctorinfo",
+            type: 'POST',
+            data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                    'UID': uid},
+            dataType: "json",
+            success: function(data, textStatus, $XHR){
+                
+                $("a.add_doctor").after('<a style="border-bottom:none !important;margin-left:.5;"' +
+                        ' class="edit_doctor"' +
+                        ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/'+data['id']+'/edit"' +
+                        ' rel="#overlay">Edit' +
+                    ' </a>');
+                $('a.edit_doctor').prepOverlay(getDoctorOverlay());
             }
         });
     }
@@ -175,7 +201,61 @@ function loadPatientOverlay() {
             ' </a>');
     }
     $('a.add_patient').prepOverlay(getPatientOverlay());
-    $('a.edit_patient').prepOverlay(getPatientOverlay());
+}
+
+function loadDoctorOverlay() {
+	if (!$('a.add_doctor').length) {
+        $("input[id=Doctor]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
+                ' class="add_doctor"' +
+                ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/new/edit"' +
+                ' rel="#overlay">' +
+                ' <img style="padding-bottom:1px;" src="'+window.portal_url+'/++resource++bika.lims.images/add.png"/>' +
+            ' </a>');
+    }
+	$('a.add_doctor').prepOverlay(getDoctorOverlay());
+}
+
+function getDoctorOverlay() {
+	editdoctor_overlay = {
+		subtype: 'ajax',
+		filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
+        formselector: '#doctor-base-edit',
+        closeselector: '[name="form.button.cancel"]',
+        width:'70%',
+        noform:'close',
+        config: {
+        	onLoad: function() {
+                // manually remove remarks
+                this.getOverlay().find("#archetypes-fieldname-Remarks").remove();
+                // Address widget
+                $.ajax({
+                    url: 'bika_widgets/addresswidget.js',
+                    dataType: 'script',
+                    async: false
+                });
+
+            },
+            onClose: function() {
+                var Fullname = $("#Firstname").val() + " " + $("#Surname").val();
+                if (Fullname.length > 1) {
+                    $.ajax({
+                        url: window.portal_url + "/getdoctorinfo",
+                        type: 'POST',
+                        data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                                'Fullname': Fullname},
+                        dataType: "json",
+                        success: function(data, textStatus, $XHR){
+                            $("#Doctor").val(data['Fullname']);
+                            $("#Doctor").attr('uid', data['UID']);
+                            $("#Doctor_uid").val(data['UID']);
+                            loadDoctorData();
+                        }
+                    });
+                }
+            }
+        }
+    }
+    return editdoctor_overlay;
 }
 
 function getPatientOverlay() {
@@ -273,7 +353,9 @@ $(document).ready(function(){
 
 	// Load patient add/edit overlay
 	loadPatientOverlay();
-
+	
+	// Load doctor add/edit overlay
+	loadDoctorOverlay();
 
 });
 }(jQuery));

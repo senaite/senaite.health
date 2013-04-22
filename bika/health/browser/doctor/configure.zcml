@@ -36,5 +36,13 @@
       permission="zope2.View"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
+    
+    <browser:page
+      for="*"
+      name="getdoctorinfo"
+      class=".getdoctorinfo.ajaxGetDoctorInfo"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
 
 </configure>
