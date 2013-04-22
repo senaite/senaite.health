@@ -10,8 +10,8 @@ function init() {
 }
 
 function loadEventHandlers() {
-    $("#Patient").live('blur', function() {
-        loadPatientData();
+    $("#Patient").bind("selected", function(){
+    	loadPatientData();
     });
     $("#OnsetDate").live('change', function() {
         setPatientAgeAtCaseOnsetDate();
@@ -23,6 +23,7 @@ function loadPatientData() {
     $('input[name="Client"]').val('');
     $('input[name="PatientBirthDate"]').val('');
     $('input[name="PatientGender"]').val('');
+    $('a.edit_patient').remove();
     patientuid = $("#Patient").attr('uid');
     if (patientuid) {
         $.ajax({
@@ -35,6 +36,12 @@ function loadPatientData() {
                 $('input[name="Client"]').val(data['ClientTitle']);
                 $('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);
                 $('input[name="PatientGender"]').val(data['PatientGender']);
+                
+                $("a.add_patient").after('<a style="border-bottom:none !important;margin-left:.5;"' +
+                        ' class="edit_patient"' +
+                        ' href="'+window.portal_url+'/patients/portal_factory/Patient/'+data['PatientID']+'/edit"' +
+                        ' rel="#overlay">Edit' +
+                    ' </a>');
                 $('a.edit_patient').prepOverlay(getPatientOverlay());
 
                 // Set patient's menstrual status
