@@ -22,6 +22,7 @@
    <permission-role>Preserver</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Doctor</permission-role>
+   <permission-role>RegulatoryInspector</permission-role>
   </permission-map>
   <permission-map name="Modify portal content" acquired="False">
    <permission-role>Manager</permission-role>
@@ -32,6 +33,7 @@
    <permission-role>Preserver</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Doctor</permission-role>
+   <permission-role>RegulatoryInspector</permission-role>
   </permission-map>
   <permission-map name="View" acquired="False">
    <permission-role>Manager</permission-role>
@@ -42,6 +44,7 @@
    <permission-role>Preserver</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Doctor</permission-role>
+   <permission-role>RegulatoryInspector</permission-role>
   </permission-map>
  </state>
 

@@ -66,4 +66,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="Fix workflow permissions for RegulatoryInspector role"
+        description=""
+        source="1007"
+        destination="1008"
+        handler="bika.health.upgrade.to1008.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>
