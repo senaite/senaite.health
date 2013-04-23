@@ -130,7 +130,7 @@ class BatchSchemaExtender(object):
                 visible={'edit': 'visible', 'view': 'visible'},
                 base_query={'inactive_state': 'active'},
                 catalog_name='portal_catalog',
-                showOn=False,
+                showOn=True,
                 colModel = [{'columnName':'ClientID','width':'20','label':_('Client ID')},
                             {'columnName':'Title','width':'80','label':_('Title')}
                            ],
@@ -158,7 +158,7 @@ class BatchSchemaExtender(object):
                 visible={'edit': 'visible', 'view': 'visible'},
                 base_query={'inactive_state': 'active'},
                 catalog_name='portal_catalog',
-                showOn=False,
+                showOn=True,
                 colModel = [{'columnName':'DoctorID','width':'20','label':_('Doctor ID')},
                             {'columnName':'Title','width':'80','label':_('Full Name')},
                             ],
@@ -186,7 +186,7 @@ class BatchSchemaExtender(object):
                 visible={'edit': 'visible', 'view': 'visible'},
                 base_query={'inactive_state': 'active'},
                 catalog_name='bika_patient_catalog',
-                showOn=False,
+                showOn=True,
                 colModel = [{'columnName':'getPatientID','width':'20','label':_('Patient ID')},
                             {'columnName':'Title','width':'40','label':_('Full Name')},
                             {'columnName':'PatientIdentifiers', 'width':'40','label':_('Additional Identifiers')}]
