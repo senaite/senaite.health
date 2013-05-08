@@ -10,10 +10,8 @@ class BatchFolderContentsView(BaseView):
         self.title = _("Cases")
         self.columns = {
             'BatchID': {'title': _('Case ID')},
-            'Doctor': {'title': _('Doctor'),
-                       'index': 'getDoctorTitle'},
-            'Client': {'title': _('Client'),
-                       'index': 'getClientTitle'},
+            'Doctor': {'title': _('Doctor')},
+            'Client': {'title': _('Client')},
             'OnsetDate': {'title': _('Onset Date')},
             'state_title': {'title': _('State'), 'sortable': False},
          }
@@ -93,11 +91,13 @@ class BatchFolderContentsView(BaseView):
             client = obj.Schema()['Client'].get(obj)
             doctor = obj.Schema()['Doctor'].get(obj)
 
+            items[x]['Doctor'] = doctor and doctor.Title() or ''
             items[x]['replace']['Doctor'] = doctor \
                 and "<a href='%s'>%s</a>" % \
                 (doctor.absolute_url(),
                  doctor.Title()) or ''
 
+            items[x]['Client'] = client and client.Title() or ''
             items[x]['replace']['Client'] = client \
                 and "<a href='%s'>%s</a>" % \
                 (client.absolute_url(),
