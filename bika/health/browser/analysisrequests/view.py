@@ -30,7 +30,8 @@ class AnalysisRequestsView(BaseView):
                     continue
                 obj = items[x]['obj']
                 batch = obj.getBatch()
-                if batch:
+                patient = batch and batch.Schema()['Patient'].get(batch) or None
+                if patient:
                     patient = batch.Schema()['Patient'].get(batch)
                     items[x]['getPatientID'] = patient.getPatientID()
                     items[x]['replace']['getPatientID'] = "<a href='%s'>%s</a>" % \

@@ -10,8 +10,6 @@ class BatchFolderContentsView(BaseView):
         self.title = _("Cases")
         self.columns = {
             'BatchID': {'title': _('Case ID')},
-            'Patient': {'title': _('Patient'),
-                        'index': 'getPatientTitle'},
             'Doctor': {'title': _('Doctor'),
                        'index': 'getDoctorTitle'},
             'Client': {'title': _('Client'),
@@ -27,7 +25,6 @@ class BatchFolderContentsView(BaseView):
                                'sort_order': 'reverse'},
              'title': _('Open'),
              'columns':['BatchID',
-                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -39,7 +36,6 @@ class BatchFolderContentsView(BaseView):
                                'sort_order': 'reverse'},
              'title': _('Closed'),
              'columns':['BatchID',
-                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -51,7 +47,6 @@ class BatchFolderContentsView(BaseView):
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'columns':['BatchID',
-                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -62,7 +57,6 @@ class BatchFolderContentsView(BaseView):
              'contentFilter':{'sort_on':'created',
                               'sort_order': 'reverse'},
              'columns':['BatchID',
-                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -74,6 +68,20 @@ class BatchFolderContentsView(BaseView):
         self.filter_indexes = None
 
         items = BaseView.folderitems(self)
+        pm = getToolByName(self.context, "portal_membership")
+        member = pm.getAuthenticatedMember()
+        roles = member.getRoles()
+        showpatientinfo = 'Manager' in roles or 'LabManager' in roles \
+                        or 'LabClerk' in roles
+        if showpatientinfo:
+            # Add Client Patient fields
+            self.columns['Patient'] = {'title': _("Patient")}
+            self.columns['getClientPatientID'] = {'title': _("Client PID")}
+            for rs in self.review_states:
+                i = rs['columns'].index('BatchID') + 1
+                rs['columns'].insert(i, 'getClientPatientID')
+                rs['columns'].insert(i, 'Patient')
+
         for x in range(len(items)):
             if 'obj' not in items[x]:
                 continue
@@ -84,24 +92,6 @@ class BatchFolderContentsView(BaseView):
 
             client = obj.Schema()['Client'].get(obj)
             doctor = obj.Schema()['Doctor'].get(obj)
-            patient = obj.Schema()['Patient'].get(obj)
-
-            if 'Doctor' not in items[x]:
-                items[x]['Doctor'] = ''
-
-            if 'Patient' not in items[x]:
-                items[x]['Patient'] = ''
-
-            if 'Client' not in items[x]:
-                items[x]['Client'] = ''
-
-            if 'OnsetDate' not in items[x]:
-                items[x]['OnsetDate'] = ''
-
-            items[x]['replace']['Patient'] = patient \
-                and "<a href='%s'>%s</a>" % \
-                (patient.absolute_url(),
-                 patient.Title()) or ''
 
             items[x]['replace']['Doctor'] = doctor \
                 and "<a href='%s'>%s</a>" % \
@@ -117,4 +107,19 @@ class BatchFolderContentsView(BaseView):
             items[x]['replace']['OnsetDate'] = OnsetDate \
                 and self.ulocalized_time(OnsetDate) or ''
 
+            if showpatientinfo:
+                patient = obj.Schema()['Patient'].get(obj)
+                items[x]['Patient'] = patient and patient or ''
+                items[x]['replace']['Patient'] = patient \
+                                and "<a href='%s'>%s</a>" % \
+                                (patient.absolute_url(),
+                                 patient.Title()) or ''
+                items[x]['getClientPatientID'] = patient \
+                                and patient.getClientPatientID() \
+                                or ''
+                items[x]['replace']['getClientPatientID'] = patient \
+                                and "<a href='%s'>%s</a>" % \
+                                    (patient.absolute_url(), 
+                                     items[x]['getClientPatientID']) \
+                                or ''
         return items
