@@ -113,3 +113,9 @@ class WorkflowAction(BaseClass):
                                   'managers that some analyses exceeded the '
                                   'panic levels') + (": %s" % str(msg)))
                         self.context.plone_utils.addPortalMessage(message, 'warning')
+
+    def cloneAR(self, ar):
+        newar = BaseClass.cloneAR(self, ar)
+        newar.Schema()['Patient'].set(newar, ar.Schema()['Patient'].get(ar))
+        newar.Schema()['Doctor'].set(newar, ar.Schema()['Doctor'].get(ar))
+        return newar
