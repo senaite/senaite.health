@@ -14,7 +14,7 @@ class AnalysisRequestsView(BaseView):
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
         roles = member.getRoles()
-        if 'Manager' in roles or 'LabManager' in roles:
+        if 'Manager' in roles or 'LabManager' in roles or 'LabClerk' in roles:
             # Add Client Patient fields
             self.columns['getPatientID'] = {'title': _('Patient ID')}
             self.columns['getClientPatientID'] = {'title': _("Client PID")}
@@ -29,10 +29,8 @@ class AnalysisRequestsView(BaseView):
                     items[x]['getPatientID'] = ''
                     continue
                 obj = items[x]['obj']
-                batch = obj.getBatch()
-                patient = batch and batch.Schema()['Patient'].get(batch) or None
+                patient = obj.Schema()['Patient'].get(obj)
                 if patient:
-                    patient = batch.Schema()['Patient'].get(batch)
                     items[x]['getPatientID'] = patient.getPatientID()
                     items[x]['replace']['getPatientID'] = "<a href='%s'>%s</a>" % \
                         (patient.absolute_url(), items[x]['getPatientID'])

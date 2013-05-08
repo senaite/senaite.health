@@ -21,12 +21,11 @@ class AnalysisRequestView(AnalysisRequestViewView):
                 break
 
         # Add Client Patient field
-        batch = self.context.getBatch()
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
         roles = member.getRoles()
-        if batch and ('Manager' in roles or 'LabManager' in roles):
-            patient = batch.Schema()['Patient'].get(batch)
+        if 'Manager' in roles or 'LabManager' in roles or 'LabClerk' in roles:
+            patient = self.context.Schema()['Patient'].get(self.context)
             if patient:
                 self.header_rows.append(
                 {'id': 'Patient',
