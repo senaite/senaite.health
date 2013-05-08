@@ -56,6 +56,7 @@ class ajaxGetPatients(BrowserView):
                 if clientid == '' or clientid == patient.getPrimaryReferrer().id:
                     rows.append({'Title': patient.Title() or '',
                                  'PatientID': patient.getPatientID(),
+                                 'ClientPatientID': patient.getClientPatientID(),
                                  'ClientTitle': patient.getPrimaryReferrer().Title(),
                                  'ClientID': patient.getPrimaryReferrer().getClientID(),
                                  'ClientSysID': patient.getPrimaryReferrer().id,

@@ -20,6 +20,43 @@ class AnalysisRequestView(AnalysisRequestViewView):
                 row['title'] = _('Case ID')
                 break
 
+        # Add Client Patient field
+        batch = self.context.getBatch()
+        pm = getToolByName(self.context, "portal_membership")
+        member = pm.getAuthenticatedMember()
+        roles = member.getRoles()
+        if batch and ('Manager' in roles or 'LabManager' in roles):
+            patient = batch.Schema()['Patient'].get(batch)
+            if patient:
+                self.header_rows.append(
+                {'id': 'Patient',
+                 'title': _('Patient'),
+                 'allow_edit': False,
+                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+                                                   patient.Title()),
+                 'condition': True,
+                 'type': 'text'})
+
+                self.header_rows.append(
+                {'id': 'PatientID',
+                 'title': _('Patient ID'),
+                 'allow_edit': False,
+                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+                                                   patient.getPatientID() 
+                                                   or ''),
+                 'condition':True,
+                 'type': 'text'})
+
+                self.header_rows.append(
+                {'id': 'ClientPatientID',
+                 'title': _('Client Patient ID'),
+                 'allow_edit': False,
+                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+                                                   patient.getClientPatientID() 
+                                                   or ''),
+                 'condition':True,
+                 'type': 'text'})
+
         autopopup = False
         bs = self.context.bika_setup
         sc = self.context

@@ -41,6 +41,9 @@ class PatientsView(BikaListingView):
             'getPatientID': {'title': _('Patient ID'),
                              'index': 'getPatientID'},
 
+            'getClientPatientID': {'title': _('Client PID'),
+                            'index': 'getClientPatientID'},
+
             'getGender': {'title': _('Gender'),
                           'index': 'getGender',
                           'toggle': True},
@@ -68,8 +71,10 @@ class PatientsView(BikaListingView):
              'title': _('All'),
              'contentFilter':{},
              'transitions':[{'id':'empty'}, ],
-             'columns': ['Title', 'getPatientID', 'getGender', 'getAgeSplittedStr',
-                         'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']},
+             'columns': ['Title', 'getPatientID', 'getClientPatientID', 
+                         'getGender', 'getAgeSplittedStr',
+                         'getBirthDate', 'getCitizenship',
+                         'getPrimaryReferrer']},
         ]
 
     def __call__(self):
@@ -97,14 +102,16 @@ class PatientsView(BikaListingView):
                  'title': _('Active'),
                  'contentFilter': {'inactive_state': 'active'},
                  'transitions': [{'id':'deactivate'}, ],
-                 'columns': ['getPatientID', 'Title', 'getGender', 'getAgeSplittedStr',
+                 'columns': ['getPatientID', 'getClientPatientID',
+                             'Title', 'getGender', 'getAgeSplittedStr',
                              'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']})
             self.review_states.append(
                 {'id': 'inactive',
                  'title': _('Dormant'),
                  'contentFilter': {'inactive_state': 'inactive'},
                  'transitions': [{'id':'activate'}, ],
-                 'columns': ['getPatientID', 'Title', 'getGender', 'getAgeSplittedStr',
+                 'columns': ['getPatientID', 'getClientPatientID',
+                             'Title', 'getGender', 'getAgeSplittedStr',
                              'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']})
 
         items = BikaListingView.folderitems(self)
@@ -116,6 +123,8 @@ class PatientsView(BikaListingView):
             items[x]['getBirthDate'] = self.ulocalized_time(obj.getBirthDate())
             items[x]['replace']['getPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
                 (items[x]['url'], items[x]['getPatientID'])
+            items[x]['replace']['getClientPatientID'] = "<a href='%s'>%s</a>" % \
+                (items[x]['url'], items[x]['getClientPatientID'])
             items[x]['replace']['Title'] = "<a href='%s/analysisrequests'>%s</a>" % \
                 (items[x]['url'], items[x]['Title'])
 

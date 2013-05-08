@@ -75,4 +75,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="Added ClientPatientID for Patient"
+        description=""
+        source="1008"
+        destination="1009"
+        handler="bika.health.upgrade.to1009.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>

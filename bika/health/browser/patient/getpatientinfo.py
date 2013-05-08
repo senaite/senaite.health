@@ -14,6 +14,7 @@ class ajaxGetPatientInfo(BrowserView):
         PatientUID = self.request.get('PatientUID', '')
         ret = {'PatientID': '',
                'PatientUID': '',
+               'ClientPatientID': '',
                'ClientID': '',
                'ClientUID': '',
                'ClientTitle': '',
@@ -46,6 +47,7 @@ class ajaxGetPatientInfo(BrowserView):
         PR = patient.getPrimaryReferrer()
         ret = {'PatientID': patient.getPatientID(),
                'PatientUID': patient.UID(),
+               'ClientPatientID': patient.getClientPatientID(),
                'ClientID': PR and PR.getClientID() or '',
                'ClientUID': PR and PR.UID() or '',
                'ClientTitle': PR and PR.Title() or '',

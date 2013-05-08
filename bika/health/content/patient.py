@@ -342,6 +342,11 @@ schema = Person.schema.copy() + Schema((
                 label='Menstrual status',
             ),
     ),
+    StringField('ClientPatientID',
+            widget=StringWidget(
+                label=_('Client Patient ID'),
+            ),
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -365,6 +370,7 @@ schema.moveField('BirthDateEstimated', after='BirthDate')
 schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
+schema.moveField('ClientPatientID', after='PatientID')
 
 
 class Patient(Person):

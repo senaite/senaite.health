@@ -111,6 +111,12 @@ def getClientTitle(instance):
     value = item and item.Title() or ''
     return value
 
+@indexer(IBatch)
+def getClientPatientID(instance):
+    item = instance.Schema()['Patient'].get(instance)
+    value = item and item.getClientPatientID() or ''
+    return value
+
 
 class BatchSchemaExtender(object):
     adapts(IBatch)
