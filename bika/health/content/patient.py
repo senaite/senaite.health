@@ -343,9 +343,17 @@ schema = Person.schema.copy() + Schema((
             ),
     ),
     StringField('ClientPatientID',
+            searchable=1,
+            required=0,
             widget=StringWidget(
                 label=_('Client Patient ID'),
             ),
+    ),
+    BooleanField('Anonymous',
+             default=False,
+             widget=BooleanWidget(
+                 visible=False,
+             ),
     ),
 ))
 

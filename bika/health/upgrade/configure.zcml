@@ -84,4 +84,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="Added Javascripts for AnalysisRequest"
+        description=""
+        source="1009"
+        destination="1010"
+        handler="bika.health.upgrade.to1010.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>

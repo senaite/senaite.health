@@ -84,13 +84,50 @@ class AnalysisRequestSchemaExtender(object):
                          'add': 'invisible'},
             ),
         ),
+
+        ExtStringField(
+            'ClientPatientID',
+            searchable=True,
+            required=0,
+            widget=ReferenceWidget(
+                label=_("Client Patient ID"),
+                size=12,
+                colModel=[
+                    {'columnName': 'id',
+                                    'width': '20',
+                                    'label': _('Patient ID'),
+                                    'align':'left'},
+                    {'columnName': 'ClientPatientID',
+                                    'width': '20',
+                                    'label': _('Client PID'),
+                                    'align':'left'},
+                    {'columnName': 'Title',
+                                    'width': '60',
+                                    'label': _('Fullname'),
+                                    'align': 'left'},
+                    {'columnName': 'UID', 'hidden': True},
+                ],
+                ui_item='ClientPatientID',
+                search_query='',
+                portal_types=('Patient',),
+                render_own_label=True,
+                visible={'edit': 'visible',
+                         'view': 'visible',
+                         'add': 'visible'},
+                catalog_name='bika_patient_catalog',
+                base_query={'inactive_state': 'active'},
+                showOn=True,
+            ),
+        ),
     ]
 
     def getOrder(self, schematas):
         default = schematas['default']
         default.remove('Patient')
         default.remove('Doctor')
-        default.insert(default.index('Template'), 'Patient')
+        default.remove('ClientPatientID')
+        default.insert(default.index('Template'), 'ClientPatientID')
+        default.insert(default.index('ClientPatientID'), 'Patient')
         default.insert(default.index('Patient'), 'Doctor')
         schematas['default'] = default
         return schematas

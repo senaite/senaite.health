@@ -77,5 +77,27 @@
               expression=""
               inline="False"
               insert-after="*"/>
+              
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/analysisrequest.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression="python:request['URL'].find('/AnalysisRequest')>0"
+              inline="False"
+              insert-after="*"/>
+              
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/analysisrequest_add.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression="python:request['URL'].find('/ar_add')>0"
+              inline="False"
+              insert-after="*"/>
 
 </object>
