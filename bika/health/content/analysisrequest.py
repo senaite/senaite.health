@@ -109,6 +109,8 @@ class AnalysisRequestSchemaExtender(object):
                 ],
                 ui_item='ClientPatientID',
                 search_query='',
+                discard_empty=('ClientPatientID',),
+                search_fields=('ClientPatientID',),
                 portal_types=('Patient',),
                 render_own_label=True,
                 visible={'edit': 'visible',
@@ -127,8 +129,8 @@ class AnalysisRequestSchemaExtender(object):
         default.remove('Doctor')
         default.remove('ClientPatientID')
         default.insert(default.index('Template'), 'ClientPatientID')
-        default.insert(default.index('ClientPatientID'), 'Patient')
-        default.insert(default.index('Patient'), 'Doctor')
+        default.insert(default.index('Template'), 'Patient')
+        default.insert(default.index('Template'), 'Doctor')
         schematas['default'] = default
         return schematas
 

@@ -12,55 +12,46 @@ $(document).ready(function(){
 }(jQuery));
 
 function loadEventHandlers() {
-	$('[id$="_ClientPatientID"]').live('change', function() {
-    	colposition = getColPosition(this.attr('name'));
-    	clientpid = this.val()
-    	if (colposition > -1) {
-        	loadPatient(clientpid, colposition);    		
-    	}
+	$('[id$="_ClientPatientID"]').bind("selected paste blur", function() {
+		colposition = this.id.split("_")[1]
+		id = $(this).val()
+    	loadPatient(id, colposition);    		
     });
+	
+	$('[id$="_Patient"]').bind("selected", function() {
+		colposition = this.id.split("_")[1]
+		uid = $(this).attr('uid');
+		loadClientPatientID(uid, colposition);
+	});
 }
 
 /**
- * Returns the AR add column position in which the field is located. If no
- * column position is found, returns -1
- * @param fieldname
- * @returns the AR add column position
- */
-function getColPosition(fieldname) {
-	var re = new RegExp("^ar_([\d+])_");
-	var m = re.exec(fieldname);
-	if (m != null && m.length==2) {
-		return m[1];
-	}
-	return -1;
-}
-
-/**
- * Searches a patient using the Client Patient ID. If found, fill the Patient's
+ * Searches a patient using the Patient UID. If found, fill the Patient's
  * input fields from the same AR add column. If no patient found, set the values
  * to Anonymous.
- * @param clientpid Client Patient ID
+ * @param id Client Patient ID
  * @param colposition AR add column position
  */
-function loadPatient(clientpid, colposition) {
-	if (clientpid!='') {
+function loadPatient(id, colposition) {
+	if (id!='') {
 		$.ajax({
 			url: window.portal_url + "/getpatientinfo",
 			type: 'POST',
 			data: {'_authenticator': $('input[name="_authenticator"]').val(),
-                   'ClientPatientID': clientPID},
+                   'ClientPatientID': id},
         dataType: "json",
         success: function(data, textStatus, $XHR){
         	if (data['PatientUID']!='') {
 	        	$("#ar_"+colposition+"_Patient").val(data['PatientFullname']);
 	        	$("#ar_"+colposition+"_Patient").attr('uid', data['PatientUID']);
 	        	$("#ar_"+colposition+"_Patient_uid").val(data['PatientUID']);
+	        	$("#ar_"+colposition+"_Patient").attr("readonly",false);
         	} else {
         		// No patient found. Set anonymous patient
         		$("#ar_"+colposition+"_Patient").val(_('Anonymous'));
 	        	$("#ar_"+colposition+"_Patient").attr('uid', 'anonymous');
 	        	$("#ar_"+colposition+"_Patient_uid").val('anonymous');
+	        	$("#ar_"+colposition+"_Patient").attr("readonly",true);
         	}
         }
 		});
@@ -69,5 +60,34 @@ function loadPatient(clientpid, colposition) {
 		$("#ar_"+colposition+"_Patient").val('');
     	$("#ar_"+colposition+"_Patient").attr('uid', '');
     	$("#ar_"+colposition+"_Patient_uid").val('');
+    	$("#ar_"+colposition+"_Patient").attr("readonly",false);
+	}
+}
+
+/**
+ * Searches a patient using the Patient UID. If found, fill the Client Patient ID
+ * from the same AR add column. If no patient found, set the value to empty.
+ * @param uid Patient UID
+ * @param colposition AR add column position
+ */
+function loadClientPatientID(uid, colposition) {
+	if (uid!='') {
+		$.ajax({
+			url: window.portal_url + "/getpatientinfo",
+			type: 'POST',
+			data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                   'PatientUID': uid},
+        dataType: "json",
+        success: function(data, textStatus, $XHR){
+        	$("#ar_"+colposition+"_ClientPatientID").val(data['ClientPatientID']);
+        	$("#ar_"+colposition+"_ClientPatientID").attr('uid', uid);
+        	$("#ar_"+colposition+"_ClientPatientID_uid").val(uid);
+        }
+		});
+	} else {
+		// Empty client patient id. Reset patient fields
+		$("#ar_"+colposition+"_ClientPatientID").val('');
+    	$("#ar_"+colposition+"_ClientPatientID").attr('uid', '');
+    	$("#ar_"+colposition+"_ClientPatientID_uid").val('');
 	}
 }

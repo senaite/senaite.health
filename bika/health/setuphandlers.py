@@ -218,6 +218,7 @@ def setupCatalogs(context):
     addIndex(bc, 'getDoctorID', 'FieldIndex')
     addIndex(bc, 'getDoctorUID', 'FieldIndex')
     addIndex(bc, 'getDoctorTitle', 'FieldIndex')
+    addIndex(bc, 'getClientPatientID', 'FieldIndex')
 
     # portal_catalog
     pc = getToolByName(portal, 'portal_catalog', None)
@@ -268,6 +269,7 @@ def setupCatalogs(context):
     addIndex(bpc, 'sortable_title', 'FieldIndex')
     addIndex(bpc, 'review_state', 'FieldIndex')
     addIndex(bpc, 'getPatientID', 'FieldIndex')
+    addIndex(bpc, 'getClientPatientID', 'FieldIndex')
     addIndex(bpc, 'getPrimaryReferrerUID', 'FieldIndex')
     addIndex(bpc, 'getGender', 'FieldIndex')
     addIndex(bpc, 'getAgeSplittedStr', 'FieldIndex')
@@ -282,6 +284,7 @@ def setupCatalogs(context):
     addColumn(bpc, 'sortable_title')
     addColumn(bpc, 'Description')
     addColumn(bpc, 'getPatientID')
+    addColumn(bpc, 'getClientPatientID')
     addColumn(bpc, 'getPrimaryReferrerUID')
     addColumn(bpc, 'review_state')
     addColumn(bpc, 'inactive_state')

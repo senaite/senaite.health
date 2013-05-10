@@ -98,6 +98,6 @@
               enabled="on"
               expression="python:request['URL'].find('/ar_add')>0"
               inline="False"
-              insert-after="*"/>
+              insert-after="++resource++bika.lims.js/ar_add.js"/>
 
 </object>

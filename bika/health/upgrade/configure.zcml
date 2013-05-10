@@ -92,5 +92,14 @@
         handler="bika.health.upgrade.to1010.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+ 
+  <genericsetup:upgradeStep
+        title="Add Client Patient ID indexes for searches"
+        description=""
+        source="1010"
+        destination="1011"
+        handler="bika.health.upgrade.to1011.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 
 </configure>

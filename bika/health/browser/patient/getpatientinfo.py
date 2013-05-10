@@ -12,6 +12,7 @@ class ajaxGetPatientInfo(BrowserView):
         plone.protect.CheckAuthenticator(self.request)
         Fullname = self.request.get('Fullname', '')
         PatientUID = self.request.get('PatientUID', '')
+        ClientPatientID = self.request.get('ClientPatientID', '')
         ret = {'PatientID': '',
                'PatientUID': '',
                'ClientPatientID': '',
@@ -29,6 +30,12 @@ class ajaxGetPatientInfo(BrowserView):
             try:
                 bpc = getToolByName(self.context, 'bika_patient_catalog')
                 proxies = bpc(UID=PatientUID)
+            except ParseError:
+                pass
+        elif ClientPatientID:
+            try:
+                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                proxies = bpc(getClientPatientID=ClientPatientID)
             except ParseError:
                 pass
         elif Fullname:

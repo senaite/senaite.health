@@ -27,5 +27,13 @@
       permission="bika.lims.EditResults"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
+    
+    <browser:page
+      for="*"
+      name="analysisrequest_submit"
+      class="bika.health.browser.analysisrequest.ajax.AnalysisRequestSubmit"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
 
 </configure>
