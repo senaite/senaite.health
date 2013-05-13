@@ -65,6 +65,9 @@ $(document).ready(function(){
 		$("#CountryState.state").val($(this).val());
 		populate_district_select("CountryState")
 	});
+	$("#Anonymous").live('change', function() {
+		loadAnonymous();
+	});
 
 	function calculateAge() {
 		var dob = new Date($("#BirthDate").val());
@@ -148,6 +151,43 @@ $(document).ready(function(){
 	if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
 		$('#archetypes-fieldname-MenstrualStatus').hide();
 	}
+	
+	loadAnonymous();
 
 });
 }(jQuery));
+
+function loadAnonymous() {
+	tohide = ["#archetypes-fieldname-Salutation",
+	          "#archetypes-fieldname-Middleinitial",
+	          "#archetypes-fieldname-Middlename",
+	          "#archetypes-fieldname-Firstname",
+              "#archetypes-fieldname-Surname",
+              "#archetypes-fieldname-AgeSplitted",
+              "#archetypes-fieldname-BirthDateEstimated"];
+	
+	if ($('#Anonymous').is(':checked')) {		
+		// Hide non desired input fields
+		for (i=0;i<tohide.length;i++){
+			$(tohide[i]).hide();
+		}		
+		// Set default values
+		$("#ClientPatientID").attr("required", true);
+		$("#ClientPatientID_help").before('<span class="required" title="Required">&nbsp;</span>');
+		$("input[id='Firstname']").val(_("Anonymous"));
+		$("input[id='Surname']").val(_("Patient"));
+		$("#archetypes-fieldname-BirthDate").find('span[class="required"]').remove();
+		$("input[id='BirthDate']").attr("required", false);
+		$("input[id='BirthDate']").val("");		
+		
+	} else {
+		// Show desired input fields
+		for (i=0;i<tohide.length;i++){
+			$(tohide[i]+":hidden").show();
+		}
+		$("#archetypes-fieldname-ClientPatientID").find('span[class="required"]').remove();
+		$("input[id='ClientPatientID']").attr("required", false);
+		$("input[id='BirthDate']").attr("required", true);
+		$("#BirthDate_help").before('<span class="required" title="Required">&nbsp;</span>');		
+	}
+}

@@ -19,6 +19,35 @@ function loadEventHandlers() {
     $("#OnsetDate").live('change', function() {
         setPatientAgeAtCaseOnsetDate();
     });
+    $("#ClientPatientID").bind("selected paste blur", function() {
+		id = $(this).val()
+    	loadAnonymousPatient(id);    		
+    });
+}
+
+function loadAnonymousPatient(id) {
+	if (id!='') {
+		$.ajax({
+			url: window.portal_url + "/getpatientinfo",
+			type: 'POST',
+			data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                   'ClientPatientID': id},
+        dataType: "json",
+        success: function(data, textStatus, $XHR){
+        	if (data['PatientUID']!='') {
+	        	$("#Patient").val(data['PatientFullname']);
+	        	$("#Patient").attr('uid', data['PatientUID']);
+	        	$("#Patient_uid").val(data['PatientUID']);
+        	} else {
+        		// No patient found. Set empty patient
+        		$("#Patient").val('');
+	        	$("#Patient").attr('uid', '');
+	        	$("#Patient_uid").val('');
+        	}
+        }
+		});
+	}
+	loadPatientData();
 }
 
 
@@ -43,7 +72,8 @@ function loadPatientData() {
         		}
                 $('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);
                 $('input[name="PatientGender"]').val(data['PatientGender']);
-            
+                $('input[name="ClientPatientID"]').val(data['ClientPatientID']);
+                
                 // Set patient's menstrual status
                 if (data['PatientGender'] == 'female'
                     && data['PatientMenstrualStatus'] != null

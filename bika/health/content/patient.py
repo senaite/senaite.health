@@ -68,7 +68,7 @@ schema = Person.schema.copy() + Schema((
                 ),
     ),
     DateTimeField('BirthDate',
-                  required=1,
+                  required=0,
                   widget=DateTimeWidget(
                       label=_('Birth date'),
                   ),
@@ -352,7 +352,7 @@ schema = Person.schema.copy() + Schema((
     BooleanField('Anonymous',
              default=False,
              widget=BooleanWidget(
-                 visible=False,
+                 label=_("Anonymous")
              ),
     ),
 ))
@@ -379,6 +379,7 @@ schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
 schema.moveField('ClientPatientID', after='PatientID')
+schema.moveField('Anonymous', before='ClientPatientID')
 
 
 class Patient(Person):
