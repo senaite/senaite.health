@@ -10,10 +10,10 @@ function init() {
 }
 
 function loadEventHandlers() {
-    $("#Patient").bind("selected", function(){
+    $("#Patient").bind("selected paste blur", function(){
     	loadPatientData();
     });
-    $("#Doctor").bind("selected", function(){
+    $("#Doctor").bind("selected paste blur", function(){
     	loadDoctorOverlay(null);
     });
     $("#OnsetDate").live('change', function() {
@@ -189,7 +189,7 @@ function loadPatientOverlay(patientId) {
             	loadPatientOverlay(data['PatientID']);
             }
         });
-	} else {
+	} else if (patientId != null) {
 		$("a.add_patient").after('<a style="border-bottom:none !important;margin-left:.5;"' +
 	            ' class="edit_patient"' +
 	            ' href="'+window.portal_url+'/patients/portal_factory/Patient/'+patientId+'/edit"' +
@@ -222,7 +222,7 @@ function loadDoctorOverlay(doctorId) {
             	loadDoctorOverlay(data['id']);            	
             }
         });
-	} else {
+	} else if (doctorId != null){
 		$("a.add_doctor").after('<a style="border-bottom:none !important;margin-left:.5;"' +
 	            ' class="edit_doctor"' +
 	            ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/'+doctorId+'/edit"' +
@@ -367,9 +367,8 @@ $(document).ready(function(){
 	// If a client has already been selected, it doesn't get overrided
 	loadPatientData();
 
-	// Load patient add/edit overlay
-	// Patient overlay is already loaded by loadPatientData()
-	//loadPatientOverlay(null);
+	// Load patient add/edit overlay	
+	loadPatientOverlay(null);
 	
 	// Load doctor add/edit overlay
 	loadDoctorOverlay(null);
