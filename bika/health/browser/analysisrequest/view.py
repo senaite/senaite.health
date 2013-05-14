@@ -79,6 +79,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
         if self.hasAnalysesInPanic():
             self.addEmailLink(autopopup)
 
+        self.renderMessages()
         return self.template()
 
     def hasAnalysesInPanic(self):
@@ -109,12 +110,9 @@ class AnalysisRequestView(AnalysisRequestViewView):
                  'condition': True,
                  'type': 'text'})
 
-        message = self.context.translate(_('Some results exceeded the '
-                                           'panic levels that may '
-                                           'indicate an imminent '
-                                           'life-threatening condition.'
-                                           ))
-        self.context.plone_utils.addPortalMessage(message, 'warning')
+        message = _('Some results exceeded the panic levels that may '
+                    'indicate an imminent life-threatening condition.')
+        self.addMessage(message, 'warning')
 
     def sendAlertEmail(self):
         # Send an alert email
@@ -141,12 +139,10 @@ class AnalysisRequestView(AnalysisRequestViewView):
         except Exception, msg:
             ar = self.context.id
             logger.error("Panic level email %s: %s" % (ar, str(msg)))
-            message = self.context.translate(
-                    _('Unable to send an email to alert client '
-                      'that some results exceeded the panic levels')
-                                             + (": %s" % str(msg)))
-            self.context.plone_utils.addPortalMessage(message, 'warning')
-
+            message = _('Unable to send an email to alert client '
+                        'that some results exceeded the panic levels') \
+                                             + (": %s" % str(msg))
+            self.addMessage(message, 'warning')
         if succeed:
             # Update AR (a panic alert email has been sent)
             ar = self.context
