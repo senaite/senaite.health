@@ -55,6 +55,7 @@ schema = Person.schema.copy() + Schema((
     StringField('Gender',
                 vocabulary=GENDERS,
                 index='FieldIndex',
+                default='dk',
                 widget=SelectionWidget(
                     format='select',
                     label=_('Gender'),
