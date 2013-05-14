@@ -427,6 +427,7 @@ class Patient(Person):
                 continue
             clients.append([client.UID(), client.Title()])
         clients.sort(lambda x, y: cmp(x[1], y[1]))
+        clients.insert(0, ['', ''])
         return DisplayList(clients)
 
     def getPatientIdentifiersStr(self):
