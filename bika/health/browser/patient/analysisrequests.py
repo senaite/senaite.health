@@ -40,17 +40,16 @@ class AnalysisRequestsView(AnalysisRequestsView):
     def folderitems(self, full_objects=False):
         #HACK pending to solve by using getPatientUID directly in __init__
         #https://github.com/bikalabs/Bika-LIMS/issues/678
-        bc = getToolByName(self.context, 'bika_catalog')
-        buids = [b.UID for b in bc(portal_type='Batch',
-                                   getPatientID=self.context.id)]
         outitems = []
         items = super(AnalysisRequestsView, self).folderitems(full_objects)
+        patientuid = self.context.UID()
         for item in items:
             try:
                 if 'obj' in item \
-                    and item.get('obj') \
-                    and item.get('obj').getBatchUID() in buids:
-                    outitems.append(item)
+                    and item.get('obj'):
+                    ar = item.get('obj')
+                    if ar.Schema().getField('Patient').get(ar).UID() == patientuid:
+                        outitems.append(item)
             except:
                 pass
         return outitems
