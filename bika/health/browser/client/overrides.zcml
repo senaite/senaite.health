@@ -19,5 +19,13 @@
       permission="bika.lims.ManageClients"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
+    
+    <browser:page
+      for="bika.lims.interfaces.IClient"
+      name="workflow_action"
+      class="bika.health.browser.client.workflow.ClientWorkflowAction"
+      permission="zope.Public"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
 
 </configure>

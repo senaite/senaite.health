@@ -8,7 +8,7 @@
     <browser:page
       for="bika.health.interfaces.IDoctor"
       name="workflow_action"
-      class="bika.lims.browser.client.ClientWorkflowAction"
+      class="bika.health.browser.client.workflow.ClientWorkflowAction"
       permission="zope.Public"
       layer="bika.lims.interfaces.IBikaLIMS"
     />

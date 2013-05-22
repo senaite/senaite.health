@@ -23,6 +23,7 @@
   <include package=".immunization"/>
   <include package=".patient"/>
   <include package=".patients"/>
+  <include package=".samples"/>
   <include package=".symptoms"/>
   <include package=".treatment"/>
   <include package=".vaccinationcenter"/>
