@@ -17,6 +17,7 @@ from smtplib import SMTPRecipientsRefused
 from smtplib import SMTPServerDisconnected
 import App
 from bika.lims import logger
+from bika.health.browser.analysisrequest.publish import AnalysisRequestPublish
 
 class WorkflowAction(BaseClass):
 
@@ -119,3 +120,6 @@ class WorkflowAction(BaseClass):
         newar.Schema()['Patient'].set(newar, ar.Schema()['Patient'].get(ar))
         newar.Schema()['Doctor'].set(newar, ar.Schema()['Doctor'].get(ar))
         return newar
+
+    def doPublish(self, context, request, action, analysis_requests):
+        return AnalysisRequestPublish(context, request, action, analysis_requests)
