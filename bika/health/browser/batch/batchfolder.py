@@ -10,6 +10,8 @@ class BatchFolderContentsView(BaseView):
         self.title = _("Cases")
         self.columns = {
             'BatchID': {'title': _('Case ID')},
+            'getClientPatientID': {'title': _('Client PID')},
+            'Patient': {'title': _('Patient')},
             'Doctor': {'title': _('Doctor')},
             'Client': {'title': _('Client')},
             'OnsetDate': {'title': _('Onset Date')},
@@ -23,6 +25,8 @@ class BatchFolderContentsView(BaseView):
                                'sort_order': 'reverse'},
              'title': _('Open'),
              'columns':['BatchID',
+                        'getClientPatientID',
+                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -34,6 +38,8 @@ class BatchFolderContentsView(BaseView):
                                'sort_order': 'reverse'},
              'title': _('Closed'),
              'columns':['BatchID',
+                        'getClientPatientID',
+                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -45,6 +51,8 @@ class BatchFolderContentsView(BaseView):
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'columns':['BatchID',
+                        'getClientPatientID',
+                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -55,6 +63,8 @@ class BatchFolderContentsView(BaseView):
              'contentFilter':{'sort_on':'created',
                               'sort_order': 'reverse'},
              'columns':['BatchID',
+                        'getClientPatientID',
+                        'Patient',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -69,16 +79,19 @@ class BatchFolderContentsView(BaseView):
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
         roles = member.getRoles()
-        showpatientinfo = 'Manager' in roles or 'LabManager' in roles \
-                        or 'LabClerk' in roles
-        if showpatientinfo:
-            # Add Client Patient fields
-            self.columns['Patient'] = {'title': _("Patient")}
-            self.columns['getClientPatientID'] = {'title': _("Client PID")}
+        hidepatientinfo = 'Manager' not in roles \
+            and 'LabManager' not in roles \
+            and 'LabClerk' not in roles
+
+        if hidepatientinfo:
+            # Remove patient fields. Must be done here because in __init__ 
+            # method, member.getRoles() returns empty
+            del self.columns['Patient']
+            del self.columns['getClientPatientID']
             for rs in self.review_states:
                 i = rs['columns'].index('BatchID') + 1
-                rs['columns'].insert(i, 'getClientPatientID')
-                rs['columns'].insert(i, 'Patient')
+                del rs['columns'][rs['columns'].index('getClientPatientID')]
+                del rs['columns'][rs['columns'].index('Patient')]
 
         for x in range(len(items)):
             if 'obj' not in items[x]:
@@ -107,7 +120,7 @@ class BatchFolderContentsView(BaseView):
             items[x]['replace']['OnsetDate'] = OnsetDate \
                 and self.ulocalized_time(OnsetDate) or ''
 
-            if showpatientinfo:
+            if hidepatientinfo == False:
                 patient = obj.Schema()['Patient'].get(obj)
                 items[x]['Patient'] = patient and patient or ''
                 items[x]['replace']['Patient'] = patient \

@@ -10,6 +10,7 @@ class BatchesView(ClientBatchesView):
         self.title = _("Cases")
         self.columns = {
             'BatchID': {'title': _('Case ID')},
+            'getClientPatientID': {'title': _('Client PID')},
             'Patient': {'title': _('Patient'),
                         'index': 'getPatientTitle'},
             'Doctor': {'title': _('Doctor'),
@@ -28,6 +29,7 @@ class BatchesView(ClientBatchesView):
                                'sort_order': 'reverse'},
              'title': _('Open'),
              'columns':['BatchID',
+                        'getClientPatientID',
                         'Patient',
                         'Doctor',
                         'Client',
@@ -40,6 +42,7 @@ class BatchesView(ClientBatchesView):
                                'sort_order': 'reverse'},
              'title': _('Closed'),
              'columns':['BatchID',
+                        'getClientPatientID',
                         'Patient',
                         'Doctor',
                         'Client',
@@ -52,6 +55,7 @@ class BatchesView(ClientBatchesView):
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'columns':['BatchID',
+                        'getClientPatientID',
                         'Patient',
                         'Doctor',
                         'Client',
@@ -63,6 +67,7 @@ class BatchesView(ClientBatchesView):
              'contentFilter':{'sort_on':'created',
                               'sort_order': 'reverse'},
              'columns':['BatchID',
+                        'getClientPatientID',
                         'Patient',
                         'Doctor',
                         'Client',
@@ -70,6 +75,15 @@ class BatchesView(ClientBatchesView):
                         'state_title', ]
              },
         ]
+
+    def contentsMethod(self, contentFilter):
+        batches = {}
+        bc = getToolByName(self.context, "bika_catalog")
+        for batch in bc(portal_type='Batch',
+                        getClientUID = self.context.UID()):
+            batch = batch.getObject()
+            batches[batch.UID()] = batch 
+        return batches.values()
 
     def folderitems(self):
         self.filter_indexes = None
@@ -117,5 +131,14 @@ class BatchesView(ClientBatchesView):
             onsetdate = obj.Schema()['OnsetDate'].get(obj)
             items[x]['replace']['OnsetDate'] = onsetdate \
                 and self.ulocalized_time(onsetdate) or ''
+
+            items[x]['getClientPatientID'] = patient \
+                            and patient.getClientPatientID() \
+                            or ''
+            items[x]['replace']['getClientPatientID'] = patient \
+                            and "<a href='%s'>%s</a>" % \
+                                (patient.absolute_url(), 
+                                 items[x]['getClientPatientID']) \
+                            or ''
 
         return items

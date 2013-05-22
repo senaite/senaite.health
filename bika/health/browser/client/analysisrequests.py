@@ -8,19 +8,31 @@ class AnalysisRequestsView(ClientAnalysisRequestsView):
         super(AnalysisRequestsView, self).__init__(context, request)
         self.columns['BatchID']['title'] = _('Case ID')
 
+        # Add Client Patient fields
+        self.columns['getPatientID'] = {'title': _('Patient ID'), 'toggle': True}
+        self.columns['getClientPatientID'] = {'title': _("Client PID"), 'toggle': True}
+        for rs in self.review_states:
+            i = rs['columns'].index('BatchID') + 1
+            rs['columns'].insert(i, 'getClientPatientID')
+            rs['columns'].insert(i, 'getPatientID')
+
     def folderitems(self, full_objects=False):
         items = super(AnalysisRequestsView, self).folderitems(full_objects)
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
         roles = member.getRoles()
-        if 'Manager' in roles or 'LabManager' in roles or 'LabClerk' in roles:
-            # Add Client Patient fields
-            self.columns['getPatientID'] = {'title': _('Patient ID')}
-            self.columns['getClientPatientID'] = {'title': _("Client PID")}
+        if 'Manager' not in roles \
+            and 'LabManager' not in roles \
+            and 'LabClerk' not in roles:
+            # Remove patient fields. Must be done here because in __init__ 
+            # method, member.getRoles() returns empty
+            del self.columns['getPatientID']
+            del self.columns['getClientPatientID']
             for rs in self.review_states:
                 i = rs['columns'].index('BatchID') + 1
-                rs['columns'].insert(i, 'getClientPatientID')
-                rs['columns'].insert(i, 'getPatientID')
+                del rs['columns'][rs['columns'].index('getClientPatientID')]
+                del rs['columns'][rs['columns'].index('getPatientID')]
+        else:
 
             for x in range(len(items)):
                 if 'obj' not in items[x]:
