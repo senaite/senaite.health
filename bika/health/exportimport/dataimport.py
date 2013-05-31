@@ -22,7 +22,7 @@ class ImportView(BaseView):
                 lsd = LoadSetupData(self.context, self.request)
                 return lsd()
             else:
-                exim = getattr(instruments, self.request['exim'])
+                exim = instruments.getExim(self.request['exim'])
                 return exim.Import(self.context, self.request)
         else:
             return BaseView.__call__(self)
