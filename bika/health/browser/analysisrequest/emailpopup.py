@@ -42,8 +42,8 @@ class EmailPopupView(BrowserView):
                 ccemail = cc.getEmailAddress()
                 if ccemail:
                     self.ccs.append({'uid': cc.UID(),
-                                'name': cc.Title(),
-                                'email': ccemail})
+                                     'name': cc.Title(),
+                                     'email': ccemail})
 
             inpanicanalyses = []
             workflow = getToolByName(ar, 'portal_workflow')
@@ -60,7 +60,7 @@ class EmailPopupView(BrowserView):
                     logger.warning("Call error: isInPanicRange for analysis %s" % analysis.UID())
                     pass
 
-                if inpanic[0] == True:
+                if inpanic[0] is True:
                     inpanicanalyses.append(analysis)
 
             laboratory = self.context.bika_setup.laboratory
@@ -70,16 +70,21 @@ class EmailPopupView(BrowserView):
                 serviceTitle = an.getServiceTitle()
                 result = an.getResult()
                 strans.append("- %s, result: %s" % (serviceTitle, result))
-            stran = "\n".join(strans)
-            self.body = _("Some results from the Analysis Request %s exceeded "
-                         "the panic levels that may indicate an imminent "
-                         "life-threatening condition: \n\n%s\n"
-                         "\n\n%s"
-                         ) % (ar.getRequestID(),
-                              stran,
-                              lab_address)
+            stran = "\\n".join(strans)
+            self.body = self.context.translate(
+                _("Some results from the Analysis Request ${ar} exceeded "
+                  "the panic levels that may indicate an imminent "
+                  "life-threatening condition: \\n\\n${strans}\\n"
+                  "\\n\\n${lab_address}"),
+                mapping={"ar": ar.getRequestID(),
+                         "stran": stran,
+                         "lab_address": lab_address}
+            )
 
-            self.subject = _("Some results from %s exceeded panic range") % ar.id
+            self.subject = self.context.translate(
+                _("Some results from ${ar} exceeded panic range"),
+                mapping={"ar": ar.id}
+            )
 
         return self.template()
 
@@ -88,5 +93,5 @@ class EmailPopupView(BrowserView):
         for recipient in self.recipients:
             name = recipient['name']
             email = recipient['email']
-            outrecip.append("%s <%s>" %(name, email))
+            outrecip.append("%s <%s>" % (name, email))
         return ', '.join(outrecip)

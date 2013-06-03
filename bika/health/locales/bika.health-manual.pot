@@ -34,10 +34,20 @@ msgid "time_format"
 msgstr "${I}:${M} ${p}"
 
 msgid "Client"
-msgstr ""
-
-msgid "Clients"
-msgstr ""
+msgstr "Client"
 
 msgid "Client ID"
-msgstr ""
+msgstr "Client ID"
+
+msgid "Clients"
+msgstr "Clients"
+
+msgid "Batch"
+msgstr "Case"
+
+msgid "Batch ID"
+msgstr "Case ID"
+
+msgid "Batches"
+msgstr "Cases"
+
