@@ -66,6 +66,8 @@ def setupVarious(context):
     setup.runImportStepFromProfile('profile-plone.app.jquery:default', 'jsregistry')
     setup.runImportStepFromProfile('profile-plone.app.jquerytools:default', 'jsregistry')
 
+    # Load bika.lims js always before bika.health ones.
+    setup.runImportStepFromProfile('profile-bika.lims:default', 'jsregistry')
 
 def setupGroupsAndRoles(context):
 

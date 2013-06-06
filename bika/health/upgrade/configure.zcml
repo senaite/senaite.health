@@ -102,4 +102,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+  <genericsetup:upgradeStep
+        title="Force to load bika.lims jsregistry before bika.health's"
+        description=""
+        source="1011"
+        destination="1012"
+        handler="bika.health.upgrade.to1012.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>

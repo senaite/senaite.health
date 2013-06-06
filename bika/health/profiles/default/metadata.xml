@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <metadata>
-  <version>1011</version>
+  <version>1012</version>
   <dependencies>
     <dependency>profile-bika.lims:default</dependency>
   </dependencies>
