@@ -343,6 +343,12 @@ function getPatientOverlay() {
                     dataType: 'script',
                     async: false
                 });
+                
+                // Set Client's default if needed
+                clientuid = getReferrerClientUID();
+                if (clientuid) {
+                	$("#PrimaryReferrer option").not("[value='" + clientuid + "']").remove();
+                }
 
             },
             onClose: function() {
