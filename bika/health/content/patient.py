@@ -39,7 +39,7 @@ schema = Person.schema.copy() + Schema((
                    required=1,
                    widget=SelectionWidget(
                        format='select',
-                       label=_('Primary Referrer'),
+                       label=_('Client'),
                    ),
     ),
     ComputedField('PrimaryReferrerTitle',
