@@ -33,7 +33,7 @@ class AnalysisRequestSubmit(BaseClass):
                                  Gender = "dk",
                                  PrimaryReferrer = client.UID(),
                                  Firstname = _("AP"),
-                                 Surname = _("%s") % clientpatientid,
+                                 Surname = clientpatientid,
                                  ClientPatientID = clientpatientid)
                     patient.unmarkCreationFlag()
                     patient.reindexObject()
