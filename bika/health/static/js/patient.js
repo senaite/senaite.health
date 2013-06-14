@@ -68,6 +68,11 @@ $(document).ready(function(){
 	$("#Anonymous").live('change', function() {
 		loadAnonymous();
 	});
+	$("#ClientPatientID").live('change', function() {
+		if ($('#Anonymous').is(':checked')) {
+			$("input[id='Surname']").val($("#ClientPatientID").val());
+		}
+	});
 
 	function calculateAge() {
 		var dob = new Date($("#BirthDate").val());
@@ -174,8 +179,13 @@ function loadAnonymous() {
 		// Set default values
 		$("#ClientPatientID").attr("required", true);
 		$("#ClientPatientID_help").before('<span class="required" title="Required">&nbsp;</span>');
-		$("input[id='Firstname']").val(_("Anonymous"));
-		$("input[id='Surname']").val(_("Patient"));
+		$("input[id='Firstname']").val(_("AP"));
+		cpid = $("#ClientPatientID").val();
+		if (cpid && cpid.length > 0) {
+			$("input[id='Surname']").val(cpid);
+		} else {
+			$("input[id='Surname']").val("-");
+		}
 		$("#archetypes-fieldname-BirthDate").find('span[class="required"]').remove();
 		$("input[id='BirthDate']").attr("required", false);
 		$("input[id='BirthDate']").val("");		
