@@ -11,5 +11,6 @@
     <include file="browser/analysisrequests/overrides.zcml" />
     <include file="browser/samples/overrides.zcml" />
     <include file="exportimport/overrides.zcml" />
+    <include file="static/overrides.zcml" />
          
 </configure>
