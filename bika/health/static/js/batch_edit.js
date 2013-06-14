@@ -12,6 +12,7 @@ function init() {
 function loadEventHandlers() {
     $("#Patient").bind("selected paste blur", function(){
     	loadPatientData();
+    	filterByClientIfNeeded();
     });
     $("#Doctor").bind("selected paste blur", function(){
     	loadDoctorOverlay(null);
@@ -21,7 +22,8 @@ function loadEventHandlers() {
     });
     $("#ClientPatientID").bind("selected paste blur", function() {
 		id = $(this).val()
-    	loadAnonymousPatient(id);    		
+    	loadAnonymousPatient(id);
+		filterByClientIfNeeded();
     });
 }
 
@@ -368,6 +370,60 @@ function getPatientOverlay() {
     return editpatient_overlay;
 }
 
+/**
+ * Restricts the search results of Patient's reference widgets (Patient and
+ * ClientPatientID) to current client if the current page comes from a Client's
+ * batch view. If no current client found, does nothing.
+ */
+function filterByClientIfNeeded() {
+	clientuid = getReferrerClientUID();
+	if (clientuid != null) {
+		base_query=$.parseJSON($("#Patient").attr("base_query"));
+		base_query['getPrimaryReferrerUID'] = clientuid;
+		options = $.parseJSON($("#Patient").attr("combogrid_options"));
+		options['force_all']='false';
+		$("#Patient").attr("base_query", $.toJSON(base_query));
+		$("#Patient").attr("combogrid_options", $.toJSON(options));		
+		referencewidget_lookups($("#Patient"));
+		
+		base_query=$.parseJSON($("#ClientPatientID").attr("base_query"));
+		base_query['getPrimaryReferrerUID'] = clientuid;
+		options = $.parseJSON($("#ClientPatientID").attr("combogrid_options"));
+		options['force_all']='false';
+		$("#ClientPatientID").attr("base_query", $.toJSON(base_query));
+		$("#ClientPatientID").attr("combogrid_options", $.toJSON(options));
+		referencewidget_lookups($("#ClientPatientID"));
+	}
+}
+
+default_client_uid = null;
+/**
+ * Returns the current client UID if the current page referral is a Client's
+ * batch view. If no current client found, returns null
+ * @returns the current Client UID or null
+ */
+function getReferrerClientUID() {	
+	if (default_client_uid == null) {
+		clientid = null;
+		if (document.referrer.search('/clients/') >= 0) {    	
+	    	clientid = document.referrer.split("clients")[1].split("/")[1];
+		}
+		if (clientid != null) {
+			$.ajax({
+				url: window.portal_url + "/clients/" + clientid + "/getClientInfo",
+				type: 'POST',
+				data: {'_authenticator': $('input[name="_authenticator"]').val()},
+	        dataType: "json",
+	        success: function(data, textStatus, $XHR){
+	        	if (data['ClientUID'] != '') {
+	        		default_client_uid = data['ClientUID'];
+	        	}
+	        }
+			});
+		}
+	}
+	return default_client_uid;
+} 
 
 (function( $ ) {
 $(document).ready(function(){
@@ -378,20 +434,15 @@ $(document).ready(function(){
 
     // These look silly in the edit screen under "Additional Notes"
     $("#archetypes-fieldname-Remarks").remove();
-
+    
 	// Check for missing hidden data
-	init()
+	init();
+	
+    // Restrict results to current client if needed
+	filterByClientIfNeeded();
 
 	// Load events
 	loadEventHandlers();
-
-    // Modify #Patient base_query to restrict results to current client
-	if (document.referrer.search('/clients/') >= 0) {
-    	base_query=$.parseJSON($("#Patient").attr("base_query"));
-    	clientid = document.referrer.split("clients")[1].split("/")[1];
-    	base_query['getClientID'] = clientid;
-    	$("#Patient").attr("base_query", $.toJSON(base_query));
-    }
 
 	// Load additional Patient data, like birth date, age, etc.
 	// If a client has already been selected, it doesn't get overrided
@@ -401,7 +452,7 @@ $(document).ready(function(){
 	loadPatientOverlay(null);
 	
 	// Load doctor add/edit overlay
-	loadDoctorOverlay(null);
+	loadDoctorOverlay(null);	
 
 });
 }(jQuery));
