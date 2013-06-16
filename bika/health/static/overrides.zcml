@@ -1,0 +1,19 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/browser"
+           xmlns:fss="http://namespaces.zope.org/browser"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+
+	     <browser:resource
+	        name="hazardous_big.png"
+	        image="images/hazardous_big.png"
+	        layer="bika.lims.interfaces.IBikaLIMS"
+	        />
+	     
+	     <browser:resource
+            name="hazardous.png"
+            image="images/hazardous.png"
+            layer="bika.lims.interfaces.IBikaLIMS"
+            />
+
+</configure>

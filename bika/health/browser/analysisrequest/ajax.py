@@ -32,8 +32,8 @@ class AnalysisRequestSubmit(BaseClass):
                     patient.edit(Anonymous = 1,
                                  Gender = "dk",
                                  PrimaryReferrer = client.UID(),
-                                 Firstname = _("Anonymous"),
-                                 Surname = _("Patient %s") % clientpatientid,
+                                 Firstname = _("AP"),
+                                 Surname = clientpatientid,
                                  ClientPatientID = clientpatientid)
                     patient.unmarkCreationFlag()
                     patient.reindexObject()
