@@ -399,10 +399,19 @@ function filterByClientIfNeeded() {
 		$("#ClientPatientID").attr("base_query", $.toJSON(base_query));
 		$("#ClientPatientID").attr("combogrid_options", $.toJSON(options));
 		referencewidget_lookups($("#ClientPatientID"));
+		
+        $('input[name="Client"]').attr('uid', clientuid);
+        $('input[name="Client"]').val(default_client_title);
+        if (!$('#ClientTitle').length) {
+        	$('input[name="Client"]').after("<span id='ClientTitle'>"+default_client_title+"</span>");
+        }
+        $('input[name="Client"]').hide();
+        $('input[name="Client_uid"]').val(data['ClientUID']);
 	}
 }
 
 default_client_uid = null;
+default_client_title = null;
 /**
  * Returns the current client UID if the current page referral is a Client's
  * batch view. If no current client found, returns null
@@ -423,6 +432,7 @@ function getReferrerClientUID() {
 	        success: function(data, textStatus, $XHR){
 	        	if (data['ClientUID'] != '') {
 	        		default_client_uid = data['ClientUID'];
+	        		default_client_title = data['ClientTitle']
 	        	}
 	        }
 			});
