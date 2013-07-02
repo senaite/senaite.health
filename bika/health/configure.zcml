@@ -21,6 +21,7 @@
   <include package=".controlpanel"/>
   <include package=".browser"/>
   <include package=".static"/>
+  <include package=".setupdata"/>
 
   <include file="profiles.zcml" />
 
