@@ -1,29 +1,41 @@
 """ Bika setup handlers. """
 
-from Products.Archetypes.event import ObjectInitializedEvent
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory
-from bika.lims import bikaMessageFactory as _b
-from bika.health import bikaMessageFactory as _
-from bika.health import logger
-from bika.health.config import *
-from bika.health.permissions import *
-from bika.lims.interfaces import IHaveNoBreadCrumbs
-from zope.event import notify
-from zope.interface import alsoProvides
+from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
-from Products.CMFEditions.Permissions import AccessPreviousVersions
+from bika.health import logger
+from bika.health.permissions import AddAetiologicAgent
+from bika.health.permissions import ManageDoctors
+from bika.health.permissions import ManagePatients
+from bika.health.permissions import ViewBatches
+from bika.health.permissions import ViewSamples
+from bika.health.permissions import ViewAnalysisRequests
+from bika.health.permissions import AddDoctor
+from bika.health.permissions import AddDrug
+from bika.health.permissions import AddDrugProhibition
+from bika.health.permissions import AddImmunization
+from bika.health.permissions import AddPatient
+from bika.health.permissions import AddSymptom
+from bika.health.permissions import AddTreatment
+from bika.health.permissions import AddVaccinationCenter
+from bika.lims.permissions import AddAnalysisRequest
+from bika.lims.permissions import AddSample
+from bika.lims.permissions import AddSamplePartition
+from bika.lims.permissions import ManageAnalysisRequests
+from bika.lims.permissions import ManageClients
+from bika.lims.permissions import CancelAndReinstate
+
 
 class Empty:
     pass
 
 
-def setupVarious(context):
+def setupHealthVarious(context):
     """ Setup Bika site structure """
 
-    if context.readDataFile('bika.health_various.txt') is None:
+    if context.readDataFile('bika.health.txt') is None:
         return
     portal = context.getSite()
 
@@ -69,9 +81,10 @@ def setupVarious(context):
     # Load bika.lims js always before bika.health ones.
     setup.runImportStepFromProfile('profile-bika.lims:default', 'jsregistry')
 
-def setupGroupsAndRoles(context):
 
-    if context.readDataFile('bika.health_various.txt') is None:
+def setupHealthGroupsAndRoles(context):
+
+    if context.readDataFile('bika.health.txt') is None:
         return
     portal = context.getSite()
 
@@ -95,14 +108,14 @@ def setupGroupsAndRoles(context):
     #         roles=['Member', ])
 
 
-def setupPermissions(context):
+def setupHealthPermissions(context):
     """ Set up some suggested role to permission mappings.
     New types and anything that differs from bika.lims gets specified here.
     These lines completely overwrite those in bika.lims - Changes common to
     both packages should be made in both places!
     """
 
-    if context.readDataFile('bika.health_various.txt') is None:
+    if context.readDataFile('bika.health.txt') is None:
         return
     portal = context.getSite()
 
@@ -172,12 +185,12 @@ def setupPermissions(context):
     portal.reports.reindexObject()
 
 
-def setupCatalogs(context):
+def setupHealthCatalogs(context):
     # an item should belong to only one catalog.
     # that way looking it up means first looking up *the* catalog
     # in which it is indexed, as well as making it cheaper to index.
 
-    if context.readDataFile('bika.health_various.txt') is None:
+    if context.readDataFile('bika.health.txt') is None:
         return
     portal = context.getSite()
 
@@ -290,3 +303,8 @@ def setupCatalogs(context):
     addColumn(bpc, 'getPrimaryReferrerUID')
     addColumn(bpc, 'review_state')
     addColumn(bpc, 'inactive_state')
+
+
+def setupHealthTestContent(context):
+    """Setup custom content"""    
+    pass

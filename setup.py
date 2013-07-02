@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
-import os
 
 version = '0.1'
 
 setup(name='bika.health',
       version=version,
       description="Bika LIMS Health branch",
-      long_description=open("README.md").read(), # + "\n" +
-      #                 open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      long_description=open("README.md").read(),
+      # Get more strings from
+      # http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
@@ -27,9 +26,12 @@ setup(name='bika.health',
           'bika.lims',
           'archetypes.schemaextender',
       ],
-      extras_require = {
+      extras_require={
           'test': [
                   'plone.app.testing',
+                  'robotsuite',
+                  'robotframework-selenium2library',
+                  'plone.app.robotframework'
               ]
       },
       entry_points="""

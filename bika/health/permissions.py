@@ -7,7 +7,6 @@ bika.health.PermName or bika.health.permissions.PermName are
 both valid.
 
 """
-from bika.health.permissions import *
 
 # Add Permissions:
 # ----------------
