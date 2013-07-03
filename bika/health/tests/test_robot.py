@@ -6,7 +6,7 @@ import unittest
 
 
 ROBOT_TESTS = [
-    'test_roles.robot',
+    'test_regulatoryinspector.robot',
 ]
 
 
