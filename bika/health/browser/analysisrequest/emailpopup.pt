@@ -77,7 +77,7 @@
             
             <!-- Body -->
             <label for="body" i18n:translate="">Body</label>
-            <textarea class="textarea-widget required" name="body" id="body" tal:content="view/body"cols="42" rows="8"/>
+            <textarea class="textarea-widget required" name="body" id="body" tal:content="view/body" cols="42" rows="8"></textarea>
             <br/>
             <input class="context workflow_action_button action_button" 
                 type="submit" value="Send" name="email_popup_submit"
