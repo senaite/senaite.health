@@ -25,6 +25,7 @@ setup(name='bika.health',
           'setuptools',
           'bika.lims',
           'archetypes.schemaextender',
+          'collective.wtf',
       ],
       extras_require={
           'test': [
