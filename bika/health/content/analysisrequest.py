@@ -36,7 +36,7 @@ class AnalysisRequestSchemaExtender(object):
                          'add': 'visible'},
                 catalog_name='portal_catalog',
                 base_query={'inactive_state': 'active'},
-                showOn=True,
+                showOn=False,
             ),
         ),
 
@@ -63,7 +63,7 @@ class AnalysisRequestSchemaExtender(object):
                          'add': 'visible'},
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
-                showOn=True,
+                showOn=False,
             ),
         ),
 
@@ -118,7 +118,7 @@ class AnalysisRequestSchemaExtender(object):
                          'add': 'visible'},
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
-                showOn=True,
+                showOn=False,
             ),
         ),
     ]
