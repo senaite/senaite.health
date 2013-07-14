@@ -87,7 +87,14 @@ class BatchesView(ClientBatchesView):
 
     def folderitems(self):
         self.filter_indexes = None
-
+        mtool = getToolByName(self.context, 'portal_membership')
+        member = mtool.getAuthenticatedMember()
+        roles = member.getRoles()
+        hideclientlink = 'RegulatoryInspector' in roles \
+            and 'Manager' not in roles \
+            and 'LabManager' not in roles \
+            and 'LabClerk' not in roles
+            
         items = ClientBatchesView.folderitems(self)
         for x in range(len(items)):
             if 'obj' not in items[x]:
@@ -123,10 +130,11 @@ class BatchesView(ClientBatchesView):
                 (doctor.absolute_url(),
                  doctor.Title()) or ''
 
-            items[x]['replace']['Client'] = client \
-                and "<a href='%s'>%s</a>" % \
-                (client.absolute_url(),
-                 client.Title()) or ''
+            if hideclientlink == False:
+                items[x]['replace']['Client'] = client \
+                    and "<a href='%s'>%s</a>" % \
+                    (client.absolute_url(),
+                     client.Title()) or ''
 
             onsetdate = obj.Schema()['OnsetDate'].get(obj)
             items[x]['replace']['OnsetDate'] = onsetdate \

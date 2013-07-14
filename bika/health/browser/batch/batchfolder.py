@@ -82,6 +82,10 @@ class BatchFolderContentsView(BaseView):
         hidepatientinfo = 'Manager' not in roles \
             and 'LabManager' not in roles \
             and 'LabClerk' not in roles
+        hideclientlink = 'RegulatoryInspector' in roles \
+            and 'Manager' not in roles \
+            and 'LabManager' not in roles \
+            and 'LabClerk' not in roles
 
         if hidepatientinfo:
             # Remove patient fields. Must be done here because in __init__ 
@@ -111,10 +115,11 @@ class BatchFolderContentsView(BaseView):
                  doctor.Title()) or ''
 
             items[x]['Client'] = client and client.Title() or ''
-            items[x]['replace']['Client'] = client \
-                and "<a href='%s'>%s</a>" % \
-                (client.absolute_url(),
-                 client.Title()) or ''
+            if hideclientlink == False:
+                items[x]['replace']['Client'] = client \
+                    and "<a href='%s'>%s</a>" % \
+                    (client.absolute_url(),
+                     client.Title()) or ''
 
             OnsetDate = obj.Schema()['OnsetDate'].get(obj)
             items[x]['replace']['OnsetDate'] = OnsetDate \

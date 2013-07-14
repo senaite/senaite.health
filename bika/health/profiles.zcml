@@ -11,34 +11,34 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"/>
 
   <genericsetup:importStep
-      name="setupVarious"
-      title="bika setupVarious"
+      name="setupHealthVarious"
+      title="Bika Health: Various"
       description="Final site configuration actions"
-      handler="bika.health.setuphandlers.setupVarious">
+      handler="bika.health.setuphandlers.setupHealthVarious">
     <depends name="content" />
     <depends name="toolset" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="setupGroupsAndRoles"
-      title="Bika: Groups And Roles"
+      name="setupHealthGroupsAndRoles"
+      title="Bika Health: Groups And Roles"
       description="Create system groups and roles."
-      handler="bika.health.setuphandlers.setupGroupsAndRoles">
+      handler="bika.health.setuphandlers.setupHealthGroupsAndRoles">
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="setupPermissions"
-      title="Bika: Setup Permissions"
+      name="setupHealthPermissions"
+      title="Bika Health: Setup Permissions"
       description="Configure default permission"
-      handler="bika.health.setuphandlers.setupPermissions">
+      handler="bika.health.setuphandlers.setupHealthPermissions">
     <depends name="content" />
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="setupCatalogs"
-      title="Bika: Setup Catalogs"
+      name="setupHealthCatalogs"
+      title="Bika Health: Setup Catalogs"
       description="Create and configure catalogs and indexes"
-      handler="bika.health.setuphandlers.setupCatalogs">
+      handler="bika.health.setuphandlers.setupHealthCatalogs">
     <depends name="toolset" />
   </genericsetup:importStep>
   

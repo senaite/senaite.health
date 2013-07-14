@@ -70,21 +70,13 @@ class EmailPopupView(BrowserView):
                 serviceTitle = an.getServiceTitle()
                 result = an.getResult()
                 strans.append("- %s, result: %s" % (serviceTitle, result))
-            stran = "\\n".join(strans)
-            self.body = self.context.translate(
-                _("Some results from the Analysis Request ${ar} exceeded "
-                  "the panic levels that may indicate an imminent "
-                  "life-threatening condition: \\n\\n${strans}\\n"
-                  "\\n\\n${lab_address}"),
-                mapping={"ar": ar.getRequestID(),
-                         "stran": stran,
-                         "lab_address": lab_address}
-            )
-
-            self.subject = self.context.translate(
-                _("Some results from ${ar} exceeded panic range"),
-                mapping={"ar": ar.id}
-            )
+            stran = "\n".join(strans)
+            self.body = _("Some results from the Analysis Request %s "
+                  "exceeded the panic levels that may indicate an imminent "
+                  "life-threatening condition: \n\n%s\n"
+                  "\n\n%s") % (ar.getRequestID(), stran, lab_address)
+            self.subject = _("Some results from %s exceeded panic range") % \
+                ar.getRequestID()
 
         return self.template()
 

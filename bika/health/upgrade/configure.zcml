@@ -110,5 +110,14 @@
         handler="bika.health.upgrade.to1012.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
-
+  
+  <genericsetup:upgradeStep
+        title="Load bika.health's analysis workflow permissions"
+        description=""
+        source="1012"
+        destination="1013"
+        handler="bika.health.upgrade.to1013.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+        
 </configure>
