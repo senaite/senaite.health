@@ -111,9 +111,9 @@ class Doctors(WorksheetImporter):
                      BusinessFax = row.get('BusinessFax', ''),
                      HomePhone = row.get('HomePhone', ''),
                      MobilePhone = row.get('MobilePhone', ''),
-                     PhysicalAddress = addresses['Physical'], 
+                     PhysicalAddress = addresses['Physical'],
                      PostalAddress = addresses['Postal'],
-                     PublicationPreference = row.get('PublicationPreference','').split(","),  
+                     PublicationPreference = row.get('PublicationPreference','').split(","),
                      AttachmentsPermitted = self.to_bool(row.get('AttachmentsPermitted','True'))
                      )
             obj.unmarkCreationFlag()
@@ -167,7 +167,7 @@ class Patients(WorksheetImporter):
                      EmailAddress = row.get('EmailAddress', ''),
                      HomePhone = row.get('HomePhone', ''),
                      MobilePhone = row.get('MobilePhone', ''),
-                     PhysicalAddress = addresses['Physical'], 
+                     PhysicalAddress = addresses['Physical'],
                      PostalAddress = addresses['Postal'],
                      CountryState = addresses['CountryState'],
                      Anonymous = self.to_bool(row.get('Anonymous','False'))
@@ -194,6 +194,54 @@ class Patients(WorksheetImporter):
 
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
+
+class Analysis_Specifications(WorksheetImporter):
+
+    def Import(self):
+        s_t = ''
+        c_t = 'lab'
+        bucket = {}
+        pc = getToolByName(self.context, 'portal_catalog')
+        bsc = getToolByName(self.context, 'bika_setup_catalog')
+        # collect up all values into the bucket
+        for row in self.get_rows(3):
+            c_t = row['Client_title'] if row['Client_title'] else 'lab'
+            if c_t not in bucket:
+                bucket[c_t] = {}
+            s_t = row['SampleType_title'] if row['SampleType_title'] else s_t
+            if s_t not in bucket[c_t]:
+                bucket[c_t][s_t] = []
+            service = bsc(portal_type='AnalysisService', title=row['service'])
+            if not service:
+                service = bsc(portal_type='AnalysisService',
+                              getKeyword=row['service'])
+            service = service[0].getObject()
+            bucket[c_t][s_t].append({
+                'keyword': service.getKeyword(),
+                'min': row['min'] if row['min'] else '0',
+                'max': row['max'] if row['max'] else '0',
+                'minpanic': row['min'] if row['min'] else '0',
+                'maxpanic': row['max'] if row['max'] else '0',
+                'error': row['error'] if row['error'] else '0'
+            })
+        # write objects.
+        for c_t in bucket:
+            if c_t == 'lab':
+                folder = self.context.bika_setup.bika_analysisspecs
+            else:
+                folder = pc(portal_type='Client', title=c_t)[0].getObject()
+            for s_t in bucket[c_t]:
+                resultsrange = bucket[c_t][s_t]
+                sampletype = bsc(portal_type='SampleType', title=s_t)[0]
+                _id = folder.invokeFactory('AnalysisSpec', id=tmpID())
+                obj = folder[_id]
+                obj.edit(
+                    title=sampletype.Title,
+                    ResultsRange=resultsrange)
+                obj.setSampleType(sampletype.UID)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
 
 
 from bika.lims.exportimport.setupdata import Setup as BaseSetup
