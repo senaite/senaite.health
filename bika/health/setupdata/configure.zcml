@@ -31,7 +31,7 @@
       factory="bika.health.setupdata.Diseases"
       provides="bika.lims.interfaces.ISetupDataImporter"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
-      
+
     <adapter
       name="Doctors"
       factory="bika.health.setupdata.Doctors"
