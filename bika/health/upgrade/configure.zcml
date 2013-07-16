@@ -120,4 +120,13 @@
         sortkey="1"
         profile="bika.health:default"/>
         
+  <genericsetup:upgradeStep
+        title="Added RegulatoryInspector permissions in analysis_workflow"
+        description="Added RegulatoryInspector permissions in analysis_workflow"
+        source="1013"
+        destination="1014"
+        handler="bika.health.upgrade.to1014.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>
