@@ -90,12 +90,6 @@ class Doctors(WorksheetImporter):
             if not row['Firstname']:
                 continue
 
-            addresses = {}
-            for add_type in ['Physical', 'Postal']:
-                addresses[add_type] = {}
-                for key in ['Address', 'City', 'State', 'Zip', 'Country']:
-                    addresses[add_type][key] = row.get("%s_%s" % (add_type, key),'')
-
             _id = folder.invokeFactory('Doctor', id=tmpID())
             obj = folder[_id]
             Fullname = (row['Firstname'] + " " + row.get('Surname', '')).strip()
@@ -106,16 +100,11 @@ class Doctors(WorksheetImporter):
                      JobTitle = row.get('JobTitle', ''),
                      Department = row.get('Department', ''),
                      DoctorID = row.get('DoctorID', ''),
-                     EmailAddress = row.get('EmailAddress', ''),
-                     BusinessPhone = row.get('BusinessPhone', ''),
-                     BusinessFax = row.get('BusinessFax', ''),
-                     HomePhone = row.get('HomePhone', ''),
-                     MobilePhone = row.get('MobilePhone', ''),
-                     PhysicalAddress = addresses['Physical'], 
-                     PostalAddress = addresses['Postal'],
-                     PublicationPreference = row.get('PublicationPreference','').split(","),  
+                     PublicationPreference = row.get('PublicationPreference','').split(","),
                      AttachmentsPermitted = self.to_bool(row.get('AttachmentsPermitted','True'))
                      )
+            self.fill_contactfields(row, obj)
+            self.fill_addressfields(row, obj)
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
 
@@ -132,18 +121,8 @@ class Patients(WorksheetImporter):
             client = pc(portal_type='Client', Title=row['PrimaryReferrer'])
             if len(client) == 0:
                 raise IndexError("Primary referrer invalid: '%s'" % row['PrimaryReferrer'])
+
             client = client[0].getObject()
-            addresses = {}
-            for add_type in ['Physical', 'Postal', 'CountryState']:
-                addresses[add_type] = {}
-                for key in ['Address', 'City', 'State', 'Zip', 'Country']:
-                    addresses[add_type][key] = row.get("%s_%s" % (add_type, key),'')
-
-            if addresses['CountryState']['Country'] == '' \
-                and addresses['CountryState']['State'] == '':
-                addresses['CountryState']['Country'] = addresses['Physical']['Country']
-                addresses['CountryState']['State'] = addresses['Physical']['State']
-
             _id = folder.invokeFactory('Patient', id=tmpID())
             obj = folder[_id]
             obj.unmarkCreationFlag()
@@ -164,14 +143,10 @@ class Patients(WorksheetImporter):
                      Citizenship =row.get('Citizenship', ''),
                      MothersName = row.get('MothersName', ''),
                      CivilStatus =row.get('CivilStatus', ''),
-                     EmailAddress = row.get('EmailAddress', ''),
-                     HomePhone = row.get('HomePhone', ''),
-                     MobilePhone = row.get('MobilePhone', ''),
-                     PhysicalAddress = addresses['Physical'], 
-                     PostalAddress = addresses['Postal'],
-                     CountryState = addresses['CountryState'],
                      Anonymous = self.to_bool(row.get('Anonymous','False'))
                      )
+            self.fill_contactfields(row, obj)
+            self.fill_addressfields(row, obj)
             if 'Photo' in row and row['Photo']:
                 try:
                     path = resource_filename("bika.lims",
