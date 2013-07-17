@@ -3,14 +3,15 @@
            xmlns:fss="http://namespaces.zope.org/browser"
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
-    
+
     <include file="browser/batch/overrides.zcml" />
     <include file="browser/calcs/overrides.zcml" />
     <include file="browser/client/overrides.zcml" />
     <include file="browser/analysisrequest/overrides.zcml" />
     <include file="browser/analysisrequests/overrides.zcml" />
     <include file="browser/samples/overrides.zcml" />
+    <include file="browser/worksheet/overrides.zcml" />
     <include file="static/overrides.zcml" />
     <include file="setupdata/overrides.zcml" />
-    
+
 </configure>
