@@ -3,8 +3,6 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
-from bika.health.browser.calcs.calculateanalysisentry import \
-    ajaxCalculateAnalysisEntry
 from bika.lims import logger
 from bika.lims.browser.worksheet import \
     WorksheetWorkflowAction as BaseClass

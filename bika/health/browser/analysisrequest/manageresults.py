@@ -1,7 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from bika.health import bikaMessageFactory as _
-from bika.health.browser.analyses.view import AnalysesView
-from bika.lims import logger
+from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange
 from bika.lims.browser.analysisrequest import \
     AnalysisRequestManageResultsView as BaseView
 
@@ -9,33 +8,24 @@ from bika.lims.browser.analysisrequest import \
 class ManageResultsView(BaseView):
 
     def __call__(self):
-
-        super(ManageResultsView, self).__call__()
-
+        workflow = getToolByName(self.context, 'portal_workflow')
         # If there's analyses that exceed panic levels, show an alert message
-        if self.hasAnalysesInPanic():
-            message = self.context.translate(_('Some results exceeded the '
-                                   'panic levels that may '
-                                   'indicate an imminent '
-                                   'life-threatening condition.'
-                                   ))
-            self.context.plone_utils.addPortalMessage(message, 'warning')
-        return self.template()
+        analyses = self.context.getAnalyses()
+        for obj in analyses:
+            obj = obj.getObject() if hasattr(obj, 'getObject') else obj
+            astate = workflow.getInfoFor(obj, 'review_state')
+            if astate == 'retracted':
+                continue
+            panic_alerts = ResultOutOfRange(obj)()
+            if panic_alerts:
+                translate = self.context.translate
+                addPortalMessage = self.context.plone_utils.addPortalMessage
+                message = translate(
+                    _('Some results exceeded the '
+                      'panic levels that may '
+                      'indicate an imminent '
+                      'life-threatening condition.'))
+                addPortalMessage(message, 'warning')
+                break
 
-    def hasAnalysesInPanic(self):
-        bs = self.context.bika_setup
-        wf = getToolByName(self.context, 'portal_workflow')
-        for an in self.context.getAnalyses(full_objects=True):
-            if an and wf.getInfoFor(an, 'review_state') != 'retracted':
-                try:
-                    inpanic = an.isInPanicRange()
-                    if inpanic and inpanic[0] == True:
-                        return True
-                except:
-                    logger.warning("Call error: isInPanicRange for "
-                                   "analysis %s" % an.UID())
-                    pass
-        return False
-
-    def createAnalysesView(self, context, request, **kwargs):
-        return AnalysesView(context, request, **kwargs)
+        return super(ManageResultsView, self).__call__()

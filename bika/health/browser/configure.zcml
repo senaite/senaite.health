@@ -7,12 +7,12 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="bika.health">
 
+  <include package=".analysis"/>
   <include package=".aetiologicagent"/>
   <include package=".analysisrequest"/>
   <include package=".analysisrequests"/>
   <include package=".batch"/>
   <include package=".client"/>
-  <include package=".calcs"/>
   <include package=".disease"/>
   <include package=".doctor"/>
   <include package=".doctors"/>
@@ -28,5 +28,6 @@
   <include package=".treatment"/>
   <include package=".vaccinationcenter"/>
   <include package=".vaccinationcentercontact"/>
+  <include package=".worksheet"/>
 
 </configure>

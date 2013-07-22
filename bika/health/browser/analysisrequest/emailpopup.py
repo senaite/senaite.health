@@ -1,10 +1,11 @@
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from bika.lims import logger
 from bika.health import bikaMessageFactory as _
+from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange
 from bika.lims.browser import BrowserView
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface import implements
+
 import plone.protect
 
 
@@ -15,16 +16,20 @@ class EmailPopupView(BrowserView):
 
     def __init__(self, context, request):
         super(EmailPopupView, self).__init__(context, request)
-        self.icon = self.portal_url + "/++resource++bika.health.images/lifethreat_big.png"
+        path = "/++resource++bika.health.images"
+        self.icon = self.portal_url + path + "/lifethreat_big.png"
         self.recipients = []
         self.ccs = ''
         self.subject = ''
         self.body = ''
 
     def __call__(self):
+        workflow = getToolByName(self.context, 'portal_workflow')
+        translate = self.context.translate
         plone.protect.CheckAuthenticator(self.request)
         bc = getToolByName(self.context, 'bika_catalog')
         ar = bc(UID=self.request.get('uid', None))
+
         if ar:
             ar = ar[0].getObject()
             self.ccs = []
@@ -37,46 +42,43 @@ class EmailPopupView(BrowserView):
                     self.recipients = [{'uid': contact.UID(),
                                         'name': contact.Title(),
                                         'email': email}]
-
             for cc in ar.getCCContact():
                 ccemail = cc.getEmailAddress()
                 if ccemail:
                     self.ccs.append({'uid': cc.UID(),
                                      'name': cc.Title(),
                                      'email': ccemail})
-
-            inpanicanalyses = []
-            workflow = getToolByName(ar, 'portal_workflow')
             analyses = ar.getAnalyses()
+            strans = []
             for analysis in analyses:
                 analysis = analysis.getObject()
-                if workflow.getInfoFor(analysis, 'review_state') == 'retracted':
+                astate = workflow.getInfoFor(analysis, 'review_state')
+                if astate == 'retracted':
                     continue
-
-                inpanic = [False, None, None]
-                try:
-                    inpanic = analysis.isInPanicRange()
-                except:
-                    logger.warning("Call error: isInPanicRange for analysis %s" % analysis.UID())
-                    pass
-
-                if inpanic[0] is True:
-                    inpanicanalyses.append(analysis)
+                panic_alerts = ResultOutOfRange(analysis)()
+                if panic_alerts:
+                    serviceTitle = analysis.getServiceTitle()
+                    result = analysis.getResult()
+                    strans.append("- {0}, {1}: {2}".format(
+                        serviceTitle, translate(_("Result")), result))
+            stran = "\n".join(strans)
 
             laboratory = self.context.bika_setup.laboratory
             lab_address = "\n".join(laboratory.getPrintAddress())
-            strans = []
-            for an in inpanicanalyses:
-                serviceTitle = an.getServiceTitle()
-                result = an.getResult()
-                strans.append("- %s, result: %s" % (serviceTitle, result))
-            stran = "\n".join(strans)
-            self.body = _("Some results from the Analysis Request %s "
-                  "exceeded the panic levels that may indicate an imminent "
-                  "life-threatening condition: \n\n%s\n"
-                  "\n\n%s") % (ar.getRequestID(), stran, lab_address)
-            self.subject = _("Some results from %s exceeded panic range") % \
-                ar.getRequestID()
+
+            self.body = translate(
+                _("Some results from the Analysis Request ${ar} "
+                  "exceeded the panic levels that may indicate an "
+                  "imminent life-threatening condition: \n\n${arlist}\n"
+                  "\n\n${lab_address}",
+                  mapping={'ar': ar.getRequestID(),
+                           'arlist': stran,
+                           'lab_address': lab_address})
+            )
+            self.subject = translate(
+                _("Some results from ${ar} exceeded panic range",
+                  mapping={'ar': ar.getRequestID()})
+            )
 
         return self.template()
 
