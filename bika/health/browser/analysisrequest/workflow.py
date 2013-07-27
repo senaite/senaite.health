@@ -1,5 +1,4 @@
 from Products.Archetypes.config import REFERENCE_CATALOG
-from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
@@ -11,10 +10,6 @@ from bika.lims.utils import isActive
 from email.Utils import formataddr
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from smtplib import SMTPRecipientsRefused
-from smtplib import SMTPServerDisconnected
-import App
-from bika.lims import logger
 from bika.health.browser.analysisrequest.publish import AnalysisRequestPublish
 from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange
 
@@ -32,18 +27,15 @@ class WorkflowAction(BaseClass):
             workflow = getToolByName(self.context, 'portal_workflow')
             translate = self.context.translate
             rc = getToolByName(self.context, REFERENCE_CATALOG)
-
+            uc = getToolByName(self.context, 'uid_catalog')
             # retrieve the results from database and check if
             # the values are exceeding panic levels
             alerts = {}
             for uid in self.request.form['Result'][0].keys():
                 analysis = rc.lookupObject(uid)
+                analysis = analysis.getObject() if hasattr(analysis, 'getObject') else analysis
                 if not analysis:
                     continue
-                astate = workflow.getInfoFor(analysis, 'review_state')
-                if astate == 'retracted':
-                    continue
-                analysis = analysis.getObject() if hasattr(analysis, 'getObject') else analysis
                 astate = workflow.getInfoFor(analysis, 'review_state')
                 if astate == 'retracted':
                     continue
@@ -54,14 +46,14 @@ class WorkflowAction(BaseClass):
                                       'indicate an imminent '
                                       'life-threatening condition'
                                       ))
-                self.context.plone_utils.addPortalMessage(message, 'warning')
+                addPortalMessage(message, 'warning')
                 self.request.response.redirect(self.context.absolute_url())
 
                 # If panic levels alert email enabled, send an email to
                 # labmanagers
                 bs = self.context.bika_setup
                 if hasattr(bs, 'getEnablePanicAlert') \
-                    and bs.getEnablePanicAlert():
+                        and bs.getEnablePanicAlert():
                     laboratory = self.context.bika_setup.laboratory
                     lab_address = "<br/>".join(laboratory.getPrintAddress())
                     managers = self.context.portal_groups.getGroupMembers('LabManagers')
@@ -80,15 +72,13 @@ class WorkflowAction(BaseClass):
                     strans = []
                     ars = {}
                     for analysis_uid, alertlist in alerts:
-                        analysis = uc(analusis_uid).getObject()
+                        analysis = uc(analysis_uid).getObject()
                         for alert in alertlist:
-                            result = analysis.getResult()
-                            servicetitle = analysis.getService().Title()
                             ars[analysis.aq_parent.Title()] = 1
                             strans.append("- {0}, {1}: {2}".format(
-                                          servicetitle,
+                                          analysis.getService().Title(),
                                           translate(_("Result")),
-                                          result))
+                                          analysis.getResult()))
                     ars = ", ".join(ars.keys())
                     stran = "<br/>".join(strans)
                     text = translate(_(
@@ -101,7 +91,6 @@ class WorkflowAction(BaseClass):
                         mapping={'items': ars,
                                  'analysisresults': stran,
                                  'lab_address': lab_address}))
-
                     msg_txt = MIMEText(safe_unicode(text).encode('utf-8'),
                                        _subtype='html')
                     mime_msg.preamble = 'This is a multi-part MIME message.'

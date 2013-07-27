@@ -110,6 +110,6 @@ HEALTH_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(BIKA_HEALTH_FIXTURE,),
     name="HealthTestingLayer:Functional")
 
-HEALTH_ROBOT_TESTING = FunctionalTesting(
+BIKA_ROBOT_TESTING = FunctionalTesting(
     bases=(BIKA_HEALTH_FIXTURE, z2.ZSERVER_FIXTURE),
     name="HealthTestingLayer:Robot")
