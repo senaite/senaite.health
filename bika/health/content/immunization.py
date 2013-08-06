@@ -31,7 +31,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('RelevantFacts',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Relevant Facts"),
         ),
@@ -40,7 +40,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('GeographicalDistribution',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Geographical distribution"),
             description = _("Geographical areas can be characterized as having high, intermediate "
@@ -51,7 +51,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('Transmission',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Transmission"),
         ),
@@ -60,7 +60,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('Symptoms',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Symptoms"),
         ),
@@ -69,7 +69,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('Risk',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Collectives at risk"),
         ),
@@ -78,7 +78,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('Treatment',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Treatment"),
         ),
@@ -87,7 +87,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('Prevention',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Prevention"),
         ),
