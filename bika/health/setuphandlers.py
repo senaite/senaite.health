@@ -291,6 +291,7 @@ def setupHealthCatalogs(context):
     addIndex(bpc, 'getPrimaryReferrerTitle', 'FieldIndex')
     addIndex(bpc, 'getCitizenship', 'FieldIndex')
     addIndex(bpc, 'getBirthDate', 'DateIndex')
+    addIndex(bpc, 'inactive_state', 'FieldIndex')
     addColumn(bpc, 'id')
     addColumn(bpc, 'UID')
     addColumn(bpc, 'Title')

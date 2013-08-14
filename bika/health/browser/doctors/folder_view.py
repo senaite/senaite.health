@@ -49,8 +49,7 @@ class DoctorsView(ClientContactsView):
                 'icon': '++resource++bika.lims.images/add.png'
             }
         if mtool.checkPermission(ManageDoctors, self.context):
-            self.show_select_column = True
-            self.review_states[0]['transitions'].append({'id':'deactivate'}) 
+            self.review_states[0]['transitions'].append({'id':'deactivate'})
             self.review_states.append(
                 {'id':'inactive',
                  'title': _('Dormant'),
@@ -72,7 +71,7 @@ class DoctorsView(ClientContactsView):
                              'getBusinessPhone',
                              'getMobilePhone']})
             stat = self.request.get("%s_review_state"%self.form_id, 'default')
-            self.show_select_column = stat != 'all' 
+            self.show_select_column = stat != 'all'
         return super(DoctorsView, self).__call__()
 
     def folderitems(self):

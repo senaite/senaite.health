@@ -67,14 +67,13 @@ class PatientsView(BikaListingView):
         }
 
         self.review_states = [
-            {'id':'default',
-             'title': _('All'),
-             'contentFilter':{},
-             'transitions':[{'id':'empty'}, ],
-             'columns': ['Title', 'getPatientID', 'getClientPatientID', 
-                         'getGender', 'getAgeSplittedStr',
-                         'getBirthDate', 'getCitizenship',
-                         'getPrimaryReferrer']},
+            {'id': 'default',
+             'title': _('Active'),
+             'contentFilter': {'inactive_state': 'active'},
+             'transitions': [],
+             'columns': ['getPatientID', 'getClientPatientID',
+                         'Title', 'getGender', 'getAgeSplittedStr',
+                         'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']},
         ]
 
     def __call__(self):
@@ -90,21 +89,8 @@ class PatientsView(BikaListingView):
             else:
                 msg = _("Cannot create patients without any system clients configured.")
                 addPortalMessage(self.context.translate(msg))
-        return super(PatientsView, self).__call__()
-
-    def folderitems(self):
-        mtool = getToolByName(self.context, 'portal_membership')
         if mtool.checkPermission(ManagePatients, self.context):
-            del self.review_states[0]['transitions']
-            self.show_select_column = True
-            self.review_states.append(
-                {'id': 'active',
-                 'title': _('Active'),
-                 'contentFilter': {'inactive_state': 'active'},
-                 'transitions': [{'id':'deactivate'}, ],
-                 'columns': ['getPatientID', 'getClientPatientID',
-                             'Title', 'getGender', 'getAgeSplittedStr',
-                             'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']})
+            self.review_states[0]['transitions'].append({'id':'deactivate'})
             self.review_states.append(
                 {'id': 'inactive',
                  'title': _('Dormant'),
@@ -113,7 +99,20 @@ class PatientsView(BikaListingView):
                  'columns': ['getPatientID', 'getClientPatientID',
                              'Title', 'getGender', 'getAgeSplittedStr',
                              'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']})
+            self.review_states.append(
+                {'id': 'all',
+                 'title': _('All'),
+                 'contentFilter':{},
+                 'transitions':[{'id':'empty'}, ],
+                 'columns': ['Title', 'getPatientID', 'getClientPatientID', 
+                             'getGender', 'getAgeSplittedStr',
+                             'getBirthDate', 'getCitizenship',
+                             'getPrimaryReferrer']})
+            stat = self.request.get("%s_review_state" % self.form_id, 'default')
+            self.show_select_column = stat != 'all'
+        return super(PatientsView, self).__call__()
 
+    def folderitems(self):
         items = BikaListingView.folderitems(self)
         for x in range(len(items)):
             if 'obj' not in items[x]:
