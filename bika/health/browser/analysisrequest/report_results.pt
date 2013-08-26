@@ -1,0 +1,594 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="bika"
+    tal:define="portal_url nocall:context/portal_url;
+    portal portal_url/getPortalObject;">
+
+
+    <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" media="all" href=""
+            tal:attributes="href string:$portal_url/ar_report_results.css" />
+    </head>
+
+
+    <body tal:define="
+    plone_view python:view.context.restrictedTraverse('@@plone');
+        portal python:context.portal_url.getPortalObject();
+        lab_accredited view/laboratory/getLaboratoryAccredited;
+        global columns python:0;
+        pub_pref view/pub_pref;
+        accredited python:lab_accredited and view.any_accredited;
+        global invoice_exclude python:False;
+        global out_of_range python:0;
+        ar nocall:view/ar;">
+
+    <div style="text-align:right;padding-top:-15px;padding-right:-40px;">
+        <pdf:barcode
+                type="code128"
+                align="baseline"
+                barheight="30px"
+                tal:attributes="value ar/RequestID;
+                                humanreadable ar/RequestID;">
+        </pdf:barcode>
+    </div>
+
+
+    <table cellpadding="0" style="width:100%">
+        <tr>
+            <!--td rowspan="2" style='vertical-align:middle' width="10%">
+                <img tal:attributes="src string:${portal/absolute_url}/logo.png;
+                                     width string:200px"/>
+            </td-->
+            <!--td rowspan="2" style='padding-left:10px;padding-right:10px;vertical-align:middle' width="100px">
+                <tal:accredited condition="accredited"
+                    define="logo python:context.bika_setup.laboratory.getAccreditationBodyLogo()">
+                    <img
+                        tal:condition="logo"
+                        tal:attributes="src string:${portal/absolute_url}/bika_setup/laboratory/AccreditationBodyLogo"/>
+                    <img
+                        tal:condition="not: logo"
+                        tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/AccreditationBodyLogo.png"/>
+                </tal:accredited>
+                <span tal:condition="not: accredited">&nbsp;</span>
+            </td-->
+            <td colspan="2" style="font-size:20px;font-weight:bold;padding-bottom:5px;padding-top:5px;"
+                tal:content="view/laboratory/Name">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span tal:content='view/laboratory/Title'></span><br/>
+                <span tal:content='structure view/lab_address'></span><br/>
+                <tal:labemail condition="view/laboratory/getEmailAddress">
+                    <a tal:content="view/laboratory/getEmailAddress"
+                       tal:attributes="url python:'mailto:%s' % view.laboratory.getEmailAddress();"></a><br/>
+                </tal:labemail>
+                <tal:labphone condition="view/laboratory/getPhone">
+                    <span i18n:translate="">Phone</span>:
+                    <span tal:content="view/laboratory/getPhone"></span><br/>
+                </tal:labphone>
+                <tal:labfax condition="view/laboratory/getFax">
+                    <span i18n:translate="">Fax</span>:
+                    <span tal:content="view/laboratory/getFax"></span><br/>
+                </tal:labfax>
+            </td>
+            <td align="right">
+                <table border='0' cellpadding="2">
+                    <tr>
+                        <td style='font-style:italic' i18n:translate="">Phone:</td>
+                        <td tal:content="view/laboratory/Phone"></td>
+                    </tr>
+                    <tr>
+                        <td style='font-style:italic' i18n:translate="">Fax:</td>
+                        <td tal:content="view/laboratory/Fax"></td>
+                    </tr>
+                    <tr>
+                        <td style='font-style:italic' i18n:translate="">Email:</td>
+                        <td style='font-size:12px;' tal:content="view/laboratory/EmailAddress"></td>
+                    </tr>
+                    <tr>
+                        <td style='font-style:italic' i18n:translate="">Web:</td>
+                        <td tal:content="view/laboratory/LabURL"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div style="padding-top:40px;">&nbsp;</div>
+
+    <!-- Client info -->
+    <table cellpadding="0" style="width:100%">
+        <tr>
+            <td>
+                <span style="font-weight:bold;font-size:16px;" tal:content="view/client/Title"></span><br/>
+                <span style="font-style:italic" i18n:translate="">Attn:</span>
+                <span tal:content="view/contact/getFullname"/>
+                <br/>
+                <span tal:content="structure view/client_address"></span>
+            </td>
+            <td align="right" valign="bottom">
+                <table cellpadding="2" style="width:100%">
+                    <tr tal:condition="python:view.client.getPhone()">
+                        <td style='font-style:italic'>Phone:</td>
+                        <td tal:content="python:view.client.getPhone()"></td>
+                    </tr>
+                    <tr tal:condition="python:view.client.getFax()">
+                        <td style='font-style:italic'>Fax:</td>
+                        <td tal:content="python:view.client.getFax()"></td>
+                    </tr>
+                    <tr tal:condition="python:view.client.getEmailAddress()">
+                        <td style='font-style:italic'>Email:</td>
+                        <td tal:content="python:view.client.getEmailAddress()"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Patient info -->
+    <table cellpadding="2" style="width:100%"
+        tal:define='patient python:view.patient'
+        tal:condition='view/patient'>
+        <tr><td colspan="3" i18n:translate="" style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;">Patient Information</td></tr>
+        <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
+        <tr>
+            <td class="parameter_label" i18n:translate="" style='font-weight:bold;'>Patient:</td>
+            <td colspan="2" tal:content="python:patient.Title() or ''"></td>
+        </tr>
+        <tr>
+            <td class="parameter_label" i18n:translate="" style='font-weight:bold;'>Gender:</td>
+            <td colspan="2" tal:content="python:patient and patient.getGender() or ''"></td>
+        </tr>
+        <tr>
+            <td class="parameter_label" i18n:translate="" style='font-weight:bold;'>Date of Birth:</td>
+            <td colspan="2">
+                <span tal:content="python:patient and view.ulocalized_time(patient.getBirthDate(), long_format=0) or ''"></span>
+                <span tal:condition="python:patient and patient.getBirthDateEstimated() or ''">(estimated)</span>
+            </td>
+        </tr>
+        <tr>
+             <td class="parameter_label" i18n:translate="" style='font-weight:bold;vertical-align:top;'>Address:</td>
+             <td>
+                <span tal:condition="python:'address' in patient.getCountryState()"
+                     tal:content="python:patient.getCountryState()['address']"></span>
+                <span tal:condition="python:'address' in patient.getCountryState()">&nbsp;</span>
+
+                <span tal:condition="python:'city' in patient.getCountryState()"
+                     tal:content="python:patient.getCountryState()['city'] or ''"></span>
+                <span tal:condition="python:'city' in patient.getCountryState()">&nbsp;</span>
+
+                <span tal:condition="python:'state' in patient.getCountryState()"
+                     tal:content="python:patient.getCountryState()['state']"></span>
+                <span tal:condition="python:'state' in patient.getCountryState()">&nbsp;</span>
+
+                <span tal:condition="python:'zip' in patient.getCountryState()"
+                     tal:content="python:patient.getCountryState()['zip']"></span>
+                <span tal:condition="python:'zip' in patient.getCountryState()">&nbsp;</span>
+
+                <span tal:condition="python:'country' in patient.getCountryState()"
+                     tal:content="python:patient.getCountryState()['country']"></span>
+            </td>
+        </tr>
+        <tr tal:define="value python:patient.getHomePhone() or '';"
+            tal:condition="value">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold">Phone (home):</td>
+            <td colspan="2" tal:content="value"></td>
+        </tr>
+        <tr tal:define="value python:patient.getMobilePhone() or '';"
+            tal:condition="value">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold">Phone (mobile):</td>
+            <td colspan="2" tal:content="value"></td>
+        </tr>
+        <tr tal:define="value python:patient.getEmailAddress() or '';"
+            tal:condition="value">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold">Email:</td>
+            <td colspan="2" tal:content="value"></td>
+        </tr>
+    </table>
+
+    <!-- Batch info -->
+    <table cellpadding="2" style="width:100%"
+        tal:condition="python:view.patient and view.ar.getBatch()"
+        tal:define="patient python:view.patient;
+                    batch python:view.ar.getBatch();">
+        <tr><td colspan="3" i18n:translate="" style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;">Clinical Information</td></tr>
+        <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
+        <tr>
+            <td class="parameter_label" i18n:translate="" style='font-weight:bold'>Date of Onset:</td>
+            <td colspan="2">
+                <span tal:content="python:patient and view.ulocalized_time(batch.Schema()['OnsetDate'].get(batch), long_format=0) or ''"></span>
+                <span tal:condition="python:batch.Schema()['OnsetDateEstimated'].get(batch)">(estimated)</span>
+            </td>
+        </tr>
+        <tr tal:define="rows python:ar.getBatch() and batch.Schema()['Symptoms'].get(batch) or [];"
+            tal:condition="rows">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold;vertical-align:top;">Signs and Symptoms:</td>
+            <td colspan="2">
+                <tal:signsymptom repeat="row rows">
+                    <span tal:content="python:row.get('Title', '')"></span>
+                    <span i18n:translate="" tal:condition="python:row.get('Severity','0')=='1'">(Mild)</span>
+                    <span i18n:translate="" tal:condition="python:row.get('Severity','0')=='2'">(Moderate)</span>
+                    <span i18n:translate="" tal:condition="python:row.get('Severity','0')=='3'">(Severe)</span>
+                    <br/>
+                </tal:signsymptom>
+            </td>
+        </tr>
+        <tr tal:define="value python:ar.getBatch() and ar.getBatch().getBatchLabels() or [];"
+            tal:condition="value">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold;vertical-align:top;">Additional Signs and Symptoms:</td>
+            <td colspan="2">
+                <span tal:content="structure python:', '.join(view.get_titles_for_uids(*value))"></span>
+            </td>
+        </tr>
+        <tr tal:define="rows python:ar.getBatch() and batch.Schema()['ProvisionalDiagnosis'].get(batch) or [];"
+            tal:condition="rows">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold;vertical-align:top;">Provisional Diagnosis:</td>
+            <td colspan="2">
+                <tal:diagnosis repeat="row rows">
+                    <span tal:content="python:row.get('Description', '')"></span>
+                    (<span tal:content="python:row.get('Code', '')"/>)
+                    <br/>
+                </tal:diagnosis>
+            </td>
+        </tr>
+        <tr tal:define="value python:batch.Schema()['Doctor'].get(batch) or '';"
+            condition="value">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold">Doctor:</td>
+            <td colspan="2" tal:content="python:value.Title()"></td>
+        </tr>
+    </table>
+    <tal:nextpage condition="python:view.patient and view.ar.getBatch()">
+        <pdf:nextpage />
+    </tal:nextpage>
+
+    <table cellpadding="2" style="width:100%"
+        tal:define='patient python:view.patient'
+        tal:condition='view/patient'>
+        <tr>
+        <td colspan="3" align="left" valign="top" i18n:translate="" style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;">Sample Information</td>
+        </tr>
+        <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
+
+        <tal:x define="rows python:patient and patient.getPatientIdentifiers() or [];"
+                    condition="rows">
+                <tr>
+                    <td class="parameter_label" align="left" valign="top" i18n:translate="" style='font-weight:bold;'>Client Patient ID:</td>
+                    <td colspan="2">
+                        <tal:y repeat="row rows">
+                            <span tal:content="python:row.get('Identifier', '')"/>
+                        </tal:y>
+                    </td>
+                </tr>
+                </tal:x>
+                <tal:x define="value python:ar.getBatch() and ar.getBatch().getClientBatchID() or '';"
+                condition="value">
+            <tr>
+                <td class="parameter_label" align="left" valign="top" i18n:translate="" style='font-weight:bold;'>Client Case ID:</td>
+                <td tal:content="value" colspan="2"></td>
+            </tr>
+        </tal:x>
+        <tal:x define="value python:ar.getSample().getClientSampleID();" condition="value">
+            <tr>
+                <td class="parameter_label" align="left" valign="top" i18n:translate="" style='font-weight:bold;'>Client Sample ID:</td>
+                <td tal:content="value" colspan="2"/>
+            </tr>
+            </tal:x>
+
+        <tr>
+            <td class="parameter_label" align="left" valign="top" i18n:translate="" style='font-weight:bold;'>Client Request ID:</td>
+            <td colspan="2">
+                    <a href="" tal:content="ar/getRequestID" tal:attributes="href ar/absolute_url">AR-00001</a>
+                    <tal:exclude tal:condition="ar/getInvoiceExclude">
+                        <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/invoice_exclude.png"
+                            tal:define="global invoice_exclude python:1">
+                    </tal:exclude>
+            </td>
+        </tr>
+        <tr>
+        <td class="parameter_label" align="left" valign="top" i18n:translate="" style='font-weight:bold'>Client Sample ID:</td>
+        <td colspan="2">
+            <a href=""
+                tal:define="sample ar/getSample"
+                tal:content="sample/getSampleID"
+                tal:attributes="href sample/absolute_url">S-00001</a>
+        </td>
+        </tr>
+
+        <tr>
+            <td class="parameter_label" align="left" valign="top" i18n:translate="" style='font-weight:bold'>Sample Type:</td>
+            <td colspan="2" tal:content="python:ar.getSample().getSampleType().Title()"></td>
+        </tr>
+
+        <tr tal:condition="python:ar.getSample().getSamplePoint()">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold">Sample Point:</td>
+            <td colspan="2" tal:content="samplepoint/Title|nothing"></td>
+        </tr>
+
+        <tr>
+            <td class="parameter_label" align="left" valign="top" i18n:translate="" style='font-weight:bold'>Sample Collected:</td>
+            <td colspan="2" tal:content="python:view.ulocalized_time(ar.getSamplingDate(), long_format=0)"></td>
+        </tr>
+
+        <tr>
+            <td class="parameter_label" align="left" valign="top" i18n:translate="" style="font-weight:bold">Sample Received:</td>
+            <td colspan="2" tal:content="python:view.ulocalized_time(ar.getDateReceived(), long_format=1)"></td>
+        </tr>
+        <tr>
+            <td class="parameter_label" align="left" valign="top" i18n:translate="" style="font-weight:bold">Date Reported:</td>
+            <td colspan="2" tal:content="python:view.ulocalized_time(ar.getDatePublished(), long_format=1)"></td>
+        </tr>
+
+    </table>
+
+
+    <table cellpadding="2" style="width:100%;">
+        <tr>
+            <td colspan="3" align="left" valign="top" i18n:translate="" style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;">Results</td>
+        </tr>
+        <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
+    <tbody>
+        <tal:poc tal:repeat="poc python:view.services.keys()">
+        <tal:category tal:repeat="cat python:view.services[poc].keys()">
+            <tr class="category_heading">
+            <th align="left" valign="top"
+                    tal:content="string:${poc} - ${cat}" style='font-weight:bold;'/>
+                <tal:drymatter tal:condition="ar/getReportDryMatter">
+                    <th align="left" valign="top i18n:translate="" style="font-weight:bold;">Result</th>
+                    <th align="left" valign="top i18n:translate="" style="font-weight:bold;">Dry Result</th>
+                    </tal:drymatter>
+                    <tal:notdrymatter tal:condition="not:ar/getReportDryMatter">
+                        <th align="left" valign="top" i18n:translate="" style="font-weight:bold;padding-top:5px;">Result</th>
+                    </tal:notdrymatter>
+                </tr>
+
+            <tal:service tal:repeat="service python:view.services[poc][cat]">
+                <tal:analysis tal:define="
+                    service_id service/getId;
+                    keyword python:service.getKeyword();
+                    analysis_found python:keyword in ar;
+                    analysis python:ar[keyword] if analysis_found else None;
+                    result python: view.formattedResult(analysis);
+                    uncertainty analysis/getUncertainty|nothing;
+                    in_range python:analysis.result_in_range(None, 'client');
+                    result_class python:in_range[0] and 'analysis_result' or 'analysis_result out_of_range';
+                    global out_of_range python:in_range[0] and out_of_range or 1;">
+
+                    <tr>
+                <td style="white-space:nowrap;" class="service_title" align="left" valign="top">
+                    <span tal:content="service/Title">Alcohol</span>
+                    <em tal:content="service/getUnit|nothing">ml</em>
+                    <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry_grey.png"
+                    tal:condition="python:view.any_drymatter and service.getReportDryMatter()">
+                    <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/accredited.png"
+                    tal:condition="python:accredited and service.getAccredited()">
+                    </td>
+                <td nowrap align="left" valign="top"
+                    tal:attributes="class result_class">
+                    <span tal:content="result">10.00</span>
+                    <span tal:content="string:${analysis/Unit}"
+                        tal:condition="analysis/Unit|nothing"/>
+                    <span tal:content="string:[+/- $uncertainty]"
+                        tal:condition="uncertainty"/>
+                        <span class="retested"
+                        tal:condition="analysis/getRetested"
+                        style="font-size:10px;color:#850000;"
+                        i18n:translate="">(Retested)</span>
+                        <span tal:condition="python:not in_range[0]">
+                        <img tal:condition="python:not in_range[0]"
+                            tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/exclamation.png"/>&nbsp;&nbsp;<br>
+                        <span tal:replace="python:in_range[0] and '' or 'valid range min: %(min)s, max: %(max)s'%(in_range[1])"/>
+                    </span>
+                        <span tal:condition="python:view.context.bika_setup.getEnableAnalysisRemarks()
+                                    and analysis.getRemarks()"
+                            class="analysis_remarks"
+                            tal:content="structure analysis/getRemarks"/>
+                    </td>
+                    <td align="left" valign="top"
+                        tal:attributes="class result_class"
+                        tal:condition="ar/getReportDryMatter">
+                        <span class="analysis_result"
+                        tal:condition="analysis/getResultDM"
+                        tal:content="analysis/getResultDM">10</span>
+                    </td>
+                </tr>
+            </tal:analysis>
+            </tal:service>
+        </tal:category>
+        </tal:poc>
+    </tbody>
+    </table>
+
+
+    <table cellpadding="2" style="width:100%"
+    tal:condition="python:ar.getRemarks()">
+    <hr>
+    <tr>
+        <td colspan="2" align="left" valign="top" i18n:translate=""><b><big>Remarks</big></b>
+        </td>
+    </tr>
+
+        <tr tal:define="remarks python:ar.getRemarks()"
+        tal:condition="remarks">
+            <td width="10%" align="left" valign="top"
+            tal:content="string:${ar/getRequestID}:">AR:</td>
+            <td align="left" valign="top"
+            tal:content="structure remarks">Remarks</td>
+    </tr>
+    </table>
+
+
+    <table cellpadding="2" style="width:100%"
+    tal:define="attachments ar/getAttachment"
+    tal:condition="attachments">
+    <hr>
+    <tr>
+        <td colspan="2" align="left" valign="top" i18n:translate=""><b><big>Attachments</big></b>
+        </td>
+    </tr>
+
+    <tr>
+        <td align="left" valign="top" width="10%"
+            tal:content="string:${ar/getRequestID}:">AR:</td>
+        <td>
+            <tal:attachment tal:repeat="attachment attachments">
+                <span tal:define="
+                file python:attachment.getAttachmentFile();
+                filename file/filename | nothing;
+                filesize file/get_size | python:file and len(file) or 0;
+                icon file/getBestIcon | nothing">
+                <img tal:condition="icon"
+                    tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;
+                    <a title="Click to download"
+                    tal:attributes="href string:${attachment/absolute_url}/at_download/AttachmentFile"
+                    tal:content=filename>Filename</a>
+                    <span tal:content="python:attachment.getAttachmentType().Title()">Filename</span>
+                    <span tal:content="python:here.lookupMime(file.getContentType())">ContentType</span>&nbsp;
+                    (<span tal:content="python:'%sKb' % (filesize / 1024)">0Kb</span>)
+                </span>
+            </tal:attachment>
+            </td>
+    </tr>
+
+    <tal:analyses tal:repeat="analysis python:ar.getAnalyses(full_objects=True)">
+            <tal:attachments tal:define="attachments analysis/getAttachment">
+            <tal:attachment tal:repeat="attachment attachments">
+                <tr>
+                <th tal:content="string:${ar/getRequestID} - ${analysis/Title}:">AR:</th>
+                    <td align="left" valign="top" tal:define="
+                        file python:attachment.getAttachmentFile();
+                        filename file/filename | nothing;
+                        filesize file/get_size | python:file and len(file) or 0;
+                        icon file/getBestIcon | nothing">
+                        <img tal:condition="icon"
+                            tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;
+                        <a title="Click to download"
+                            tal:attributes="href string:${attachment/absolute_url}/at_download/AttachmentFile"
+                            tal:content=filename>Filename</a>
+                            <span tal:content="python:attachment.getAttachmentType().Title()">Filename</span>
+                            <span tal:content="python:here.lookupMime(file.getContentType())">ContentType</span>&nbsp;
+                            (<span tal:content="python:'%sKb' % (filesize / 1024)">0Kb</span>)
+                    </td>
+                </tr>
+                </tal:attachment>
+            </tal:attachments>
+    </tal:analyses>
+    </table>
+
+
+
+    <div tal:repeat="manager mngr_ids"
+    tal:define="mngr_info python:view.get_managers_from_request(view.ar);
+                mngr_ids python:mngr_info['ids'];
+                managers python:mngr_info['dict']">
+    <tal:manager
+        tal:define="email python:managers[manager]['email'];
+            phone python:managers[manager]['phone']">
+        <img
+            tal:condition="signature"
+            tal:define="signature python:managers[manager]['signature']"
+            tal:attributes="src string:${signature}"
+            style="height:75px">
+        <br>&nbsp;&nbsp;
+        <i><span tal:content="python:managers[manager]['name']"/></i>
+        <br>&nbsp;&nbsp;
+        <b><span i18n:translate="">Department of</span>
+        <span tal:content="python:managers[manager]['department']"/></b>&nbsp;&nbsp;
+        <span tal:condition="phone">&nbsp;&nbsp;</span>
+        <img
+            tal:condition="phone"
+            tal:attributes="src string:${portal/absolute_url}/images/telephone.jpg">&nbsp;&nbsp;
+        <span tal:content="phone"/>
+        <span tal:condition="email">&nbsp;&nbsp;</span>
+        <img
+        tal:condition="email"
+            tal:attributes="src string:${portal/absolute_url}/images/email.jpg">&nbsp;&nbsp;
+        <a tal:attributes="href string:mailto:${email}"
+            tal:content="email"/>
+    </tal:manager>
+    </div>
+
+    <div style="padding-top:30px">&nbsp;</div>
+    <div class="discreeter"
+        tal:define="global seq_no python:0"
+        style='line-height:20px;background-color:#efefef;padding:20px;border:1px solid #CDCDCD;'>
+        <tal:outofrange condition="out_of_range">
+            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/exclamation.png"
+                style="height:12px;width:12px;margin-top:20px;" />&nbsp;
+            <span i18n:translate="">
+                Result out of
+                <tal:block replace="string:client" i18n:name="spec"/>
+                    specified range
+            </span>
+            <br/>
+        </tal:outofrange>
+        <tal:drymatter condition="view/any_drymatter">
+            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry.png">
+            <span i18n:translate="">Reported as dry matter</span>
+            <br/>
+        </tal:drymatter>
+        <tal:invoice condition="invoice_exclude">
+            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/invoice_exclude.png">
+            <span i18n:translate="">Not invoiced</span>
+            <br/>
+        </tal:invoice>
+        <tal:accredited tal:condition="lab_accredited">
+            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/accredited.png">
+            <span i18n:translate="">
+                Methods included in the
+                <tal:block replace="view/laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+                    schedule of Accreditation for this Laboratory. Analysis remarks are not accredited
+            </span>
+            <br/>
+        </tal:accredited>
+        <tal:tested>
+            <span
+                tal:define="global seq_no python:seq_no + 1"
+                tal:content="string:$seq_no.">1
+            </span>
+            <span i18n:translate="">Analysis results relate only to the samples tested</span>
+            <br/>
+        </tal:tested>
+        <tal:approval>
+            <span tal:define="global seq_no python:seq_no + 1" tal:content="string:$seq_no.">1</span>
+            <span i18n:translate="">This document shall not be reproduced except in full, without the written approval of </span>
+            <span tal:content="view/laboratory/Name"></span>
+            <br/>
+        </tal:approval>
+        <tal:confidence define="confidence_level view/laboratory/Confidence|nothing"
+            tal:condition="confidence_level">
+            <span tal:define="global seq_no python:seq_no + 1"
+                tal:content="string:$seq_no.">1</span>
+            <span i18n:translate="">
+                    Test results are at a
+                    <tal:block replace="confidence_level" i18n:name="lab_confidence"/>
+                    % confidence level</span>
+            <br/>
+        </tal:confidence>
+        <tal:pubprefs tal:condition="python:'email' in pub_pref">
+            <span tal:define="global seq_no python:seq_no + 1"
+                    tal:content="string:$seq_no.">1</span>
+            <span i18n:translate="">
+                    Methods of analysis available by clicking on the 'Request' link</span>
+            <br/>
+        </tal:pubprefs>
+        <div tal:condition="view/Footer" tal:content="structure view/Footer"></div>
+    </div>
+
+    <div style="padding-top:20px">&nbsp;</div>
+
+    <tal:reporter tal:condition="view/reporter">
+        <div>
+            <span i18n:translate="" style="font-style:italic">Report prepared by:</span>
+            <span tal:content="view/reporter"></span>
+            <tal:email tal:condition="view/reporter_email">
+                (<a tal:define="email view/reporter_email"
+                    tal:content="email"
+                    tal:attributes="href string:mailto:${email}"/>)
+            </tal:email>
+        </div>
+    </tal:reporter>
+    </body>
+</html>
