@@ -27,16 +27,23 @@
         dry ar/getReportDryMatter;
         remarksenabled python:view.context.bika_setup.getEnableAnalysisRemarks();">
 
-    <div style="text-align:right;padding-top:-15px;padding-right:-40px;">
-        <pdf:barcode
-                type="code128"
-                align="baseline"
-                barheight="30px"
-                tal:attributes="value ar/RequestID;
-                                humanreadable ar/RequestID;">
-        </pdf:barcode>
-    </div>
 
+    <table cellpadding="0" width="100%">
+        <tr>
+            <td style="text-align:left;vertical-align:top;padding-top:-5px;">
+                <img tal:attributes="src string:${portal/absolute_url}/logo_report.jpg"
+                     width="200px"/></td>
+            <td style="text-align:right;vertical-align:top;padding-top:-5px;padding-right:-20px;">
+                <pdf:barcode
+                    type="code128"
+                    align="baseline"
+                    barheight="30px"
+                    tal:attributes="value ar/RequestID;
+                                    humanreadable ar/RequestID;">
+            </pdf:barcode>
+            </td>
+        </tr>
+    </table>
 
     <table cellpadding="0" style="width:100%">
         <tr>
@@ -55,18 +62,15 @@
                         tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/AccreditationBodyLogo.png"/>
                 </tal:accredited>
                 <span tal:condition="not: accredited">&nbsp;</span>
-            </td-->
-            <td colspan="2" style="font-size:20px;font-weight:bold;padding-bottom:5px;padding-top:5px;"
-                tal:content="view/laboratory/Name">
             </td>
+            <td style="font-size:20px;font-weight:bold;padding-bottom:5px;padding-top:5px;"
+                tal:content="view/laboratory/Name">
+            </td-->
         </tr>
         <tr>
-            <td>
-                <span tal:content='view/laboratory/Title'></span>
-                <tal:labaddress condition="view/lab_address">
-                    <br/>
-                    <span tal:content='structure view/lab_address'></span>
-                </tal:labaddress>
+            <td style='padding-top:5px;vertical-align:top;width:70%;'>
+                <span style="font-size:20px;font-weight:bold;font-weight:bold;line-height:20px;"
+                    tal:content="view/laboratory/Title"></span>
                 <tal:labemail define="email view/laboratory/getEmailAddress"
                               condition="email">
                     <br/>
@@ -89,40 +93,41 @@
                     <a tal:content="url"
                        tal:attributes="href url"></a>
                 </tal:laburl>
+                <tal:labaddress condition="view/get_formatted_lab_address">
+                    <br/>
+                    <span tal:content='structure view/get_formatted_lab_address'></span>
+                </tal:labaddress>
             </td>
-            <!--td align="right">
-                <table border='0' cellpadding="2">
-                    <tr>
-                        <td style='font-style:italic' i18n:translate="">Phone:</td>
-                        <td tal:content="view/laboratory/Phone"></td>
-                    </tr>
-                    <tr>
-                        <td style='font-style:italic' i18n:translate="">Fax:</td>
-                        <td tal:content="view/laboratory/Fax"></td>
-                    </tr>
-                    <tr>
-                        <td style='font-style:italic' i18n:translate="">Email:</td>
-                        <td style='font-size:12px;' tal:define="email view/laboratory/EmailAddress">
-                            <a style="color:#0000EE;"
-                               tal:content="email"
-                               tal:attributes="href python:'mailto:%s' % email;"></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style='font-style:italic' i18n:translate="">Web:</td>
-                        <td tal:define="url view/laboratory/LabURL">
-                            <a style="color:#0000EE;"
-                               tal:content="url"
-                               tal:attributes="href url"></a>
-                        </td>
-                    </tr>
-                </table>
-            </td-->
+            <td style='text-align:left;vertical-align:top;padding-top:5px;width:350px;'>
+                    <span style="font-size:16px;font-weight:bold;line-height:20px;"
+                        tal:content="view/client/Title"></span><br/>
+                    <span style="font-style:italic" i18n:translate="">Attn:</span>
+                    <span tal:content="view/contact/getFullname"/>
+                    <tal:clemail define="email view/client/getEmailAddress"
+                                  condition="email">
+                        <br/>
+                        <a tal:content="email"
+                           tal:attributes="href python:'mailto:%s' % email;"></a>
+                    </tal:clemail>
+                    <tal:clphone condition="view/client/getPhone">
+                        <br/>
+                        <span i18n:translate="">Phone</span>:
+                        <span tal:content="view/client/getPhone"></span>
+                    </tal:clphone>
+                    <tal:clfax condition="view/client/getFax">
+                        <br/>
+                        <span i18n:translate="">Fax</span>:
+                        <span tal:content="view/client/getFax"></span>
+                    </tal:clfax>
+                    <tal:claddress condition="view/get_formatted_client_address">
+                        <br/>
+                        <span tal:content='structure view/get_formatted_client_address'></span>
+                    </tal:claddress>
+            </td>
         </tr>
     </table>
-    <div style="padding-top:40px;">&nbsp;</div>
 
-    <!-- Client info -->
+    <!-- Client info
     <table cellpadding="0" style="width:100%">
         <tr>
             <td>
@@ -154,7 +159,7 @@
                 </table>
             </td>
         </tr>
-    </table>
+    </table>-->
 
     <!-- Patient info -->
     <table cellpadding="2" style="width:100%"
@@ -461,7 +466,6 @@
                                 analysis_css_retested python:'retested' if analysis_retested else '';
                                 global out_of_range python:out_of_range or analysis_outofrange;">
                 <tr tal:attributes="class python:'%s %s %s' % (analysis_css_result, analysis_css_accredited, analysis_css_retested);">
-
                     <td class="analysis" tal:content="service/Title">Total 25-OHD</td>
                     <td class="dryresult"
                         tal:condition="python: dry==True and analysis_result_dm"
@@ -486,9 +490,12 @@
                     </td>
                 </tr>
                 <tr tal:condition="python:remarksenabled==True and analysis_remarks">
+                    <td></td>
                     <td class="remarks" colspan="5"
-                        tal:attributes="colspan python: '6' if dry==True else '5';"
-                        tal:content="structure analysis_remarks">
+                        style="font-size:11px;padding-top:-2px;"
+                        tal:attributes="colspan python: '5' if dry==True else '4';">
+                        <span style="font-weight:bold;font-size:11px;" i18n:translate="">Remarks</span>:
+                        <span tal:replace="structure analysis_remarks"></span>
                     </td>
                 </tr>
                 </tal:analysis>

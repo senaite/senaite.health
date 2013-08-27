@@ -29,3 +29,65 @@ class AnalysisRequestPublish(doPublish):
             subject = _('Analysis results for %s') % totline
 
         return subject, totline
+
+    def get_formatted_lab_address(self):
+        client_address = self.laboratory.getPostalAddress() \
+            or self.laboratory.getBillingAddress() \
+            or self.laboratory.getPhysicalAddress()
+        addr = None
+        if client_address:
+            addr = self.get_formatted_address(client_address)
+        return addr
+
+    def get_formatted_client_address(self):
+        client_address = self.client.getPostalAddress() \
+            or self.contact.getBillingAddress() \
+            or self.contact.getPhysicalAddress()
+        addr = None
+        if client_address:
+            addr = self.get_formatted_address(client_address)
+        return addr
+
+    def get_formatted_address(self, address):
+        addr = address.get('address')
+        city = address.get('city')
+        state = address.get('state')
+        azip = address.get('zip')
+        country = address.get('country')
+        outaddress = None
+        if addr:
+            outaddress = addr
+
+        strregion = None
+        if azip and city and state and country:
+            strregion = "%s %s (%s)<br/>%s" % (azip, city, state, country)
+        elif azip and city and state:
+            strregion = "%s %s<br/>%s" % (azip, city, state)
+        elif azip and city and country:
+            strregion = "%s %s<br/>%s" % (azip, city, country)
+        elif azip and state and country:
+            strregion = "%s %s<br/>%s" % (azip, state, country)
+        elif azip and state:
+            strregion = "%s %s" % (azip, state)
+        elif azip and country:
+            strregion = "%s %s" % (azip, country)
+        elif azip:
+            strregion = azip
+        elif city and state and country:
+            strregion = "%s (%s)<br/>%s" % (city, state, country)
+        elif city and state:
+            strregion = "%s<br/>%s" % (city, state)
+        elif city and country:
+            strregion = "%s<br/>%s" % (city, country)
+        elif city:
+            strregion = city
+        elif country:
+            strregion = country
+
+        if addr and strregion:
+            outaddress = "%s<br/>%s" % (addr, strregion)
+        elif addr:
+            outaddress = addr
+        elif strregion:
+            outaddress = strregion
+        return outaddress
