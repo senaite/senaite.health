@@ -437,7 +437,7 @@
             tal:repeat="cat python:view.services[poc].keys()">
             <thead>
                 <tr>
-                    <th style='font-weight:bold;text-align:left;white-space:nowrap'><span tal:content="string:${cat}">Category: Vitamin D</span></th>
+                    <th style='font-weight:bold;text-align:left;'><span tal:content="string:${cat}" style='white-space:nowrap'>Category: Vitamin D</span></th>
                     <th style='font-weight:bold;text-align:left;' tal:condition="dry"><span i18n:translate="">Dry Result</span></th>
                     <th style='font-weight:bold;text-align:left;'><span i18n:translate="">Result</span></th>
                     <th style='font-weight:bold;text-align:left;'><span i18n:translate="">Units</span></th>
@@ -465,8 +465,8 @@
                                 analysis_css_accredited python:'accredited' if analysis_accredited else '';
                                 analysis_css_retested python:'retested' if analysis_retested else '';
                                 global out_of_range python:out_of_range or analysis_outofrange;">
-                <tr tal:attributes="class python:'%s %s %s' % (analysis_css_result, analysis_css_accredited, analysis_css_retested);">
-                    <td class="analysis" tal:content="service/Title" style="width:200px;">Total 25-OHD</td>
+                <tr>
+                    <td class="analysis" tal:content="service/Title" style="white-space:nowrap">Total 25-OHD</td>
                     <td class="dryresult"
                         tal:condition="python: dry==True and analysis_result_dm"
                         tal:content="analysis_result_dm"></td>
