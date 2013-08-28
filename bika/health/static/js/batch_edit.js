@@ -1,4 +1,7 @@
-// JS for <batch_id>/base_edit form
+/**
+ * Javascript for <batch_id>/base_edit form.
+ * Loaded either in batch edition or batch creation.
+ */
 
 function init() {
     if (!$('input[name="PatientBirthDate"]').length) {
@@ -32,6 +35,7 @@ function loadAnonymousPatient(id) {
 		$.ajax({
 			url: window.portal_url + "/getpatientinfo",
 			type: 'POST',
+			async: false,
 			data: {'_authenticator': $('input[name="_authenticator"]').val(),
                    'ClientPatientID': id},
         dataType: "json",
@@ -52,7 +56,6 @@ function loadAnonymousPatient(id) {
 	loadPatientData();
 }
 
-
 function loadPatientData() {
     $('input[name="PatientBirthDate"]').val('');
     $('input[name="PatientGender"]').val('');
@@ -62,6 +65,7 @@ function loadPatientData() {
         $.ajax({
             url: window.portal_url + "/getpatientinfo",
             type: 'POST',
+            async: false,
             data: {'_authenticator': $('input[name="_authenticator"]').val(),
                     'PatientUID': patientuid},
             dataType: "json",
@@ -230,7 +234,7 @@ function loadPatientOverlay(patientId) {
 	    $('a.edit_patient').prepOverlay(getPatientOverlay());
 	}
 }
-
+async: false,
 function loadDoctorOverlay(doctorId) {
 	if (!$('a.add_doctor').length) {
         $("input[id=Doctor]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
@@ -379,9 +383,15 @@ function getPatientOverlay() {
 /**
  * Restricts the search results of Patient's reference widgets (Patient and
  * ClientPatientID) to current client if the current page comes from a Client's
- * batch view. If no current client found, does nothing.
+ * batch view or from a Patient's batches view. 
+ * If no current client found, does nothing.
  */
 function filterByClientIfNeeded() {
+	puid = getReferrerPatientUID();
+	if (puid != null) {
+		filterByPatientIfNeeded();
+		return;
+	}
 	clientuid = getReferrerClientUID();
 	if (clientuid != null) {
 		base_query=$.parseJSON($("#Patient").attr("base_query"));
@@ -405,8 +415,33 @@ function filterByClientIfNeeded() {
         if (!$('#ClientTitle').length) {
         	$('input[name="Client"]').after("<span id='ClientTitle'>"+default_client_title+"</span>");
         }
+        $('input[name="Client"]').val(default_client_title);
         $('input[name="Client"]').hide();
         $('input[name="Client_uid"]').val(data['ClientUID']);
+	}
+}
+
+/** 
+ * Restricts the search results to current patient if the current page comes
+ * from a Patient's batch view. If no current patient found, does nothing
+ */
+function filterByPatientIfNeeded() {
+	puid = getReferrerPatientUID();
+	if (puid != null) {
+		$('input[name="Patient_uid"]').val(default_patient_uid);
+		$('input[name="Patient"]').attr('uid', default_patient_uid);
+		$('input[name="Patient"]').val(default_patient_title);
+		loadPatientData();
+		$('#PatientTitle').remove();
+		$('#ClientPatientIDTitle').remove();
+		$('#ClientTitle').remove();
+		$('input[name="Client"]').hide();
+		$('input[name="Patient"]').hide();
+		$('input[name="ClientPatientID"]').hide();
+		$('input[name="Client"]').after("<span id='ClientTitle'>"+default_client_title+"</span>");
+		$('input[name="Patient"]').after("<span id='PatientTitle'>"+default_patient_title+"</span>&nbsp;");
+		$('input[name="ClientPatientID"]').after("<span id='ClientPatientIDTitle'>"+default_client_patientid+"</span>");
+		$("a.add_patient").hide();
 	}
 }
 
@@ -427,6 +462,7 @@ function getReferrerClientUID() {
 			$.ajax({
 				url: window.portal_url + "/clients/" + clientid + "/getClientInfo",
 				type: 'POST',
+				async: false,
 				data: {'_authenticator': $('input[name="_authenticator"]').val()},
 	        dataType: "json",
 	        success: function(data, textStatus, $XHR){
@@ -439,36 +475,76 @@ function getReferrerClientUID() {
 		}
 	}
 	return default_client_uid;
-} 
+}
+
+default_patient_uid = null;
+default_patient_title = null;
+default_patient_id = null;
+default_client_patientid = null;
+function getReferrerPatientUID() {
+	if (default_patient_uid == null) {
+		pid = null;
+		if (document.referrer.search('/patients/') >= 0) {
+			pid = document.referrer.split("patients")[1].split("/")[1];
+		}
+		if (pid != null) {
+			$.ajax({
+	            url: window.portal_url + "/getpatientinfo",
+	            type: 'POST',
+	            async: false,
+	            data: {'_authenticator': $('input[name="_authenticator"]').val(),
+	                   'PatientID': pid,},
+	            dataType: "json",
+	            success: function(data, textStatus, $XHR) {
+	            	if (data['PatientUID']!='') {
+	            		default_patient_uid = data['PatientUID'];
+	            		default_patient_title = data['PatientFullname'];
+	            		default_patient_id = data['PatientID'];
+	            		default_client_uid = data['ClientUID'];
+	            		default_client_title = data['ClientTitle'];
+	            		default_client_patientid = data['ClientPatientID'];
+	            	}
+	           	}
+	        });
+		}
+	}
+	return default_patient_uid;
+}
 
 (function( $ ) {
 $(document).ready(function(){
-
-	_p = jarn.i18n.MessageFactory('plone');
-    _b = jarn.i18n.MessageFactory('bika');
-    _  = jarn.i18n.MessageFactory('bika.health');
-
-    // These look silly in the edit screen under "Additional Notes"
-    $("#archetypes-fieldname-Remarks").remove();
-    
-	// Check for missing hidden data
-	init();
 	
-    // Restrict results to current client if needed
-	filterByClientIfNeeded();
+	// Load only i batch edition/creation view
+	is_batchform = $('form[id="batch-base-edit"]').length > 0;
+	if (is_batchform) {
+		
+		_p = jarn.i18n.MessageFactory('plone');
+	    _b = jarn.i18n.MessageFactory('bika');
+	    _  = jarn.i18n.MessageFactory('bika.health');
 
-	// Load events
-	loadEventHandlers();
+	    // These look silly in the edit screen under "Additional Notes"
+	    $("#archetypes-fieldname-Remarks").remove();
 
-	// Load additional Patient data, like birth date, age, etc.
-	// If a client has already been selected, it doesn't get overrided
-	loadPatientData();
+		// Check for missing hidden data
+		init();
+		
+	    // Restrict results to current client if needed
+		filterByClientIfNeeded();
 
-	// Load patient add/edit overlay	
-	loadPatientOverlay(null);
-	
-	// Load doctor add/edit overlay
-	loadDoctorOverlay(null);	
+		// Load events
+		loadEventHandlers();
+
+		// Load additional Patient data, like birth date, age, etc.
+		// If a client has already been selected, it doesn't get overrided
+		loadPatientData();
+
+		// Load patient add/edit overlay	
+		loadPatientOverlay(null);
+		
+		// Load doctor add/edit overlay
+		loadDoctorOverlay(null);
+		
+	}
 
 });
 }(jQuery));

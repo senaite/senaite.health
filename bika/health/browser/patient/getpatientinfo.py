@@ -13,6 +13,7 @@ class ajaxGetPatientInfo(BrowserView):
         Fullname = self.request.get('Fullname', '')
         PatientUID = self.request.get('PatientUID', '')
         ClientPatientID = self.request.get('ClientPatientID', '')
+        PatientID = self.request.get('PatientID','')
         ret = {'PatientID': '',
                'PatientUID': '',
                'ClientPatientID': '',
@@ -30,6 +31,12 @@ class ajaxGetPatientInfo(BrowserView):
             try:
                 bpc = getToolByName(self.context, 'bika_patient_catalog')
                 proxies = bpc(UID=PatientUID)
+            except ParseError:
+                pass
+        elif PatientID:
+            try:
+                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                proxies = bpc(id=PatientID)
             except ParseError:
                 pass
         elif ClientPatientID:

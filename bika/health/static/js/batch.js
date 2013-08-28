@@ -11,11 +11,6 @@ $(document).ready(function(){
 
     // Load child scripts depending on current view
     js_baseurl = "++resource++bika.health.js/";
-    is_batchedit = $('form[id="batch-base-edit"]').length > 0
-
-    if (is_batchedit) { // Loads batch_edit javascript
-    	addJavascript(js_baseurl + "batch_edit.js");
-    }
 
     isaraddview = (window.location.href.search('/ar_add') >= 0);
     isfrombatch = (window.location.href.search('batches/') >= 0);

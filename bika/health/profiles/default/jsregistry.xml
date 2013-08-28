@@ -77,7 +77,18 @@
               expression=""
               inline="False"
               insert-after="*"/>
-              
+  
+    <javascript authenticated="True"
+              id="++resource++bika.health.js/batch_edit.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="++resource++bika.health.js/batch.js"/>
+  
   <javascript authenticated="True"
               id="++resource++bika.health.js/analysisrequest.js"
               cacheable="True"

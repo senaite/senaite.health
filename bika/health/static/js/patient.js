@@ -4,24 +4,31 @@ $(document).ready(function(){
     _p = jarn.i18n.MessageFactory('plone');
     _b = jarn.i18n.MessageFactory('bika');
     _ = jarn.i18n.MessageFactory('bika.health');
-    
-    isaraddview = (window.location.href.search('/ar_add') >= 0);
-    comefrompatient = (document.referrer.search('patients/') >= 0);
 
-    if (isaraddview && comefrompatient) {
-    	/* AR Add View. Automatically fill the Patient, and Client fields */
-    	patientid = document.referrer.split("patients")[1].split("/")[1];
-    	$.ajax({
-			url: window.portal_url + "/getpatientinfo",
-			type: 'POST',
-			data: {'_authenticator': $('input[name="_authenticator"]').val(),
-					'PatientID': patientid},
-			dataType: "json",
-			success: function(data, textStatus, $XHR){
+    isaraddview = (window.location.href.search('/ar_add') >= 0);
+    comefrompatient = ($.urlParam('puid') != null)
+
+    if (isaraddview && comefrompatient) {    	
+        /* AR Add View. Automatically fill the Patient, and Client fields */
+        puid = $.urlParam('puid');
+        $.ajax({
+            url: window.portal_url + "/getpatientinfo",
+            type: 'POST',
+            data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                   'PatientUID': puid,},
+            dataType: "json",
+            success: function(data, textStatus, $XHR){
                 for (var col=0; col<parseInt($("#col_count").val()); col++) {
-                	$("#ar_"+col+"_Patient").val(data['PatientFullname']);
-                	$("#ar_"+col+"_Patient_uid").val(data['PatientUID']);
-                	$("#ar_"+col+"_Patient").attr('readonly', true);
+                    if (data['PatientUID']!='') {        	        	
+                        $("#ar_"+col+"_Patient").val(data['PatientFullname']);
+                        $("#ar_"+col+"_Patient").attr('uid', data['PatientUID']);
+                        $("#ar_"+col+"_Patient_uid").val(data['PatientUID']);
+                        $("#ar_"+col+"_ClientPatientID").val(data['ClientPatientID']);
+                        $("#ar_"+col+"_ClientPatientID").attr('uid', data['PatientUID']);
+                        $("#ar_"+col+"_ClientPatientID_uid").val(data['PatientUID']);
+                        $("#ar_"+col+"_Patient").attr("readonly",true);
+                        $("#ar_"+col+"_ClientPatientID").attr("readonly",true);
+                    }
                 }
             }
         });
@@ -161,6 +168,11 @@ $(document).ready(function(){
 
 });
 }(jQuery));
+
+$.urlParam = function(name){
+    var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+    return results != null ? results[1] : null;
+}
 
 function loadAnonymous() {
 	tohide = ["#archetypes-fieldname-Salutation",
