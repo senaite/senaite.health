@@ -218,6 +218,7 @@ function loadPatientOverlay(patientId) {
 		$.ajax({
             url: window.portal_url + "/getpatientinfo",
             type: 'POST',
+            async: false,
             data: {'_authenticator': $('input[name="_authenticator"]').val(),
                     'PatientUID': $('input[name="Patient_uid"]').val()},
             dataType: "json",
@@ -234,7 +235,7 @@ function loadPatientOverlay(patientId) {
 	    $('a.edit_patient').prepOverlay(getPatientOverlay());
 	}
 }
-async: false,
+
 function loadDoctorOverlay(doctorId) {
 	if (!$('a.add_doctor').length) {
         $("input[id=Doctor]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
@@ -251,6 +252,7 @@ function loadDoctorOverlay(doctorId) {
 		$.ajax({
             url: window.portal_url + "/getdoctorinfo",
             type: 'POST',
+            async: false,
             data: {'_authenticator': $('input[name="_authenticator"]').val(),
                     'UID': $('input[name="Doctor_uid"]').val()},
             dataType: "json",
