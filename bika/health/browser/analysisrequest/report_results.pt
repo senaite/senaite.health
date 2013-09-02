@@ -586,34 +586,44 @@
 
 
 
-    <div tal:repeat="manager mngr_ids"
-    tal:define="mngr_info python:view.get_managers_from_request(view.ar);
-                mngr_ids python:mngr_info['ids'];
-                managers python:mngr_info['dict']">
+    <div style="padding-top:30px;page-break-inside: avoid;"
+         tal:repeat="manager mngr_ids"
+         tal:define="mngr_info python:view.get_managers_from_request(view.ar);
+                     mngr_ids python:mngr_info['ids'];
+                     managers python:mngr_info['dict']">
     <tal:manager
-        tal:define="email python:managers[manager]['email'];
-            phone python:managers[manager]['phone']">
-        <img
-            tal:condition="signature"
-            tal:define="signature python:managers[manager]['signature']"
-            tal:attributes="src string:${signature}"
-            style="height:75px">
-        <br>&nbsp;&nbsp;
-        <i><span tal:content="python:managers[manager]['name']"/></i>
-        <br>&nbsp;&nbsp;
-        <b><span i18n:translate="">Department of</span>
-        <span tal:content="python:managers[manager]['department']"/></b>&nbsp;&nbsp;
-        <span tal:condition="phone">&nbsp;&nbsp;</span>
-        <img
-            tal:condition="phone"
-            tal:attributes="src string:${portal/absolute_url}/images/telephone.jpg">&nbsp;&nbsp;
-        <span tal:content="phone"/>
-        <span tal:condition="email">&nbsp;&nbsp;</span>
-        <img
-        tal:condition="email"
-            tal:attributes="src string:${portal/absolute_url}/images/email.jpg">&nbsp;&nbsp;
-        <a tal:attributes="href string:mailto:${email}"
-            tal:content="email"/>
+        tal:define="mngr python:managers[manager];
+                    mngr_name python:mngr.get('name', '');
+                    mngr_email python:mngr.get('email', '');
+                    mngr_phone python:mngr.get('phone', '');
+                    mngr_signature python:mngr.get('signature', '');
+                    mngr_depts python:mngr.get('departments', '');
+            ">
+        <tal:signature condition="mngr_signature">
+            <img tal:attributes="src string:${mngr_signature}" style="height:75px;width:125px;"/>
+        </tal:signature>
+        <tal:name condition="mngr_name">
+             <br/>
+             <span style="font-style:italic" tal:content="python:mngr_name"></span>
+        </tal:name>
+        <tal:departments condition="mngr_depts">
+             <br/>
+             <span i18n:translate="" style="font-weight:bold">Department of</span>
+             <span style="font-weight:bold" tal:content="python:mngr_depts"></span>             
+        </tal:departments>
+        <tal:phone condition="mngr_phone">
+             <br/>
+             <img width="16px" height="16px"
+                  tal:attributes="src string:${portal/absolute_url}/images/telephone.jpg"/>&nbsp;&nbsp;
+             <span tal:content="python:mngr_phone"></span>
+        </tal:phone>
+        <tal:email condition="mngr_email">
+             <br/>
+             <img width="16px" height="16px"
+                  tal:attributes="src string:${portal/absolute_url}/images/email.jpg"/>&nbsp;&nbsp;
+             <a tal:attributes="href python:'mailto:%s' % mngr_email"
+                tal:content="python:mngr_email"></a>
+        </tal:email>
     </tal:manager>
     </div>
 
