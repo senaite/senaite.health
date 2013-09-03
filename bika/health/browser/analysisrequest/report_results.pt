@@ -292,12 +292,12 @@
         </tr>
         <tr tal:define="doctor python:batch.Schema()['Doctor'].get(batch) or '';"
             tal:condition="doctor">
-            <td class="parameter_label" i18n:translate="" style="font-weight:bold;vertical-align:top;">Doctor:</td>
-            <td colspan="2">
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold;vertical-align:top;padding-top:20px;">Doctor:</td>
+            <td colspan="2" style='padding-top:20px;'>
                 <a style="color:#0000EE;"
                    tal:content="python:doctor.Title()"
                    tal:attributes="href doctor/absolute_url;"></a>
-                <tal:doctor_email define="email patient/getEmailAddress"
+                <tal:doctor_email define="email doctor/getEmailAddress"
                                   condition="email">
                     <br/>
                     <a style='color:#0000EE;'
