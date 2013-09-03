@@ -1,4 +1,4 @@
-from bika.lims.browser.sample import SamplesView
+from bika.health.browser.samples.folder_view import SamplesView
 from Products.CMFCore.utils import getToolByName
 
 
