@@ -289,11 +289,36 @@
         </tr>
         <tr tal:define="doctor python:batch.Schema()['Doctor'].get(batch) or '';"
             tal:condition="doctor">
-            <td class="parameter_label" i18n:translate="" style="font-weight:bold">Doctor:</td>
+            <td class="parameter_label" i18n:translate="" style="font-weight:bold;vertical-align:top;">Doctor:</td>
             <td colspan="2">
                 <a style="color:#0000EE;"
                    tal:content="python:doctor.Title()"
                    tal:attributes="href doctor/absolute_url;"></a>
+                <tal:doctor_email define="email patient/getEmailAddress"
+                                  condition="email">
+                    <br/>
+                    <a tal:content="email"
+                       tal:attributes="href python:'mailto:%s' % email;"></a>
+                </tal:doctor_email>
+                <tal:doctor_phone condition="doctor/getBusinessPhone">
+                    <br/>
+                    <span i18n:translate="">Business Phone</span>:
+                    <span tal:content="doctor/getBusinessPhone"></span>
+                </tal:doctor_phone>
+                <tal:doctor_fax condition="doctor/getBusinessFax">
+                    <br/>
+                    <span i18n:translate="">Business Fax</span>:
+                    <span tal:content="doctor/getBusinessFax"></span>
+                </tal:doctor_fax>
+                <tal:doctor_mobile condition="doctor/getMobilePhone">
+                    <br/>
+                    <span i18n:translate="">Mobile Phone</span>:
+                    <span tal:content="doctor/getMobilePhone"></span>
+                </tal:doctor_mobile>
+                <tal:doctor_address condition="python:view.get_formatted_address(doctor.getPhysicalAddress())">
+                    <br/>
+                    <span tal:content='structure python:view.get_formatted_address(doctor.getPhysicalAddress())'></span>
+                </tal:doctor_address>
             </td>
         </tr>
     </table>
