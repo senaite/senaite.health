@@ -608,7 +608,6 @@
         </tal:name>
         <tal:departments condition="mngr_depts">
              <br/>
-             <span i18n:translate="" style="font-weight:bold">Department of</span>
              <span style="font-weight:bold" tal:content="python:mngr_depts"></span>             
         </tal:departments>
         <tal:phone condition="mngr_phone">
