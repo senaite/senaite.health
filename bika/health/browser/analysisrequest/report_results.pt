@@ -99,8 +99,9 @@
                 </tal:labaddress>
             </td>
             <td style='text-align:left;vertical-align:top;padding-top:5px;width:350px;'>
-                    <span style="font-size:16px;font-weight:bold;line-height:20px;"
-                        tal:content="view/client/Title"></span><br/>
+                    <a style="font-size:16px;font-weight:bold;line-height:20px;"
+                        tal:attributes="href view/client/absolute_url"
+                        tal:content="view/client/Title"></a><br/>
                     <span style="font-style:italic" i18n:translate="">Attn:</span>
                     <span tal:content="view/contact/getFullname"/>
                     <tal:clemail define="email view/client/getEmailAddress"
@@ -169,7 +170,11 @@
         <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
         <tr>
             <td class="parameter_label" i18n:translate="" style='font-weight:bold;'>Patient:</td>
-            <td colspan="2" tal:content="python:patient.Title() or ''"></td>
+            <td colspan="2">
+                <a style="color:#0000EE;"
+                   tal:content="python:patient.Title()"
+                   tal:attributes="href patient/absolute_url;"></a>
+            </td>
         </tr>
         <tr>
             <td class="parameter_label" i18n:translate="" style='font-weight:bold;'>Gender:</td>
@@ -282,10 +287,14 @@
                 </tal:diagnosis>
             </td>
         </tr>
-        <tr tal:define="value python:batch.Schema()['Doctor'].get(batch) or '';"
-            condition="value">
+        <tr tal:define="doctor python:batch.Schema()['Doctor'].get(batch) or '';"
+            tal:condition="doctor">
             <td class="parameter_label" i18n:translate="" style="font-weight:bold">Doctor:</td>
-            <td colspan="2" tal:content="python:value.Title()"></td>
+            <td colspan="2">
+                <a style="color:#0000EE;"
+                   tal:content="python:doctor.Title()"
+                   tal:attributes="href doctor/absolute_url;"></a>
+            </td>
         </tr>
     </table>
     <tal:nextpage condition="python:view.patient and view.ar.getBatch()">
