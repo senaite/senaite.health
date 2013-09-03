@@ -1,8 +1,5 @@
 from Products.CMFCore.utils import getToolByName
-from bika.health import bikaMessageFactory as _
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.browser.sample import SamplesView
-from bika.lims.permissions import *
+from bika.health.browser.samples.folder_view import SamplesView
 
 
 class BatchSamplesView(SamplesView):

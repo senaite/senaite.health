@@ -14,6 +14,14 @@
     
     <browser:page
       for="bika.lims.interfaces.IClient"
+      name="samples"
+      class="bika.health.browser.client.samples.ClientSamplesView"
+      permission="bika.lims.ManageClients"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+    
+    <browser:page
+      for="bika.lims.interfaces.IClient"
       name="base_view"
       class="bika.health.browser.client.analysisrequests.AnalysisRequestsView"
       permission="bika.lims.ManageClients"
