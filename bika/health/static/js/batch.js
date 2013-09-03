@@ -27,6 +27,7 @@ $(document).ready(function(){
                 for (var col=0; col<parseInt($("#col_count").val()); col++) {
                 	$("#ar_"+col+"_Client").val(data['ClientTitle']);
                 	$("#ar_"+col+"_Patient").val(data['PatientTitle']);
+                	$("#ar_"+col+"_ClientPatientID").val(data['ClientPatientID']);
                 	$("#ar_"+col+"_Doctor").val(data['DoctorTitle']);
                 	$("#ar_"+col+"_Client_uid").val(data['ClientUID']);
                 	$("#ar_"+col+"_Patient_uid").val(data['PatientUID']);
@@ -34,6 +35,7 @@ $(document).ready(function(){
                 	$("#ar_"+col+"_Client").attr('readonly', true);
                 	$("#ar_"+col+"_Patient").attr('readonly', true);
                 	$("#ar_"+col+"_Doctor").attr('readonly', true);
+                	$("#ar_"+col+"_ClientPatientID").attr('readonly', true);
                 }
             }
         });

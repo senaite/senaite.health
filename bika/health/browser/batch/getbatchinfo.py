@@ -31,6 +31,7 @@ class ajaxGetBatchInfo(BrowserView):
                'PatientID': patient and patient.getPatientID() or '',
                'PatientUID': patient and patient.UID() or '',
                'PatientTitle': patient and patient.Title() or '',
+               'ClientPatientID': patient and patient.getClientPatientID() or '',
                'DoctorID': doctor and doctor.getDoctorID(),
                'DoctorUID': doctor and doctor.UID() or '',
                'DoctorTitle': doctor and doctor.Title() or ''}
