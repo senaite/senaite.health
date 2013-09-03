@@ -410,7 +410,8 @@
                 <a style="color:#0000EE;"
                    tal:content="python:ar.getRequestID()"
                    tal:attributes="href ar/absolute_url"></a>
-                <img tal:define="global invoice_exclde python:1"
+                <img width="16px" height="16px"
+                     tal:define="global invoice_exclde python:1"
                      tal:condition="ar/getInvoiceExclude"
                      tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/invoice_exclude.png" />
             </td>
@@ -522,7 +523,7 @@
                         <span tal:replace="python:analysis_range">50 - 60</span>
                     </td>
                     <td class="outofrange">
-                        <img style="height:12px;width:12px;margin-top:20px;"
+                        <img width="12px" height="12px"style="margin-top:20px;"
                                  tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/exclamation.png"
                                  tal:condition="analysis_outofrange"/>
                     </td>
@@ -584,8 +585,9 @@
                     filename file/filename | nothing;
                     filesize file/get_size | python:file and len(file) or 0;
                     icon file/getBestIcon | nothing">
-                    <img tal:condition="icon"
-                        tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;
+                    <img width="12px" height="12px" 
+                        tal:condition="icon"
+                        tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;"
                         <a title="Click to download"
                         tal:attributes="href string:${attachment/absolute_url}/at_download/AttachmentFile"
                         tal:content=filename>Filename</a>
@@ -607,7 +609,8 @@
                         filename file/filename | nothing;
                         filesize file/get_size | python:file and len(file) or 0;
                         icon file/getBestIcon | nothing">
-                        <img tal:condition="icon"
+                        <img width="12px" height="12px" 
+                            tal:condition="icon"
                             tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;
                         <a title="Click to download"
                             tal:attributes="href string:${attachment/absolute_url}/at_download/AttachmentFile"
@@ -680,17 +683,20 @@
             <br/>
         </tal:outofrange>
         <tal:drymatter condition="view/any_drymatter">
-            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry.png">
+            <img width="16px" height="16px" 
+                tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry.png">
             <span i18n:translate="">Reported as dry matter</span>
             <br/>
         </tal:drymatter>
         <tal:invoice condition="invoice_exclude">
-            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/invoice_exclude.png">
+            <img width="16px" height="16px"
+                 tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/invoice_exclude.png">
             <span i18n:translate="">Not invoiced</span>
             <br/>
         </tal:invoice>
         <tal:accredited tal:condition="lab_accredited">
-            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/accredited.png">
+            <img width="16px" height="16px"
+                 tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/accredited.png">
             <span i18n:translate="">
                 Methods included in the
                 <tal:block replace="view/laboratory/AccreditationBody" i18n:name="accreditation_body"/>
