@@ -74,7 +74,8 @@
                 <tal:labemail define="email view/laboratory/getEmailAddress"
                               condition="email">
                     <br/>
-                    <a tal:content="email"
+                    <a style='color:#0000EE;'
+                       tal:content="email"
                        tal:attributes="href python:'mailto:%s' % email;"></a>
                 </tal:labemail>
                 <tal:labphone condition="view/laboratory/getPhone">
@@ -90,7 +91,8 @@
                 <tal:laburl define="url view/laboratory/LabURL"
                             condition="url">
                     <br/>
-                    <a tal:content="url"
+                    <a style='color:#0000EE;'
+                       tal:content="url"
                        tal:attributes="href url"></a>
                 </tal:laburl>
                 <tal:labaddress condition="view/get_formatted_lab_address">
@@ -99,7 +101,7 @@
                 </tal:labaddress>
             </td>
             <td style='text-align:left;vertical-align:top;padding-top:5px;width:350px;'>
-                    <a style="font-size:16px;font-weight:bold;line-height:20px;"
+                    <a style="font-size:16px;font-weight:bold;line-height:20px;color:#0000EE;"
                         tal:attributes="href view/client/absolute_url"
                         tal:content="view/client/Title"></a><br/>
                     <span style="font-style:italic" i18n:translate="">Attn:</span>
@@ -107,7 +109,8 @@
                     <tal:clemail define="email view/client/getEmailAddress"
                                   condition="email">
                         <br/>
-                        <a tal:content="email"
+                        <a style='color:#0000EE;'
+                           tal:content="email"
                            tal:attributes="href python:'mailto:%s' % email;"></a>
                     </tal:clemail>
                     <tal:clphone condition="view/client/getPhone">
@@ -297,7 +300,8 @@
                 <tal:doctor_email define="email patient/getEmailAddress"
                                   condition="email">
                     <br/>
-                    <a tal:content="email"
+                    <a style='color:#0000EE;'
+                       tal:content="email"
                        tal:attributes="href python:'mailto:%s' % email;"></a>
                 </tal:doctor_email>
                 <tal:doctor_phone condition="doctor/getBusinessPhone">
@@ -654,7 +658,8 @@
              <br/>
              <img width="16px" height="16px"
                   tal:attributes="src string:${portal/absolute_url}/images/email.jpg"/>&nbsp;&nbsp;
-             <a tal:attributes="href python:'mailto:%s' % mngr_email"
+             <a style='color:#0000EE;'
+                tal:attributes="href python:'mailto:%s' % mngr_email"
                 tal:content="python:mngr_email"></a>
         </tal:email>
     </tal:manager>
@@ -736,7 +741,8 @@
             <tal:email tal:condition="view/reporter_email">
                 (<a tal:define="email view/reporter_email"
                     tal:content="email"
-                    tal:attributes="href string:mailto:${email}"/>)
+                    tal:attributes="href string:mailto:${email}"
+                    style='color:#0000EE;'/>)
             </tal:email>
         </div>
     </tal:reporter>
