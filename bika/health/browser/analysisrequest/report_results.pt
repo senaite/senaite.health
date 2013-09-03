@@ -576,7 +576,7 @@
         <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
 
         <tr>
-            <td align="left" valign="top" width="10%"
+            <td align="left" valign="top" style='vertical-align:top;'
                 tal:content="string:${ar/getRequestID}:">AR:</td>
             <td>
                 <tal:attachment tal:repeat="attachment attachments">
@@ -589,6 +589,7 @@
                         tal:condition="icon"
                         tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;"
                         <a title="Click to download"
+                        style='color:#0000EE;'
                         tal:attributes="href string:${attachment/absolute_url}/at_download/AttachmentFile"
                         tal:content=filename>Filename</a>
                         <span tal:content="python:attachment.getAttachmentType().Title()">Filename</span>
@@ -603,7 +604,7 @@
             <tal:attachments tal:define="attachments analysis/getAttachment">
                 <tal:attachment tal:repeat="attachment attachments">
                 <tr>
-                    <th tal:content="string:${ar/getRequestID} - ${analysis/Title}:">AR:</th>
+                    <th tal:content="string:${ar/getRequestID} - ${analysis/Title}:" style='vertical-align:top;'>AR:</th>
                     <td align="left" valign="top" tal:define="
                         file python:attachment.getAttachmentFile();
                         filename file/filename | nothing;
@@ -613,6 +614,7 @@
                             tal:condition="icon"
                             tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;
                         <a title="Click to download"
+                            style='color:#0000EE;'
                             tal:attributes="href string:${attachment/absolute_url}/at_download/AttachmentFile"
                             tal:content=filename>Filename</a>
                             <span tal:content="python:attachment.getAttachmentType().Title()">Filename</span>
