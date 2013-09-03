@@ -33,6 +33,7 @@ class SamplesView(BaseView):
             # method, member.getRoles() returns empty
             del self.columns['getPatientID']
             del self.columns['getClientPatientID']
+            del self.columns['getPatient']
             for rs in self.review_states:
                 del rs['columns'][rs['columns'].index('getClientPatientID')]
                 del rs['columns'][rs['columns'].index('getPatientID')]
