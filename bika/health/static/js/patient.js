@@ -6,16 +6,16 @@ $(document).ready(function(){
     _ = jarn.i18n.MessageFactory('bika.health');
 
     isaraddview = (window.location.href.search('/ar_add') >= 0);
-    comefrompatient = ($.urlParam('puid') != null)
+    comefrompatient = document.referrer.search('/patients/') >= 0;
 
     if (isaraddview && comefrompatient) {    	
         /* AR Add View. Automatically fill the Patient, and Client fields */
-        puid = $.urlParam('puid');
+        pid = document.referrer.split("/patients/")[1].split("/")[0];
         $.ajax({
             url: window.portal_url + "/getpatientinfo",
             type: 'POST',
             data: {'_authenticator': $('input[name="_authenticator"]').val(),
-                   'PatientUID': puid,},
+                   'PatientID': pid,},
             dataType: "json",
             success: function(data, textStatus, $XHR){
                 for (var col=0; col<parseInt($("#col_count").val()); col++) {
