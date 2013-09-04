@@ -10,7 +10,8 @@ class BatchFolderContentsView(BaseView):
         self.title = _("Cases")
         self.columns = {
             'BatchID': {'title': _('Case ID')},
-            'getClientPatientID': {'title': _('Client PID')},
+            'getPatientID': {'title': _('Patient ID'), 'toggle': True},
+            'getClientPatientID': {'title': _('Client PID'), 'toggle': True},
             'Patient': {'title': _('Patient')},
             'Doctor': {'title': _('Doctor')},
             'Client': {'title': _('Client')},
@@ -25,8 +26,9 @@ class BatchFolderContentsView(BaseView):
                                'sort_order': 'reverse'},
              'title': _('Open'),
              'columns':['BatchID',
-                        'getClientPatientID',
                         'Patient',
+                        'getPatientID',
+                        'getClientPatientID',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -38,8 +40,9 @@ class BatchFolderContentsView(BaseView):
                                'sort_order': 'reverse'},
              'title': _('Closed'),
              'columns':['BatchID',
-                        'getClientPatientID',
                         'Patient',
+                        'getPatientID',
+                        'getClientPatientID',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -51,8 +54,9 @@ class BatchFolderContentsView(BaseView):
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'columns':['BatchID',
-                        'getClientPatientID',
                         'Patient',
+                        'getPatientID',
+                        'getClientPatientID',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -63,8 +67,9 @@ class BatchFolderContentsView(BaseView):
              'contentFilter':{'sort_on':'created',
                               'sort_order': 'reverse'},
              'columns':['BatchID',
-                        'getClientPatientID',
                         'Patient',
+                        'getPatientID',
+                        'getClientPatientID',
                         'Doctor',
                         'Client',
                         'OnsetDate',
@@ -93,7 +98,6 @@ class BatchFolderContentsView(BaseView):
             del self.columns['Patient']
             del self.columns['getClientPatientID']
             for rs in self.review_states:
-                i = rs['columns'].index('BatchID') + 1
                 del rs['columns'][rs['columns'].index('getClientPatientID')]
                 del rs['columns'][rs['columns'].index('Patient')]
 
@@ -139,5 +143,11 @@ class BatchFolderContentsView(BaseView):
                                 and "<a href='%s'>%s</a>" % \
                                     (patient.absolute_url(), 
                                      items[x]['getClientPatientID']) \
+                                or ''
+                items[x]['getPatientID'] = patient and patient.id or ''
+                items[x]['replace']['getPatientID'] = patient \
+                                and "<a href='%s'>%s</a>" % \
+                                    (patient.absolute_url(), 
+                                     items[x]['getPatientID']) \
                                 or ''
         return items

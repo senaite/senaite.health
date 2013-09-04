@@ -31,9 +31,9 @@ class DoctorsView(ClientContactsView):
 
         self.review_states = [
             {'id':'default',
-             'title': _('All'),
-             'contentFilter':{},
-             'transitions':[{'id':'empty'}],
+             'title': _('Active'),
+             'contentFilter': {'inactive_state': 'active'},
+             'transitions': [],
              'columns': ['getDoctorID',
                          'getFullname',
                          'getEmailAddress',
@@ -49,26 +49,8 @@ class DoctorsView(ClientContactsView):
                 'icon': '++resource++bika.lims.images/add.png'
             }
         if mtool.checkPermission(ManageDoctors, self.context):
-            self.show_select_column = True
-            self.review_states = [
-                {'id':'default',
-                 'title': _('All'),
-                 'contentFilter':{},
-                 'transitions':[{'id':'empty'}],
-                 'columns': ['getDoctorID',
-                             'getFullname',
-                             'getEmailAddress',
-                             'getBusinessPhone',
-                             'getMobilePhone']},
-                {'id':'active',
-                 'title': _('Active'),
-                 'contentFilter': {'inactive_state': 'active'},
-                 'transitions': [{'id':'deactivate'}, ],
-                 'columns': ['getDoctorID',
-                             'getFullname',
-                             'getEmailAddress',
-                             'getBusinessPhone',
-                             'getMobilePhone']},
+            self.review_states[0]['transitions'].append({'id':'deactivate'})
+            self.review_states.append(
                 {'id':'inactive',
                  'title': _('Dormant'),
                  'contentFilter': {'inactive_state': 'inactive'},
@@ -77,8 +59,19 @@ class DoctorsView(ClientContactsView):
                              'getFullname',
                              'getEmailAddress',
                              'getBusinessPhone',
-                             'getMobilePhone']},
-                ]
+                             'getMobilePhone']})
+            self.review_states.append(
+                {'id':'all',
+                 'title': _('All'),
+                 'contentFilter':{},
+                 'transitions':[{'id':'empty'}],
+                 'columns': ['getDoctorID',
+                             'getFullname',
+                             'getEmailAddress',
+                             'getBusinessPhone',
+                             'getMobilePhone']})
+            stat = self.request.get("%s_review_state"%self.form_id, 'default')
+            self.show_select_column = stat != 'all'
         return super(DoctorsView, self).__call__()
 
     def folderitems(self):

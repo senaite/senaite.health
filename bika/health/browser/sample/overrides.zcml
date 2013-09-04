@@ -3,21 +3,21 @@
            xmlns:fss="http://namespaces.zope.org/browser"
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
-
+    
     <browser:page
-      for="bika.lims.interfaces.ISamplesFolder"
-      name="workflow_action"
-      class="bika.health.browser.client.workflow.ClientWorkflowAction"
-      permission="zope.Public"
+      for="bika.lims.interfaces.ISample"
+      name="base_view"
+      class="bika.health.browser.sample.view.SampleView"
+      permission="bika.lims.ManageSamples"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
     
     <browser:page
-      for="bika.lims.interfaces.ISamplesFolder"
-      name="base_view"
-      class="bika.health.browser.samples.folder_view.SamplesView"
+      for="bika.lims.interfaces.ISample"
+      name="base_edit"
+      class="bika.health.browser.sample.edit.SampleEditView"
       permission="bika.lims.ManageSamples"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
-        
+
 </configure>

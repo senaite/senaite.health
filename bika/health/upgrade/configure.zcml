@@ -129,4 +129,22 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+  <genericsetup:upgradeStep
+        title="Add missing indexes"
+        description="Missing catalog indexes for patient_catalog"
+        source="1014"
+        destination="1015"
+        handler="bika.health.upgrade.to1015.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+        
+  <genericsetup:upgradeStep
+        title="Add batch_edit.js"
+        description="Add batch_edit.js to jsregistry used in batch edition form"
+        source="1015"
+        destination="1016"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>
