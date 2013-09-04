@@ -95,11 +95,13 @@ class BatchFolderContentsView(BaseView):
         if hidepatientinfo:
             # Remove patient fields. Must be done here because in __init__ 
             # method, member.getRoles() returns empty
+            del self.columns['getPatientID']
             del self.columns['Patient']
             del self.columns['getClientPatientID']
             for rs in self.review_states:
                 del rs['columns'][rs['columns'].index('getClientPatientID')]
                 del rs['columns'][rs['columns'].index('Patient')]
+                del rs['columns'][rs['columns'].index('getPatientID')]
 
         for x in range(len(items)):
             if 'obj' not in items[x]:
