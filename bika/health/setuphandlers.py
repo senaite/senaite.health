@@ -152,9 +152,9 @@ def setupHealthPermissions(context):
     # This means within a client, perms granted on Member role are available
     # in clients not our own, allowing sideways entry if we're not careful.
     mp = portal.clients.manage_permission
-    mp(ManageClients, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 1)
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp(ManageClients, ['Owner', 'Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 1)
+    mp(permissions.ListFolderContents, ['Owner', 'Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp(permissions.View, ['Owner', 'Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
     mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
     portal.clients.reindexObject()
 
