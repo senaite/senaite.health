@@ -1,7 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
-from bika.health.browser.analyses.view import AnalysesView
+from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange
 from bika.lims import logger
 from bika.lims.browser.analysisrequest import AnalysisRequestViewView
 from bika.lims.utils import encode_header
@@ -41,7 +41,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
                  'title': _('Patient ID'),
                  'allow_edit': False,
                  'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.getPatientID() 
+                                                   patient.getPatientID()
                                                    or ''),
                  'condition':True,
                  'type': 'text'})
@@ -51,7 +51,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
                  'title': _('Client Patient ID'),
                  'allow_edit': False,
                  'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.getClientPatientID() 
+                                                   patient.getClientPatientID()
                                                    or ''),
                  'condition':True,
                  'type': 'text'})
@@ -83,19 +83,16 @@ class AnalysisRequestView(AnalysisRequestViewView):
         return self.template()
 
     def hasAnalysesInPanic(self):
-        bs = self.context.bika_setup
-        wf = getToolByName(self.context, 'portal_workflow')
-        for an in self.context.getAnalyses(full_objects=True):
-            if an and wf.getInfoFor(an, 'review_state') != 'retracted':
-                try:
-                    inpanic = an.isInPanicRange()
-                    if inpanic and inpanic[0] == True:
-                        return True
-                except:
-                    logger.warning("Call error: isInPanicRange for "
-                                   "analysis %s" % an.UID())
-                    pass
-        return False
+        workflow = getToolByName(self.context, 'portal_workflow')
+        items = self.context.getAnalyses()
+        alerts = {}
+        for obj in items:
+            obj = obj.getObject() if hasattr(obj, 'getObject') else obj
+            astate = workflow.getInfoFor(obj, 'review_state')
+            if astate == 'retracted':
+                continue
+            alerts.update(ResultOutOfRange(obj)())
+        return alerts
 
     def addEmailLink(self, autopopup=False):
         self.header_rows.append(
@@ -135,7 +132,6 @@ class AnalysisRequestView(AnalysisRequestViewView):
         try:
             host = getToolByName(self.context, 'MailHost')
             host.send(mime_msg.as_string(), immediate=True)
-            succeed = True
         except Exception, msg:
             ar = self.context.id
             logger.error("Panic level email %s: %s" % (ar, str(msg)))
@@ -143,7 +139,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
                         'that some results exceeded the panic levels') \
                                              + (": %s" % str(msg))
             self.addMessage(message, 'warning')
-        if succeed:
+        else:
             # Update AR (a panic alert email has been sent)
             ar = self.context
             try:
@@ -152,6 +148,3 @@ class AnalysisRequestView(AnalysisRequestViewView):
             except:
                 pass
         return succeed
-
-    def createAnalysesView(self, context, request, **kwargs):
-        return AnalysesView(context, request, **kwargs)

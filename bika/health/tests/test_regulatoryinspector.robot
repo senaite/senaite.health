@@ -5,7 +5,7 @@ Documentation  Health - Regulatory Inspector permissions
 Library                 Selenium2Library  timeout=10  implicit_wait=0
 #Library                 bika.lims.tests.base.Keywords
 Library                 Collections
-#Resource                keywords.txt
+Resource                bika/lims/tests/keywords.txt
 Variables               plone/app/testing/interfaces.py
 Suite Setup             Start browser
 #Suite Teardown          Close All Browsers
@@ -15,23 +15,21 @@ Suite Setup             Start browser
 
 Patients View Access
 
-    Log in      test_regulatoryinspector  test_regulatoryinspector    
+    Log in      test_regulatoryinspector  test_regulatoryinspector
     Go to       http://localhost:55001/plone/patients
     Wait Until Page Contains    John Grisham
     Wait Until Page Contains    Pam Morrison
 
 
 Cases View Access
-    
+
+    Log in  test_labmanager  test_labmanager
     Create Case
-    
+    Log out
+
     # Check regulatory inspector
     Log in      test_regulatoryinspector  test_regulatoryinspector
-    Go to       http://localhost:55001/plone/batches
-    Wait Until Page Contains    John Grisham
-    Wait Until Page Contains    Pam Morrison    
-
-
+    Go to       http://localhost:55001/plone/batches/B-001
 
 
 *** Keywords ***
@@ -39,17 +37,7 @@ Cases View Access
 Start Browser
     Open browser        http://localhost:55001/plone/
     Set selenium speed  0
-    
-Log in
-    [Arguments]  ${userid}  ${password}
-    
-    Go to       http://localhost:55001/plone/login_form
-    Page should contain element  __ac_name
-    Page should contain element  __ac_password
-    Page should contain button  Log in
-    Input text  __ac_name  ${userid}
-    Input text  __ac_password  ${password}
-    Click Button  Log in
+
 
 Select from datepicker
     [Documentation]    this doesn't do any tricks yet, just clicks the link.
@@ -57,7 +45,7 @@ Select from datepicker
     ...                ${number}
     Click Element      ${locator}
     Click link         ${number}
-    
+
 
 SelectSpecificFromDropdown
     [Arguments]  ${Element}=
@@ -72,12 +60,12 @@ SelectSpecificFromDropdown
 
 Create Case
     [Documentation]     Add one case for patient John Grisham
-    Log in  test_labmanager  test_labmanager
     Go to  http://localhost:55001/plone/batches
     Wait Until Page Contains    Add
     Click Link                  Add
     Wait Until Page Contains Element  Patient_uid
-    Select Specific From Dropdown  Patient       John Grisham
+    Select From Dropdown  Patient       John Grisham
+    Select From Dropdown  Doctor       Andrew
     Click Button                Save
     Wait Until Page Contains    Changes saved.
-    
+
