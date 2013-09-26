@@ -146,5 +146,14 @@
         handler="bika.health.upgrade.to1016.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+  
+   <genericsetup:upgradeStep
+        title="Compatibility with bika.lims upgrade 1138"
+        description="jsregistry reimport due to bika.lims upgrade 1138"
+        source="1016"
+        destination="1017"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 
 </configure>
