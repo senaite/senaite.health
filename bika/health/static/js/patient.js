@@ -72,12 +72,12 @@ $(document).ready(function(){
 		$("#CountryState.state").val($(this).val());
 		populate_district_select("CountryState")
 	});
-	$("#Anonymous").live('change', function() {
+	$("#patient-base-edit #Anonymous").live('change', function() {
 		loadAnonymous();
 	});
-	$("#ClientPatientID").live('change', function() {
-		if ($('#Anonymous').is(':checked')) {
-			$("input[id='Surname']").val($("#ClientPatientID").val());
+	$("#patient-base-edit #ClientPatientID").live('change', function() {
+		if ($('#patient-base-edit #Anonymous').is(':checked')) {
+			$("#patient-base-edit input[id='Surname']").val($("#patient-base-edit #ClientPatientID").val());
 		}
 	});
 
@@ -164,7 +164,9 @@ $(document).ready(function(){
 		$('#archetypes-fieldname-MenstrualStatus').hide();
 	}
 	
-	loadAnonymous();
+	if ($('#patient-base-edit')) {
+		loadAnonymous();
+	}
 
 });
 }(jQuery));
@@ -175,41 +177,41 @@ $.urlParam = function(name){
 }
 
 function loadAnonymous() {
-	tohide = ["#archetypes-fieldname-Salutation",
-	          "#archetypes-fieldname-Middleinitial",
-	          "#archetypes-fieldname-Middlename",
-	          "#archetypes-fieldname-Firstname",
-              "#archetypes-fieldname-Surname",
-              "#archetypes-fieldname-AgeSplitted",
-              "#archetypes-fieldname-BirthDateEstimated"];
+	tohide = ["#patient-base-edit #archetypes-fieldname-Salutation",
+	          "#patient-base-edit #archetypes-fieldname-Middleinitial",
+	          "#patient-base-edit #archetypes-fieldname-Middlename",
+	          "#patient-base-edit #archetypes-fieldname-Firstname",
+              "#patient-base-edit #archetypes-fieldname-Surname",
+              "#patient-base-edit #archetypes-fieldname-AgeSplitted",
+              "#patient-base-edit #archetypes-fieldname-BirthDateEstimated"];
 	
-	if ($('#Anonymous').is(':checked')) {		
+	if ($('#patient-base-edit #Anonymous').is(':checked')) {		
 		// Hide non desired input fields
 		for (i=0;i<tohide.length;i++){
 			$(tohide[i]).hide();
 		}		
 		// Set default values
-		$("#ClientPatientID").attr("required", true);
-		$("#ClientPatientID_help").before('<span class="required" title="Required">&nbsp;</span>');
-		$("input[id='Firstname']").val(_("AP"));
-		cpid = $("#ClientPatientID").val();
+		$("#patient-base-edit #ClientPatientID").attr("required", true);
+		$("#patient-base-edit #ClientPatientID_help").before('<span class="required" title="Required">&nbsp;</span>');
+		$("#patient-base-edit input[id='Firstname']").val(_("AP"));
+		cpid = $("#patient-base-edit #ClientPatientID").val();
 		if (cpid && cpid.length > 0) {
-			$("input[id='Surname']").val(cpid);
+			$("#patient-base-edit input[id='Surname']").val(cpid);
 		} else {
-			$("input[id='Surname']").val("-");
+			$("#patient-base-edit input[id='Surname']").val("-");
 		}
-		$("#archetypes-fieldname-BirthDate").find('span[class="required"]').remove();
-		$("input[id='BirthDate']").attr("required", false);
-		$("input[id='BirthDate']").val("");		
+		$("#patient-base-edit #archetypes-fieldname-BirthDate").find('span[class="required"]').remove();
+		$("#patient-base-edit input[id='BirthDate']").attr("required", false);
+		$("#patient-base-edit input[id='BirthDate']").val("");		
 		
 	} else {
 		// Show desired input fields
 		for (i=0;i<tohide.length;i++){
 			$(tohide[i]+":hidden").show();
 		}
-		$("#archetypes-fieldname-ClientPatientID").find('span[class="required"]').remove();
-		$("input[id='ClientPatientID']").attr("required", false);
-		$("input[id='BirthDate']").attr("required", true);
-		$("#BirthDate_help").before('<span class="required" title="Required">&nbsp;</span>');		
+		$("#patient-base-edit #archetypes-fieldname-ClientPatientID").find('span[class="required"]').remove();
+		$("#patient-base-edit input[id='ClientPatientID']").attr("required", false);
+		$("#patient-base-edit input[id='BirthDate']").attr("required", true);
+		$("#patient-base-edit #BirthDate_help").before('<span class="required" title="Required">&nbsp;</span>');		
 	}
 }
