@@ -1,9 +1,0 @@
-{
-    "master-integration": {
-        "root": "master",
-        "features": [
-            "981-panic-range-adapters",
-            "985-add-sample-columns"
-        ]
-    }
-}

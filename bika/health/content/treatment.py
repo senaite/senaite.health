@@ -26,7 +26,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('Procedure',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Treatment procedure",
                       "Procedure"),
@@ -36,7 +36,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('Care',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Treatment care"),
         ),
@@ -45,7 +45,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('SubjectiveClinicalFindings',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Subjective clinical findings"),
         ),
@@ -54,7 +54,7 @@ schema = BikaSchema.copy() + Schema((
     TextField('ObjectiveClinicalFindings',
         default_content_type = 'text/x-web-intelligent',
         allowable_content_types = ('text/x-web-intelligent',),
-        default_output_type="text/html",
+        default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Objective clinical findings"),
         ),
