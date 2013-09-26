@@ -26,7 +26,7 @@ class ContactsView(BikaListingView):
         self.show_select_column = True
         self.pagesize = 50
         self.icon = self.portal_url + "/++resource++bika.health.images/vaccinationcenter_contact_big.png"
-        self.title = _("Contacts")
+        self.title = _b("Contacts")
 
         self.columns = {
             'getFullname': {'title': _('Full Name')},
