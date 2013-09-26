@@ -3,6 +3,43 @@
  * Loaded either in batch edition or batch creation.
  */
 
+(function( $ ) {
+$(document).ready(function(){
+    
+    // Load only if batch edition/creation view
+    if ($('#batch-base-edit').length > 0) {
+        
+        _p = jarn.i18n.MessageFactory('plone');
+        _b = jarn.i18n.MessageFactory('bika');
+        _  = jarn.i18n.MessageFactory('bika.health');
+
+        // These look silly in the edit screen under "Additional Notes"
+        $("#archetypes-fieldname-Remarks").remove();
+
+        // Check for missing hidden data
+        init();
+        
+        // Restrict results to current client if needed
+        filterByClientIfNeeded();
+
+        // Load events
+        loadEventHandlers();
+
+        // Load additional Patient data, like birth date, age, etc.
+        // If a client has already been selected, it doesn't get overrided
+        loadPatientData();
+
+        // Load patient add/edit overlay    
+        loadPatientOverlay(null);
+        
+        // Load doctor add/edit overlay
+        loadDoctorOverlay(null);
+        
+    }
+
+});
+}(jQuery));
+
 function init() {
     if (!$('input[name="PatientBirthDate"]').length) {
         $("body").append('<input type="hidden" name="PatientBirthDate"/>');
@@ -512,41 +549,3 @@ function getReferrerPatientUID() {
 	}
 	return default_patient_uid;
 }
-
-(function( $ ) {
-$(document).ready(function(){
-	
-	// Load only i batch edition/creation view
-	is_batchform = $('form[id="batch-base-edit"]').length > 0;
-	if (is_batchform) {
-		
-		_p = jarn.i18n.MessageFactory('plone');
-	    _b = jarn.i18n.MessageFactory('bika');
-	    _  = jarn.i18n.MessageFactory('bika.health');
-
-	    // These look silly in the edit screen under "Additional Notes"
-	    $("#archetypes-fieldname-Remarks").remove();
-
-		// Check for missing hidden data
-		init();
-		
-	    // Restrict results to current client if needed
-		filterByClientIfNeeded();
-
-		// Load events
-		loadEventHandlers();
-
-		// Load additional Patient data, like birth date, age, etc.
-		// If a client has already been selected, it doesn't get overrided
-		loadPatientData();
-
-		// Load patient add/edit overlay	
-		loadPatientOverlay(null);
-		
-		// Load doctor add/edit overlay
-		loadDoctorOverlay(null);
-		
-	}
-
-});
-}(jQuery));
