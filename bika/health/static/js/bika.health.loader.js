@@ -13,8 +13,10 @@ $(document).ready(function(){
     // Instantiate the js objects needed for the current view
     for (var key in views) {
         if ($(key).length) {
-            obj = new window[views[key]]();
-            obj.load();
+            views[key].forEach(function(js) { 
+                obj = new window[js]();
+                obj.load();
+            });
         }
     }
 });
