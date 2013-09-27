@@ -50,6 +50,10 @@ $(document).ready(function(){
 			$("#patient-base-edit input[id='Surname']").val($("#patient-base-edit #ClientPatientID").val());
 		}
 	});
+	
+	if ($("#patient-base-edit #Anonymous").is(':checked')) {
+	    loadAnonymous();
+	}
 
 	function calculateAge() {
 		var dob = new Date($("#BirthDate").val());

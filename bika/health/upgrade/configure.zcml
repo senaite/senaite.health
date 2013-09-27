@@ -155,5 +155,14 @@
         handler="bika.health.upgrade.to1016.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+        
+   <genericsetup:upgradeStep
+        title="JS cleaning and improvements"
+        description="jsregistry reimport due js removal and addition"
+        source="1017"
+        destination="1018"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 
 </configure>

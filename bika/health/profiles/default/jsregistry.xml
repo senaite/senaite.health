@@ -35,28 +35,6 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.lims.js/client.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="False"
-              expression=""
-              inline="False"
-              insert-after="*"/>
-
-  <javascript authenticated="True"
-              id="++resource++bika.lims.js/batch.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="False"
-              expression=""
-              inline="False"
-              insert-after="*"/>
-
-  <javascript authenticated="True"
               id="++resource++bika.health.js/client.js"
               cacheable="True"
               compression="safe"
@@ -68,47 +46,35 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/batch.js"
+              id="++resource++bika.health.js/bika.health.analysisrequest_add.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
               cookable="True"
               enabled="on"
-              expression=""
-              inline="False"
-              insert-after="*"/>
-  
-    <javascript authenticated="True"
-              id="++resource++bika.health.js/batch_edit.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              expression=""
-              inline="False"
-              insert-after="++resource++bika.health.js/batch.js"/>
-  
-  <javascript authenticated="True"
-              id="++resource++bika.health.js/analysisrequest.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              expression="python:request['URL'].find('/AnalysisRequest')>0"
               inline="False"
               insert-after="*"/>
               
   <javascript authenticated="True"
-              id="++resource++bika.health.js/analysisrequest_add.js"
+              id="++resource++bika.health.js/bika.health.batch_edit.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
               cookable="True"
               enabled="on"
-              expression="python:request['URL'].find('/ar_add')>0"
+              expression=""
               inline="False"
-              insert-after="++resource++bika.lims.js/ar_add.js"/>
+              insert-after="*"/>
+              
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/bika.health.loader.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
 
 </object>
