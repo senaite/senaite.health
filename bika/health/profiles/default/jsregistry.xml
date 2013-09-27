@@ -13,17 +13,6 @@
               insert-after="++resource++bika.lims.js/jquery.json.js"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/patient.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              expression=""
-              inline="False"
-              insert-after="*"/>
-
-  <javascript authenticated="True"
               id="++resource++bika.health.js/doctor.js"
               cacheable="True"
               compression="safe"
@@ -54,7 +43,18 @@
               enabled="on"
               inline="False"
               insert-after="*"/>
-              
+
+  <javascript authenticated="True"
+              id="++resource++bika.health.js/bika.health.patient_edit.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
   <javascript authenticated="True"
               id="++resource++bika.health.js/bika.health.batch_edit.js"
               cacheable="True"
@@ -65,7 +65,7 @@
               expression=""
               inline="False"
               insert-after="*"/>
-              
+
   <javascript authenticated="True"
               id="++resource++bika.health.js/bika.health.loader.js"
               cacheable="True"
