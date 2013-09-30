@@ -26,6 +26,7 @@ class ajaxGetBatchInfo(BrowserView):
             patientids = len(value) > 0 and "("+value+")" or ''
 
         ret = {'ClientID': client and client.getClientID() or '',
+               'ClientSysID': client and client.id or '',
                'ClientUID': client and client.UID() or '',
                'ClientTitle': client and client.Title() or '',
                'PatientID': patient and patient.getPatientID() or '',

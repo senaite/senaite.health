@@ -44,18 +44,24 @@ function AnalysisRequestAddView() {
                 colposition = this.id.split("_")[1]
                 id = $(this).val()
                 loadPatient(id, colposition);
+                checkClientContacts();
             });
 
-            $('[id$="_Patient"]').bind("selected", function() {
+            $('[id$="_Patient"]').bind("selected paste blur", function() {
                 colposition = this.id.split("_")[1]
                 uid = $(this).attr('uid');
                 loadClientPatientID(uid, colposition);
+                checkClientContacts();
             });
 
             // The Batch, Patient and PatientCID combos must only show the
             // records from the current client
             filterComboSearches();
         }
+        
+        // Check if the current selected client has contacts. If client has no
+        // contacts, prevent from saving the AR and inform the user
+        checkClientContacts();
     }
     
     // ------------------------------------------------------------------------
@@ -155,6 +161,7 @@ function AnalysisRequestAddView() {
                         for (var col=0; col<parseInt($("#col_count").val()); col++) {
                             $("#ar_" + col +"_Client").val(data['ClientTitle']);
                             $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
+                            $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('readonly', true);
                             $("#ar_" + col +"_Client").combogrid("option", "disabled", true);
@@ -206,6 +213,7 @@ function AnalysisRequestAddView() {
                         for (var col=0; col<parseInt($("#col_count").val()); col++) {
                             $("#ar_" + col +"_Client").val(data['ClientTitle']);
                             $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
+                            $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('readonly', true);
                             $("#ar_" + col +"_Client").combogrid("option", "disabled", true );
@@ -276,5 +284,46 @@ function AnalysisRequestAddView() {
         $(element).combogrid(options);
         $(element).addClass("has_combogrid_widget");
         $(element).attr('search_query', '{}');
+    }
+    
+    /**
+     * Checks if the current client has contacts. If no contacts, show a message
+     * informing the user
+     */
+    function checkClientContacts() {
+        cids = new Array();
+        // Check if comes from a Client view
+        if (window.location.href.search("/clients/") >= 0) {
+            cid = window.location.href.split("/clients/")[1].split("/")[0];
+            cids.push(cid);
+        }
+        // Populate an array of cids first in order to avoid excessive request
+        // calls via ajax. Must of the cases will have the same client for all
+        // columns.        
+        for (var col=0; col<parseInt($("#col_count").val()); col++) {
+            cid = $("#ar_" + col +"_Client").attr('cid');
+            if (cid != null && cid != '' && $.inArray(cid, cids) < 0) {
+                cids.push(cid);
+            }
+        }
+        for (var i=0; i<cids.length; i++) {
+            // Retrieve the client and check if has contacts
+            cid = cids[i];
+            $.ajax({
+                url: window.portal_url + "/clients/" + cid + "/getClientInfo",
+                type: 'POST',
+                async: false,
+                data: {'_authenticator': $('input[name="_authenticator"]').val()},
+                dataType: "json",
+                success: function(data, textStatus, $XHR){
+                    $("#contactsempty_alert").remove();
+                    if (data['ContactUIDs'] == '' || data['ContactUIDs'].length == 0) {
+                        $('table.analysisrequest').before("<div id='contactsempty_alert' class='alert'>"
+                                + _("Client contact required before request may be submitted")
+                                + "</div>");
+                    }
+                }
+            });
+        }
     }
 }
