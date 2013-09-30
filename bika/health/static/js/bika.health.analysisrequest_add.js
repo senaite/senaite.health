@@ -306,6 +306,7 @@ function AnalysisRequestAddView() {
                 cids.push(cid);
             }
         }
+        $('div[id="contactsempty_alert"]').remove();
         for (var i=0; i<cids.length; i++) {
             // Retrieve the client and check if has contacts
             cid = cids[i];
@@ -316,11 +317,12 @@ function AnalysisRequestAddView() {
                 data: {'_authenticator': $('input[name="_authenticator"]').val()},
                 dataType: "json",
                 success: function(data, textStatus, $XHR){
-                    $("#contactsempty_alert").remove();
                     if (data['ContactUIDs'] == '' || data['ContactUIDs'].length == 0) {
                         $('table.analysisrequest').before("<div id='contactsempty_alert' class='alert'>"
                                 + _("Client contact required before request may be submitted")
-                                + "</div>");
+                                +". <a href='"+ window.portal_url + "/clients/" + cid +"/contacts'>" 
+                                + _("Add contacts")+" "+data['ClientTitle']
+                                + "</a></div>");
                     }
                 }
             });
