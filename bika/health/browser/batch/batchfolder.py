@@ -20,8 +20,7 @@ class BatchFolderContentsView(BaseView):
          }
         self.review_states = [  # leave these titles and ids alone
             {'id':'default',
-             'contentFilter': {'cancellation_state':'active',
-                               'review_state': ['open', 'sample_received', 'to_be_verified', 'verified'],
+             'contentFilter': {'review_state': 'open',
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'title': _('Open'),
@@ -40,7 +39,7 @@ class BatchFolderContentsView(BaseView):
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'title': _('Closed'),
-             'transitions': [],
+             'transitions': [{'id':'open'}],
              'columns':['BatchID',
                         'Patient',
                         'getPatientID',
@@ -52,8 +51,8 @@ class BatchFolderContentsView(BaseView):
              },
             {'id':'cancelled',
              'title': _('Cancelled'),
-             'transitions': [],
-             'contentFilter': {'cancellation_state': 'cancelled',
+             'transitions': [{'id':'open'}],
+             'contentFilter': {'review_state': 'cancelled',
                                'sort_on':'created',
                                'sort_order': 'reverse'},
              'columns':['BatchID',
@@ -97,7 +96,7 @@ class BatchFolderContentsView(BaseView):
             and 'LabClerk' not in roles
 
         if hidepatientinfo:
-            # Remove patient fields. Must be done here because in __init__ 
+            # Remove patient fields. Must be done here because in __init__
             # method, member.getRoles() returns empty
             del self.columns['getPatientID']
             del self.columns['Patient']
@@ -147,13 +146,13 @@ class BatchFolderContentsView(BaseView):
                                 or ''
                 items[x]['replace']['getClientPatientID'] = patient \
                                 and "<a href='%s'>%s</a>" % \
-                                    (patient.absolute_url(), 
+                                    (patient.absolute_url(),
                                      items[x]['getClientPatientID']) \
                                 or ''
                 items[x]['getPatientID'] = patient and patient.id or ''
                 items[x]['replace']['getPatientID'] = patient \
                                 and "<a href='%s'>%s</a>" % \
-                                    (patient.absolute_url(), 
+                                    (patient.absolute_url(),
                                      items[x]['getPatientID']) \
                                 or ''
         return items
