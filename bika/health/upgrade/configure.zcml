@@ -164,5 +164,14 @@
         handler="bika.health.upgrade.to1016.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+        
+   <genericsetup:upgradeStep
+        title="New Batch Readonly view for cancelled and closed batches"
+        description="jsregistry reimport"
+        source="1018"
+        destination="1019"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 
 </configure>

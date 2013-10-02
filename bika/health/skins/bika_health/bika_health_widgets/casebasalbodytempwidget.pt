@@ -7,7 +7,47 @@
 <head>
     <title>CasePatientCondition Widget</title>
 </head>
-<body>    
+<body>
+    <metal:view_macro define-macro="view">
+        <fieldset tal:attributes="id string:${fieldName};
+                                  name string:${fieldName};"
+                  tal:define="i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone;
+                              data python:widget.getBasalBodyTemperature()[0]">
+
+            <!-- Day 1 -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Day 1</span>
+                </div>
+                <div class="fieldline-content">
+                    <span tal:content="python:data['Day1'] or '-'"></span>                    
+                </div>
+                <div class="clear-both"></div>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Day 2</span>
+                </div>
+                <div class="fieldline-content">
+                    <span tal:content="python:data['Day2'] or '-'"></span>                    
+                </div>
+                <div class="clear-both"></div>
+            </div>
+
+             <!-- Day 3 -->
+            <div class="fieldline">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Day 3</span>
+                </div>
+                <div class="fieldline-content">
+                    <span tal:content="python:data['Day3'] or '-'"></span>                    
+                </div>
+                <div class="clear-both"></div>
+            </div>
+        </fieldset>
+    </metal:view_macro>
     <metal:edit_macro define-macro="edit">
     <metal:use use-macro="here/widgets/field/macros/edit">
     <tal:block metal:fill-slot="widget_body">

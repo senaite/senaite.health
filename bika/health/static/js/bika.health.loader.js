@@ -7,6 +7,9 @@ $(document).ready(function(){
 
     // Correlations between views and js classes to be loaded
     var views = {
+        ".template-base_view.portaltype-batch":
+            ['BatchViewView', ],
+
         "#batch-base-edit":
             ['BatchEditView',
              'PatientEditView'],

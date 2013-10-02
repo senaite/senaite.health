@@ -9,9 +9,30 @@
 </head>
 <body>
     <metal:view_macro define-macro="view">
-    <tal:block repeat="symptom python:getSymptoms()">
-        <span>Temp</span>
-    </tal:block>
+        <fieldset tal:attributes="id string:${fieldName};
+                                  name string:${fieldName};">
+        <table tal:attributes="id string:${fieldName}_table; class string:recordswidget;"
+               tal:define="i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone">
+           <tbody tal:define="symptoms python:widget.getSymptoms();">
+                <tal:block repeat="idx python:range(len(symptoms))">
+                <tr tal:condition="python:symptoms[idx]['Assigned']"
+                    tal:define="symptom python:symptoms[idx]">
+                    <td>
+                        <span tal:content="python:symptom['Title']"></span>
+                    </td>
+                    <td tal:attributes="width string:100%;">
+                        <span tal:condition="python:symptom['Severity']=='1'"
+                              i18n:translate="">Mild</span>
+                        <span tal:condition="python:symptom['Severity']=='2'"
+                              i18n:translate="">Moderate</span>
+                        <span tal:condition="python:symptom['Severity']=='3'"
+                              i18n:translate="">Severe</span>
+                    </td>
+                </tr>
+                </tal:block>
+           </tbody>                                    
+        </table>
+        </fieldset>
     </metal:view_macro>
     
     <metal:edit_macro define-macro="edit">

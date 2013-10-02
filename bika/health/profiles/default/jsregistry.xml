@@ -56,6 +56,17 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
+              id="++resource++bika.health.js/bika.health.batch_view.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+  <javascript authenticated="True"
               id="++resource++bika.health.js/bika.health.batch_edit.js"
               cacheable="True"
               compression="safe"

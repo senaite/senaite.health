@@ -7,7 +7,79 @@
 <head>
     <title>CaseMenstrualStatus Widget</title>
 </head>
-<body>    
+<body>
+    <metal:view_macro define-macro="view">
+        <fieldset tal:attributes="id string:${fieldName};
+                                  name string:${fieldName};"
+                  tal:define="i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone;
+                              data python:widget.getMenstrualStatus()[0];"
+                  tal:condition="python:(widget.getMenstrualStatus()[0] and widget.getPatientsGender()=='female')">
+
+            <!-- First day of Last Menses -->
+            <div class="fieldline" tal:condition="python:data['FirstDayOfLastMenses']">
+                <div class="fieldline-label">
+                    <span i18n:translate="">First day of last menses</span>
+                </div>
+                <div class="fieldline-content">
+                    <span tal:content="python:data['FirstDayOfLastMenses']"></span>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+
+            <!-- Menstrual cycle type -->
+            <div class="fieldline" tal:condition="python:data['MenstrualCycleType']">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Menstrual cycle type</span>
+                </div>
+                <div class="fieldline-content">
+                    <span tal:content="python:data['MenstrualCycleType']"></span>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Pregnant (S/N) -->
+            <div class="fieldline" tal:condition="python:data['Pregnant']">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Pregnant</span>
+                </div>
+                <div class="fieldline-content">
+                    <span i18n:translate="">Month</span>:&nbsp;
+                    <span tal:content="python:data['MonthOfPregnancy']"></span>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Hysterectomy -->
+            <div class="fieldline" tal:condition="python:data['Hysterectomy']">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Hysterectomy</span>
+                </div>
+                <div class="fieldline-content">
+                    <span i18n:translate="">Year</span>:&nbsp;
+                    <span tal:content="python:data['HysterectomyYear']"></span>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Ovaries removed -->
+            <div class="fieldline" tal:condition="python:data['OvariesRemoved']==True">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Ovaries removed</span>
+                </div>
+                <div class="fieldline-content">
+                    <span i18n:translate="">Num</span>:&nbsp;
+                    <span tal:content="python:data['OvariesRemovedNum']"></span>
+                    &nbsp;&nbsp;
+                    <span i18n:translate="">Year</span>:&nbsp;
+                    <span tal:content="python:data['OvariesRemovedYear']"></span>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+        </fieldset>
+        <span tal:condition="python:(not widget.getMenstrualStatus()[0] or widget.getPatientsGender()!='female')">
+            -
+        </span>
+    </metal:view_macro>
     <metal:edit_macro define-macro="edit">
     <metal:use use-macro="here/widgets/field/macros/edit">
     <tal:block metal:fill-slot="widget_body">
