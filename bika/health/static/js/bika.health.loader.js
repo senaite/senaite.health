@@ -8,17 +8,25 @@ $(document).ready(function(){
     // Correlations between views and js classes to be loaded
     var views = {
         ".template-base_view.portaltype-batch":
-            ['BatchViewView', ],
+            ['BatchViewView'],
 
         "#batch-base-edit":
             ['BatchEditView',
-             'PatientEditView'],
+             'PatientEditView',
+             'PatientPublicationPrefsEditView'],
 
         "#patient-base-edit": 
-            ['PatientEditView', ],
+            ['PatientEditView',
+             'PatientPublicationPrefsEditView'],
 
         ".template-ar_add #analysisrequest_edit_form":
-            ['AnalysisRequestAddView', ]
+            ['AnalysisRequestAddView', ],
+
+        ".template-base_edit.portaltype-bikasetup":
+            ['BikaSetupEditView'],
+            
+        ".template-base_edit.portaltype-client":
+            ['ClientEditView'],
     };
 
     // Instantiate the js objects needed for the current view

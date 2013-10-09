@@ -214,3 +214,150 @@ function PatientEditView() {
         }
     }
 }
+
+
+/**
+ * Controller for patient's publication preferences section
+ */
+function PatientPublicationPrefsEditView() {
+
+    var that = this
+    that.publicationprefs_section = $("#archetypes-fieldname-PublicationPreferences");
+    that.allowresults_section     = $('#archetypes-fieldname-AllowResultsDistribution');
+    that.attachments_section      = $('#archetypes-fieldname-PublicationAttachmentsPermitted');
+    that.defaultpubprefs  = $('#DefaultResultsDistribution');
+    that.publicationprefs = $('#PublicationPreferences');
+    that.allowresults     = $('#AllowResultsDistribution');
+    that.attachments      = $('#PublicationAttachmentsPermitted');
+    that.opacity = 0.5;
+
+    /**
+     * Entry point of PatientPublicationPrefsView
+     */
+    that.load = function() {
+
+        applyTransitions(false);
+
+        $(that.defaultpubprefs).click(function() {
+            applyTransitions(true);
+        });
+
+        $(that.attachments).click(function() {
+            if ($(that.defaultpubprefs).is(':checked')) {
+                // Checkbox state mustn't be changed (readonly mode)
+                return false;
+            }
+        });
+
+        $(that.allowresults).click(function() {
+            if ($(that.defaultpubprefs).is(':checked')) {
+                // Checkbox state mustn't be changed (readonly mode)
+                return false;
+            } else {
+                applyTransitions(true);
+            }
+        });
+    }
+
+    /**
+     * Apply the transitions to input elements and sections.
+     * If the 'Inherit default settings' checkbox is checked, fades the
+     * elements of the form out and set them as readonly. Otherwhise, set the
+     * fields to editable mode and fades them in.
+     * Either if 'Inherit default settings' is checked or unchecked, the
+     * visibility of the rest of the elements of the form ('Publication
+     * preferences' and 'Publications attachment permitted') depends on the
+     * status (checked/unchecked) of the 'AllowResultsDistribution' checkbox.
+     * @param fade if false, all the transitions will be done as hide/show. If
+     *        true, all the transitions will be done as fadeIn(opacity)/fadeOut
+     */
+    function applyTransitions(fade) {
+        fade = fade == null ? false : fade;
+
+        // Set the input fields to read-only
+        isdefault = $(that.defaultpubprefs).is(':checked');
+        $(that.publicationprefs).attr('readonly', isdefault);
+        $(that.attachments).attr('readonly', isdefault);
+        $(that.allowresults).attr('readonly', isdefault);
+
+        if (isdefault) {
+            allow = fillDefaultPatientPrefs();
+        }
+
+        if (fade) {
+            if (isdefault) {
+                $(that.allowresults_section).fadeTo("slow", that.opacity);
+                if (allow) {
+                    $(that.publicationprefs_section).fadeTo("slow", that.opacity);
+                    $(that.attachments_section).fadeTo("slow", that.opacity);
+                } else {
+                    $(that.publicationprefs_section).fadeOut("slow");
+                    $(that.attachments_section).fadeOut("slow");
+                }
+            } else {
+                $(that.allowresults_section).fadeTo("slow", 1);
+                if ($(that.allowresults).is(':checked')) {
+                    $(that.publicationprefs_section).fadeTo("slow", 1);
+                    $(that.attachments_section).fadeTo("slow", 1);
+                } else {
+                    $(that.publicationprefs_section).fadeOut("slow");
+                    $(that.attachments_section).fadeOut("slow");
+                }
+            }
+
+        } else {
+            if (isdefault) {
+                $(that.allowresults_section).fadeTo("fast", that.opacity);
+                if (allow) {
+                    $(that.publicationprefs_section).fadeTo("fast", that.opacity);
+                    $(that.attachments_section).fadeTo("fast", that.opacity);
+                } else {
+                    $(that.publicationprefs_section).hide();
+                    $(that.attachments_section).hide();
+                }
+            } else {
+                // Custom Patients publication preferences
+                if (!$(that.allowresults).is(':checked')) {
+                    $(that.publicationprefs_section).hide();
+                    $(that.attachments_section).hide();
+                }
+            }
+        }
+    }
+
+    /**
+     * Looks for the patient publication preferences from current Patient's
+     * client and fill the form with the data retrieved.
+     * @returns true if the patient is allowed to receive the published results
+     */
+    function fillDefaultPatientPrefs() {
+        // Retrieve Patient's publication preferences
+        $.ajax({
+            url: window.portal_url + "/ajax-client",
+            type: 'POST',
+            async: false,
+            data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                   'id': guid(),
+                   'service': 'getPublicationSettings',
+                   'params': JSON.stringify(
+                             {'uid':$('#PrimaryReferrer').val()}
+                             )},
+            dataType: "json",
+            success: function(data, textStatus, $XHR){
+                if (data['error']==null) {
+                    // Fill the form with default values
+                    res = data['result'];
+                    $(that.allowresults).attr('checked', res['AllowResultsDistributionToPatients']);
+                    $(that.attachments).attr('checked', res['PatientPublicationAttachmentsPermitted']);
+                    $(that.publicationprefs).find('option').each(function() {
+                        $(this).attr('selected', jQuery.inArray(this.value, res['PatientPublicationPreferences']) !=-1);
+                    });
+                } else {
+                    // Error
+                    console.log(data['error']);
+                }
+            }
+        });   
+        return $(that.allowresults).is(':checked');
+    }
+}

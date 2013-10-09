@@ -173,5 +173,14 @@
         handler="bika.health.upgrade.to1016.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+        
+  <genericsetup:upgradeStep
+        title="Patient publication preferences"
+        description="jsregistry reimport"
+        source="1019"
+        destination="1020"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 
 </configure>

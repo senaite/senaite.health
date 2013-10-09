@@ -29,5 +29,6 @@
     <adapter factory=".analysis.AnalysisSchemaExtender" />
     <adapter factory=".analysisspec.AnalysisSpecSchemaModifier" />
     <adapter factory=".bikasetup.BikaSetupSchemaExtender" />
+    <adapter factory=".client.ClientSchemaExtender" />
 
 </configure>

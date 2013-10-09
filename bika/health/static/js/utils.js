@@ -47,3 +47,13 @@ function addJavascript(jsname) {
 	s.setAttribute('src',jsname);
 	th.appendChild(s);
 }
+
+/**
+ * Returns a GUID compliant with rfc4122 version 4
+ */
+function guid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+}
