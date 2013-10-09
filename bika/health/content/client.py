@@ -55,11 +55,12 @@ class ClientSchemaExtender(object):
             default=False,
             schemata='Results Reports',
             widget=BooleanWidget(
-                label=_("Send attached files from results to Patients"),
-                description=_("If checked, files attached to the analyses "
-                              "will also be sent with the results to the "
-                              "Patient. This setting can be overriden on "
-                              "Patient's 'Publication preferences' tab.")
+                label=_("Results attachments permitted"),
+                description=_("File attachments to results, e.g. microscope "
+                              "photos, will be included in emails to patients "
+                              "if this option is enabled. This setting can be "
+                              "overriden on Patient's 'Publication "
+                              "preferences' tab.")
                 )
         ),
     ]

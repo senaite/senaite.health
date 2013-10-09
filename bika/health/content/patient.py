@@ -385,10 +385,10 @@ schema = Person.schema.copy() + Schema((
         default=False,
         schemata='Publication preference',
         widget=BooleanWidget(
-            label=_("Send attached files from results"),
-            description=_("If checked, files attached to the analyses "
-                          "will also be sent with the results to the "
-                          "Patient."))
+            label=_("Results attachments permitted"),
+            description=_("File attachments to results, e.g. microscope "
+                          "photos, will be included in emails to patient "
+                          "if this option is enabled"))
     ),
 ))
 
