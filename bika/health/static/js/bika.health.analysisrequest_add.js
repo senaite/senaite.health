@@ -181,6 +181,18 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
                             $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
                             $("#ar_" + col +"_ClientPatientID").combogrid("option", "disabled", true);
+                            
+                            // Hide the previous fields and replace them by labels
+                            $(".dynamic-field-label").remove();
+                            $("#ar_" + col +"_Client").hide();
+                            $("#ar_" + col +"_Patient").hide();
+                            $("#ar_" + col +"_Doctor").hide();
+                            $("#ar_" + col +"_ClientPatientID").hide();
+                            $("#ar_" + col +"_Client").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Client").val()+"</span>");
+                            $("#ar_" + col +"_Patient").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Patient").val()+"</span>");
+                            $("#ar_" + col +"_Doctor").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Doctor").val()+"</span>");
+                            $("#ar_" + col +"_ClientPatientID").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_ClientPatientID").val()+"</span>");
+                            
                         }
                         succeed = true;
                     }
@@ -229,6 +241,15 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_ClientPatientID_uid").val(data['PatientUID']);
                             $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
                             $("#ar_" + col +"_ClientPatientID").combogrid("option", "disabled", true );
+                            
+                            // Hide the previous fields and replace them by labels
+                            $(".dynamic-field-label").remove();
+                            $("#ar_" + col +"_Client").hide();
+                            $("#ar_" + col +"_Patient").hide();
+                            $("#ar_" + col +"_ClientPatientID").hide();
+                            $("#ar_" + col +"_Client").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Client").val()+"</span>");
+                            $("#ar_" + col +"_Patient").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Patient").val()+"</span>");
+                            $("#ar_" + col +"_ClientPatientID").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_ClientPatientID").val()+"</span>");
                             
                             // Only allow the selection of batches from this patient
                             element = $("#ar_" + col + "_Batch")
