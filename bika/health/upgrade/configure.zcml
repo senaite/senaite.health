@@ -182,5 +182,13 @@
         handler="bika.health.upgrade.to1016.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
-
+        
+  <genericsetup:upgradeStep
+        title="Workflow and jsregistry reimport"
+        description="workflow_csv and jsregistry reimport due to http://git.io/bNn3gA"
+        source="1020"
+        destination="1021"
+        handler="bika.health.upgrade.to1021.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>
