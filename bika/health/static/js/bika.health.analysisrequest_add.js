@@ -2,14 +2,14 @@
  * Controller class for AnalysisRequest add view
  */
 function AnalysisRequestAddView() {
-    
+
     var that = this;
-    
+
     // ------------------------------------------------------------------------
     // PUBLIC ACCESSORS
     // ------------------------------------------------------------------------
-    
-    
+
+
     // ------------------------------------------------------------------------
     // PUBLIC FUNCTIONS
     // ------------------------------------------------------------------------
@@ -21,13 +21,13 @@ function AnalysisRequestAddView() {
         datafilled = false;
         frombatch = window.location.href.search('batches/') > 0;
         frompatient = document.referrer.search('/patients/') >= 0;
-        
+
         if (frombatch) {
             // The current AR add View comes from a batch. Automatically fill
             // the Client, Patient and Doctor fields and set them as readonly.
-            batchid = window.location.href.split("batches")[1].split("/")[1];
+            batchid = window.location.href.split("/batches/")[1].split("/")[0];
             datafilled = fillDataFromBatch(batchid);
-            
+
         } else if (frompatient) {
             // The current AR add View comes from a patient AR folder view.
             // Automatically fill the Client and Patient fields and set them
@@ -38,7 +38,7 @@ function AnalysisRequestAddView() {
 
         if (!datafilled) {
             // The current AR Add View doesn't come from a batch nor patient or
-            // data autofilling failed. Handle event firing when Patient or 
+            // data autofilling failed. Handle event firing when Patient or
             // ClientPatientID fields change.
             $('[id$="_ClientPatientID"]').bind("selected paste blur", function() {
                 colposition = this.id.split("_")[1]
@@ -58,12 +58,12 @@ function AnalysisRequestAddView() {
             // records from the current client
             filterComboSearches();
         }
-        
+
         // Check if the current selected client has contacts. If client has no
         // contacts, prevent from saving the AR and inform the user
         checkClientContacts();
     }
-    
+
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
@@ -158,6 +158,7 @@ function AnalysisRequestAddView() {
                 async: false,
                 success: function(data, textStatus, $XHR){
                     if (data['PatientUID'] != '') {
+                        $(".dynamic-field-label").remove();
                         for (var col=0; col<parseInt($("#col_count").val()); col++) {
                             $("#ar_" + col +"_Client").val(data['ClientTitle']);
                             $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
@@ -165,25 +166,24 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('readonly', true);
                             $("#ar_" + col +"_Client").combogrid("option", "disabled", true);
-                            
+
                             $("#ar_" + col +"_Patient").val(data['PatientTitle']);
                             $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
                             $("#ar_" + col +"_Patient").attr('readonly', true);
                             $("#ar_" + col +"_Patient").combogrid("option", "disabled", true);
-        
+
                             $("#ar_" + col +"_Doctor").val(data['DoctorTitle']);
                             $("#ar_" + col +"_Doctor").attr('uid',data['DoctorUID']);
                             $("#ar_" + col +"_Doctor_uid").val(data['DoctorUID']);
                             $("#ar_" + col +"_Doctor").attr('readonly', true);
                             $("#ar_" + col +"_Doctor").combogrid("option", "disabled", true);
-        
+
                             $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
                             $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
                             $("#ar_" + col +"_ClientPatientID").combogrid("option", "disabled", true);
-                            
+
                             // Hide the previous fields and replace them by labels
-                            $(".dynamic-field-label").remove();
                             $("#ar_" + col +"_Client").hide();
                             $("#ar_" + col +"_Patient").hide();
                             $("#ar_" + col +"_Doctor").hide();
@@ -192,9 +192,8 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Patient").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Patient").val()+"</span>");
                             $("#ar_" + col +"_Doctor").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Doctor").val()+"</span>");
                             $("#ar_" + col +"_ClientPatientID").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_ClientPatientID").val()+"</span>");
-                            
+
                         }
-                        succeed = true;
                     }
                 }
             });
@@ -229,19 +228,19 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('readonly', true);
                             $("#ar_" + col +"_Client").combogrid("option", "disabled", true );
-                            
+
                             $("#ar_" + col +"_Patient").val(data['PatientFullname']);
                             $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
                             $("#ar_" + col +"_Patient").attr('readonly', true);
                             $("#ar_" + col +"_Patient").combogrid("option", "disabled", true );
-            
+
                             $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
                             $("#ar_" + col +"_ClientPatientID").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_ClientPatientID_uid").val(data['PatientUID']);
                             $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
                             $("#ar_" + col +"_ClientPatientID").combogrid("option", "disabled", true );
-                            
+
                             // Hide the previous fields and replace them by labels
                             $(".dynamic-field-label").remove();
                             $("#ar_" + col +"_Client").hide();
@@ -250,7 +249,7 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Client").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Client").val()+"</span>");
                             $("#ar_" + col +"_Patient").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Patient").val()+"</span>");
                             $("#ar_" + col +"_ClientPatientID").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_ClientPatientID").val()+"</span>");
-                            
+
                             // Only allow the selection of batches from this patient
                             element = $("#ar_" + col + "_Batch")
                             base_query=$.parseJSON($(element).attr("base_query"));
@@ -306,7 +305,7 @@ function AnalysisRequestAddView() {
         $(element).addClass("has_combogrid_widget");
         $(element).attr('search_query', '{}');
     }
-    
+
     /**
      * Checks if the current client has contacts. If no contacts, show a message
      * informing the user
@@ -320,7 +319,7 @@ function AnalysisRequestAddView() {
         }
         // Populate an array of cids first in order to avoid excessive request
         // calls via ajax. Must of the cases will have the same client for all
-        // columns.        
+        // columns.
         for (var col=0; col<parseInt($("#col_count").val()); col++) {
             cid = $("#ar_" + col +"_Client").attr('cid');
             if (cid != null && cid != '' && $.inArray(cid, cids) < 0) {
@@ -341,7 +340,7 @@ function AnalysisRequestAddView() {
                     if (data['ContactUIDs'] == '' || data['ContactUIDs'].length == 0) {
                         $('table.analysisrequest').before("<div id='contactsempty_alert' class='alert'>"
                                 + _("Client contact required before request may be submitted")
-                                +". <a href='"+ window.portal_url + "/clients/" + cid +"/contacts'>" 
+                                +". <a href='"+ window.portal_url + "/clients/" + cid +"/contacts'>"
                                 + _("Add contacts")+" "+data['ClientTitle']
                                 + "</a></div>");
                     }
