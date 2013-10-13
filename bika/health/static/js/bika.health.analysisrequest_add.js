@@ -221,6 +221,7 @@ function AnalysisRequestAddView() {
                 async: false,
                 success: function(data, textStatus, $XHR){
                     if (data['PatientUID'] != '') {
+                        $(".dynamic-field-label").remove();
                         for (var col=0; col<parseInt($("#col_count").val()); col++) {
                             $("#ar_" + col +"_Client").val(data['ClientTitle']);
                             $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
@@ -242,7 +243,6 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_ClientPatientID").combogrid("option", "disabled", true );
 
                             // Hide the previous fields and replace them by labels
-                            $(".dynamic-field-label").remove();
                             $("#ar_" + col +"_Client").hide();
                             $("#ar_" + col +"_Patient").hide();
                             $("#ar_" + col +"_ClientPatientID").hide();
