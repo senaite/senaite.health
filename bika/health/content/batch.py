@@ -123,25 +123,6 @@ class BatchSchemaExtender(object):
     implements(IOrderableSchemaExtender)
 
     fields = [
-        ExtReferenceField('Client',
-            required = 1,
-            multiValued=0,
-            allowed_types = ('Client',),
-            referenceClass = HoldingReference,
-            relationship = 'BatchClient',
-            widget=ReferenceWidget(
-                label=_("Client"),
-                description="",
-                render_own_label=False,
-                visible={'edit': 'visible', 'view': 'visible'},
-                base_query={'inactive_state': 'active'},
-                catalog_name='portal_catalog',
-                showOn=True,
-                colModel = [{'columnName':'ClientID','width':'20','label':_('Client ID')},
-                            {'columnName':'Title','width':'80','label':_('Title')}
-                           ],
-            ),
-        ),
         # ExtComputedField('ClientID',
         #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).ID() or None",
         # ),

@@ -3,14 +3,14 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
 from bika.lims import logger
-from bika.lims.browser.analysisrequest import \
-    AnalysisRequestWorkflowAction as BaseClass
+from bika.lims.browser.worksheet import \
+    WorksheetWorkflowAction as BaseClass
 from bika.lims.utils import encode_header
 from bika.lims.utils import isActive
 from email.Utils import formataddr
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from bika.health.browser.analysisrequest.publish import AnalysisRequestPublish
+import App
 from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange
 
 
@@ -70,16 +70,13 @@ class WorkflowAction(BaseClass):
                         to.append(formataddr((encode_header(ufull), uemail)))
                     mime_msg['To'] = ','.join(to)
                     strans = []
-                    ars = {}
                     for analysis_uid, alertlist in alerts:
                         analysis = uc(analysis_uid).getObject()
                         for alert in alertlist:
-                            ars[analysis.aq_parent.Title()] = 1
                             strans.append("- {0}, {1}: {2}".format(
                                           analysis.getService().Title(),
                                           translate(_("Result")),
                                           analysis.getResult()))
-                    ars = ", ".join(ars.keys())
                     stran = "<br/>".join(strans)
                     text = translate(_(
                         "Some results from ${items} exceeded the panic levels "
@@ -88,7 +85,7 @@ class WorkflowAction(BaseClass):
                         "<b>Please, check the Analysis Request if you "
                         "want to re-test the analysis or immediately "
                         "alert the client.</b><br/><br/>{lab_address}",
-                        mapping={'items': ars,
+                        mapping={'items': self.context.getId(),
                                  'analysisresults': stran,
                                  'lab_address': lab_address}))
                     msg_txt = MIMEText(safe_unicode(text).encode('utf-8'),
@@ -100,19 +97,11 @@ class WorkflowAction(BaseClass):
                         host.send(mime_msg.as_string(), immediate=True)
                     except Exception as msg:
                         ar = inpanicanalyses[0].getRequestID()
-                        logger.error("Panic level email %s: %s" %
-                                     (ar, str(msg)))
-                        message = translate(
+                        logger.error(
+                            "Panic level email %s: %s" % (ar, str(msg)))
+                        message = self.context.translate(
                             _('Unable to send an email to alert lab '
                               'managers that some analyses exceeded the '
                               'panic levels') + (": %s" % str(msg)))
-                        addPortalMessage(message, 'warning')
-
-    def cloneAR(self, ar):
-        newar = BaseClass.cloneAR(self, ar)
-        newar.Schema()['Patient'].set(newar, ar.Schema()['Patient'].get(ar))
-        newar.Schema()['Doctor'].set(newar, ar.Schema()['Doctor'].get(ar))
-        return newar
-
-    def doPublish(self, context, request, action, analysis_requests):
-        return AnalysisRequestPublish(context, request, action, analysis_requests)
+                        self.context.plone_utils.addPortalMessage(
+                            message, 'warning')
