@@ -8,7 +8,7 @@
       for="bika.lims.interfaces.IClient"
       name="patients"
       class="bika.health.browser.client.patients.ClientPatientsView"
-      permission="bika.health.ManagePatients"
+      permission="bika.health.ViewPatients"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 

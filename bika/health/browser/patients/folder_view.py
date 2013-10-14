@@ -89,7 +89,7 @@ class PatientsView(BikaListingView):
             else:
                 msg = _("Cannot create patients without any system clients configured.")
                 addPortalMessage(self.context.translate(msg))
-        if mtool.checkPermission(ManagePatients, self.context):
+        if mtool.checkPermission(ViewPatients, self.context):
             self.review_states[0]['transitions'].append({'id':'deactivate'})
             self.review_states.append(
                 {'id': 'inactive',

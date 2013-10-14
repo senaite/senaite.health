@@ -8,7 +8,7 @@ from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
 from bika.health.permissions import AddAetiologicAgent
 from bika.health.permissions import ManageDoctors
-from bika.health.permissions import ManagePatients
+from bika.health.permissions import ViewPatients
 from bika.health.permissions import ViewBatches
 from bika.health.permissions import ViewSamples
 from bika.health.permissions import ViewAnalysisRequests
@@ -125,7 +125,6 @@ def setupHealthPermissions(context):
     mp(AddSample, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
     mp(AddSamplePartition, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
     mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddPatient, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddAetiologicAgent, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddTreatment, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddDrug, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
@@ -140,11 +139,14 @@ def setupHealthPermissions(context):
 
     mp(ManageAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 1)
     mp(ManageDoctors, ['Manager', 'LabManager', 'Owner', 'LabClerk'], 1)
-    mp(ManagePatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
 
     mp(ViewBatches, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+
+    # Root permissions for Patients
+    mp(AddPatient, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     portal.bika_setup.laboratory.reindexObject()
 
     # /clients folder permissions
@@ -165,14 +167,6 @@ def setupHealthPermissions(context):
     mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver'], 0)
     mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver'], 0)
     portal.doctors.reindexObject()
-
-    # /patients
-    mp = portal.patients.manage_permission
-    mp(CancelAndReinstate, ['Manager', 'LabManager', 'Doctor', ], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    portal.patients.reindexObject()
 
     # /reports folder permissions
     mp = portal.reports.manage_permission

@@ -34,8 +34,11 @@ ADD_CONTENT_PERMISSIONS = {
 }
 
 ManageDoctors = "BIKA: Manage Doctors"
-ManagePatients = "BIKA: Manage Patients"
 
 ViewBatches = "BIKA: View Batches"
 ViewSamples = "BIKA: View Samples"
 ViewAnalysisRequests = "BIKA: View AnalysisRequests"
+
+# Patient permissions
+ViewPatients = 'BIKA: View Patients'
+EditPatient = 'BIKA: Edit Patient'

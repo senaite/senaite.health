@@ -191,4 +191,14 @@
         handler="bika.health.upgrade.to1021.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+  <genericsetup:upgradeStep
+        title="Patient permissions update"
+        description="Patient types workflow and permissions reimport"
+        source="1021"
+        destination="1022"
+        handler="bika.health.upgrade.to1022.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>

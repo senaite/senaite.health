@@ -40,7 +40,7 @@
          i18n:attributes="title"
          i18n:domain="plone"
          visible="True">
-    <permission value="BIKA: Manage Patients"/>
+    <permission value="BIKA: Edit Patient"/>
  </action>
 
  <action title="Batches"
@@ -52,7 +52,7 @@
          url_expr="string:${object_url}/batches"
          i18n:attributes="title"
          visible="True">
-  <permission value="BIKA: Manage Patients"/>
+  <permission value="View"/>
  </action>
 
  <action title="Analysis Requests"
