@@ -361,7 +361,7 @@ class BatchSchemaExtender(object):
                                 # 'PatientID',
                                 # 'PatientUID',
                                 # 'PatientTitle',
-                                # 'Client',
+                                'Client',
                                 # 'ClientID',
                                 # 'ClientUID',
                                 # 'ClientTitle',
