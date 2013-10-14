@@ -19,7 +19,7 @@ function AnalysisRequestAddView() {
      */
     this.load = function() {
         datafilled = false;
-        frombatch = window.location.href.search('batches/') > 0;
+        frombatch = window.location.href.search('/batches/') >= 0;
         frompatient = document.referrer.search('/patients/') >= 0;
 
         if (frombatch) {
@@ -165,23 +165,19 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('readonly', true);
-                            $("#ar_" + col +"_Client").combogrid("option", "disabled", true);
 
                             $("#ar_" + col +"_Patient").val(data['PatientTitle']);
                             $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
                             $("#ar_" + col +"_Patient").attr('readonly', true);
-                            $("#ar_" + col +"_Patient").combogrid("option", "disabled", true);
 
                             $("#ar_" + col +"_Doctor").val(data['DoctorTitle']);
                             $("#ar_" + col +"_Doctor").attr('uid',data['DoctorUID']);
                             $("#ar_" + col +"_Doctor_uid").val(data['DoctorUID']);
                             $("#ar_" + col +"_Doctor").attr('readonly', true);
-                            $("#ar_" + col +"_Doctor").combogrid("option", "disabled", true);
 
                             $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
                             $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
-                            $("#ar_" + col +"_ClientPatientID").combogrid("option", "disabled", true);
 
                             // Hide the previous fields and replace them by labels
                             $("#ar_" + col +"_Client").hide();
@@ -192,7 +188,12 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Patient").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Patient").val()+"</span>");
                             $("#ar_" + col +"_Doctor").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Doctor").val()+"</span>");
                             $("#ar_" + col +"_ClientPatientID").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_ClientPatientID").val()+"</span>");
-
+                            
+                            // Contact searches
+                            element = $("#ar_" + col + "_Contact")
+                            base_query=$.parseJSON($(element).attr("base_query"));
+                            base_query['getParentUID'] = data['ClientUID'];
+                            applyComboFilter(element, base_query);
                         }
                     }
                 }
@@ -228,19 +229,16 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('readonly', true);
-                            $("#ar_" + col +"_Client").combogrid("option", "disabled", true );
 
                             $("#ar_" + col +"_Patient").val(data['PatientFullname']);
                             $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
                             $("#ar_" + col +"_Patient").attr('readonly', true);
-                            $("#ar_" + col +"_Patient").combogrid("option", "disabled", true );
 
                             $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
                             $("#ar_" + col +"_ClientPatientID").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_ClientPatientID_uid").val(data['PatientUID']);
                             $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
-                            $("#ar_" + col +"_ClientPatientID").combogrid("option", "disabled", true );
 
                             // Hide the previous fields and replace them by labels
                             $("#ar_" + col +"_Client").hide();
@@ -255,6 +253,12 @@ function AnalysisRequestAddView() {
                             base_query=$.parseJSON($(element).attr("base_query"));
                             base_query['getPatientUID'] = data['PatientUID'];
                             applyComboFilter(element, base_query);
+                            
+                            // Contact searches
+                            element = $("#ar_" + col + "_Contact")
+                            base_query=$.parseJSON($(element).attr("base_query"));
+                            base_query['getParentUID'] = data['ClientUID'];
+                            applyComboFilter(element, base_query);
                         }
                     }
                 }
@@ -265,8 +269,8 @@ function AnalysisRequestAddView() {
     }
 
     function filterComboSearches() {
-        // Only allow the selection of batches, patients and CPIDs from the
-        // current client
+        // Only allow the selection of batches, patients, contacts and CPIDs
+        // from the current client
         for (var col=0; col<parseInt($("#col_count").val()); col++) {
             clientuid = $("#ar_" + col + "_Client_uid").val();
 
@@ -287,10 +291,17 @@ function AnalysisRequestAddView() {
             base_query=$.parseJSON($(element).attr("base_query"));
             base_query['getPrimaryReferrerUID'] = clientuid;
             applyComboFilter(element, base_query);
+            
+            // Contact searches
+            element = $("#ar_" + col + "_Contact")
+            base_query=$.parseJSON($(element).attr("base_query"));
+            base_query['getParentUID'] = clientuid;
+            applyComboFilter(element, base_query);
         }
     }
 
     function applyComboFilter(element, base_query) {
+        $(element).attr("base_query", $.toJSON(base_query));
         options = $.parseJSON($(element).attr("combogrid_options"));
         options.url = window.location.href.split("/ar_add")[0] + "/" + options.url
         options.url = options.url + '?_authenticator=' + $('input[name="_authenticator"]').val();
