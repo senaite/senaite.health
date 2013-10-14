@@ -14,7 +14,7 @@
     
     <browser:page
       for="bika.lims.interfaces.IBatch"
-      name="base_view"
+      name="analysisrequests"
       class="bika.health.browser.batch.analysisrequests.BatchAnalysisRequestsView"
       permission="zope2.View"
       layer="bika.lims.interfaces.IBikaLIMS"

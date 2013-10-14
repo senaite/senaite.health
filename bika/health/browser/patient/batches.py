@@ -8,6 +8,7 @@ class BatchesView(BatchFolderContentsView):
     def __init__(self, context, request):
         super(BatchesView, self).__init__(context, request)
         self.view_url = self.context.absolute_url() + "/batches"
+        self.contentFilter['getPatientID'] = self.context.id
 
         # Hide patient columns
         self.columns['getPatientID']['toggle'] = False
@@ -22,12 +23,3 @@ class BatchesView(BatchFolderContentsView):
                         + '/++resource++bika.lims.images/add.png'}
         return BatchFolderContentsView.__call__(self)
 
-    def contentsMethod(self, contentFilter):
-        bc = getToolByName(self.context, "bika_catalog")
-        batches = []
-        proxies = bc(portal_type='Batch',
-                     getPatientID=self.context.getPatientID())
-        for batch in proxies:
-            batch = batch.getObject()
-            batches.append(batch)
-        return batches

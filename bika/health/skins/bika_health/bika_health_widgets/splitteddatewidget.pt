@@ -7,7 +7,23 @@
 <body>
 
 <metal:view_macro define-macro="view">
-	<div metal:use-macro="here/widgets/string/macros/view" />
+    <tal:values tal:define="value value/global | nothing">
+    <tal:fields tal:condition="value">
+	    <tal:year tal:condition="python:value['year']">
+	        <span tal:content="python:value['year']"></span>
+	        <span i18n:translate="">years</span>&nbsp;&nbsp;
+	    </tal:year>
+	    <tal:month tal:condition="python:value['month']">
+	        <span tal:content="python:value['month']"></span>
+	        <span i18n:translate="">months</span>&nbsp;&nbsp;
+	    </tal:month>
+	    <tal:days tal:condition="python:value['day']">
+	        <span tal:content="python:value['day']"></span>
+	        <span i18n:translate="">days</span>&nbsp;&nbsp;
+	    </tal:days>
+    </tal:fields>
+    <span tal:condition="not: value" i18n:translate="">-</span>
+    </tal:values>
 </metal:view_macro>
 
 <metal:search_macro define-macro="search">

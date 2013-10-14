@@ -356,6 +356,40 @@ schema = Person.schema.copy() + Schema((
                  label=_("Anonymous")
              ),
     ),
+    BooleanField('DefaultResultsDistribution',
+        schemata="Publication preference",
+        default=True,
+        widget=BooleanWidget(
+            label=_("Inherit default settings"),
+            description=_("If checked, settings will be inherited from "
+                          "the Client, so further changes in Client for this "
+                          "setting will be populated too."))
+    ),
+    BooleanField('AllowResultsDistribution',
+        schemata="Publication preference",
+        default=False,
+        widget=BooleanWidget(
+            label=_("Allow results distribution to this patient"),
+            description=_("If checked, results reports will also be sent "
+                          "to the Patient automatically."))
+    ),
+    LinesField('PublicationPreferences',
+        vocabulary=PUBLICATION_PREFS,
+        schemata='Publication preference',
+        widget=MultiSelectionWidget(
+            label=_("Publication preference"),
+            description=_("Select the preferred channels to be used for "
+                          "sending the results reports to this Patient."))
+    ),
+    BooleanField('PublicationAttachmentsPermitted',
+        default=False,
+        schemata='Publication preference',
+        widget=BooleanWidget(
+            label=_("Results attachments permitted"),
+            description=_("File attachments to results, e.g. microscope "
+                          "photos, will be included in emails to patient "
+                          "if this option is enabled"))
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False

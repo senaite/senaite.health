@@ -91,3 +91,53 @@ class AnalysisRequestPublish(doPublish):
         elif strregion:
             outaddress = strregion
         return outaddress
+
+    def get_recipients(self, ar):
+        recips = super(AnalysisRequestPublish, self).get_recipients(ar)
+
+        bs = self.context.bika_setup
+        sch = bs.Schema()
+        bs_allowdist = sch['AllowResultsDistributionToPatients'].get(bs)
+        bs_pubprefs = sch['PatientPublicationPreferences'].get(bs)
+
+        # Add Patient recipients
+        pat = ar.Schema().getField('Patient').get(ar)
+        if pat:
+            sch = pat.Schema()
+            email_field = pat.getField('EmailAddress')
+            pa_allowdist_field = pat.getField('AllowResultsDistribution')
+            inherit_field = pat.getField('DefaultResultsDistribution')
+            email = email_field.get(pat) if email_field else None
+            pa_allowdist = pa_allowdist_field.get(pat) if pa_allowdist_field else False
+            inherit = inherit_field.get(pat) if inherit_field else True
+            if inherit == True:
+                # Gets the results distribution from the client
+                client = ar.aq_parent
+                inherit_field = client.getField('DefaultResultsDistributionToPatients')
+                cl_allowdist_field = client.getField('AllowResultsDistributionToPatients')
+                cl_allowdist = cl_allowdist_field.get(client) if cl_allowdist_field else False
+                inherit = inherit_field.get(client) if inherit_field else True
+
+                if inherit == True and bs_allowdist == True:
+                    # Gets the results distribution from BikaSetup
+                    recips.append({'title':pat.Title(),
+                                   'email':email,
+                                   'pubpref':bs_pubprefs})
+
+                elif inherit == False and cl_allowdist == True:
+                    # Gets the results distribution from Client
+                    cl_pubpref_field = client.getField('PatientPublicationPreferences')
+                    cl_pubpref = cl_pubpref_field.get(client) if cl_pubpref_field else []
+                    recips.append({'title':pat.Title(),
+                                   'email':email,
+                                   'pubpref':cl_pubpref})
+
+            elif pa_allowdist == True:
+                # Gets the pub preferences from the patient
+                pub_field = pat.getField('PublicationPreferences')
+                pubpref = pub_field.get(pat) if pub_field else []
+                recips.append({'title':pat.Title(),
+                               'email':email,
+                               'pubpref':pubpref})
+
+        return recips

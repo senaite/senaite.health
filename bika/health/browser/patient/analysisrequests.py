@@ -31,10 +31,18 @@ class AnalysisRequestsView(AnalysisRequestsView):
         PR = self.context.getPrimaryReferrer()
         if isActive(self.context):
             if mtool.checkPermission(AddAnalysisRequest, PR):
-                self.context_actions[self.context.translate(_('Add'))] = {
-                    'url': PR.absolute_url() + "/portal_factory/"
-                    "AnalysisRequest/Request new analyses/ar_add",
-                    'icon': '++resource++bika.lims.images/add.png'}
+                #client contact required
+                contacts = [c for c in PR.objectValues('Contact') if
+                            wf.getInfoFor(c, 'inactive_state', '') == 'active']
+                if contacts:
+                    self.context_actions[self.context.translate(_('Add'))] = {
+                        'url': PR.absolute_url() + "/portal_factory/"
+                        "AnalysisRequest/Request new analyses/ar_add",
+                        'icon': '++resource++bika.lims.images/add.png'}
+                else:
+                    msg = _("Client contact required before request may be submitted")
+                    addPortalMessage(self.context.translate(msg))
+
         return super(AnalysisRequestsView, self).__call__()
 
     def folderitems(self, full_objects=False):

@@ -7,7 +7,60 @@
 <head>
     <title>CasePatientCondition Widget</title>
 </head>
-<body>    
+<body>
+    <metal:view_macro define-macro="view">
+        <fieldset tal:attributes="id string:${fieldName};
+                                  name string:${fieldName};"
+                  tal:define="i18n_domain field/widget/i18n_domain|context/i18n_domain|string:plone;
+                              data python:widget.getPatientCondition();">
+
+            <!-- Height -->
+            <div class="fieldline" tal:define="units python:widget.getHeightUnits()">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Height</span>
+                </div>
+                <div class="fieldline-content">
+                    <tal:heights tal:repeat="idx python:range(len(units))">
+                        <span tal:content="python:widget.getConditionValue('Height', units[idx]) or '-'"></span>&nbsp;
+                        <span tal:content="python:units[idx]"></span>&nbsp;&nbsp;
+                    </tal:heights>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+
+            <!-- Weight -->
+            <div class="fieldline" 
+                 tal:define="units python:widget.getWeightUnits();
+                             baseidx python:len(widget.getWeightUnits());">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Weight</span>
+                </div>
+                <div class="fieldline-content">
+                    <tal:heights tal:repeat="idx python:range(len(units))">
+                        <span tal:content="python:widget.getConditionValue('Weight', units[idx]) or '-'"></span>&nbsp;
+                        <span tal:content="python:units[idx]"></span>&nbsp;&nbsp;
+                    </tal:heights>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+            
+            <!-- Waist -->
+            <div class="fieldline" 
+                 tal:define="units python:widget.getWaistUnits();
+                                baseidx python:len(widget.getHeightUnits())+len(widget.getWeightUnits());">
+                <div class="fieldline-label">
+                    <span i18n:translate="">Waist</span>
+                </div>
+                <div class="fieldline-content">
+                    <tal:heights tal:repeat="idx python:range(len(units))">
+                        <span tal:content="python:widget.getConditionValue('Waist', units[idx]) or '-'"></span>&nbsp;
+                        <span tal:content="python:units[idx]"></span>&nbsp;&nbsp;
+                    </tal:heights>
+                </div>
+                <div class="clear-both"></div>
+            </div>
+        </fieldset>
+    </metal:view_macro>
     <metal:edit_macro define-macro="edit">
     <metal:use use-macro="here/widgets/field/macros/edit">
     <tal:block metal:fill-slot="widget_body">
@@ -63,7 +116,7 @@
                 </div>
                 <div class="fieldline-content"
                     tal:define="units python:widget.getWeightUnits();
-                                baseidx python:len(widget.getHeightUnits());">                                    
+                                baseidx python:len(widget.getWeightUnits());">                                    
                     <tal:weights tal:repeat="idx python:range(len(units))">
                     
                         <input type="text"
@@ -96,7 +149,7 @@
                 </div>
                 <div class="fieldline-content"
                     tal:define="units python:widget.getWaistUnits();
-                                baseidx python:len(widget.getHeightUnits())+len(widget.getHeightUnits());">                                    
+                                baseidx python:len(widget.getHeightUnits())+len(widget.getWeightUnits());">                                    
                     <tal:waists tal:repeat="idx python:range(len(units))">
                     
                         <input type="text"

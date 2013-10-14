@@ -10,7 +10,7 @@
     <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" media="all" href=""
-            tal:attributes="href string:$portal_url/ar_report_results.css" />
+            tal:attributes="href string:$portal_url/analysisrequest_results.css" />
     </head>
 
 
@@ -495,7 +495,7 @@
                                 analysis_result_dm python: analysis.getResultDM();
                                 analysis_uncertainty analysis/getUncertainty|nothing;
                                 analysis_accredited python:accredited and service.getAccredited();
-                                analysis_outofrange python:analysis.isOutOfRange()[0];
+                                analysis_outofrange python:view.ResultOutOfRange(analysis);
                                 analysis_retested python:analysis.getRetested();
                                 analysis_specs python:analysis.getAnalysisSpecs();
                                 analysis_range python: analysis_specs and analysis_specs.getAnalysisSpecsStr(analysis_keyword) or '';

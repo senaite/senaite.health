@@ -146,5 +146,49 @@
         handler="bika.health.upgrade.to1016.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
-
+  
+   <genericsetup:upgradeStep
+        title="Compatibility with bika.lims upgrade 1138"
+        description="jsregistry reimport due to bika.lims upgrade 1138"
+        source="1016"
+        destination="1017"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+        
+   <genericsetup:upgradeStep
+        title="JS cleaning and improvements"
+        description="jsregistry reimport due js removal and addition"
+        source="1017"
+        destination="1018"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+        
+   <genericsetup:upgradeStep
+        title="New Batch Readonly view for cancelled and closed batches"
+        description="jsregistry reimport"
+        source="1018"
+        destination="1019"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+        
+  <genericsetup:upgradeStep
+        title="Patient publication preferences"
+        description="jsregistry reimport"
+        source="1019"
+        destination="1020"
+        handler="bika.health.upgrade.to1016.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+        
+  <genericsetup:upgradeStep
+        title="Workflow and jsregistry reimport"
+        description="workflow_csv and jsregistry reimport due to http://git.io/bNn3gA"
+        source="1020"
+        destination="1021"
+        handler="bika.health.upgrade.to1021.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>
