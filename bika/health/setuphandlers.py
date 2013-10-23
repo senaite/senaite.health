@@ -154,11 +154,22 @@ def setupHealthPermissions(context):
     # This means within a client, perms granted on Member role are available
     # in clients not our own, allowing sideways entry if we're not careful.
     mp = portal.clients.manage_permission
-    mp(ManageClients, ['Owner', 'Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 1)
-    mp(permissions.ListFolderContents, ['Owner', 'Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp(permissions.View, ['Owner', 'Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
+    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
+    mp(ManageClients, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 0)
+    mp(permissions.AddPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    mp(AddAnalysisSpec, ['Manager', 'LabManager', 'Owner'], 0)
     portal.clients.reindexObject()
+
+    for obj in portal.clients.objectValues():
+        mp = obj.manage_permission
+        mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver'], 0)
+        mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Member', 'Analyst', 'Sampler', 'Preserver'], 0)
+        mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+        mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver', 'Owner'], 0)
+        obj.reindexObject()
 
     # /doctors
     mp = portal.doctors.manage_permission
@@ -301,5 +312,5 @@ def setupHealthCatalogs(context):
 
 
 def setupHealthTestContent(context):
-    """Setup custom content"""    
+    """Setup custom content"""
     pass
