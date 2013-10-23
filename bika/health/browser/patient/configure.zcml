@@ -10,7 +10,7 @@
       for="bika.health.interfaces.IPatient"
       name="batches"
       class=".batches.BatchesView"
-      permission="bika.health.ViewBatches"
+      permission="bika.health.permissions.ViewBatches"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -18,7 +18,7 @@
       for="bika.health.interfaces.IPatient"
       name="analysisrequests"
       class=".analysisrequests.AnalysisRequestsView"
-      permission="bika.health.ViewAnalysisRequests"
+      permission="bika.health.permissions.ViewAnalysisRequests"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
@@ -26,7 +26,7 @@
       for="bika.health.interfaces.IPatient"
       name="samples"
       class=".samples.SamplesView"
-      permission="bika.health.ViewSamples"
+      permission="bika.health.permissions.ViewSamples"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 

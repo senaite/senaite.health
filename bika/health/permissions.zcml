@@ -27,12 +27,12 @@
 <permission id="bika.health.ManageDoctors" title="BIKA: Manage Doctors"/>
 
 
-<permission id="bika.health.ViewBatches" title="BIKA: View Batches"/>
-<permission id="bika.health.ViewSamples" title="BIKA: View Samples"/>
-<permission id="bika.health.ViewAnalysisRequests" title="BIKA: View AnalysisRequests"/>
+<permission id="bika.health.permissions.ViewBatches" title="BIKA: View Batches"/>
+<permission id="bika.health.permissions.ViewSamples" title="BIKA: View Samples"/>
+<permission id="bika.health.permissions.ViewAnalysisRequests" title="BIKA: View AnalysisRequests"/>
 
 # Patient permissions
-<permission id="bika.health.ViewPatients" title="BIKA: View Patients"/>
-<permission id="bika.health.EditPatient" title="BIKA: Edit Patient"/>
+<permission id="bika.health.permissions.ViewPatients" title="BIKA: View Patients"/>
+<permission id="bika.health.permissions.EditPatient" title="BIKA: Edit Patient"/>
 
 </configure>

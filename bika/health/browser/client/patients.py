@@ -8,7 +8,7 @@ class ClientPatientsView(PatientsView):
 
     def __init__(self, context, request):
         super(ClientPatientsView, self).__init__(context, request)
-         # Limit results to those patients that "belong" to this client
+        # Limit results to those patients that "belong" to this client
         self.contentFilter['getPrimaryReferrerUID'] = context.UID()
 
     def __call__(self):

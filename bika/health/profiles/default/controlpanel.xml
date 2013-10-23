@@ -17,7 +17,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/drug.png"
     url_expr="string:$portal_url/bika_setup/bika_drugs"
-    visible="True"
+    visible="False"
 	i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -26,7 +26,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/drugprohibition.png"
     url_expr="string:$portal_url/bika_setup/bika_drugprohibitions"
-    visible="True"
+    visible="False"
 	i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -35,7 +35,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/disease.png"
     url_expr="string:$portal_url/bika_setup/bika_diseases"
-    visible="True"
+    visible="False"
 	i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -80,7 +80,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/casestatus.png"
     url_expr="string:$portal_url/bika_setup/bika_casestatuses"
-    visible="True"
+    visible="False"
 	i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -89,7 +89,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/caseoutcome.png"
     url_expr="string:$portal_url/bika_setup/bika_caseoutcomes"
-    visible="True"
+    visible="False"
   i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -98,7 +98,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/casesyndromicclassification.png"
     url_expr="string:$portal_url/bika_setup/bika_casesyndromicclassifications"
-    visible="True"
+    visible="False"
 	i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -107,7 +107,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/epidemiologicalyear.png"
     url_expr="string:$portal_url/bika_setup/bika_epidemiologicalyears"
-	visible="True"
+	visible="False"
 	i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -116,7 +116,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/identifiertype.png"
     url_expr="string:$portal_url/bika_setup/bika_identifiertypes"
-	visible="True"
+	visible="False"
 	i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>

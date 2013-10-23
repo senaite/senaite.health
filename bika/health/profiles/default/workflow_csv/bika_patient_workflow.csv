@@ -9,7 +9,7 @@ State variable:,review_state,,,,,,,,,,,,,,,
 [State],,,,,,,,,,,,,,,,
 Id:,active,,,,,,,,,,,,,,,
 Title:,Active,,,,,,,,,,,,,,,
-Description:,“The patient can be edited and is available for Case's and Analysis Requests creation”,,,,,,,,,,,,,,,
+Description:,,,,,,,,,,,,,,,,
 Transitions,,,,,,,,,,,,,,,,
 Permissions,Acquire,Owner,Manager,LabManager,LabClerk,Analyst,Sampler,Preserver,Verifier,RegulatoryInspector,Doctor,Publisher,Reader,Editor,Contributor,Anonymous
 BIKA: Cancel and reinstate,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N
