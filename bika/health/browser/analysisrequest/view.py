@@ -15,46 +15,46 @@ class AnalysisRequestView(AnalysisRequestViewView):
     def __call__(self):
 
         super(AnalysisRequestView, self).__call__()
-        for row in self.header_rows:
-            if row.get('id', '') == 'BatchID':
-                row['title'] = _('Case ID')
-                break
-
-        # Add Client Patient field
-        pm = getToolByName(self.context, "portal_membership")
-        member = pm.getAuthenticatedMember()
-        roles = member.getRoles()
-        if 'Manager' in roles or 'LabManager' in roles or 'LabClerk' in roles:
-            patient = self.context.Schema()['Patient'].get(self.context)
-            if patient:
-                self.header_rows.append(
-                {'id': 'Patient',
-                 'title': _('Patient'),
-                 'allow_edit': False,
-                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.Title()),
-                 'condition': True,
-                 'type': 'text'})
-
-                self.header_rows.append(
-                {'id': 'PatientID',
-                 'title': _('Patient ID'),
-                 'allow_edit': False,
-                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.getPatientID()
-                                                   or ''),
-                 'condition':True,
-                 'type': 'text'})
-
-                self.header_rows.append(
-                {'id': 'ClientPatientID',
-                 'title': _('Client Patient ID'),
-                 'allow_edit': False,
-                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.getClientPatientID()
-                                                   or ''),
-                 'condition':True,
-                 'type': 'text'})
+#        for row in self.header_rows:
+#            if row.get('id', '') == 'BatchID':
+#                row['title'] = _('Case ID')
+#                break
+#
+#        # Add Client Patient field
+#        pm = getToolByName(self.context, "portal_membership")
+#        member = pm.getAuthenticatedMember()
+#        roles = member.getRoles()
+#        if 'Manager' in roles or 'LabManager' in roles or 'LabClerk' in roles:
+#            patient = self.context.Schema()['Patient'].get(self.context)
+#            if patient:
+#                self.header_rows.append(
+#                {'id': 'Patient',
+#                 'title': _('Patient'),
+#                 'allow_edit': False,
+#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+#                                                   patient.Title()),
+#                 'condition': True,
+#                 'type': 'text'})
+#
+#                self.header_rows.append(
+#                {'id': 'PatientID',
+#                 'title': _('Patient ID'),
+#                 'allow_edit': False,
+#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+#                                                   patient.getPatientID()
+#                                                   or ''),
+#                 'condition':True,
+#                 'type': 'text'})
+#
+#                self.header_rows.append(
+#                {'id': 'ClientPatientID',
+#                 'title': _('Client Patient ID'),
+#                 'allow_edit': False,
+#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+#                                                   patient.getClientPatientID()
+#                                                   or ''),
+#                 'condition':True,
+#                 'type': 'text'})
 
         autopopup = False
         bs = self.context.bika_setup
@@ -95,18 +95,18 @@ class AnalysisRequestView(AnalysisRequestViewView):
         return alerts
 
     def addEmailLink(self, autopopup=False):
-        self.header_rows.append(
-                {'id': 'Contact',
-                 'title': "<a href='#' id='email_popup'>%s</a>" % \
-                  (self.context.translate(_('Alert client about panic '
-                                            'levels exceeded'))),
-                 'allow_edit': False,
-                 'value': "<input name='email_popup_uid' autoshow='%s' "
-                          "type='hidden' id='ar_uid' value='%s'/>" \
-                           % (autopopup, self.context.UID()),
-                 'condition': True,
-                 'type': 'text'})
-
+#        self.header_rows.append(
+#                {'id': 'Contact',
+#                 'title': "<a href='#' id='email_popup'>%s</a>" % \
+#                  (self.context.translate(_('Alert client about panic '
+#                                            'levels exceeded'))),
+#                 'allow_edit': False,
+#                 'value': "<input name='email_popup_uid' autoshow='%s' "
+#                          "type='hidden' id='ar_uid' value='%s'/>" \
+#                           % (autopopup, self.context.UID()),
+#                 'condition': True,
+#                 'type': 'text'})
+#
         message = _('Some results exceeded the panic levels that may '
                     'indicate an imminent life-threatening condition.')
         self.addMessage(message, 'warning')

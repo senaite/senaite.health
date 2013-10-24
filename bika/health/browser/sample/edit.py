@@ -40,36 +40,36 @@ class SampleEditView(BaseClass):
                     # One ar matches
                     ar = ars[0]
 
-            patient = ar.Schema()['Patient'].get(ar) if ar else None
-            if patient:
-                self.header_rows.append(
-                {'id': 'Patient',
-                 'title': _('Patient'),
-                 'allow_edit': False,
-                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.Title()),
-                 'condition': True,
-                 'type': 'text'})
-
-                self.header_rows.append(
-                {'id': 'PatientID',
-                 'title': _('Patient ID'),
-                 'allow_edit': False,
-                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.getPatientID() 
-                                                   or ''),
-                 'condition':True,
-                 'type': 'text'})
-
-                self.header_rows.append(
-                {'id': 'ClientPatientID',
-                 'title': _('Client Patient ID'),
-                 'allow_edit': False,
-                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-                                                   patient.getClientPatientID() 
-                                                   or ''),
-                 'condition':True,
-                 'type': 'text'})
+#            patient = ar.Schema()['Patient'].get(ar) if ar else None
+#            if patient:
+#                self.header_rows.append(
+#                {'id': 'Patient',
+#                 'title': _('Patient'),
+#                 'allow_edit': False,
+#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+#                                                   patient.Title()),
+#                 'condition': True,
+#                 'type': 'text'})
+#
+#                self.header_rows.append(
+#                {'id': 'PatientID',
+#                 'title': _('Patient ID'),
+#                 'allow_edit': False,
+#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+#                                                   patient.getPatientID() 
+#                                                   or ''),
+#                 'condition':True,
+#                 'type': 'text'})
+#
+#                self.header_rows.append(
+#                {'id': 'ClientPatientID',
+#                 'title': _('Client Patient ID'),
+#                 'allow_edit': False,
+#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
+#                                                   patient.getClientPatientID() 
+#                                                   or ''),
+#                 'condition':True,
+#                 'type': 'text'})
                 
         return self.template()
 
