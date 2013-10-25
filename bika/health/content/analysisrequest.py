@@ -33,7 +33,7 @@ class AnalysisRequestSchemaExtender(object):
                 label=_('Doctor'),
                 size=12,
                 render_own_label=True,
-                visible={'edit': 'invisible',
+                visible={'edit': 'visible',
                          'view': 'visible',
                          'add': 'visible'},
                 catalog_name='portal_catalog',
@@ -56,7 +56,6 @@ class AnalysisRequestSchemaExtender(object):
             allowed_types = ('Patient',),
             referenceClass = HoldingReference,
             relationship = 'AnalysisRequestPatient',
-            mode="r",
             read_permission=hpermissions.ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
@@ -105,7 +104,6 @@ class AnalysisRequestSchemaExtender(object):
             'ClientPatientID',
             searchable=True,
             required=0,
-            mode="r",
             read_permission=hpermissions.ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
