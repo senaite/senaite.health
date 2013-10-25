@@ -15,47 +15,6 @@ class AnalysisRequestView(AnalysisRequestViewView):
     def __call__(self):
 
         super(AnalysisRequestView, self).__call__()
-#        for row in self.header_rows:
-#            if row.get('id', '') == 'BatchID':
-#                row['title'] = _('Case ID')
-#                break
-#
-#        # Add Client Patient field
-#        pm = getToolByName(self.context, "portal_membership")
-#        member = pm.getAuthenticatedMember()
-#        roles = member.getRoles()
-#        if 'Manager' in roles or 'LabManager' in roles or 'LabClerk' in roles:
-#            patient = self.context.Schema()['Patient'].get(self.context)
-#            if patient:
-#                self.header_rows.append(
-#                {'id': 'Patient',
-#                 'title': _('Patient'),
-#                 'allow_edit': False,
-#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-#                                                   patient.Title()),
-#                 'condition': True,
-#                 'type': 'text'})
-#
-#                self.header_rows.append(
-#                {'id': 'PatientID',
-#                 'title': _('Patient ID'),
-#                 'allow_edit': False,
-#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-#                                                   patient.getPatientID()
-#                                                   or ''),
-#                 'condition':True,
-#                 'type': 'text'})
-#
-#                self.header_rows.append(
-#                {'id': 'ClientPatientID',
-#                 'title': _('Client Patient ID'),
-#                 'allow_edit': False,
-#                 'value': "<a href='%s'>%s</a>" % (patient.absolute_url(),
-#                                                   patient.getClientPatientID()
-#                                                   or ''),
-#                 'condition':True,
-#                 'type': 'text'})
-
         autopopup = False
         bs = self.context.bika_setup
         sc = self.context

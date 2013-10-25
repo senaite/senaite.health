@@ -15,6 +15,8 @@ from Products.Archetypes.references import HoldingReference
 from Products.ATContentTypes.interface import IATDocument
 from zope.component import adapts
 from zope.interface import implements
+from Products.CMFCore import permissions
+from bika.health import permissions as hpermissions
 
 
 class AnalysisRequestSchemaExtender(object):
@@ -31,7 +33,7 @@ class AnalysisRequestSchemaExtender(object):
                 label=_('Doctor'),
                 size=12,
                 render_own_label=True,
-                visible={'edit': 'visible',
+                visible={'edit': 'invisible',
                          'view': 'visible',
                          'add': 'visible'},
                 catalog_name='portal_catalog',
@@ -54,6 +56,9 @@ class AnalysisRequestSchemaExtender(object):
             allowed_types = ('Patient',),
             referenceClass = HoldingReference,
             relationship = 'AnalysisRequestPatient',
+            mode="r",
+            read_permission=hpermissions.ViewPatients,
+            write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
                 label=_('Patient'),
                 size=12,
@@ -68,8 +73,19 @@ class AnalysisRequestSchemaExtender(object):
         ),
 
         ExtComputedField(
+            'PatientID',
+            expression="context.Schema()['Patient'].get(context).getPatientID() if context.Schema()['Patient'].get(context) else None",
+            mode="r",
+            read_permission=hpermissions.ViewPatients,
+            write_permission=permissions.ModifyPortalContent,
+            widget=ComputedWidget(
+                visible=True,
+            ),
+        ),
+
+        ExtComputedField(
             'PatientUID',
-            expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).UID() or None",
+            expression="context.Schema()['Patient'].get(context).UID() if context.Schema()['Patient'].get(context) else None",
             widget=ComputedWidget(
                 visible=False,
             ),
@@ -89,6 +105,9 @@ class AnalysisRequestSchemaExtender(object):
             'ClientPatientID',
             searchable=True,
             required=0,
+            mode="r",
+            read_permission=hpermissions.ViewPatients,
+            write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
                 label=_("Client Patient ID"),
                 size=12,

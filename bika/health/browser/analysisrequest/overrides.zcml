@@ -3,7 +3,14 @@
            xmlns:fss="http://namespaces.zope.org/browser"
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
-    
+
+    <adapter
+      factory="bika.health.browser.analysisrequest.widgets.WidgetVisibility"
+      provides="bika.lims.interfaces.IWidgetVisibility"
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="getWidgetVisibility"
+    />
+
     <browser:page
       for="bika.lims.interfaces.IAnalysisRequest"
       name="workflow_action"
@@ -11,7 +18,7 @@
       permission="zope.Public"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
-    
+
     <browser:page
       for="bika.lims.interfaces.IAnalysisRequest"
       name="base_view"
@@ -19,7 +26,7 @@
       permission="bika.lims.ManageAnalysisRequests"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
-    
+
     <browser:page
       for="bika.lims.interfaces.IAnalysisRequest"
       name="manage_results"
@@ -27,7 +34,7 @@
       permission="bika.lims.EditResults"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
-    
+
     <browser:page
       for="*"
       name="analysisrequest_submit"
