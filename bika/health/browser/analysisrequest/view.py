@@ -15,6 +15,22 @@ class AnalysisRequestView(AnalysisRequestViewView):
     def __call__(self):
 
         super(AnalysisRequestView, self).__call__()
+
+        if "email_popup_submit" in self.request:
+            self.sendAlertEmail()
+
+        if self.hasAnalysesInPanic():
+            message = _('Some results exceeded the panic levels that may '
+                        'indicate an imminent life-threatening condition.')
+            self.addMessage(message, 'warning')
+
+        self.renderMessages()
+        return self.template()
+
+    def isPanicAlertAutopopupEnabled(self):
+        if "email_popup_submit" in self.request:
+            return False
+
         autopopup = False
         bs = self.context.bika_setup
         sc = self.context
@@ -27,19 +43,22 @@ class AnalysisRequestView(AnalysisRequestViewView):
         except:
             autopopup = False
             pass
+        return autopopup
 
-        if "email_popup_submit" in self.request:
-            autopopup = False
-            self.sendAlertEmail()
-
+    def get_custom_fields(self):
+        custom = super(AnalysisRequestView, self).get_custom_fields()
         # If there's analyses that exceed panic levels, show an alert message
         # with a link allowing the labmanager to send an email to client.
         # The link must only be shown if the current user is labmanager
+        autopopup = self.isPanicAlertAutopopupEnabled()
         if self.hasAnalysesInPanic():
-            self.addEmailLink(autopopup)
-
-        self.renderMessages()
-        return self.template()
+            msg = _('Alert client about panic levels exceeded')
+            custom['Contact']={'title': "<a href='#' id='email_popup'>%s</a>" \
+                                        % self.context.translate(msg),
+                               'value': "<input name='email_popup_uid' autoshow='%s' "
+                                        "type='hidden' id='ar_uid' value='%s'/>" \
+                                        % (autopopup, self.context.UID())}
+        return custom
 
     def hasAnalysesInPanic(self):
         workflow = getToolByName(self.context, 'portal_workflow')
@@ -52,23 +71,6 @@ class AnalysisRequestView(AnalysisRequestViewView):
                 continue
             alerts.update(ResultOutOfRange(obj)())
         return alerts
-
-    def addEmailLink(self, autopopup=False):
-#        self.header_rows.append(
-#                {'id': 'Contact',
-#                 'title': "<a href='#' id='email_popup'>%s</a>" % \
-#                  (self.context.translate(_('Alert client about panic '
-#                                            'levels exceeded'))),
-#                 'allow_edit': False,
-#                 'value': "<input name='email_popup_uid' autoshow='%s' "
-#                          "type='hidden' id='ar_uid' value='%s'/>" \
-#                           % (autopopup, self.context.UID()),
-#                 'condition': True,
-#                 'type': 'text'})
-#
-        message = _('Some results exceeded the panic levels that may '
-                    'indicate an imminent life-threatening condition.')
-        self.addMessage(message, 'warning')
 
     def sendAlertEmail(self):
         # Send an alert email
