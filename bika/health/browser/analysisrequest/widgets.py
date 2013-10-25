@@ -18,6 +18,7 @@ class WidgetVisibility(_WV):
                                        'Patient',
                                        'PatientID',
                                        'ClientPatientID']
-            ret['edit']['visible'].remove('Batch')
+            if 'Batch' in ret['edit']['visible']:
+                ret['edit']['visible'].remove('Batch')
 
         return ret
