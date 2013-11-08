@@ -40,7 +40,8 @@ class ResultOutOfRange(object):
         except ValueError:
             return {}
         # No specs available, assume in range
-        specs = analysis.getAnalysisSpecs(specification)
+        specs = hasattr(analysis, 'getAnalysisSpecs') \
+                and analysis.getAnalysisSpecs(specification) or None
         spec_min = None
         spec_max = None
         if specs is None:
