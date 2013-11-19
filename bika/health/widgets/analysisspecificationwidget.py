@@ -8,6 +8,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.validation.interfaces.IValidator import IValidator
 from Products.validation import validation
 from zope.interface import implements
+from bika.lims.utils import isnumber
 
 
 class AnalysisSpecificationView(BaseView):
@@ -44,18 +45,14 @@ class AnalysisSpecificationWidget(BaseWidget):
                      empty_marker=None, emptyReturnsMarker=False):
         values = BaseWidget.process_form(self, instance, field, form,
                                          empty_marker, emptyReturnsMarker)
+        keys = ['minpanic', 'maxpanic']
         for i in range(len(values)):
             for j in range(len(values[i])):
                 uid = values[i][j]['uid']
-                uid = values[i][j]['uid']
-                try:
-                    float(form['minpanic'][0][uid])
-                    float(form['maxpanic'][0][uid])
-                except:
-                    continue
-                values[i][j]['minpanic'] = form['minpanic'][0][uid]
-                values[i][j]['maxpanic'] = form['maxpanic'][0][uid]
-
+                for key in keys:
+                    keyval = form[key][0].get(uid, '') if key in form else ''
+                    keyval = keyval if isnumber(keyval) else ''
+                    values[i][j][key] = keyval
         return values
 
     security.declarePublic('AnalysisSpecificationResults')
