@@ -62,7 +62,7 @@ function AnalysisRequestAddView() {
         // Check if the current selected client has contacts. If client has no
         // contacts, prevent from saving the AR and inform the user
         checkClientContacts();
-    }
+    };
 
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
@@ -96,8 +96,6 @@ function AnalysisRequestAddView() {
                         $("#ar_" + colposition + "_Patient").val(_('Anonymous'));
                         $("#ar_" + colposition + "_Patient").attr('uid','anonymous');
                         $("#ar_" + colposition + "_Patient_uid").val('anonymous');
-                        $("#ar_" + colposition + "_Patient").attr("readonly", true);
-                        $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", true);
                     }
                 }
             });
@@ -118,6 +116,10 @@ function AnalysisRequestAddView() {
      * @param colposition AR add column position
      */
     function loadClientPatientID(uid, colposition) {
+        if (uid == 'anonymous') {
+            // Anonymous Patient, do nothing.
+            return;
+        }
         if (uid != '') {
             $.ajax({
                 url : window.portal_url + "/getpatientinfo",
