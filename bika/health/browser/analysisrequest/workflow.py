@@ -31,7 +31,7 @@ class WorkflowAction(BaseClass):
             # retrieve the results from database and check if
             # the values are exceeding panic levels
             alerts = {}
-            for uid in self.request.form['Result'][0].keys():
+            for uid in self.request.form.get('Result', [{}])[0].keys():
                 analysis = rc.lookupObject(uid)
                 analysis = analysis.getObject() if hasattr(analysis, 'getObject') else analysis
                 if not analysis:
