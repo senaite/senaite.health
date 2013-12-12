@@ -9,16 +9,18 @@ class AnalysisRequestPublish(doPublish):
     template = ViewPageTemplateFile("report_results.pt")
 
     def __call__(self):
-        self.ar = self.analysis_requests[0]
-        self.patient = self.ar.Schema()['Patient'].get(self.ar)
         return super(AnalysisRequestPublish, self).__call__()
+
+    def get_patient(self, ar):
+        return ar.Schema().getField('Patient').get(ar) \
+            if 'Patient' in ar.Schema() else None
 
     def get_mail_subject(self, ar):
         subject, totline = doPublish.get_mail_subject(self, ar)
         client = ar.aq_parent
         subject_items = client.getEmailSubject()
         if 'health.cp' in subject_items:
-            pat = ar.Schema().getField('Patient').get(ar)
+            pat = self.get_patient(ar)
             cpid = pat and pat.getClientPatientID() or None
             if cpid:
                 cps_line = _h('CPID: %s') % cpid
@@ -101,7 +103,7 @@ class AnalysisRequestPublish(doPublish):
         bs_pubprefs = sch['PatientPublicationPreferences'].get(bs)
 
         # Add Patient recipients
-        pat = ar.Schema().getField('Patient').get(ar)
+        pat = self.get_patient(ar)
         if pat:
             sch = pat.Schema()
             email_field = pat.getField('EmailAddress')

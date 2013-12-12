@@ -24,6 +24,7 @@
         global invoice_exclude python:False;
         global out_of_range python:0;
         ar nocall:view/ar;
+        patient python:view.get_patient(ar);
         dry ar/getReportDryMatter;
         remarksenabled python:view.context.bika_setup.getEnableAnalysisRemarks();">
 
@@ -167,8 +168,7 @@
 
     <!-- Patient info -->
     <table cellpadding="2" style="width:100%"
-        tal:define='patient python:view.patient'
-        tal:condition='view/patient'>
+        tal:condition='patient'>
         <tr><td colspan="3" i18n:translate="" style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;">Patient Information</td></tr>
         <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
         <tr>
@@ -247,9 +247,8 @@
 
     <!-- Batch info -->
     <table cellpadding="2" style="width:100%"
-        tal:condition="python:view.patient and view.ar.getBatch()"
-        tal:define="patient python:view.patient;
-                    batch python:view.ar.getBatch();">
+        tal:define="batch python:view.ar.getBatch();"
+        tal:condition="python:patient and batch">
         <tr><td colspan="3" i18n:translate="" style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;">Clinical Information</td></tr>
         <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
         <tr>
@@ -326,15 +325,14 @@
             </td>
         </tr>
     </table>
-    <tal:nextpage condition="python:view.patient and view.ar.getBatch()">
+    <tal:nextpage condition="python:patient and view.ar.getBatch()">
         <pdf:nextpage />
     </tal:nextpage>
 
 
     <!-- BEGIN: Sample Information section -->
     <table cellpadding="2" style="width:100%"
-        tal:define='patient python:view.patient;
-                    batch python:ar.getBatch();
+        tal:define='batch python:ar.getBatch();
                     sample python:ar.getSample();'>
 
         <!-- Section header -->
