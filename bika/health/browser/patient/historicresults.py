@@ -4,6 +4,7 @@ from bika.lims.browser import BrowserView
 from bika.health import bikaMessageFactory as _
 from zope.interface import implements
 from plone.app.layout.globals.interfaces import IViewView
+from Products.CMFPlone.i18nl10n import ulocalized_time
 
 
 class HistoricResultsView(BrowserView):
@@ -54,71 +55,80 @@ class HistoricResultsView(BrowserView):
     def _load(self):
         """ Loads the Controller acessors and other stuff
         """
-        self._rows = {}
-        self._dates = []
-        uid = self.context.UID()
-        states = ['verified', 'published']
+        self._dates, self._rows = get_historicresults(self.context)
 
-        # Retrieve the AR IDs for the current patient
-        bc = getToolByName(self.context, 'bika_catalog')
-        ars = [ar.id for ar \
-               in bc(portal_type='AnalysisRequest', review_state=states) \
-               if 'Patient' in ar.getObject().Schema() \
-               and ar.getObject().Schema().getField('Patient').get(ar.getObject()) \
-               and ar.getObject().Schema().getField('Patient').get(ar.getObject()).UID() == uid]
 
-        # Retrieve all the analyses, sorted by ResultCaptureDate DESC
-        bc = getToolByName(self.context, 'bika_analysis_catalog')
-        analyses = [an.getObject() for an \
-                    in bc(portal_type='Analysis',
-                          getRequestID=ars,
-                          sort_on='getResultCaptureDate',
-                          sort_order='reverse')]
+def get_historicresults(patient):
+    if not patient:
+        return ([], {})
 
-        # Build the dictionary of rows
-        for analysis in analyses:
-            ar = analysis.aq_parent
-            sampletype = ar.getSampleType()
-            row = self._rows.get(sampletype.UID()) if sampletype.UID() in self._rows.keys() else {'object': sampletype, 'analyses':{}}
-            anrow = row.get('analyses')
-            service = analysis.getService()
-            asdict = anrow.get(service.UID()) if service.UID() in anrow.keys() else {'object': service,
-                                                                                     'title': service.Title(),
-                                                                                     'units': service.getUnit()}
-            date = analysis.getResultCaptureDate() or analysis.created()
-            date = self.ulocalized_time(date)
-            # If more than one analysis of the same type has been
-            # performed in the same datetime, get only the last one
-            if date not in asdict.keys():
-                asdict[date] = {'object': analysis,
-                                'result': analysis.getResult(),
-                                'formattedresult': analysis.getFormattedResult()}
-                # Get the specs
-                # Only the specs applied to the last analysis for that
-                # sample type will be taken into consideration.
-                # We assume specs from previous analyses are obsolete.
-                if 'specs' not in asdict.keys():
-                    spec = analysis.getAnalysisSpecs()
-                    spec = spec.getResultsRangeDict()
-                    specs = spec.get(analysis.getKeyword(), {})
-                    if not specs.get('rangecomment', ''):
-                        if specs.get('min', '') and specs.get('max', ''):
-                            specs['rangecomment'] = '%s - %s' % \
-                                (specs.get('min'), specs.get('max'))
-                        elif specs.get('min', ''):
-                            specs['rangecomment'] = '> %s' % specs.get('min')
-                        elif specs.get('max', ''):
-                            specs['rangecomment'] = '< %s' % specs.get('max')
+    rows = {}
+    dates = []
+    uid = patient.UID()
+    states = ['verified', 'published']
 
-                        if specs.get('error', '0') != '0' and specs.get('rangecomment', ''):
-                            specs['rangecomment'] = ('%s (%s' % \
-                                (specs.get('rangecomment'),
-                                 specs.get('error'))) + '%)'
-                    asdict['specs'] = specs
+    # Retrieve the AR IDs for the current patient
+    bc = getToolByName(patient, 'bika_catalog')
+    ars = [ar.id for ar \
+           in bc(portal_type='AnalysisRequest', review_state=states) \
+           if 'Patient' in ar.getObject().Schema() \
+           and ar.getObject().Schema().getField('Patient').get(ar.getObject()) \
+           and ar.getObject().Schema().getField('Patient').get(ar.getObject()).UID() == uid]
 
-                if date not in self._dates:
-                    self._dates.append(date)
-            anrow[service.UID()] = asdict
-            row['analyses'] = anrow
-            self._rows[sampletype.UID()] = row
-        self._dates.sort(reverse=False)
+    # Retrieve all the analyses, sorted by ResultCaptureDate DESC
+    bc = getToolByName(patient, 'bika_analysis_catalog')
+    analyses = [an.getObject() for an \
+                in bc(portal_type='Analysis',
+                      getRequestID=ars,
+                      sort_on='getResultCaptureDate',
+                      sort_order='reverse')]
+
+    # Build the dictionary of rows
+    for analysis in analyses:
+        ar = analysis.aq_parent
+        sampletype = ar.getSampleType()
+        row = rows.get(sampletype.UID()) if sampletype.UID() in rows.keys() else {'object': sampletype, 'analyses':{}}
+        anrow = row.get('analyses')
+        service = analysis.getService()
+        asdict = anrow.get(service.UID()) if service.UID() in anrow.keys() else {'object': service,
+                                                                                 'title': service.Title(),
+                                                                                 'units': service.getUnit()}
+        date = analysis.getResultCaptureDate() or analysis.created()
+        date = ulocalized_time(date)
+        # If more than one analysis of the same type has been
+        # performed in the same datetime, get only the last one
+        if date not in asdict.keys():
+            asdict[date] = {'object': analysis,
+                            'result': analysis.getResult(),
+                            'formattedresult': analysis.getFormattedResult()}
+            # Get the specs
+            # Only the specs applied to the last analysis for that
+            # sample type will be taken into consideration.
+            # We assume specs from previous analyses are obsolete.
+            if 'specs' not in asdict.keys():
+                spec = analysis.getAnalysisSpecs()
+                spec = spec.getResultsRangeDict()
+                specs = spec.get(analysis.getKeyword(), {})
+                if not specs.get('rangecomment', ''):
+                    if specs.get('min', '') and specs.get('max', ''):
+                        specs['rangecomment'] = '%s - %s' % \
+                            (specs.get('min'), specs.get('max'))
+                    elif specs.get('min', ''):
+                        specs['rangecomment'] = '> %s' % specs.get('min')
+                    elif specs.get('max', ''):
+                        specs['rangecomment'] = '< %s' % specs.get('max')
+
+                    if specs.get('error', '0') != '0' and specs.get('rangecomment', ''):
+                        specs['rangecomment'] = ('%s (%s' % \
+                            (specs.get('rangecomment'),
+                             specs.get('error'))) + '%)'
+                asdict['specs'] = specs
+
+            if date not in dates:
+                dates.append(date)
+        anrow[service.UID()] = asdict
+        row['analyses'] = anrow
+        rows[sampletype.UID()] = row
+    dates.sort(reverse=False)
+
+    return (dates, rows)
