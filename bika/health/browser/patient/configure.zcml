@@ -40,6 +40,14 @@
 
     <browser:page
       for="*"
+      name="historicjson"
+      class=".historicresults.historicResultsJSON"
+      permission="bika.health.permissions.ViewAnalysisRequests"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+      for="*"
       name="getpatientinfo"
       class=".getpatientinfo.ajaxGetPatientInfo"
       permission="zope.Public"

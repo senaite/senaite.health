@@ -5,6 +5,8 @@ from bika.health import bikaMessageFactory as _
 from zope.interface import implements
 from plone.app.layout.globals.interfaces import IViewView
 from Products.CMFPlone.i18nl10n import ulocalized_time
+import plone
+import json
 
 
 class HistoricResultsView(BrowserView):
@@ -92,6 +94,7 @@ def get_historicresults(patient):
         service = analysis.getService()
         asdict = anrow.get(service.UID()) if service.UID() in anrow.keys() else {'object': service,
                                                                                  'title': service.Title(),
+                                                                                 'keyword': service.getKeyword(),
                                                                                  'units': service.getUnit()}
         date = analysis.getResultCaptureDate() or analysis.created()
         date = ulocalized_time(date, None, None, patient, 'bika')
@@ -132,3 +135,19 @@ def get_historicresults(patient):
     dates.sort(reverse=False)
 
     return (dates, rows)
+
+
+class historicResultsJSON(BrowserView):
+    """ Returns a JSON array datatable in a tabular format
+    """
+    def __call__(self):
+        dates, data = get_historicresults(self.context)
+        datatable = []
+        for andate in dates:
+            datarow = {'date': andate}
+            for row in data.itervalues():
+                for anrow in row['analyses'].itervalues():
+                    serie = anrow['keyword']
+                    datarow[serie] = anrow.get(andate, {}).get('result', '')
+            datatable.append(datarow)
+        return json.dumps(datatable)
