@@ -94,7 +94,7 @@ def get_historicresults(patient):
                                                                                  'title': service.Title(),
                                                                                  'units': service.getUnit()}
         date = analysis.getResultCaptureDate() or analysis.created()
-        date = ulocalized_time(date)
+        date = ulocalized_time(date, None, None, patient, 'bika')
         # If more than one analysis of the same type has been
         # performed in the same datetime, get only the last one
         if date not in asdict.keys():
