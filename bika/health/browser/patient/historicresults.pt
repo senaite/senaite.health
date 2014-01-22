@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    metal:use-macro="here/main_template/macros/master"
+    i18n:domain="bika">
+
+<body>
+    <metal:content-title fill-slot="content-title">
+        <h1>
+            <img tal:condition="view/icon | nothing"
+                 tal:attributes="src view/icon"/>
+            <span style="position:relative;top:-0.2em;"
+                  class="documentFirstHeading"
+                  tal:content="view/title"/>
+        </h1>
+    </metal:content-title>
+
+    <metal:content-description fill-slot="content-description">
+        <div class="documentDescription"
+             tal:content="structure view/description"
+             tal:condition="view/description"/>
+    </metal:content-description>
+
+    <metal:content-core fill-slot="content-core">
+        <div
+        <div class='bika-listing-table-container'>
+            <table tal:define="rows python:view.get_rows();
+                           dates python:view.get_dates();
+                           cols python:len(dates)+3;"
+                   class='bika-listing-table'>
+                <thead>
+                    <tr>
+                        <th i18n:translate="">Test</th>
+                        <tal:datecols repeat="date dates">
+                        <th tal:content="python:date" class='center'></th>
+                        </tal:datecols>
+                        <th i18n:translate="">Units</th>
+                        <th i18n:translate="">Range</th>
+                    </tr>
+                </thead>
+                <tbody class='item-listing-body'>
+                    <tal:sampletypes repeat="row python:rows.itervalues()">
+                    <tr>
+                        <th tal:attributes="colspan python:cols;
+                                            cat python:row['object'].Title();"
+                            tal:content="python:row['object'].Title()"
+                            class="cat_header expanded"></th>
+                    </tr>
+                    <tal:analyses repeat="analysis python:row['analyses'].itervalues()">
+                    <tr tal:attributes="cat python:row['object'].Title()">
+                        <td tal:content="python:analysis['title']"></td>
+                        <tal:rowdates repeat="date dates">
+                        <td tal:content="python:analysis.get(date,{}).get('formattedresult', '')" class='center'></td>
+                        </tal:rowdates>
+                        <td tal:content="python:analysis['units']"></td>
+                        <td tal:content="python:analysis['specs'].get('rangecomment','')"></td>
+                    </tr>
+                    </tal:analyses>
+                    </tal:sampletypes>
+                </tbody>
+            </table>
+        </div>
+    </metal:content-core>
+</body>
+</html>

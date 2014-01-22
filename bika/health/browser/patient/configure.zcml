@@ -31,6 +31,14 @@
     />
 
     <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="historicresults"
+      class=".historicresults.HistoricResultsView"
+      permission="bika.health.permissions.ViewAnalysisRequests"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
       for="*"
       name="getpatientinfo"
       class=".getpatientinfo.ajaxGetPatientInfo"
