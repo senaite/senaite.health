@@ -143,3 +143,9 @@ class AnalysisRequestPublish(doPublish):
                                'pubpref':pubpref})
 
         return recips
+
+    def get_historicresults(self, patient):
+        from bika.health.browser.patient.historicresults import get_historicresults as historic
+        dates, data = historic(patient)
+        return {'dates': dates,
+                'results': data}

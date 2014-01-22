@@ -543,6 +543,51 @@
     </div>
     <!-- END: Results section -->
 
+    <!-- BEGIN: Patient History section -->
+    <tal:historicresults
+        define="historicresults python:view.get_historicresults(patient)"
+        condition="python: len(historicresults.get('dates',[]))">
+    <div id="section-results" style='padding-top:5px;'>
+        <div style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;margin-bottom:10px;"
+            i18n:translate="">Historic Results</div>
+        <table tal:define="rows python:historicresults.get('results',{});
+                           dates python:historicresults.get('dates',[]);
+                           cols python:len(dates)+3;"
+               style="width:100%">
+            <thead>
+                <tr>
+                    <th style='font-weight:bold;text-align:left;'><span i18n:translate="">Test</span></th>
+                    <tal:datecols repeat="date dates">
+                    <th style='font-weight:bold;' class='center'><span tal:content="python:date"></span></th>
+                    </tal:datecols>
+                    <th style='font-weight:bold;'><span i18n:translate="">Units</span></th>
+                    <th style='font-weight:bold;'><span i18n:translate="">Range</span></th>
+                </tr>
+            </thead>
+            <tbody class='item-listing-body'>
+                <tal:sampletypes repeat="row python:rows.itervalues()">
+                <tr>
+                    <th tal:attributes="colspan python:cols"
+                        tal:content="python:row['object'].Title()"
+                        style='font-weight:bold;text-align:left;padding-top:8px;'></th>
+                </tr>
+                <tal:analyses repeat="analysis python:row['analyses'].itervalues()">
+                <tr tal:attributes="cat python:row['object'].Title()">
+                    <td style='text-align:left;' tal:content="python:analysis['title']"></td>
+                    <tal:rowdates repeat="date dates">
+                    <td tal:content="python:analysis.get(date,{}).get('formattedresult', '')" class='center'></td>
+                    </tal:rowdates>
+                    <td tal:content="python:analysis['units']"></td>
+                    <td tal:content="python:analysis['specs'].get('rangecomment','')"></td>
+                </tr>
+                </tal:analyses>
+                </tal:sampletypes>
+            </tbody>
+        </table>
+    </div>
+    </tal:historicresults>
+    <!-- END: Patient History section -->
+
     <!-- BEGIN: Remarks section -->
     <table cellpadding="2" style="width:100%"
         tal:define="remarks python:ar.getRemarks()"
@@ -583,7 +628,7 @@
                     filename file/filename | nothing;
                     filesize file/get_size | python:file and len(file) or 0;
                     icon file/getBestIcon | nothing">
-                    <img width="12px" height="12px" 
+                    <img width="12px" height="12px"
                         tal:condition="icon"
                         tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;"
                         <a title="Click to download"
@@ -608,7 +653,7 @@
                         filename file/filename | nothing;
                         filesize file/get_size | python:file and len(file) or 0;
                         icon file/getBestIcon | nothing">
-                        <img width="12px" height="12px" 
+                        <img width="12px" height="12px"
                             tal:condition="icon"
                             tal:attributes="src string:${here/portal_url}/$icon"/>&nbsp;&nbsp;
                         <a title="Click to download"
@@ -649,7 +694,7 @@
         </tal:name>
         <tal:departments condition="mngr_depts">
              <br/>
-             <span style="font-weight:bold" tal:content="python:mngr_depts"></span>             
+             <span style="font-weight:bold" tal:content="python:mngr_depts"></span>
         </tal:departments>
         <tal:phone condition="mngr_phone">
              <br/>
@@ -683,7 +728,7 @@
             <br/>
         </tal:outofrange>
         <tal:drymatter condition="view/any_drymatter">
-            <img width="16px" height="16px" 
+            <img width="16px" height="16px"
                 tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry.png">
             <span i18n:translate="">Reported as dry matter</span>
             <br/>
