@@ -36,7 +36,7 @@
             width = $('#chart').innerWidth() - margin.left - margin.right,
             height = 250 - margin.top - margin.bottom;
 
-        var parseDate = d3.time.format("%Y-%m-%d").parse;
+        var parseDate = d3.time.format("%Y-%m-%d %H:%M %p").parse;
 
         var x = d3.time.scale()
             .range([0, width]);
@@ -55,9 +55,12 @@
             .orient("left");
 
         var line = d3.svg.line()
+             // Interpolates the results. Remove it if you want a
+             // discrete set of results in the graph.
             .interpolate("basis")
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.result); });
+
         $('#chart').append('<svg></svg>');
         var svg = d3.select("svg")
             .attr("width", width + margin.left + margin.right)
@@ -111,6 +114,13 @@
               .attr("class", "line")
               .attr("d", function(d) { return line(d.values); })
               .style("stroke", function(d) { return color(d.name); });
+
+           /* serie.append("circle")
+              .attr("class", "dot")
+              .attr("r", 2.5)
+              .attr("cx", function(d) { return x(d.values, function(d) { return d.value.date; })})
+              .attr("cy", function(d) { return y(d.values, function(d) { return d.value.result; })})
+              .style("fill", function(d) { return color(d.name); });*/
 
             serie.append("text")
               .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })

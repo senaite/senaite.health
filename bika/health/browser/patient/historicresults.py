@@ -97,7 +97,8 @@ def get_historicresults(patient):
                                                                                  'keyword': service.getKeyword(),
                                                                                  'units': service.getUnit()}
         date = analysis.getResultCaptureDate() or analysis.created()
-        date = ulocalized_time(date, None, None, patient, 'bika')
+        date = ulocalized_time(date, 1, None, patient, 'bika')
+        #import pdb; pdb.set_trace()
         # If more than one analysis of the same type has been
         # performed in the same datetime, get only the last one
         if date not in asdict.keys():
@@ -144,7 +145,7 @@ class historicResultsJSON(BrowserView):
         dates, data = get_historicresults(self.context)
         datatable = []
         for andate in dates:
-            datarow = {'date': andate}
+            datarow = {'date': ulocalized_time(andate, 1, None, self.context, 'bika')}
             for row in data.itervalues():
                 for anrow in row['analyses'].itervalues():
                     serie = anrow['keyword']
