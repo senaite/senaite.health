@@ -148,7 +148,7 @@ class historicResultsJSON(BrowserView):
             datarow = {'date': ulocalized_time(andate, 1, None, self.context, 'bika')}
             for row in data.itervalues():
                 for anrow in row['analyses'].itervalues():
-                    serie = anrow['keyword']
+                    serie = anrow['title']
                     datarow[serie] = anrow.get(andate, {}).get('result', '')
             datatable.append(datarow)
         return json.dumps(datatable)
