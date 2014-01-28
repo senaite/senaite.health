@@ -59,6 +59,7 @@
              // Interpolates the results. Remove it if you want a
              // discrete set of results in the graph.
             .interpolate("basis")
+            //.interpolate("linear")
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.result); });
 
@@ -128,6 +129,25 @@
               .attr("x", 3)
               .attr("dy", ".35em")
               .text(function(d) { return d.name; });
+
+            series.forEach(function(d) {
+                res = d.results;
+                vals = d.values;
+                col = color(d.name);
+                vals.forEach(function(v) {
+                    console.log(v.date+" - "+v.result);
+                    svg.append("circle")
+                      .attr("r", 4)
+                      .style("fill", col)
+                      .attr("cx", x(v.date))
+                      .attr("cy", y(v.result))
+                   /* svg.append("text")
+                      .attr("x", x(v.date)-5)
+                      .attr("dy", y(v.result)-5)
+                      .text(parseFloat(v.result).toFixed(2))*/
+
+                });
+            });
         });
     });
 });
