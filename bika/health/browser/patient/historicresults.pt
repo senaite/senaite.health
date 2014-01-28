@@ -65,7 +65,6 @@
 
 
         d3.json("historicjson", function(error, data) {
-            console.warn(data.length);
             if (error || data.length < 2) {
                 return console.warn(data.length);
             }
@@ -135,7 +134,6 @@
                 vals = d.values;
                 col = color(d.name);
                 vals.forEach(function(v) {
-                    console.log(v.date+" - "+v.result);
                     svg.append("circle")
                       .attr("r", 4)
                       .style("fill", col)
