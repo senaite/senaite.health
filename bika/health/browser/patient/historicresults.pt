@@ -32,9 +32,10 @@
     <script>
         jQuery(function($){
     $(document).ready(function(){
+
         var margin = {top: 20, right: 120, bottom: 30, left: 50},
-            width = $('#chart').innerWidth() - margin.left - margin.right,
-            height = 250 - margin.top - margin.bottom;
+                width = $('#chart').innerWidth() - margin.left - margin.right,
+                height = 250 - margin.top - margin.bottom;
 
         var parseDate = d3.time.format("%Y-%m-%d %H:%M %p").parse;
 
@@ -61,14 +62,20 @@
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.result); });
 
-        $('#chart').append('<svg></svg>');
-        var svg = d3.select("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         d3.json("historicjson", function(error, data) {
+            console.warn(data.length);
+            if (error || data.length < 2) {
+                return console.warn(data.length);
+            }
+
+            $('#chart').append('<svg></svg>');
+            var svg = d3.select("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+              .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
             color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
             data.forEach(function(d) {
                 d.date = parseDate(d.date);
@@ -115,13 +122,6 @@
               .attr("d", function(d) { return line(d.values); })
               .style("stroke", function(d) { return color(d.name); });
 
-           /* serie.append("circle")
-              .attr("class", "dot")
-              .attr("r", 2.5)
-              .attr("cx", function(d) { return x(d.values, function(d) { return d.value.date; })})
-              .attr("cy", function(d) { return y(d.values, function(d) { return d.value.result; })})
-              .style("fill", function(d) { return color(d.name); });*/
-
             serie.append("text")
               .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
               .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.result) + ")"; })
@@ -154,9 +154,10 @@
         <div class='chart-container'>
             <div id='chart'></div>
         </div>
-        <div class='bika-listing-table-container'>
+        <tal:historictable define='dates python:view.get_dates()'>
+        <div class='bika-listing-table-container'
+             tal:condition='python:len(dates)!=0'>
             <table tal:define="rows python:view.get_rows();
-                           dates python:view.get_dates();
                            cols python:len(dates)+3;"
                    class='bika-listing-table'>
                 <thead>
@@ -194,6 +195,12 @@
                 </tbody>
             </table>
         </div>
+        <div tal:condition='python:len(dates)==0'>
+            <dl class="portalMessage">
+                <dd i18n:translate="">No historic results found</dd>
+            </dl>
+        </div>
+        </tal:historictable>
     </metal:content-core>
 </body>
 </html>

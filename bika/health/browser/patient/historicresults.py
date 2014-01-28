@@ -139,7 +139,7 @@ def get_historicresults(patient):
 
 
 class historicResultsJSON(BrowserView):
-    """ Returns a JSON array datatable in a tabular format
+    """ Returns a JSON array datatable in a tabular format.
     """
     def __call__(self):
         dates, data = get_historicresults(self.context)
