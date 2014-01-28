@@ -30,6 +30,7 @@
         .chart-container {
             border: 1px solid #CDCDCD;
             margin: 10px 0;
+            border-radius: 5px;
         }
         .chart-options {
             padding:10px;
@@ -49,34 +50,11 @@
 
 
         function loadChart(interpolation) {
+            if ($("#chart svg").length > 0) {
+                $("#chart").css('height', $("#chart").innerHeight());
+                $("#chart").css('width', $("#chart").innerWidth());
+            }
             $("#chart").html("");
-            var margin = {top: 20, right: 120, bottom: 30, left: 50},
-                width = $('#chart').innerWidth() - margin.left - margin.right,
-                height = 250 - margin.top - margin.bottom;
-
-            var parseDate = d3.time.format("%Y-%m-%d %H:%M %p").parse;
-
-            var x = d3.time.scale()
-                .range([0, width]);
-
-            var y = d3.scale.linear()
-                .range([height, 0]);
-
-            var color = d3.scale.category10();
-
-            var xAxis = d3.svg.axis()
-                .scale(x)
-                .orient("bottom");
-
-            var yAxis = d3.svg.axis()
-                .scale(y)
-                .orient("left");
-
-            var line = d3.svg.line()
-                .interpolate(interpolation)
-                .x(function(d) { return x(d.date); })
-                .y(function(d) { return y(d.result); });
-
 
             d3.json("historicjson", function(error, data) {
                 if (error || data.length < 2) {
@@ -84,6 +62,32 @@
                     return;
                 }
                 $(".chart-container").show();
+                var margin = {top: 20, right: 120, bottom: 30, left: 50},
+                    width = $('#chart').innerWidth() - margin.left - margin.right,
+                    height = 250 - margin.top - margin.bottom;
+
+                var parseDate = d3.time.format("%Y-%m-%d %H:%M %p").parse;
+
+                var x = d3.time.scale()
+                    .range([0, width]);
+
+                var y = d3.scale.linear()
+                    .range([height, 0]);
+
+                var color = d3.scale.category10();
+
+                var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom");
+
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left");
+
+                var line = d3.svg.line()
+                    .interpolate(interpolation)
+                    .x(function(d) { return x(d.date); })
+                    .y(function(d) { return y(d.result); });
 
                 $('#chart').append('<svg></svg>');
                 var svg = d3.select("svg")
