@@ -15,6 +15,10 @@ class AnalysisRequestPublish(doPublish):
         return ar.Schema().getField('Patient').get(ar) \
             if 'Patient' in ar.Schema() else None
 
+    def get_doctor(self, ar):
+        return ar.Schema().getField('Doctor').get(ar) \
+            if 'Doctor' in ar.Schema() else None
+
     def get_mail_subject(self, ar):
         subject, totline = doPublish.get_mail_subject(self, ar)
         client = ar.aq_parent
@@ -141,6 +145,15 @@ class AnalysisRequestPublish(doPublish):
                 recips.append({'title':pat.Title(),
                                'email':email,
                                'pubpref':pubpref})
+
+        # Add Doctor recipient
+        doctor = self.get_doctor(ar)
+        if doctor:
+            email_field = doctor.getField('EmailAddress')
+            email = email_field.get(doctor) if email_field else None
+            recips.append({'title': doctor.Title(),
+                           'email': email,
+                           'pubpref': ('email', 'pdf')})
 
         return recips
 
