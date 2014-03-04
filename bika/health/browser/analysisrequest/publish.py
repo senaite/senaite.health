@@ -151,9 +151,11 @@ class AnalysisRequestPublish(doPublish):
         if doctor:
             email_field = doctor.getField('EmailAddress')
             email = email_field.get(doctor) if email_field else None
+            pubpref = doctor.getField('PublicationPreference')
+            pubpref = pubpref.get(doctor) if pubpref else []
             recips.append({'title': doctor.Title(),
                            'email': email,
-                           'pubpref': ('email', 'pdf')})
+                           'pubpref': pubpref})
 
         return recips
 
