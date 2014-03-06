@@ -21,6 +21,7 @@ from bika.health.permissions import AddSymptom
 from bika.health.permissions import AddTreatment
 from bika.health.permissions import AddVaccinationCenter
 from bika.lims.permissions import AddAnalysisRequest
+from bika.lims.permissions import AddAnalysisSpec
 from bika.lims.permissions import AddSample
 from bika.lims.permissions import AddSamplePartition
 from bika.lims.permissions import ManageAnalysisRequests
