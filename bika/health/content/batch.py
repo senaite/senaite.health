@@ -278,7 +278,7 @@ class BatchSchemaExtender(object):
             # Temporary fix: https://github.com/bikalabs/bika.health/issues/89
             # required_subfields=('Title'),
             widget=RecordsWidget(
-                label='Signs and Symptoms',
+                label='Aetiologic agents',
                 combogrid_options={
                     'Title': {
                         'colModel': [{'columnName':'Title', 'width':'30', 'label':_('Aetiologic agent')},
