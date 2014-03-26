@@ -212,7 +212,8 @@ class BatchSchemaExtender(object):
         ExtRecordsField('ProvisionalDiagnosis',
             type='provisionaldiagnosis',
             subfields=('Code', 'Title', 'Description', 'Onset'),
-            required_subfields=('Title'),
+            # Temporary fix: https://github.com/bikalabs/bika.health/issues/89
+            #required_subfields=('Title'),
             subfield_sizes={'Code': 7,
                             'Title': 20,
                             'Description': 35,
@@ -274,7 +275,8 @@ class BatchSchemaExtender(object):
             subfield_labels={'Title': _('Aetiologic agent'),
                              'Description': _b('Description'),
                              'Subtype': _('Subtype')},
-            required_subfields=('Title'),
+            # Temporary fix: https://github.com/bikalabs/bika.health/issues/89
+            # required_subfields=('Title'),
             widget=RecordsWidget(
                 label='Signs and Symptoms',
                 combogrid_options={
