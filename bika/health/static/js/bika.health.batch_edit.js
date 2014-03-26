@@ -6,7 +6,7 @@ function BatchEditView() {
     var that = this;
     var refpatientuid = null;
     var refclientuid = null;
-    
+
     // ------------------------------------------------------------------------
     // PUBLIC ACCESSORS
     // ------------------------------------------------------------------------
@@ -28,7 +28,7 @@ function BatchEditView() {
     }
 
     /**
-     * The current DoctorUID. 
+     * The current DoctorUID.
      * Returns the stored value in the form. If none, returns null
      */
     this.getDoctorUID = function() {
@@ -46,11 +46,11 @@ function BatchEditView() {
      * The gender of the current Patient
      */
     this.getPatientGender = function() {
-        return $('input[name="PatientGender"]').val();
+        return $('input[name="PatientGender"]').val().toLowerCase();
     }
 
     /**
-     * Returns the referrer PatientUID if the current view referrer is a 
+     * Returns the referrer PatientUID if the current view referrer is a
      * Patient's batches view. Otherwise, returns null.
      * returns the Patient UID. Otherwise, returns null
      * @return patientuid or null
@@ -86,7 +86,7 @@ function BatchEditView() {
         // Force first to check if the referrer is a Patient Batches view. In
         // that case, the refclientuid var will be set by the following method
         this.getPatientUIDReferrer();
-        if (refclientuid == null && document.referrer.search('/clients/') >= 0) {       
+        if (refclientuid == null && document.referrer.search('/clients/') >= 0) {
             clientid = document.referrer.split("clients")[1].split("/")[1];
             $.ajax({
                 url: window.portal_url + "/clients/" + clientid + "/getClientInfo",
@@ -107,12 +107,12 @@ function BatchEditView() {
     // ------------------------------------------------------------------------
     // PUBLIC FUNCTIONS
     // ------------------------------------------------------------------------
-    
+
     /**
      * Entry-point method for BatchEditView
      */
     this.load = function() {
-        
+
         // These look silly in the edit screen under "Additional Notes"
         $("#archetypes-fieldname-Remarks").remove();
 
@@ -125,7 +125,7 @@ function BatchEditView() {
         }
 
         // Hide the client field in order to avoid cross-conflicts with Patient
-        // selection. 
+        // selection.
         $('#Client').hide();
         $('#archetypes-fieldname-Client .formQuestion span[class="required"]').hide();
         $('#Client').after("<span id='Client_label'>" + $("#Client").val() + "</span>&nbsp;&nbsp;");
@@ -145,13 +145,13 @@ function BatchEditView() {
             $('#Patient').after("<span id='Patient_label'>" + $("#Patient").val() + "</span>&nbsp;&nbsp;");
            //$('#Client').after("<span id='Client_label'>" + $("#Client").val() + "</span>");
             $('#ClientPatientID').after("<span id='ClientPatientID_label'>" + $("#ClientPatientID").val() + "</span>");
-            
+
         } else if (rcuid != null) {
             that.fillClient(rcuid);
         }
 
         if (rcuid != null) {
-            // The form comes from a Client view. Set the default client, 
+            // The form comes from a Client view. Set the default client,
             // disable the client combo and show only the patients from this
             // client inside patient-related combos
             applyFilter($("#Patient"), 'getPrimaryReferrerUID', rcuid);
@@ -171,12 +171,16 @@ function BatchEditView() {
 
         // Fill the doctor data for the current Doctor
         that.fillDoctor(that.getDoctorUID());
-        
+
         // Load Event Handlers
         loadEventHandlers();
+
+        fillPatientAgeAtCaseOnsetDate();
+        toggleMenstrualStatus();
+        toggleSymptoms();
     }
 
-    /** 
+    /**
      * Searches a patient using the Patient UID. If found, fill the form with the
      * data retrieved from that Patient (Client, ClientPatientID, Gender, etc.).
      * If no patient found, reset to default all Patient-related fields
@@ -368,17 +372,17 @@ function BatchEditView() {
             puid = $(this).attr('uid');
             that.fillPatient(puid);
         });
-        
+
         $("#Client").bind("selected paste blur", function(){
             cuid = $(this).attr('uid');
             that.fillClient(cuid);
         });
-        
+
         $("#Doctor").bind("selected paste blur", function(){
             duid = $(this).attr('uid');
             that.fillDoctor(duid);
         });
-        
+
         $("#OnsetDate").live('change', function() {
             fillPatientAgeAtCaseOnsetDate();
         });
@@ -405,7 +409,7 @@ function BatchEditView() {
         options = $.parseJSON($(combo).attr("combogrid_options"));
         options['force_all']='false';
         $(combo).attr("base_query", $.toJSON(base_query));
-        $(combo).attr("combogrid_options", $.toJSON(options));     
+        $(combo).attr("combogrid_options", $.toJSON(options));
         referencewidget_lookups($(combo));
     }
 
@@ -518,7 +522,7 @@ function BatchEditView() {
                     ' <img style="padding-bottom:1px;" src="'+window.portal_url+'/++resource++bika.lims.images/add.png"/>' +
                 ' </a>');
         }
-        $('a.add_patient').prepOverlay(getPatientOverlay());        
+        $('a.add_patient').prepOverlay(getPatientOverlay());
         $('a.edit_patient').remove();
         patientid = $('#Patient').attr('pid');
         if (patientid != null && patientid != '') {
@@ -673,5 +677,5 @@ function BatchEditView() {
             }
         }
         return editdoctor_overlay;
-    }    
+    }
 }
