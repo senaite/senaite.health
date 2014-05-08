@@ -41,15 +41,15 @@ function AnalysisRequestAddView() {
             // data autofilling failed. Handle event firing when Patient or
             // ClientPatientID fields change.
             $('[id$="_ClientPatientID"]').bind("selected paste blur", function() {
-                colposition = this.id.split("_")[1]
-                id = $(this).val()
-                loadPatient(id, colposition);
+                colposition = $(this).closest('td').attr('column');
+                uid = $("#"+this.id+"_uid").val();
+                loadPatient(uid, colposition);
                 checkClientContacts();
             });
 
             $('[id$="_Patient"]').bind("selected paste blur", function() {
-                colposition = this.id.split("_")[1]
-                uid = $(this).attr('uid');
+                colposition = $(this).closest('td').attr('column');
+                uid = $("#"+this.id+"_uid").val();
                 loadClientPatientID(uid, colposition);
                 checkClientContacts();
             });
@@ -190,7 +190,7 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Patient").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Patient").val()+"</span>");
                             $("#ar_" + col +"_Doctor").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Doctor").val()+"</span>");
                             $("#ar_" + col +"_ClientPatientID").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_ClientPatientID").val()+"</span>");
-                            
+
                             // Contact searches
                             element = $("#ar_" + col + "_Contact")
                             base_query=$.parseJSON($(element).attr("base_query"));
@@ -255,7 +255,7 @@ function AnalysisRequestAddView() {
                             base_query=$.parseJSON($(element).attr("base_query"));
                             base_query['getPatientUID'] = data['PatientUID'];
                             applyComboFilter(element, base_query);
-                            
+
                             // Contact searches
                             element = $("#ar_" + col + "_Contact")
                             base_query=$.parseJSON($(element).attr("base_query"));
@@ -293,7 +293,7 @@ function AnalysisRequestAddView() {
             base_query=$.parseJSON($(element).attr("base_query"));
             base_query['getPrimaryReferrerUID'] = clientuid;
             applyComboFilter(element, base_query);
-            
+
             // Contact searches
             element = $("#ar_" + col + "_Contact")
             base_query=$.parseJSON($(element).attr("base_query"));

@@ -15,7 +15,7 @@ $(document).ready(function(){
              'PatientEditView',
              'PatientPublicationPrefsEditView'],
 
-        "#patient-base-edit": 
+        "#patient-base-edit":
             ['PatientEditView',
              'PatientPublicationPrefsEditView'],
 
@@ -24,23 +24,33 @@ $(document).ready(function(){
 
         ".template-base_edit.portaltype-bikasetup":
             ['BikaSetupEditView'],
-            
+
         ".template-base_edit.portaltype-client":
             ['ClientEditView'],
     };
 
-    // Instantiate the js objects needed for the current view
     var loaded = new Array();
-    for (var key in views) {
-        if ($(key).length) {
-            views[key].forEach(function(js) { 
-                if ($.inArray(js, loaded) < 0) {
-                    obj = new window[js]();
-                    obj.load();
-                    loaded.push(js);
-                }
-            });
+
+
+    // Instantiate the js objects needed for the current view
+    //
+    // Whait until the form processing being finished by bika.lims js
+    // Just a piece of *shit*, but a 1000ms timeout do the job. Would
+    // be great to have a way to know if all the bika.lims.js routines
+    // has been finished (also those asyncronous) before triggering
+    // the js from extensions.
+    setTimeout(function() {
+        for (var key in views) {
+            if ($(key).length) {
+                views[key].forEach(function(js) {
+                    if ($.inArray(js, loaded) < 0) {
+                        obj = new window[js]();
+                        obj.load();
+                        loaded.push(js);
+                    }
+                });
+            }
         }
-    }
+    }, 1000);
 });
 }(jQuery));
