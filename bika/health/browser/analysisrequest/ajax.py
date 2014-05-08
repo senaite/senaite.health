@@ -1,5 +1,5 @@
 from bika.health import bikaMessageFactory as _
-from bika.lims.browser.analysisrequest import ajaxAnalysisRequestSubmit as BaseClass
+from bika.lims.browser.analysisrequest.add import ajaxAnalysisRequestSubmit as BaseClass
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from Products.CMFCore.utils import getToolByName

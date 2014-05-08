@@ -1,4 +1,4 @@
-from bika.lims.browser.batch import BatchAnalysisRequestsView as BaseBatchARView
+from bika.lims.browser.batch.analysisrequests import AnalysisRequestsView as BaseBatchARView
 from bika.health.browser.analysisrequests.view import AnalysisRequestsView as \
     HealthAnalysisRequestView
 
