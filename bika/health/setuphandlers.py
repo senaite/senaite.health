@@ -12,6 +12,7 @@ from bika.health.permissions import ViewPatients
 from bika.health.permissions import ViewBatches
 from bika.health.permissions import ViewSamples
 from bika.health.permissions import ViewAnalysisRequests
+from bika.health.permissions import AddAetiologicAgent
 from bika.health.permissions import AddDoctor
 from bika.health.permissions import AddDrug
 from bika.health.permissions import AddDrugProhibition
@@ -20,6 +21,8 @@ from bika.health.permissions import AddPatient
 from bika.health.permissions import AddSymptom
 from bika.health.permissions import AddTreatment
 from bika.health.permissions import AddVaccinationCenter
+from bika.health.permissions import EditPatient
+from bika.health.permissions import ManageDoctors
 from bika.lims.permissions import AddAnalysisRequest
 from bika.lims.permissions import AddAnalysisSpec
 from bika.lims.permissions import AddSample
@@ -145,20 +148,15 @@ def setupHealthPermissions(context):
     mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
 
-    # Root permissions for Patients
-    mp(AddPatient, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
-    portal.bika_setup.laboratory.reindexObject()
-
     # /clients folder permissions
     # Member role must have view permission on /clients, to see the list.
     # This means within a client, perms granted on Member role are available
     # in clients not our own, allowing sideways entry if we're not careful.
     mp = portal.clients.manage_permission
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+    mp(permissions.View,               ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
     mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
+    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
     mp(ManageClients, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 0)
     mp(permissions.AddPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
     mp(AddAnalysisSpec, ['Manager', 'LabManager', 'Owner'], 0)
@@ -166,11 +164,23 @@ def setupHealthPermissions(context):
 
     for obj in portal.clients.objectValues():
         mp = obj.manage_permission
-        mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver'], 0)
-        mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Member', 'Analyst', 'Sampler', 'Preserver'], 0)
+        mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
+        mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
         mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-        mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Analyst', 'Sampler', 'Preserver', 'Owner'], 0)
+        mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
         obj.reindexObject()
+
+    # /patients
+    mp = portal.patients.manage_permission
+    mp(AddPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
+    mp(EditPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
+    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(CancelAndReinstate, ['Manager', 'LabManager', 'LabClerk'], 0)
+    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    portal.patients.reindexObject()
 
     # /doctors
     mp = portal.doctors.manage_permission
@@ -310,7 +320,6 @@ def setupHealthCatalogs(context):
     addColumn(bpc, 'getPrimaryReferrerUID')
     addColumn(bpc, 'review_state')
     addColumn(bpc, 'inactive_state')
-
 
 def setupHealthTestContent(context):
     """Setup custom content"""
