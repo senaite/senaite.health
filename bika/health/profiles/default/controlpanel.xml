@@ -17,17 +17,17 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/drug.png"
     url_expr="string:$portal_url/bika_setup/bika_drugs"
-    visible="False"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
- <configlet title="Drug Prohibition Explanations" action_id="bika_drugprohibitions"
+ <configlet title="Drug Prohibitions" action_id="bika_drugprohibitions"
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/drugprohibition.png"
     url_expr="string:$portal_url/bika_setup/bika_drugprohibitions"
-    visible="False"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -35,8 +35,8 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/disease.png"
     url_expr="string:$portal_url/bika_setup/bika_diseases"
-    visible="False"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -44,8 +44,8 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/aetiologicagent.png"
     url_expr="string:$portal_url/bika_setup/bika_aetiologicagents"
-	visible="True"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -54,7 +54,7 @@
     icon_expr="string:++resource++bika.health.images/treatment.png"
     url_expr="string:$portal_url/bika_setup/bika_treatments"
     visible="True"
-	i18n:attributes="title">
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -63,7 +63,7 @@
     icon_expr="string:++resource++bika.health.images/immunization.png"
     url_expr="string:$portal_url/bika_setup/bika_immunizations"
     visible="True"
-	i18n:attributes="title">
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -72,7 +72,7 @@
     icon_expr="string:++resource++bika.health.images/vaccinationcenter.png"
     url_expr="string:$portal_url/bika_setup/bika_vaccinationcenters"
     visible="True"
-	i18n:attributes="title">
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -80,8 +80,8 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/casestatus.png"
     url_expr="string:$portal_url/bika_setup/bika_casestatuses"
-    visible="False"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -89,7 +89,7 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/caseoutcome.png"
     url_expr="string:$portal_url/bika_setup/bika_caseoutcomes"
-    visible="False"
+    visible="True"
   i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
@@ -98,8 +98,8 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/casesyndromicclassification.png"
     url_expr="string:$portal_url/bika_setup/bika_casesyndromicclassifications"
-    visible="False"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -107,8 +107,8 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/epidemiologicalyear.png"
     url_expr="string:$portal_url/bika_setup/bika_epidemiologicalyears"
-	visible="False"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
@@ -116,8 +116,8 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/identifiertype.png"
     url_expr="string:$portal_url/bika_setup/bika_identifiertypes"
-	visible="False"
-	i18n:attributes="title">
+    visible="True"
+    i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>
  </configlet>
 
