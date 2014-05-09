@@ -99,7 +99,7 @@
          link_target=""
          url_expr="string:${object_url}/allergies"
          i18n:attributes="title"
-         visible="False">
+         visible="True">
   <permission value="View"/>
  </action>
 
@@ -111,7 +111,7 @@
          link_target=""
          url_expr="string:${object_url}/chronicconditions"
          i18n:attributes="title"
-         visible="False">
+         visible="True">
   <permission value="View"/>
  </action>
 
@@ -123,7 +123,7 @@
          link_target=""
          url_expr="string:${object_url}/immunizationhistory"
          i18n:attributes="title"
-         visible="False">
+         visible="True">
   <permission value="View"/>
  </action>
 
@@ -135,7 +135,7 @@
          link_target=""
          url_expr="string:${object_url}/treatmenthistory"
          i18n:attributes="title"
-         visible="False">
+         visible="True">
   <permission value="View"/>
  </action>
 
@@ -147,7 +147,7 @@
          link_target=""
          url_expr="string:${object_url}/travelhistory"
          i18n:attributes="title"
-         visible="False">
+         visible="True">
   <permission value="View"/>
  </action>
 
