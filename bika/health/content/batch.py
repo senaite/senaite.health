@@ -396,6 +396,7 @@ class BatchSchemaExtender(object):
     def getFields(self):
         return self.fields
 
+
 class BatchSchemaModifier(object):
     adapts(IBatch)
     implements(ISchemaModifier)
