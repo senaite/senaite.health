@@ -372,6 +372,7 @@ class BatchSchemaExtender(object):
                                 # 'DoctorID',
                                 # 'DoctorUID',
                                 # 'DoctorTitle',
+                                'BatchDate',
                                 'OnsetDate',
                                 'PatientAgeAtCaseOnsetDate',
                                 'OnsetDateEstimated',
@@ -387,7 +388,9 @@ class BatchSchemaExtender(object):
                                 'AdditionalNotes',
                                 'Remarks',
                                 'PatientBirthDate',
-                                'BatchLabels']
+                                'BatchLabels',
+                                'InheritedObjects',
+                                'InheritedObjectsUI',]
         return schematas
 
     def getFields(self):
