@@ -55,7 +55,7 @@ class getCaseOutcome:
         for p in bsc(portal_type = 'CaseOutcome',
                       inactive_state = 'active',
                       sort_on = 'sortable_title'):
-            ret.append((p.UID, p.Title))
+            ret.append((p.Title, p.Title))
         return DisplayList(ret)
 
 @indexer(IBatch)
