@@ -410,4 +410,6 @@ class BatchSchemaModifier(object):
         schema['description'].widget.visible = False
         schema['BatchLabels'].widget.visible = False
         schema['ClientBatchID'].widget.label = _("Client Case ID")
+        schema['BatchDate'].widget.visible = False
+        schema['InheritedObjectsUI'].widget.visible = False
         return schema
