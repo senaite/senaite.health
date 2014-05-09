@@ -524,19 +524,19 @@ class Patient(Person):
 
             ageyear = currentyear - birthyear
 
-            return {'year': ageyear,
+            return [{'year': ageyear,
                     'month': agemonth,
-                    'day': ageday}
+                    'day': ageday}]
         else:
-            return {'year': '',
+            return [{'year': '',
                     'month': '',
-                    'day': ''}
+                    'day': ''}]
 
     def getAge(self):
-        return self.getAgeSplitted()['year']
+        return self.getAgeSplitted()[0]['year']
 
     def getAgeSplittedStr(self):
-        splitted = self.getAgeSplitted()
+        splitted = self.getAgeSplitted()[0]
         arr = []
         arr.append(splitted['year'] and str(splitted['year']) + 'y' or '')
         arr.append(splitted['month'] and str(splitted['month']) + 'm' or '')

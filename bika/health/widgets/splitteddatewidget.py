@@ -22,9 +22,9 @@ class SplittedDateWidget(TypesWidget):
 
     def process_form(self, instance, field, form, empty_marker=None,
                      emptyReturnsMarker=False):
-        outvalues = {'year': form.get('PatientAgeAtCaseOnsetDate_year', empty_marker),
+        outvalues = [{'year': form.get('PatientAgeAtCaseOnsetDate_year', empty_marker),
                      'month': form.get('PatientAgeAtCaseOnsetDate_month', empty_marker),
-                     'day': form.get('PatientAgeAtCaseOnsetDate_day', empty_marker)}
+                     'day': form.get('PatientAgeAtCaseOnsetDate_day', empty_marker)}]
         return outvalues, {}
 
     def jsondumps(self, val):
