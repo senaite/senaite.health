@@ -439,17 +439,21 @@ class Patient(Person):
         return self.getId()
 
     security.declarePublic('getSamples')
-
     def getSamples(self):
         """ get all samples taken from this Patient """
-        bc = getToolByName(self, 'bika_catalog')
-        return [p.getObject() for p in bc(portal_type='Sample', getPatientUID=self.UID())]
+        return [ar.getSample() for ar in self.getARs() if ar.getSample()]
 
     security.declarePublic('getARs')
-
-    def getARs(self, analysis_state):
+    def getARs(self, analysis_state=None):
         bc = getToolByName(self, 'bika_catalog')
-        return [p.getObject() for p in bc(portal_type='AnalysisRequest', getPatientUID=self.UID())]
+        ars = bc(portal_type='AnalysisRequest')
+        outars = []
+        for ar in ars:
+            ar = ar.getObject()
+            pat = ar.Schema()['Patient'].get(ar) if ar else None
+            if pat and pat.UID() == self.UID():
+                outars.append(ar)
+        return outars
 
     def get_clients(self):
         ## Only show clients to which we have Manage AR rights.

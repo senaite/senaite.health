@@ -3,4 +3,13 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="bika">
 
+ <genericsetup:upgradeStep
+        title="Added missing indexes and columns"
+        description=""
+        source="*"
+        destination="3001"
+        handler="bika.health.upgrade.to3001.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>

@@ -250,6 +250,14 @@ def setupHealthCatalogs(context):
     addIndex(bc, 'getDoctorUID', 'FieldIndex')
     addIndex(bc, 'getDoctorTitle', 'FieldIndex')
     addIndex(bc, 'getClientPatientID', 'FieldIndex')
+    addColumn(bc, 'getClientTitle')
+    addColumn(bc, 'getPatientID')
+    addColumn(bc, 'getPatientUID')
+    addColumn(bc, 'getPatientTitle')
+    addColumn(bc, 'getDoctorID')
+    addColumn(bc, 'getDoctorUID')
+    addColumn(bc, 'getDoctorTitle')
+    addColumn(bc, 'getClientPatientID')
 
     # portal_catalog
     pc = getToolByName(portal, 'portal_catalog', None)
@@ -258,6 +266,8 @@ def setupHealthCatalogs(context):
         return
     addIndex(pc, 'getDoctorID', 'FieldIndex')
     addIndex(pc, 'getDoctorUID', 'FieldIndex')
+    addColumn(pc, 'getDoctorID')
+    addColumn(pc, 'getDoctorUID')
 
     # bika_setup_catalog
     bsc = getToolByName(portal, 'bika_setup_catalog', None)
