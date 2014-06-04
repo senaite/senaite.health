@@ -53,10 +53,22 @@ function AnalysisRequestAddView() {
                 checkClientContacts();
             });
 
+            // When the user selects an earlier sample (from storage say) and creates a
+            // secondary AR for it, the Patient field should also be looked up and
+            // uneditable.
+            // See https://github.com/bikalabs/bika.health/issues/100
+            $('[id$="_Sample"]').bind("selected paste blur", function() {
+                colposition = $(this).closest('td').attr('column');
+                uid = $("#"+this.id+"_uid").val();
+                loadPatientFromSample(uid, colposition);
+                checkClientContacts();
+            });
+
             // The Batch, Patient and PatientCID combos must only show the
             // records from the current client
             filterComboSearches();
         }
+
 
         // Check if the current selected client has contacts. If client has no
         // contacts, prevent from saving the AR and inform the user
@@ -88,7 +100,7 @@ function AnalysisRequestAddView() {
                         $("#ar_" + colposition + "_Patient").val(data['PatientFullname']);
                         $("#ar_" + colposition + "_Patient").attr('uid',data['PatientUID']);
                         $("#ar_" + colposition + "_Patient_uid").val(data['PatientUID']);
-                        $("#ar_" + colposition + "_Patient").attr("readonly", false);
+                        $("#ar_" + colposition + "_Patient").attr("disabled", false);
                         $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
                     } else {
                         // No patient found. Set anonymous patient
@@ -103,7 +115,7 @@ function AnalysisRequestAddView() {
             $("#ar_" + colposition + "_Patient").val('');
             $("#ar_" + colposition + "_Patient").attr('uid', '');
             $("#ar_" + colposition + "_Patient_uid").val('');
-            $("#ar_" + colposition + "_Patient").attr("readonly", false);
+            $("#ar_" + colposition + "_Patient").attr("disabled", false);
             $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
         }
     }
@@ -165,20 +177,20 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
-                            $("#ar_" + col +"_Client").attr('readonly', true);
+                            $("#ar_" + col +"_Client").attr('disabled', true);
 
                             $("#ar_" + col +"_Patient").val(data['PatientTitle']);
                             $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
-                            $("#ar_" + col +"_Patient").attr('readonly', true);
+                            $("#ar_" + col +"_Patient").attr('disabled', true);
 
                             $("#ar_" + col +"_Doctor").val(data['DoctorTitle']);
                             $("#ar_" + col +"_Doctor").attr('uid',data['DoctorUID']);
                             $("#ar_" + col +"_Doctor_uid").val(data['DoctorUID']);
-                            $("#ar_" + col +"_Doctor").attr('readonly', true);
+                            $("#ar_" + col +"_Doctor").attr('disabled', true);
 
                             $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
-                            $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
+                            $("#ar_" + col +"_ClientPatientID").attr('disabled', true);
 
                             // Hide the previous fields and replace them by labels
                             $("#ar_" + col +"_Client").hide();
@@ -225,41 +237,7 @@ function AnalysisRequestAddView() {
                     if (data['PatientUID'] != '') {
                         $(".dynamic-field-label").remove();
                         for (var col=0; col<parseInt($("#col_count").val()); col++) {
-                            $("#ar_" + col +"_Client").val(data['ClientTitle']);
-                            $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
-                            $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
-                            $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
-                            $("#ar_" + col +"_Client").attr('readonly', true);
-
-                            $("#ar_" + col +"_Patient").val(data['PatientFullname']);
-                            $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
-                            $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
-                            $("#ar_" + col +"_Patient").attr('readonly', true);
-
-                            $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
-                            $("#ar_" + col +"_ClientPatientID").attr('uid',data['PatientUID']);
-                            $("#ar_" + col +"_ClientPatientID_uid").val(data['PatientUID']);
-                            $("#ar_" + col +"_ClientPatientID").attr('readonly', true);
-
-                            // Hide the previous fields and replace them by labels
-                            $("#ar_" + col +"_Client").hide();
-                            $("#ar_" + col +"_Patient").hide();
-                            $("#ar_" + col +"_ClientPatientID").hide();
-                            $("#ar_" + col +"_Client").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Client").val()+"</span>");
-                            $("#ar_" + col +"_Patient").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_Patient").val()+"</span>");
-                            $("#ar_" + col +"_ClientPatientID").after("<span class='dynamic-field-label'>"+$("#ar_" + col +"_ClientPatientID").val()+"</span>");
-
-                            // Only allow the selection of batches from this patient
-                            element = $("#ar_" + col + "_Batch")
-                            base_query=$.parseJSON($(element).attr("base_query"));
-                            base_query['getPatientUID'] = data['PatientUID'];
-                            applyComboFilter(element, base_query);
-
-                            // Contact searches
-                            element = $("#ar_" + col + "_Contact")
-                            base_query=$.parseJSON($(element).attr("base_query"));
-                            base_query['getParentUID'] = data['ClientUID'];
-                            applyComboFilter(element, base_query);
+                            fillPatientData(col, data);
                         }
                     }
                 }
@@ -358,6 +336,130 @@ function AnalysisRequestAddView() {
                     }
                 }
             });
+        }
+    }
+
+    /**
+     * Loads the patient from the selected sample when the user creates
+     * a secondary AR for it. Sets the Patient-related fields as readonly.
+     * If id is empty or null, the Patient fields gets reseted and editable.
+     * @param uid Sample UID
+     * @param colposition AR add column position
+     * @return true if the sample has been found and patient fields has been set.
+     * Otherwise, returns false
+     */
+    function loadPatientFromSample(uid, colposition) {
+        var col = colposition;
+        if (uid != null && uid !='') {
+            $.ajax({
+                url: window.portal_url + "/getsamplepatient",
+                type: 'POST',
+                data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                       'uid': uid,},
+                dataType: "json",
+                async: false,
+                success: function(data, textStatus, $XHR){
+                    if (data['PatientID'] != '') {
+                        fillPatientData(col, data);
+                    } else {
+                        resetPatientData(col);
+                    }
+                }
+            });
+        } else {
+            resetPatientData(col);
+        }
+    }
+
+    function fillPatientData(col, data) {
+        $("#ar_" + col +"_Client").val(data['ClientTitle']);
+        $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
+        $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
+        $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
+        $("#ar_" + col +"_Client").attr('disabled', true);
+
+        $("#ar_" + col +"_Patient").val(data['PatientFullname']);
+        $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
+        $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
+        $("#ar_" + col +"_Patient").attr('disabled', true);
+
+        $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
+        $("#ar_" + col +"_ClientPatientID").attr('uid',data['PatientUID']);
+        $("#ar_" + col +"_ClientPatientID_uid").val(data['PatientUID']);
+        $("#ar_" + col +"_ClientPatientID").attr('disabled', true);
+
+        // Only allow the selection of batches from this patient
+        element = $("#ar_" + col + "_Batch")
+        base_query=$.parseJSON($(element).attr("base_query"));
+        base_query['getPatientUID'] = data['PatientUID'];
+        applyComboFilter(element, base_query);
+
+        // Contact searches
+        element = $("#ar_" + col + "_Contact")
+        base_query=$.parseJSON($(element).attr("base_query"));
+        base_query['getParentUID'] = data['ClientUID'];
+        applyComboFilter(element, base_query);
+    }
+
+    function resetPatientData(col) {
+        // Empty client patient id. Reset patient fields
+        $("#ar_" + colposition + "_Patient").val('');
+        $("#ar_" + colposition + "_Patient").attr('uid', '');
+        $("#ar_" + colposition + "_Patient_uid").val('');
+        $("#ar_" + colposition + "_Patient").attr("disabled", false);
+        $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
+
+        $("#ar_" + col +"_ClientPatientID").val('');
+        $("#ar_" + col +"_ClientPatientID").attr('uid','');
+        $("#ar_" + col +"_ClientPatientID_uid").val('');
+        $("#ar_" + col +"_ClientPatientID").attr('disabled', false);
+        $("#ar_" + colposition + "_ClientPatientID").combogrid("option", "disabled", false);
+
+        frombatch = window.location.href.search('/batches/') >= 0;
+        frompatient = document.referrer.search('/patients/') >= 0;
+
+        if (frombatch) {
+            // The current AR add View comes from a batch. Automatically fill
+            // the Client, Patient and Doctor fields and set them as readonly.
+            batchid = window.location.href.split("/batches/")[1].split("/")[0];
+            datafilled = fillDataFromBatch(batchid);
+
+            // The Batch, Patient and PatientCID combos must only show the
+            // records from the current client
+            filterComboSearches();
+
+            // Check if the current selected client has contacts. If client has no
+            // contacts, prevent from saving the AR and inform the user
+            checkClientContacts();
+
+        } else if (frompatient) {
+            // The current AR add View comes from a patient AR folder view.
+            // Automatically fill the Client and Patient fields and set them
+            // as readonly.
+            pid = document.referrer.split("/patients/")[1].split("/")[0];
+            datafilled = fillDataFromPatient(pid);
+
+            // The Batch, Patient and PatientCID combos must only show the
+            // records from the current client
+            filterComboSearches();
+
+            // Check if the current selected client has contacts. If client has no
+            // contacts, prevent from saving the AR and inform the user
+            checkClientContacts();
+
+        } else {
+
+            // Clear the batches selection from this patient
+            element = $("#ar_" + col + "_Batch")
+            base_query=$.parseJSON($(element).attr("base_query"));
+            delete base_query['getPatientUID'];
+            applyComboFilter(element, base_query);
+
+            // Contact searches
+            element = $("#ar_" + col + "_Contact")
+            base_query=$.parseJSON($(element).attr("base_query"));
+            delete base_query['getParentUID'];
+            applyComboFilter(element, base_query);
         }
     }
 }
