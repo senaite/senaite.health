@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
-version = '0.1'
+version = '3.1'
 
 setup(name='bika.health',
       version=version,
-      description="Bika LIMS Health branch",
+      description="Bika LIMS Health 3.1",
       long_description=open("README.md").read(),
       # Get more strings from
       # http://www.python.org/pypi?%3Aaction=list_classifiers
