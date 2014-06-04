@@ -42,8 +42,7 @@ function AnalysisRequestAddView() {
             // ClientPatientID fields change.
             $('[id$="_ClientPatientID"]').bind("selected paste blur", function() {
                 colposition = $(this).closest('td').attr('column');
-                uid = $("#"+this.id+"_uid").val();
-                loadPatient(uid, colposition);
+                loadPatient($(this).val(), colposition);
                 checkClientContacts();
             });
 
@@ -68,7 +67,7 @@ function AnalysisRequestAddView() {
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
     /**
-     * Searches a patient using the Patient UID. If found, fill the Patient's input
+     * Searches a patient using the Client Patient ID. If found, fill the Patient's input
      * fields from the same AR add column. If no patient found, set the values to
      * Anonymous.
      * @param id Client Patient ID
