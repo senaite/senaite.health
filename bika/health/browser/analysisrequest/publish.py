@@ -37,18 +37,21 @@ class AnalysisRequestPublish(doPublish):
         return subject, totline
 
     def get_formatted_lab_address(self):
-        client_address = self.laboratory.getPostalAddress() \
-            or self.laboratory.getBillingAddress() \
-            or self.laboratory.getPhysicalAddress()
+        lab = self.context.bika_setup.laboratory
+        client_address = lab.getPostalAddress() \
+            or lab.getBillingAddress() \
+            or lab.getPhysicalAddress()
         addr = None
         if client_address:
             addr = self.get_formatted_address(client_address)
         return addr
 
     def get_formatted_client_address(self):
-        client_address = self.client.getPostalAddress() \
-            or self.contact.getBillingAddress() \
-            or self.contact.getPhysicalAddress()
+        client = self.ar['obj'].getClient()
+        contact = self.ar['obj'].getContact();
+        client_address = client.getPostalAddress() \
+            or contact.getBillingAddress() \
+            or contact.getPhysicalAddress()
         addr = None
         if client_address:
             addr = self.get_formatted_address(client_address)

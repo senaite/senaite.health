@@ -17,15 +17,17 @@
     <body tal:define="
     plone_view python:view.context.restrictedTraverse('@@plone');
         portal python:context.portal_url.getPortalObject();
-        lab_accredited view/laboratory/getLaboratoryAccredited;
+        laboratory python:context.bika_setup.laboratory;
+        lab_accredited laboratory/getLaboratoryAccredited;
         global columns python:0;
-        pub_pref view/pub_pref;
+        pub_pref view/contact/getPublicationPreference;
         accredited python:lab_accredited and view.any_accredited;
         global invoice_exclude python:False;
         global out_of_range python:0;
-        ar nocall:view/ar;
+        ar nocall:view/ar/obj;
         patient python:view.get_patient(ar);
         dry ar/getReportDryMatter;
+        client ar/getClient;
         remarksenabled python:view.context.bika_setup.getEnableAnalysisRemarks();">
 
 
@@ -71,25 +73,25 @@
         <tr>
             <td style='padding-top:5px;vertical-align:top;width:70%;'>
                 <span style="font-size:20px;font-weight:bold;font-weight:bold;line-height:20px;"
-                    tal:content="view/laboratory/Title"></span>
-                <tal:labemail define="email view/laboratory/getEmailAddress"
+                    tal:content="laboratory/Title"></span>
+                <tal:labemail define="email laboratory/getEmailAddress"
                               condition="email">
                     <br/>
                     <a style='color:#0000EE;'
                        tal:content="email"
                        tal:attributes="href python:'mailto:%s' % email;"></a>
                 </tal:labemail>
-                <tal:labphone condition="view/laboratory/getPhone">
+                <tal:labphone condition="laboratory/getPhone">
                     <br/>
                     <span i18n:translate="">Phone</span>:
-                    <span tal:content="view/laboratory/getPhone"></span>
+                    <span tal:content="laboratory/getPhone"></span>
                 </tal:labphone>
-                <tal:labfax condition="view/laboratory/getFax">
+                <tal:labfax condition="laboratory/getFax">
                     <br/>
                     <span i18n:translate="">Fax</span>:
-                    <span tal:content="view/laboratory/getFax"></span>
+                    <span tal:content="laboratory/getFax"></span>
                 </tal:labfax>
-                <tal:laburl define="url view/laboratory/LabURL"
+                <tal:laburl define="url laboratory/LabURL"
                             condition="url">
                     <br/>
                     <a style='color:#0000EE;'
@@ -103,26 +105,26 @@
             </td>
             <td style='text-align:left;vertical-align:top;padding-top:5px;width:350px;'>
                     <a style="font-size:16px;font-weight:bold;line-height:20px;color:#0000EE;"
-                        tal:attributes="href view/client/absolute_url"
-                        tal:content="view/client/Title"></a><br/>
+                        tal:attributes="href client/absolute_url"
+                        tal:content="client/Title"></a><br/>
                     <span style="font-style:italic" i18n:translate="">Attn:</span>
                     <span tal:content="view/contact/getFullname"/>
-                    <tal:clemail define="email view/client/getEmailAddress"
+                    <tal:clemail define="email client/getEmailAddress"
                                   condition="email">
                         <br/>
                         <a style='color:#0000EE;'
                            tal:content="email"
                            tal:attributes="href python:'mailto:%s' % email;"></a>
                     </tal:clemail>
-                    <tal:clphone condition="view/client/getPhone">
+                    <tal:clphone condition="client/getPhone">
                         <br/>
                         <span i18n:translate="">Phone</span>:
-                        <span tal:content="view/client/getPhone"></span>
+                        <span tal:content="client/getPhone"></span>
                     </tal:clphone>
-                    <tal:clfax condition="view/client/getFax">
+                    <tal:clfax condition="client/getFax">
                         <br/>
                         <span i18n:translate="">Fax</span>:
-                        <span tal:content="view/client/getFax"></span>
+                        <span tal:content="client/getFax"></span>
                     </tal:clfax>
                     <tal:claddress condition="view/get_formatted_client_address">
                         <br/>
@@ -136,11 +138,11 @@
     <table cellpadding="0" style="width:100%">
         <tr>
             <td>
-                <span style="font-weight:bold;font-size:16px;" tal:content="view/client/Title"></span><br/>
+                <span style="font-weight:bold;font-size:16px;" tal:content="client/Title"></span><br/>
                 <span style="font-style:italic" i18n:translate="">Attn:</span>
                 <span tal:content="view/contact/getFullname"/>
                 <br/>
-                <span tal:content="structure view/client_address"></span>
+                <span tal:content="structure client_address"></span>
             </td>
             <td align="right" valign="bottom">
                 <table cellpadding="2" style="width:100%">
@@ -247,7 +249,7 @@
 
     <!-- Batch info -->
     <table cellpadding="2" style="width:100%"
-        tal:define="batch python:view.ar.getBatch();"
+        tal:define="batch python:ar.getBatch();"
         tal:condition="python:patient and batch">
         <tr><td colspan="3" i18n:translate="" style="font-size:16px;font-weight:bold;border-bottom:1px solid #666;padding-top:20px;">Clinical Information</td></tr>
         <tr><td colspan="3" style='padding-top:5px;line-height:1px;'></td></tr>
@@ -325,7 +327,7 @@
             </td>
         </tr>
     </table>
-    <tal:nextpage condition="python:patient and view.ar.getBatch()">
+    <tal:nextpage condition="python:patient and ar.getBatch()">
         <pdf:nextpage />
     </tal:nextpage>
 
@@ -674,7 +676,7 @@
 
     <div style="padding-top:30px;page-break-inside: avoid;"
          tal:repeat="manager mngr_ids"
-         tal:define="mngr_info python:view.get_managers_from_request(view.ar);
+         tal:define="mngr_info python:view.get_managers_from_request(ar);
                      mngr_ids python:mngr_info['ids'];
                      managers python:mngr_info['dict']">
     <tal:manager
@@ -744,7 +746,7 @@
                  tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/accredited.png">
             <span i18n:translate="">
                 Methods included in the
-                <tal:block replace="view/laboratory/AccreditationBody" i18n:name="accreditation_body"/>
+                <tal:block replace="laboratory/AccreditationBody" i18n:name="accreditation_body"/>
                     schedule of Accreditation for this Laboratory. Analysis remarks are not accredited
             </span>
             <br/>
@@ -760,10 +762,10 @@
         <tal:approval>
             <span tal:define="global seq_no python:seq_no + 1" tal:content="string:$seq_no.">1</span>
             <span i18n:translate="">This document shall not be reproduced except in full, without the written approval of </span>
-            <span tal:content="view/laboratory/Name"></span>
+            <span tal:content="laboratory/Name"></span>
             <br/>
         </tal:approval>
-        <tal:confidence define="confidence_level view/laboratory/Confidence|nothing"
+        <tal:confidence define="confidence_level laboratory/Confidence|nothing"
             tal:condition="confidence_level">
             <span tal:define="global seq_no python:seq_no + 1"
                 tal:content="string:$seq_no.">1</span>
