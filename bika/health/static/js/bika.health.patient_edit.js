@@ -9,6 +9,34 @@ function PatientEditView() {
     // PUBLIC FUNCTIONS
     // ------------------------------------------------------------------------
 
+
+    /**
+     * Returns the referrer ClientUID if the current view referrer is a Client
+     * patients view. If the current view referrer is a Client's patient view,
+     * returns the Client UID. Otherwise, returns null
+     * @return clientuid or null
+     */
+    this.getClientUIDReferrer = function() {
+        // Force first to check if the referrer is a Patient Batches view. In
+        // that case, the refclientuid var will be set by the following method
+        if (document.referrer.search('/clients/') >= 0) {
+            clientid = document.referrer.split("clients")[1].split("/")[1];
+            $.ajax({
+                url: window.portal_url + "/clients/" + clientid + "/getClientInfo",
+                type: 'POST',
+                async: false,
+                data: {'_authenticator': $('input[name="_authenticator"]').val()},
+                dataType: "json",
+                success: function(data, textStatus, $XHR){
+                    if (data['ClientUID'] != '') {
+                        refclientuid = data['ClientUID'] != '' ? data['ClientUID'] : null;
+                    }
+                }
+            });
+        }
+        return refclientuid != '' ? refclientuid : null;
+    }
+
     /**
      * Entry-point method for PatientEditView
      */
@@ -28,6 +56,12 @@ function PatientEditView() {
         if ($('#patient-base-edit')) {
             loadAnonymous();
         }
+        rcuid = that.getClientUIDReferrer();
+        if (rcuid != null) {
+            // The user comes from the Client's Patients view
+            fillClient(rcuid);
+        }
+
         loadEventHandlers();
     }
 
@@ -154,7 +188,7 @@ function PatientEditView() {
     function toggleMenstrualStatus(gender) {
         if ($('#archetypes-fieldname-MenstrualStatus').length){
             if (gender=='female') {
-                $('#archetypes-fieldname-MenstrualStatus').show();                              
+                $('#archetypes-fieldname-MenstrualStatus').show();
             } else {
                 $("#MenstrualStatus-Hysterectomy-0").attr('checked', false);
                 $("#MenstrualStatus-HysterectomyYear-0").val('');
@@ -183,7 +217,7 @@ function PatientEditView() {
                   "#patient-base-edit #archetypes-fieldname-AgeSplitted",
                   "#patient-base-edit #archetypes-fieldname-BirthDateEstimated"];
 
-        if ($('#patient-base-edit #Anonymous').is(':checked')) {        
+        if ($('#patient-base-edit #Anonymous').is(':checked')) {
             // Hide non desired input fields
             for (i=0;i<tohide.length;i++){
                 $(tohide[i]).hide();
@@ -200,7 +234,7 @@ function PatientEditView() {
             }
             $("#patient-base-edit #archetypes-fieldname-BirthDate").find('span[class="required"]').remove();
             $("#patient-base-edit input[id='BirthDate']").attr("required", false);
-            $("#patient-base-edit input[id='BirthDate']").val("");      
+            $("#patient-base-edit input[id='BirthDate']").val("");
 
         } else {
             // Show desired input fields
@@ -210,8 +244,13 @@ function PatientEditView() {
             $("#patient-base-edit #archetypes-fieldname-ClientPatientID").find('span[class="required"]').remove();
             $("#patient-base-edit input[id='ClientPatientID']").attr("required", false);
             $("#patient-base-edit input[id='BirthDate']").attr("required", true);
-            $("#patient-base-edit #BirthDate_help").before('<span class="required" title="Required">&nbsp;</span>');        
+            $("#patient-base-edit #BirthDate_help").before('<span class="required" title="Required">&nbsp;</span>');
         }
+    }
+
+    function fillClient(uid) {
+        var name = $('#PrimaryReferrer option[value!="'+uid+'"]').remove();
+        $('#PrimaryReferrer').val(uid);
     }
 }
 
@@ -357,7 +396,7 @@ function PatientPublicationPrefsEditView() {
                     console.log(data['error']);
                 }
             }
-        });   
+        });
         return $(that.allowresults).is(':checked');
     }
 }

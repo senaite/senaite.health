@@ -68,7 +68,7 @@ class PatientsView(BikaListingView):
 
         self.review_states = [
             {'id': 'default',
-             'title': _('Active'),
+             'title': _b('Active'),
              'contentFilter': {'inactive_state': 'active'},
              'transitions': [],
              'columns': ['getPatientID', 'getClientPatientID',
@@ -77,12 +77,16 @@ class PatientsView(BikaListingView):
         ]
 
     def __call__(self):
+        self._initFormParams()
+        return super(PatientsView, self).__call__()
+
+    def _initFormParams(self):
         mtool = getToolByName(self.context, 'portal_membership')
         addPortalMessage = self.context.plone_utils.addPortalMessage
         if mtool.checkPermission(AddPatient, self.context):
             clients = self.context.clients.objectIds()
             if clients:
-                self.context_actions[_('Add')] = {
+                self.context_actions[_b('Add')] = {
                     'url': 'createObject?type_name=Patient',
                     'icon': '++resource++bika.lims.images/add.png'
                 }
@@ -93,7 +97,7 @@ class PatientsView(BikaListingView):
             self.review_states[0]['transitions'].append({'id':'deactivate'})
             self.review_states.append(
                 {'id': 'inactive',
-                 'title': _('Dormant'),
+                 'title': _b('Dormant'),
                  'contentFilter': {'inactive_state': 'inactive'},
                  'transitions': [{'id':'activate'}, ],
                  'columns': ['getPatientID', 'getClientPatientID',
@@ -101,16 +105,16 @@ class PatientsView(BikaListingView):
                              'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']})
             self.review_states.append(
                 {'id': 'all',
-                 'title': _('All'),
+                 'title': _b('All'),
                  'contentFilter':{},
                  'transitions':[{'id':'empty'}, ],
-                 'columns': ['Title', 'getPatientID', 'getClientPatientID', 
+                 'columns': ['Title', 'getPatientID', 'getClientPatientID',
                              'getGender', 'getAgeSplittedStr',
                              'getBirthDate', 'getCitizenship',
                              'getPrimaryReferrer']})
             stat = self.request.get("%s_review_state" % self.form_id, 'default')
             self.show_select_column = stat != 'all'
-        return super(PatientsView, self).__call__()
+
 
     def folderitems(self):
         items = BikaListingView.folderitems(self)

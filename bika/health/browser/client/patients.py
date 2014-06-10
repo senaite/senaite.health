@@ -3,7 +3,6 @@ from Products.CMFCore.utils import getToolByName
 from bika.health.permissions import AddPatient
 from bika.lims import bikaMessageFactory as _b
 
-
 class ClientPatientsView(PatientsView):
 
     def __init__(self, context, request):
@@ -11,16 +10,10 @@ class ClientPatientsView(PatientsView):
         # Limit results to those patients that "belong" to this client
         self.contentFilter['getPrimaryReferrerUID'] = context.UID()
 
-    def __call__(self):
-        mtool = getToolByName(self.context, 'portal_membership')
-        # New Patient: Use this space to equip the add form with client UID
-        if mtool.checkPermission(AddPatient, self.context):
-            clients = self.context.clients.objectIds()
-            if clients:
-                self.context_actions[_b('Add')] = {
-                    'url': 'createObject?type_name=Patient',
-                    'icon': '++resource++bika.lims.images/add.png'
-                }
+    def _initFormParams(self):
+        super(ClientPatientsView, self)._initFormParams()
+        if _b('Add') in self.context_actions:
+            self.context_actions[_b('Add')]['url'] = '../../patients/createObject?type_name=Patient'
 
     def folderitems(self):
         folderitems = super(ClientPatientsView, self).folderitems()

@@ -12,4 +12,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="Added Patients tab in Client view"
+        description=""
+        source="3001"
+        destination="3002"
+        handler="bika.health.upgrade.to3002.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>
