@@ -98,7 +98,6 @@ def get_historicresults(patient):
                                                                                  'units': service.getUnit()}
         date = analysis.getResultCaptureDate() or analysis.created()
         date = ulocalized_time(date, 1, None, patient, 'bika')
-        #import pdb; pdb.set_trace()
         # If more than one analysis of the same type has been
         # performed in the same datetime, get only the last one
         if date not in asdict.keys():
@@ -110,8 +109,8 @@ def get_historicresults(patient):
             # sample type will be taken into consideration.
             # We assume specs from previous analyses are obsolete.
             if 'specs' not in asdict.keys():
-                spec = analysis.getAnalysisSpecs()
-                spec = spec.getResultsRangeDict()
+                spec = analysis.getAnalysisSpecs()                
+                spec = spec.getResultsRangeDict() if spec else {}
                 specs = spec.get(analysis.getKeyword(), {})
                 if not specs.get('rangecomment', ''):
                     if specs.get('min', '') and specs.get('max', ''):
