@@ -523,7 +523,7 @@
                         <span tal:replace="python:analysis_range">50 - 60</span>
                     </td>
                     <td class="outofrange">
-                        <img width="12px" height="12px"style="margin-top:20px;"
+                        <img width="12px" height="12px"style="margin-top:2 px;"
                                  tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/exclamation.png"
                                  tal:condition="analysis_outofrange"/>
                     </td>
