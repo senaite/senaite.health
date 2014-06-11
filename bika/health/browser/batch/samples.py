@@ -18,6 +18,8 @@ class BatchSamplesView(SamplesView):
         samples = {}
         for sample in (p.getObject() for p in tool_samples):
             for ar in sample.getAnalysisRequests():
-                if ar.getBatchUID() == self.context.UID():
+                batch = ar.getBatch()
+                batch_uid = batch.UID() if batch else ''
+                if batch_uid == self.context.UID():
                     samples[sample.getId()] = sample
         return samples.values()
