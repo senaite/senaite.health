@@ -233,7 +233,12 @@
                             <span style="font-size:0.8em;color:#333;" tal:content="python:' ('+analysis['keyword']+')'"/>
                         </td>
                         <tal:rowdates repeat="date dates">
-                        <td tal:content="python:analysis.get(date,{}).get('formattedresult', '')" class='center'></td>
+                        <td> 
+			  <span tal:content="python:analysis.get(date,{}).get('formattedresult', '')" class='center'/> - 
+			  <a href="" tal:attributes="href python:analysis.get(date,{}).get('object','').aq_parent.absolute_url()">
+			    <span tal:content="python:analysis.get(date,{}).get('object','').aq_parent.id" class='center'/> 
+			  </a>
+			</td>
                         </tal:rowdates>
                         <td tal:content="python:analysis['units']"></td>
                         <td tal:content="python:analysis['specs'].get('rangecomment','')"></td>
