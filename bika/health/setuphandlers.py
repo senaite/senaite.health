@@ -344,7 +344,6 @@ def setupHealthCatalogs(context):
     addColumn(bpc, 'review_state')
     addColumn(bpc, 'inactive_state')
 
-
 def setupHealthTestContent(context):
     """Setup custom content"""
     pass
