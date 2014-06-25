@@ -299,6 +299,8 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('CaseOutcome', ['bika_setup_catalog', ])
     at.setCatalogsByType('EpidemiologicalYear', ['bika_setup_catalog', ])
     at.setCatalogsByType('IdentifierType', ['bika_setup_catalog', ])
+    addIndex(bsc,'getGender', 'FieldIndex')
+    addColumn(bsc,'getGender')
 
     # bika_patient_catalog
     bpc = getToolByName(portal, 'bika_patient_catalog', None)
@@ -343,6 +345,7 @@ def setupHealthCatalogs(context):
     addColumn(bpc, 'getPrimaryReferrerUID')
     addColumn(bpc, 'review_state')
     addColumn(bpc, 'inactive_state')
+
 
 def setupHealthTestContent(context):
     """Setup custom content"""
