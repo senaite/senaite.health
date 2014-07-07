@@ -292,6 +292,7 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('AetiologicAgent', ['bika_setup_catalog', ])
     at.setCatalogsByType('Treatment', ['bika_setup_catalog'])
     at.setCatalogsByType('Symptom', ['bika_setup_catalog'])
+    at.setCatalogsByType('Drug', ['bika_setup_catalog'])
     at.setCatalogsByType('DrugProhibition', ['bika_setup_catalog'])
     at.setCatalogsByType('VaccinationCenter', ['bika_setup_catalog', ])
     at.setCatalogsByType('Immunization', ['bika_setup_catalog', ])

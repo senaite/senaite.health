@@ -21,4 +21,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="Added Drug in bika_setup_catalog"
+        description=""
+        source="3002"
+        destination="3003"
+        handler="bika.health.upgrade.to3003.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>
