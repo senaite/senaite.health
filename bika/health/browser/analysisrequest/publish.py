@@ -167,3 +167,13 @@ class AnalysisRequestPublish(doPublish):
         dates, data = historic(patient)
         return {'dates': dates,
                 'results': data}
+
+    def sortDictTitles(self, analyses_dict):
+        sorted_t_list = list()
+        sorted_list = list()
+        for analysis in analyses_dict:
+            sorted_t_list.append((analyses_dict[analysis]['title'],analysis))
+        sorted_t_list.sort()
+        for tanalysis,nanalysis in sorted_t_list:
+            sorted_list.append(nanalysis)
+        return sorted_list
