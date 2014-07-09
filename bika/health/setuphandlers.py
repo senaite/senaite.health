@@ -300,6 +300,8 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('CaseOutcome', ['bika_setup_catalog', ])
     at.setCatalogsByType('EpidemiologicalYear', ['bika_setup_catalog', ])
     at.setCatalogsByType('IdentifierType', ['bika_setup_catalog', ])
+    addIndex(bsc,'getGender', 'FieldIndex')
+    addColumn(bsc,'getGender')
 
     # bika_patient_catalog
     bpc = getToolByName(portal, 'bika_patient_catalog', None)
