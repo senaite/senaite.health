@@ -30,4 +30,13 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="Added Gender element in symptoms"
+        description=""
+        source="3003"
+        destination="3004"
+        handler="bika.health.upgrade.to3004.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
+
 </configure>
