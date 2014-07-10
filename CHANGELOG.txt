@@ -1,5 +1,6 @@
 3.1.1
 ------------------
+HEALTH-133: Case creation: Basal body temperature fields accepting values way out of range
 HEALTH-106: Mimetype text/plain is not allowed in Drug edit view
 HEALTH-73: Current and Historic results in PDF sorted in the same order
 HEALTH-61: Sort Symptoms table on gender
