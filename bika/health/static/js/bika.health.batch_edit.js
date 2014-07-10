@@ -178,6 +178,9 @@ function BatchEditView() {
         fillPatientAgeAtCaseOnsetDate();
         toggleMenstrualStatus();
         toggleSymptoms();
+
+	// Advertismen for too hight/low Basal body temperature
+	basalBodyTemperatureControl();
     }
 
     /**
@@ -677,5 +680,21 @@ function BatchEditView() {
             }
         }
         return editdoctor_overlay;
+    }
+
+    function basalBodyTemperatureControl() {
+	$( "[id^='BasalBodyTemperature-Day']" ).change(function() {
+	    if ( parseInt($(this).val()) > 41 ) {
+		$(this).next().remove(".warning");
+		$(this).parent().append("<span class = 'warning'><img title='Very high temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
+	    }
+	    else if ( parseInt($(this).val()) < 32 ) {
+		$(this).next().remove(".warning");
+		$(this).parent().append("<span class = 'warning'><img title='Very low temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
+	    }
+	    else {
+		$(this).next().remove(".warning");
+	    }
+	});
     }
 }
