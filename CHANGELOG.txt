@@ -1,6 +1,7 @@
 3.1.1
 ------------------
 
+HEALTH-122: Client contact cannot open Client page/AR page blank
 HEALTH-92: Display Patients tab inside Referral Institution (Client)
 HEALTH-109: Manually adding symptoms saving but remaining on the same page
 HEALTH-121: Client contact gets Insufficient Privileges upon login
