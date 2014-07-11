@@ -20,8 +20,8 @@ schema = BikaSchema.copy() + Schema((
     ),
 
     TextField('Indications',
-        default_content_type = 'text/x-web-intelligent',
-        allowable_content_types = ('text/x-web-intelligent',),
+        default_content_type = 'text/plain',
+        allowable_content_types = ('text/plain',),
         default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Drug indications",
@@ -31,8 +31,8 @@ schema = BikaSchema.copy() + Schema((
     ),
 
     TextField('Posology',
-        default_content_type = 'text/x-web-intelligent',
-        allowable_content_types = ('text/x-web-intelligent',),
+        default_content_type = 'text/plain',
+        allowable_content_types = ('text/plain',),
         default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Drug posology",
@@ -42,8 +42,8 @@ schema = BikaSchema.copy() + Schema((
     ),
 
     TextField('SideEffects',
-        default_content_type = 'text/x-web-intelligent',
-        allowable_content_types = ('text/x-web-intelligent',),
+        default_content_type = 'text/plain',
+        allowable_content_types = ('text/plain',),
         default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Drug side effects",
@@ -53,8 +53,8 @@ schema = BikaSchema.copy() + Schema((
     ),
 
     TextField('Preservation',
-        default_content_type = 'text/x-web-intelligent',
-        allowable_content_types = ('text/x-web-intelligent',),
+        default_content_type = 'text/plain',
+        allowable_content_types = ('text/plain',),
         default_output_type="text/plain",
         widget = TextAreaWidget(
             label = _("Drug preservation",

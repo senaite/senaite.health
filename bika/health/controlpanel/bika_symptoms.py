@@ -41,7 +41,7 @@ class SymptomsView(BikaListingView):
                             'index': 'description',
                             'toggle': True},
             'Gender': {'title': _('Gender'),
-                            'index': 'gender',
+                            'index': 'getGender',
                             'toggle': True},
         }
 

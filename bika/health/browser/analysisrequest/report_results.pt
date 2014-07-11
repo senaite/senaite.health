@@ -573,16 +573,20 @@
                         tal:content="python:row['object'].Title()"
                         style='font-weight:bold;text-align:left;padding-top:8px;'></th>
                 </tr>
-                <tal:analyses repeat="analysis python:row['analyses'].itervalues()">
-                <tr tal:attributes="cat python:row['object'].Title()">
-                    <td style='text-align:left;' tal:content="python:analysis['title']"></td>
-                    <tal:rowdates repeat="date dates">
-                    <td tal:content="python:analysis.get(date,{}).get('formattedresult', '')" class='center'></td>
-                    </tal:rowdates>
-                    <td tal:content="python:analysis['units']"></td>
-                    <td tal:content="python:analysis['specs'].get('rangecomment','')"></td>
-                </tr>
-                </tal:analyses>
+		<tal:analyses define="analyses_dict python:row['analyses'];
+				      analyses_sorted_list python: view.sortDictTitles(analyses_dict);">
+		  <tal:analysis repeat="analysis analyses_sorted_list">
+                    <tr tal:attributes="cat python:row['object'].Title()">
+                      <td style='text-align:left;' tal:content="python:analyses_dict[analysis]['title']"></td>
+                      <tal:rowdates repeat="date dates">
+			<td tal:content="python:analyses_dict[analysis].get(date,{}).get('formattedresult', '')" class='center'></td>
+                      </tal:rowdates>
+                      <td tal:content="python:analyses_dict[analysis]['units']"></td>
+                      <td tal:content="python:analyses_dict[analysis]['specs'].get('rangecomment','')"></td>
+                    </tr>
+		  </tal:analysis>
+		</tal:analyses>
+
                 </tal:sampletypes>
             </tbody>
         </table>
