@@ -53,6 +53,7 @@ def initialize(context):
 
     from controlpanel.bika_aetiologicagents import AetiologicAgents
     from controlpanel.bika_caseoutcomes import CaseOutcomes
+    from controlpanel.bika_casesyndromicclassifications import CaseSyndromicClassifications
     from controlpanel.bika_casestatuses import CaseStatuses
     from controlpanel.bika_diseases import Diseases
     from controlpanel.bika_drugprohibitions import DrugProhibitions

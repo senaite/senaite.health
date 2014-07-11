@@ -25,44 +25,25 @@ else:
     stat = 'created'
 
     # Redirection after saving edition forms
-    if context.portal_type == 'AetiologicAgent':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_aetiologicagents')
+    redirects = {'AetiologicAgent' : '/bika_setup/bika_aetiologicagents',
+                 'BatchLabel' : '/bika_setup/bika_batchlabels',
+                 'CaseOutcome': '/bika_setup/bika_caseoutcomes',
+                 'CaseStatus': '/bika_setup/bika_casestatuses',
+                 'Disease': '/bika_setup/bika_diseases',
+                 'Drug': '/bika_setup/bika_drugs',
+                 'DrugProhibition': '/bika_setup/bika_drugprohibitions',
+                 'Immunization': '/bika_setup/bika_immunizations',
+                 'Treatment': '/bika_setup/bika_treatments',
+                 'VaccionationCenter': '/bika_setup/bika_vaccionationcenters',
+                 'EpidemiologicalYear': '/bika_setup/bika_epidemiologicalyears',
+                 'IdentifierType': '/bika_setup/bika_identifiertypes',
+                 'Symptom': '/bika_setup/bika_symptoms' }
 
-    elif context.portal_type == 'BatchLabel':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_batchlabels')
-
-    elif context.portal_type == 'CaseOutcome':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_caseoutcomes')
-
-    elif context.portal_type == 'CaseStatus':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_casestatuses')
-
-    elif context.portal_type == 'Disease':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_diseases')
-
-    elif context.portal_type == 'Drug':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_drugs')
-
-    elif context.portal_type == 'DrugProhibition':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_drugprohibitions')
-
-    elif context.portal_type == 'Immunization':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_immunizations')
-
-    elif context.portal_type == 'Treatment':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_treatments')
-
-    elif context.portal_type == 'VaccionationCenter':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_vaccionationcenters')
-
-    elif context.portal_type == 'EpidemiologicalYear':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_epidemiologicalyears')
-
-    elif context.portal_type == 'IdentifierType':
-    	state.setNextAction('redirect_to:string:${portal_url}/bika_setup/bika_identifiertypes')
-
+    if context.portal_type in redirects:
+        redirect = 'redirect_to:string:${portal_url}' + redirects[context.portal_type]
+        state.setNextAction(redirect)
     else:
-    	stat = 'success'
+        stat = 'success'
 
-	addStatusMessage(request, message)
+    addStatusMessage(request, message)
     return state.set(status=stat)
