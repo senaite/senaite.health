@@ -4,6 +4,7 @@
 HEALTH-122: Client contact cannot open Client page/AR page blank
 HEALTH-92: Display Patients tab inside Referral Institution (Client)
 HEALTH-109: Manually adding symptoms saving but remaining on the same page
+HEALTH-124: Client contact can access doctors and patients of other clients
 HEALTH-121: Client contact gets Insufficient Privileges upon login
 HEALTH-133: Case creation: Basal body temperature fields accepting values way out of range
 HEALTH-106: Mimetype text/plain is not allowed in Drug edit view

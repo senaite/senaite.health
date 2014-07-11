@@ -1,11 +1,13 @@
 from setuptools import setup, find_packages
+import os
 
 version = '3.1.1'
 
 setup(name='bika.health',
       version=version,
       description="Bika Health Open Source LIMS",
-      long_description=open("README.md").read(),
+      long_description=open("README.md").read() + "\n\n" +
+                       open("CHANGELOG.txt").read(),
       # Get more strings from
       # http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
