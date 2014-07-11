@@ -3,7 +3,7 @@
         meta_type="Factory-based Type Information with dynamic views"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n"
         i18n:domain="plone">
- <property name="title" i18n:translate="">Case SyndromicClassification</property>
+ <property name="title" i18n:translate="">Case Syndromic Classification</property>
  <property name="description"></property>
  <property name="content_icon">++resource++bika.health.images/casesyndromicclassification.png</property>
  <property name="content_meta_type">CaseSyndromicClassification</property>
