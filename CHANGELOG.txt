@@ -1,6 +1,7 @@
 3.1.2
 ------------------
 under development
+HEALTH-27: AR Create. Copying Patient fields across does not autocomplete corresponding Name or ID
 
 
 3.1.1 (2014-07-11)
