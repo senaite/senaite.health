@@ -32,7 +32,7 @@ setup(name='bika.health',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'bika.lims==3.1.2',
+          'bika.lims>=3.1.2',
           'archetypes.schemaextender',
           'collective.wtf',
       ],
