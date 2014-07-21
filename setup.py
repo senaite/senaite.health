@@ -32,6 +32,7 @@ setup(name='bika.health',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+          'setuptools',
           'bika.lims==3.1.1',
           'archetypes.schemaextender',
           'collective.wtf',
@@ -41,7 +42,8 @@ setup(name='bika.health',
                   'plone.app.testing',
                   'robotsuite',
                   'robotframework-selenium2library',
-                  'plone.app.robotframework'
+                  'plone.app.robotframework',
+                  'robotframework-debuglibrary',
               ]
       },
       entry_points="""
