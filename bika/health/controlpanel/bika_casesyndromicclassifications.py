@@ -1,9 +1,12 @@
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from Products.ATContentTypes.content import schemata
 from Products.Archetypes import atapi
+from Products.Archetypes.ArchetypeTool import registerType
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.health.config import PROJECTNAME
 from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
+from bika.lims.content.bikaschema import BikaFolderSchema
 from bika.health.interfaces import ICaseSyndromicClassifications
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.content.browser.interfaces import IFolderContentsView
@@ -16,7 +19,7 @@ class CaseSyndromicClassificationsView(BikaListingView):
     def __init__(self, context, request):
         super(CaseSyndromicClassificationsView, self).__init__(context, request)
         self.catalog = 'bika_setup_catalog'
-        self.contentFilter = {'portal_type': 'CaseSyndromicClassifications',
+        self.contentFilter = {'portal_type': 'CaseSyndromicClassification',
                               'sort_on': 'sortable_title'}
         self.context_actions = {_('Add'):
                                 {'url': 'createObject?type_name=CaseSyndromicClassification',

@@ -1,6 +1,8 @@
 3.1.2
 ------------------
 under development
+
+HEALTH-105: Case syndromic classifications site eror in setup
 HEALTH-27: AR Create. Copying Patient fields across does not autocomplete corresponding Name or ID
 
 
