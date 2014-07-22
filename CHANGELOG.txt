@@ -2,7 +2,10 @@
 ------------------
 under development
 
+HEALTH-104: Health Setup data failures
+HEALTH-28: Health load setup data. Drugs and Treatments did not import
 HEALTH-105: Case syndromic classifications site eror in setup
+HEALTH-93: AR. Updating Info portion
 HEALTH-27: AR Create. Copying Patient fields across does not autocomplete corresponding Name or ID
 
 
