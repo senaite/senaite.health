@@ -4,6 +4,7 @@
   <type portal_type="AetiologicAgent"/>
   <type portal_type="CaseOutcome"/>
   <type portal_type="CaseStatus"/>
+  <type portal_type="CaseSyndromicClassification"/>
   <type portal_type="Disease"/>
   <type portal_type="Doctor"/>
   <type portal_type="Drug"/>

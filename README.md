@@ -1,4 +1,4 @@
-Bika Health 3.1.1 (Naringenin)
+Bika Health 3.1.2 (Naringenin)
 ================
 
 Bika Laboratory Information Management System customised for use in Health laboratories.

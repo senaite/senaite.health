@@ -39,4 +39,12 @@
         sortkey="1"
         profile="bika.health:default"/>
 
+ <genericsetup:upgradeStep
+        title="HEALTH-105 Case syndromic classifications site eror in setup"
+        description=""
+        source="3004"
+        destination="3005"
+        handler="bika.health.upgrade.to3005.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>
