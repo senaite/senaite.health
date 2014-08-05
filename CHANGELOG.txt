@@ -1,3 +1,8 @@
+3.1.2.1 (2014-08-05)
+--------------------
+
+HEALTH-143: Site creation fails when using egg, due to syntax error
+
 3.1.2 (2014-07-25)
 ------------------
 
