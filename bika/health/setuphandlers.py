@@ -66,7 +66,7 @@ def setupHealthVarious(context):
                    'bika_casestatuses',
                    'bika_caseoutcomes',
                    'bika_epidemiologicalyears',
-                   'bika_identifiertypes'
+                   'bika_identifiertypes',
                    'bika_casesyndromicclassifications',
                    ):
         obj = bika_setup._getOb(obj_id)
