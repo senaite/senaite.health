@@ -42,7 +42,6 @@ class Treatments(WorksheetImporter):
         folder = self.context.bika_setup.bika_treatments
         for row in self.get_rows(3):
             obj = _createObjectByType('Treatment', folder, tmpID())
-            obj = folder[_id]
             if row['title']:
                 obj.edit(title=row['title'],
                          description=row.get('description', ''),
@@ -77,7 +76,6 @@ class Aetiologic_Agents(WorksheetImporter):
         folder = self.context.bika_setup.bika_aetiologicagents
         for row in self.get_rows(3):
             obj = _createObjectByType('AetiologicAgent', folder, tmpID())
-            obj = folder[_id]
             if not row['title']:
                 continue
             ae_title = row['title']
@@ -95,7 +93,6 @@ class Case_Syndromic_Classifications(WorksheetImporter):
         folder = self.context.bika_setup.bika_casesyndromicclassifications
         for row in self.get_rows(3):
             obj = _createObjectByType('CaseSyndromicClassification', folder, tmpID())
-            obj = folder[_id]
             if row['title']:
                 obj.edit(title=row['title'],
                          description=row.get('description', ''),)
@@ -109,7 +106,6 @@ class Drugs(WorksheetImporter):
         folder = self.context.bika_setup.bika_drugs
         for row in self.get_rows(3):
             obj = _createObjectByType('Drug', folder, tmpID())
-            obj = folder[_id]
             if row['title']:
                 obj.edit(title=row['title'],
                          description=row.get('description', ''),
@@ -128,7 +124,6 @@ class Drug_Prohibitions(WorksheetImporter):
         folder = self.context.bika_setup.bika_drugprohibitions
         for row in self.get_rows(3):
             obj = _createObjectByType('DrugProhibition', folder, tmpID())
-            obj = folder[_id]
             if row['title']:
                 obj.edit(title=row['title'],
                          description=row.get('description', ''),)
@@ -142,7 +137,6 @@ class Identifier_Types(WorksheetImporter):
         folder = self.context.bika_setup.bika_identifiertypes
         for row in self.get_rows(3):
             obj = _createObjectByType('IdentifierType', folder, tmpID())
-            obj = folder[_id]
             if row['title']:
                 obj.edit(title=row['title'],
                          description=row.get('description', ''),)
@@ -156,7 +150,6 @@ class Immunizations(WorksheetImporter):
         folder = self.context.bika_setup.bika_immunizations
         for row in self.get_rows(3):
             obj = _createObjectByType('Immunization', folder, tmpID())
-            obj = folder[_id]
             if row['title']:
                 obj.edit(title=row['title'],
                          description=row.get('description', ''),
