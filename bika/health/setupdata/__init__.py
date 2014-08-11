@@ -1,4 +1,5 @@
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode, _createObjectByType
 from bika.lims import logger
 from bika.lims.exportimport.dataimport import SetupDataSetList as SDL
 from bika.lims.exportimport.setupdata import WorksheetImporter
@@ -31,6 +32,157 @@ class Symptoms(WorksheetImporter):
                          description=row.get('Description', ''),
                          Gender=row.get('Gender', 'dk'),
                          SeverityAllowed=self.to_bool(row.get('SeverityAllowed', 1)))
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
+class Treatments(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_treatments
+        for row in self.get_rows(3):
+            obj = _createObjectByType('Treatment', folder, tmpID())
+            if row['title']:
+                obj.edit(title=row['title'],
+                         description=row.get('description', ''),
+                         Type=row.get('Type', 'active'),
+                         Procedure=row.get('Procedure', ''),
+                         Care=row.get('Care', ''),
+                         SubjectiveClinicalFindings=row.get('SubjectiveClinicalFindings', ''),
+                         ObjectiveClinicalFindings=row.get('ObjectiveClinicalFindings', ''),)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
+class Aetiologic_Agents(WorksheetImporter):
+
+    def get_subtypes(self):
+        sheetname = 'Aetiologic Agents Subtypes'
+        worksheet = self.workbook.get_sheet_by_name(sheetname)
+        if not worksheet:
+            return
+        subtypes = {}
+        rows = self.get_rows(3, worksheet=worksheet)
+        for row in rows:
+            ae_title = row['aetiologicagent_title']
+            if ae_title not in subtypes.keys():
+                subtypes[ae_title] = []
+            subtypes[ae_title].append({'Subtype': row.get('Subtype', ''),
+                                       'SubtypeRemarks': row.get('SubtypeRemarks', '')})
+        return subtypes
+
+    def Import(self):
+        subtypes = self.get_subtypes()
+        folder = self.context.bika_setup.bika_aetiologicagents
+        for row in self.get_rows(3):
+            obj = _createObjectByType('AetiologicAgent', folder, tmpID())
+            if not row['title']:
+                continue
+            ae_title = row['title']
+            ae_subtypes = subtypes.get(ae_title, [])
+            obj.edit(title=row['title'],
+                     description=row.get('description', ''),
+                     AetiologicAgentSubtypes=ae_subtypes)
+            obj.unmarkCreationFlag()
+            renameAfterCreation(obj)
+
+
+class Case_Syndromic_Classifications(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_casesyndromicclassifications
+        for row in self.get_rows(3):
+            obj = _createObjectByType('CaseSyndromicClassification', folder, tmpID())
+            if row['title']:
+                obj.edit(title=row['title'],
+                         description=row.get('description', ''),)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
+class Drugs(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_drugs
+        for row in self.get_rows(3):
+            obj = _createObjectByType('Drug', folder, tmpID())
+            if row['title']:
+                obj.edit(title=row['title'],
+                         description=row.get('description', ''),
+                         Category=row.get('Category', ''),
+                         Indications=row.get('Indications', ''),
+                         Posology=row.get('Posology', ''),
+                         SideEffects=row.get('SideEffects', ''),
+                         Preservation=row.get('Preservation', ''),)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
+class Drug_Prohibitions(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_drugprohibitions
+        for row in self.get_rows(3):
+            obj = _createObjectByType('DrugProhibition', folder, tmpID())
+            if row['title']:
+                obj.edit(title=row['title'],
+                         description=row.get('description', ''),)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
+class Identifier_Types(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_identifiertypes
+        for row in self.get_rows(3):
+            obj = _createObjectByType('IdentifierType', folder, tmpID())
+            if row['title']:
+                obj.edit(title=row['title'],
+                         description=row.get('description', ''),)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
+class Immunizations(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_immunizations
+        for row in self.get_rows(3):
+            obj = _createObjectByType('Immunization', folder, tmpID())
+            if row['title']:
+                obj.edit(title=row['title'],
+                         description=row.get('description', ''),
+                         Form=row.get('Form', 'active'),
+                         RelevantFacts=row.get('RelevantFacts', ''),
+                         GeographicalDistribution=row.get('GeographicalDistribution', ''),
+                         Transmission=row.get('Transmission', ''),
+                         Symptoms=row.get('Symptoms', ''),
+                         Risk=row.get('Risk', ''),
+                         Treatment=row.get('Treatment', ''),
+                         Prevention=row.get('Prevention', ''),)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
+class Vaccination_Centers(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_vaccinationcenters
+        for row in self.get_rows(3):
+            obj = _createObjectByType("VaccinationCenter", folder, tmpID())
+            if row['Name']:
+                obj.edit(
+                    Name=row.get('Name', ''),
+                    TaxNumber=row.get('TaxNumber', ''),
+                    AccountType=row.get('AccountType', {}),
+                    AccountName=row.get('AccountName', {}),
+                    AccountNumber=row.get('AccountNumber', ''),
+                    BankName=row.get('BankName', ''),
+                    BankBranch=row.get('BankBranch', ''),
+                )
+                self.fill_contactfields(row, obj)
+                self.fill_addressfields(row, obj)
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
 

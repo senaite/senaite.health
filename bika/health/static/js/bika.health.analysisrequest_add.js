@@ -40,13 +40,13 @@ function AnalysisRequestAddView() {
             // The current AR Add View doesn't come from a batch nor patient or
             // data autofilling failed. Handle event firing when Patient or
             // ClientPatientID fields change.
-            $('[id$="_ClientPatientID"]').bind("selected paste blur", function() {
+            $('[id$="_ClientPatientID"]').bind("selected paste blur change", function() {
                 colposition = $(this).closest('td').attr('column');
                 loadPatient($(this).val(), colposition);
                 checkClientContacts();
             });
 
-            $('[id$="_Patient"]').bind("selected paste blur", function() {
+            $('[id$="_Patient"]').bind("selected paste blur change", function() {
                 colposition = $(this).closest('td').attr('column');
                 uid = $("#"+this.id+"_uid").val();
                 loadClientPatientID(uid, colposition);

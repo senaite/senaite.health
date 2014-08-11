@@ -28,6 +28,7 @@ else:
     redirects = {'AetiologicAgent' : '/bika_setup/bika_aetiologicagents',
                  'BatchLabel' : '/bika_setup/bika_batchlabels',
                  'CaseOutcome': '/bika_setup/bika_caseoutcomes',
+                 'CaseSyndromicClassification' : '/bika_setup/bika_casesyndromicclassifications',
                  'CaseStatus': '/bika_setup/bika_casestatuses',
                  'Disease': '/bika_setup/bika_diseases',
                  'Drug': '/bika_setup/bika_drugs',

@@ -15,6 +15,54 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
     <adapter
+      name="Treatments"
+      factory="bika.health.setupdata.Treatments"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Aetiologic_Agents"
+      factory="bika.health.setupdata.Aetiologic_Agents"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Case_Syndromic_Classifications"
+      factory="bika.health.setupdata.Case_Syndromic_Classifications"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Drugs"
+      factory="bika.health.setupdata.Drugs"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Drug_Prohibitions"
+      factory="bika.health.setupdata.Drug_Prohibitions"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Identifier_Types"
+      factory="bika.health.setupdata.Identifier_Types"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Immunizations"
+      factory="bika.health.setupdata.Immunizations"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
+      name="Vaccination_Centers"
+      factory="bika.health.setupdata.Vaccination_Centers"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
       name="Case_Outcomes"
       factory="bika.health.setupdata.Case_Outcomes"
       provides="bika.lims.interfaces.ISetupDataImporter"

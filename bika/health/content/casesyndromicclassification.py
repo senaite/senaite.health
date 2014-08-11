@@ -1,8 +1,15 @@
 from AccessControl import ClassSecurityInfo
-from Products.Archetypes.public import BaseContent
-from Products.Archetypes.public import registerType
+from Products.ATExtensions.ateapi import RecordsField
+from DateTime import DateTime
+from Products.ATExtensions.ateapi import DateTimeField, DateTimeWidget
+from Products.Archetypes.public import *
+from Products.CMFCore.permissions import View, ModifyPortalContent
+from bika.lims import bikaMessageFactory as _b
+from bika.health import bikaMessageFactory as _
 from bika.lims.content.bikaschema import BikaSchema
 from bika.health.config import PROJECTNAME
+from bika.lims.browser.widgets import RecordsWidget
+from zope.interface import implements
 
 schema = BikaSchema.copy()
 schema['description'].widget.visible = True

@@ -71,7 +71,7 @@
     <browser:page
       for="bika.health.interfaces.ICaseSyndromicClassifications"
       name="folder_view"
-      class=".bika_casesyndromicclassifications.CaseSyndromicClassifications"
+      class=".bika_casesyndromicclassifications.CaseSyndromicClassificationsView"
       permission="bika.lims.ManageBika"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
