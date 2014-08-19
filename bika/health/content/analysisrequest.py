@@ -6,7 +6,6 @@ from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
 from bika.lims.fields import *
 from bika.lims import bikaMessageFactory as _b
-from bika.lims.adapters.widgetvisibility import WidgetVisibility as _WV
 from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.interfaces import IAnalysisRequest
 from bika.lims.vocabularies import CatalogVocabulary

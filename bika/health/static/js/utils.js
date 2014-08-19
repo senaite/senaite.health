@@ -37,6 +37,12 @@ $(document).ready(function(){
 	 */
 	$("img[src$='bika.lims.images/hazardous.png']").attr('src', window.portal_url + "/++resource++bika.health.images/hazardous.png");
 	$("img[src$='bika.lims.images/hazardous_big.png']").attr('src', window.portal_url + "/++resource++bika.health.images/hazardous_big.png");
+	$("img[src$='bika.lims.images/client.png']").attr('src', window.portal_url + "/++resource++bika.health.images/client.png");
+	$("img[src$='bika.lims.images/client_big.png']").attr('src', window.portal_url + "/++resource++bika.health.images/client_big.png");
+	$("img[src$='bika.lims.images/doctor.png']").attr('src', window.portal_url + "/++resource++bika.health.images/doctor.png");
+	$("img[src$='bika.lims.images/doctor_big.png']").attr('src', window.portal_url + "/++resource++bika.health.images/doctor_big.png");
+	$("img[src$='bika.lims.images/supplyorder.png']").attr('src', window.portal_url + "/++resource++bika.health.images/supplyorder.png");
+	$("img[src$='bika.lims.images/supplyorder_big.png']").attr('src', window.portal_url + "/++resource++bika.health.images/supplyorder_big.png");
 });
 }(jQuery));
 
