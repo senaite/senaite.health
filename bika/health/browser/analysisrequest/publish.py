@@ -49,6 +49,7 @@ class AnalysisRequestPublishView(_AnalysisRequestPublishView):
             tbex = traceback.format_exc()
             arid = self._ars[self._current_ar_index].id
             reptemplate = "<div class='error-report'>%s - %s '%s':<pre>%s</pre></div>" % (arid, _("Unable to load the template"), embedt, tbex)
+            self.logger.error(tbex);
         self._nextAnalysisRequest()
         return reptemplate
 
