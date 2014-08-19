@@ -1,5 +1,8 @@
+'use strict';
 window.bika = window.bika || { lims: {} };
 window.bika['health']={};
+window.jarn.i18n.loadCatalog("bika.health");
+var _h = window.jarn.i18n.MessageFactory("bika.health");
 
 /**
  * Dictionary of JS objects to be loaded at runtime.
@@ -10,26 +13,29 @@ window.bika['health']={};
  */
 window.bika.health.controllers =  {
 
+    "body":
+        ['HealthSiteView'],
+
     ".template-base_view.portaltype-batch":
-        ['BatchViewView'],
+        ['HealthBatchViewView'],
 
     "#batch-base-edit":
-        ['BatchEditView',
-         'PatientEditView',
-         'PatientPublicationPrefsEditView'],
+        ['HealthBatchEditView',
+         'HealthPatientEditView',
+         'HealthPatientPublicationPrefsEditView'],
 
     "#patient-base-edit":
-        ['PatientEditView',
-         'PatientPublicationPrefsEditView'],
+        ['HealthPatientEditView',
+         'HealthPatientPublicationPrefsEditView'],
 
     ".template-ar_add #analysisrequest_edit_form":
-        ['AnalysisRequestAddView', ],
+        ['HealthAnalysisRequestAddView', ],
 
     ".template-base_edit.portaltype-bikasetup":
-        ['BikaSetupEditView'],
+        ['HealthBikaSetupEditView'],
 
     ".template-base_edit.portaltype-client":
-        ['ClientEditView'],
+        ['HealthClientEditView'],
 
 };
 
@@ -50,10 +56,12 @@ window.bika.health.initview = function() {
                     try {
                         obj = new window[js]();
                         obj.load();
+                        // Register the object for further access
+                        window.bika.health[js]=obj;
                         loaded.push(js);
                     } catch (e) {
                        // statements to handle any exceptions
-                       console.warn('[bika.health.loader] Unable to load '+js+": "+ e.message);
+                       console.warn('[bika.health.loader] Unable to load '+js+": "+ e.message +"\n"+e.stack);
                     }
                 }
             });
@@ -71,9 +79,10 @@ window.bika.health.initialize = function() {
     if (bika.lims.initialized == true) {
         return window.bika.health.initview();
     }
+    // We should wait after bika.lims being initialized
     setTimeout(function() {
         return window.bika.health.initialize();
-    });
+    }, 500);
 };
 
 (function( $ ) {
@@ -85,4 +94,3 @@ $(document).ready(function(){
 
 });
 }(jQuery));
-

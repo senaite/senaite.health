@@ -47,4 +47,13 @@
         handler="bika.health.upgrade.to3005.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+ <genericsetup:upgradeStep
+        title="HEALTH-150 Compatibility with the new JS loader machinery"
+        description=""
+        source="3005"
+        destination="3006"
+        handler="bika.health.upgrade.to3006.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>

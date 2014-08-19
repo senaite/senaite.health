@@ -1,7 +1,7 @@
 /**
  * Controller class for BikaSetup edit/creation view
  */
-function ClientEditView() {
+function HealthClientEditView() {
 
     var that = this;
     that.patientpublicationprefs_section = $("#archetypes-fieldname-PatientPublicationPreferences");
@@ -17,9 +17,9 @@ function ClientEditView() {
      * Entry-point method for BikaSetupEditView
      */
     that.load = function() {
-        
+
         applyTransitions(false);
-        
+
         $(that.defaultpatientpubprefs).click(function() {
             applyTransitions(true);
         });

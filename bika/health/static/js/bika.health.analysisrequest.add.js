@@ -1,7 +1,7 @@
 /**
  * Controller class for AnalysisRequest add view
  */
-function AnalysisRequestAddView() {
+function HealthAnalysisRequestAddView() {
 
     var that = this;
 

@@ -1,7 +1,7 @@
 /**
  * Controller class for Patient edit/creation view
  */
-function PatientEditView() {
+function HealthPatientEditView() {
 
     var that = this;
 
@@ -258,7 +258,7 @@ function PatientEditView() {
 /**
  * Controller for patient's publication preferences section
  */
-function PatientPublicationPrefsEditView() {
+function HealthPatientPublicationPrefsEditView() {
 
     var that = this
     that.publicationprefs_section = $("#archetypes-fieldname-PublicationPreferences");

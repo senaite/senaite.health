@@ -1,7 +1,7 @@
 /**
  * Controller class for BikaSetup edit/creation view
  */
-function BikaSetupEditView() {
+function HealthBikaSetupEditView() {
 
     var that = this;
     that.patientpublicationprefs = $("#archetypes-fieldname-PatientPublicationPreferences");
@@ -19,7 +19,7 @@ function BikaSetupEditView() {
         loadEventHandlers();
     }
 
-    /** 
+    /**
      * Management of events and triggers
      */
     function loadEventHandlers() {
