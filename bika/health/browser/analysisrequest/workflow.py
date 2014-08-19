@@ -4,23 +4,22 @@ from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
 from bika.lims import logger
 from bika.lims.browser.analysisrequest import \
-    AnalysisRequestWorkflowAction as BaseClass
+    AnalysisRequestWorkflowAction as _AnalysisRequestWorkflowAction
 from bika.lims.utils import encode_header
 from bika.lims.utils import isActive
 from email.Utils import formataddr
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from bika.health.browser.analysisrequest.publish import AnalysisRequestPublish
+from bika.health.browser.analysisrequest.publish import AnalysisRequestPublishView
 from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange
 
-
-class WorkflowAction(BaseClass):
+class AnalysisRequestWorkflowAction(_AnalysisRequestWorkflowAction):
 
     def __call__(self):
         # Do generic bika.lims stuff
-        BaseClass.__call__(self)
+        _AnalysisRequestWorkflowAction.__call__(self)
         # Do bika-health specific actions when submit
-        action = BaseClass._get_form_workflow_action(self)
+        action = _AnalysisRequestWorkflowAction._get_form_workflow_action(self)
         addPortalMessage = self.context.plone_utils.addPortalMessage
         if action[0] == 'submit' and isActive(self.context):
             inpanicanalyses = []
@@ -109,10 +108,7 @@ class WorkflowAction(BaseClass):
                         addPortalMessage(message, 'warning')
 
     def cloneAR(self, ar):
-        newar = BaseClass.cloneAR(self, ar)
+        newar = _AnalysisRequestWorkflowAction.cloneAR(self, ar)
         newar.Schema()['Patient'].set(newar, ar.Schema()['Patient'].get(ar))
         newar.Schema()['Doctor'].set(newar, ar.Schema()['Doctor'].get(ar))
         return newar
-
-    def doPublish(self, context, request, action, analysis_requests):
-        return AnalysisRequestPublish(context, request, action, analysis_requests)
