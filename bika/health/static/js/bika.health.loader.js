@@ -61,7 +61,9 @@ window.bika.health.initview = function() {
                         loaded.push(js);
                     } catch (e) {
                        // statements to handle any exceptions
-                       console.warn('[bika.health.loader] Unable to load '+js+": "+ e.message +"\n"+e.stack);
+                       var msg = '[bika.health.loader] Unable to load '+js+": "+ e.message +"\n"+e.stack;
+                       console.warn(msg);
+                       window.bika.lims.error(msg);
                     }
                 }
             });
