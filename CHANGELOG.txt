@@ -1,6 +1,7 @@
 3.2 ()
 ------------------
 
+HEALTH-149: Compatibility with the new Bika LIMS reporting subsystem
 HEALTH-152: Upgrade the test data worksheet
 
 
