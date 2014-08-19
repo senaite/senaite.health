@@ -42,33 +42,17 @@ table tr th {
     text-align:left;
 }
 
-table#section-header{
-    border-bottom:1px solid #000;
+#section-header{
 }
 
-table#section-header,
-table#section-info {
+#section-header,
+#section-info {
     width:100%;
     margin-bottom:20px;
 }
-table#section-header tr td,
-table#section-info tr td {
+#section-header tr td,
+#section-info tr td {
     vertical-align:top;
-}
-table#section-header td#lab-logo {
-
-}
-table#section-header td#accreditation-logo {
-    /*text-align:right;*/
-    width:80mm;
-}
-
-table#section-info {
-}
-table#section-info td#client-info {
-}
-table#section-info td#lab-info {
-    width:80mm;
 }
 #section-alert {
     padding:20px;
@@ -204,6 +188,29 @@ table#section-info td#lab-info {
 }
 .barcode {
     float: right;
+}
+div#section-info td {
+    vertical-align: top;
+}
+div#section-info td a {
+    text-decoration: none;
+}
+div#section-info table {
+    width: 100%;
+}
+div#section-info td#lab-title {
+    font-weight: bold;
+    font-size:14px;
+}
+div#section-info td#client-info td#client-name,
+div#section-info td#client-info td#client-name a {
+    font-size:14px;
+    font-weight: bold;
+}
+
+div#section-patient table,
+div#section-sample table {
+    width: 100%;
 }
 
 @media print {

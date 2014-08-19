@@ -113,9 +113,9 @@ class AnalysisRequestPublishView(_AnalysisRequestPublishView):
             addr = self.get_formatted_address(client_address)
         return addr
 
-    def get_formatted_client_address(self):
-        client = self.ar['obj'].getClient()
-        contact = self.ar['obj'].getContact();
+    def get_formatted_client_address(self, ar):
+        client = ar.getClient()
+        contact = ar.getContact();
         client_address = client.getPostalAddress() \
             or contact.getBillingAddress() \
             or contact.getPhysicalAddress()
