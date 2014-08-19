@@ -1,3 +1,5 @@
+'use strict;'
+
 /**
  * Controller class for Patient edit/creation view
  */
@@ -19,6 +21,7 @@ function HealthPatientEditView() {
     this.getClientUIDReferrer = function() {
         // Force first to check if the referrer is a Patient Batches view. In
         // that case, the refclientuid var will be set by the following method
+        var refclientuid = '';
         if (document.referrer.search('/clients/') >= 0) {
             clientid = document.referrer.split("clients")[1].split("/")[1];
             $.ajax({
