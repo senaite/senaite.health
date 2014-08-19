@@ -557,7 +557,7 @@ function HealthBatchEditView() {
      * Returns the overlay object suitable to be attached to the Patient's field
      */
     function getPatientOverlay() {
-        dateFormat = _b("date_format_short_datepicker");
+        dateFormat = _("date_format_short_datepicker");
         editpatient_overlay = {
             subtype: 'ajax',
             filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
@@ -579,7 +579,7 @@ function HealthBatchEditView() {
                             changeMonth:true,
                             changeYear:true,
                             maxDate: '+0d',
-                            dateFormat: _b("date_format_short_datepicker"),
+                            dateFormat: _("date_format_short_datepicker"),
                             yearRange: "-100:+0"
                         })
                         .click(function(){$(this).attr('value', '');})
