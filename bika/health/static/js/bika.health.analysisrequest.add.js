@@ -208,10 +208,10 @@ function HealthAnalysisRequestAddView() {
                             base_query['getParentUID'] = data['ClientUID'];
                             applyComboFilter(element, base_query);
                         }
+                        return true;
                     }
                 }
             });
-            return $("#ar_0_Patient").attr('uid',data['PatientUID']) != '';
         }
         return false;
     }
