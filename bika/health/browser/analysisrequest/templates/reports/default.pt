@@ -135,7 +135,7 @@
 </div>
 
 <!-- Patient info -->
-<div id="section-patient">
+<div id="section-patient" tal:condition="patient">
     <h1 i18n:translate="">Patient Information</h1>
     <table>
         <tr>
@@ -264,7 +264,7 @@
                    tal:attributes="href analysisrequest/url"></a>
                 <img width="16px" height="16px"
                      tal:condition="python:ar_obj.getInvoiceExclude()"
-                     tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/invoice_exclude.png" />
+                     tal:attributes="src string:${portal/url}/++resource++bika.lims.images/invoice_exclude.png" />
             </td>
         </tr>
         <tr>
