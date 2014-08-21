@@ -21,7 +21,8 @@ class DoctorsView(ClientContactsView):
         self.pagesize = 50
 
         self.columns = {
-            'getDoctorID': {'title': _('Doctor ID')},
+            'getDoctorID': {'title': _('Doctor ID'),
+                            'index': 'getDoctorID'},
             'getFullname': {'title': _('Full Name'),
                             'index': 'getFullname'},
             'getEmailAddress': {'title': _('Email Address')},
