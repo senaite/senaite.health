@@ -1,6 +1,7 @@
 3.2 ()
 ------------------
 
+HEALTH-169: Analyst can't see Samples site, Admin can.
 HEALTH-168: Diagnosis ICD widget does not complete from Code, Description
 HEALTH-161: In Add Patient, after introducing the Birth Date, the patient's age don't get filled automatically.
 HEALTH-150: Compatibility with the new JS loader machinery
