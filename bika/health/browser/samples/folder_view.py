@@ -37,10 +37,12 @@ class SamplesView(BaseView):
             del self.columns['getPatientID']
             del self.columns['getClientPatientID']
             del self.columns['getPatient']
+            del self.columns['getDoctor']
             for rs in self.review_states:
                 del rs['columns'][rs['columns'].index('getClientPatientID')]
                 del rs['columns'][rs['columns'].index('getPatientID')]
                 del rs['columns'][rs['columns'].index('getPatient')]
+                del rs['columns'][rs['columns'].index('getDoctor')]
         else:
             for x in range(len(items)):
                 if 'obj' not in items[x]:
