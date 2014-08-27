@@ -1,6 +1,8 @@
 3.2 ()
 ------------------
 
+HEALTH-168: Diagnosis ICD widget does not complete from Code, Description
+HEALTH-161: In Add Patient, after introducing the Birth Date, the patient's age don't get filled automatically.
 HEALTH-150: Compatibility with the new JS loader machinery
 HEALTH-149: Compatibility with the new Bika LIMS reporting subsystem
 HEALTH-152: Upgrade the test data worksheet
