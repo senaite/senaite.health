@@ -63,7 +63,7 @@ Content-Type: text/html
         <h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;padding-top:15px;">Feedback and support</h2>
 <ul style="font-size:1.2em;margin-left:15px;">
 <li>Bika mailing lists: <a class="external-link" href="https://groups.google.com/forum/?hl=en#%21forum/bika-design">LIMS design</a>, <a class="external-link" href="http://lists.sourceforge.net/lists/listinfo/bika-users">Users</a> and <a class="external-link" href="http://lists.sourceforge.net/lists/listinfo/bika-developers">Developers</a></li>
-<li>Bug reporting, issues and feature requests: <a class="external-link" href="https://github.com/bikalabs/Bika-LIMS/issues">Public issue tracker</a></li>
+<li>Bug reporting, issues and feature requests: <a class="external-link" href="http://jira.bikalabs.com/">Public issue tracker</a></li>
 <li>IRC: <a class="chatzilla-link" href="http://webchat.freenode.net?channels=bika" id="ch-url-anchor">irc://freenode.net/#bika</a>, the #bika channel on irc.freenode.net</li>
 </ul>
     </div>
