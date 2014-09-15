@@ -26,7 +26,7 @@ class DrugProhibitionsView(BikaListingView):
         self.context_actions = {_('Add'):
                                 {'url': 'createObject?type_name=DrugProhibition',
                                  'icon': '++resource++bika.lims.images/add.png'}}
-        self.title = _("Drug Prohibition Explanations")
+        self.title = self.context.translate(_("Drug Prohibition Explanations"))
         self.icon = self.portal_url + "/++resource++bika.health.images/drugprohibition_big.png"
         self.description = ""
         self.show_sort_column = False

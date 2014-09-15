@@ -20,7 +20,7 @@ class HistoricResultsView(BrowserView):
         self._dates = None
         path = "/++resource++bika.health.images"
         self.icon = self.portal_url + path + "/historicresults_big.png"
-        self.title = _("Historic Results")
+        self.title = self.context.translate(_("Historic Results"))
         self.description = ""
 
     def __call__(self):

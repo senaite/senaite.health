@@ -21,7 +21,7 @@ class AetiologicAgentsView(BikaListingView):
         self.context_actions = {_('Add'):
                                 {'url': 'createObject?type_name=AetiologicAgent',
                                  'icon': '++resource++bika.lims.images/add.png'}}
-        self.title = _("Aetiologic Agents")
+        self.title = self.context.translate(_("Aetiologic Agents"))
         self.icon = self.portal_url + "/++resource++bika.health.images/aetiologicagent_big.png"
         self.description = ""
         self.show_sort_column = False

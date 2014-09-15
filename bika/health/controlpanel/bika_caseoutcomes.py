@@ -21,7 +21,7 @@ class CaseOutcomesView(BikaListingView):
         self.context_actions = {_('Add'):
                                 {'url': 'createObject?type_name=CaseOutcome',
                                  'icon': '++resource++bika.lims.images/add.png'}}
-        self.title = _("Case Outcomes")
+        self.title = self.context.translate(_("Case Outcomes"))
         self.icon = self.portal_url + "/++resource++bika.health.images/caseoutcome_big.png"
         self.description = ""
         self.show_sort_column = False
