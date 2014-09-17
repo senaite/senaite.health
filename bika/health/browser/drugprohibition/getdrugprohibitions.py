@@ -28,6 +28,7 @@ class ajaxGetDrugProhibitions(BrowserView):
         for p in brains:
             rows.append({'Title': p.Title,
                          'UID': p.UID,
+                         'DrugProhibition': p.Title,
                          'Description': p.Description})
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'Title'))

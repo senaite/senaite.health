@@ -186,7 +186,7 @@ schema = Person.schema.copy() + Schema((
                              'width': '550px'
                          },
                          'DrugProhibition': {
-                             'colModel': [{'columnName':'Title', 'width':'30', 'label':_('Title')},
+                             'colModel': [{'columnName':'DrugProhibition', 'width':'30', 'label':_('Title')},
                                           {'columnName':'Description', 'width':'70', 'label':_('Description')}],
                              'url': 'getdrugprohibitions',
                              'showOn': True,
