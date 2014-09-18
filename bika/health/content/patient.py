@@ -213,19 +213,20 @@ schema = Person.schema.copy() + Schema((
                  subfield_sizes={'EPINumber': 12,
                                  'Immunization': 20,
                                  'VaccinationCenter': 10, 'Date': 10, 'Remarks': 25},
+                 subfield_types={'Date':'datepicker_nofuture'},
                  widget=RecordsWidget(
                      label='Immunization History',
                      description=_("A list of immunizations administered to the patient."),
                      combogrid_options={
                          'Immunization': {
-                             'colModel': [{'columnName':'Title', 'width':'30', 'label':_('Title')},
+                             'colModel': [{'columnName':'Immunization', 'width':'30', 'label':_('Title')},
                                          {'columnName':'Description', 'width':'70', 'label':_('Description')}],
                              'url': 'getimmunizations',
                              'showOn': True,
                              'width': '550px'
                          },
                          'VaccinationCenter': {
-                             'colModel': [{'columnName':'Title', 'width':'100', 'label':_('Title')}],
+                             'colModel': [{'columnName':'VaccinationCenter', 'width':'100', 'label':_('Title')}],
                              'url': 'getvaccinationcenters',
                              'showOn': True,
                              'width': '550px'

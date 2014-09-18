@@ -1,5 +1,6 @@
 3.2 ()
 ------------------
+HEALTH-163: Cannot be chosen Immunisation items from dropdown list.
 HEALTH-162: Cannot choose Drug Prohibition Explanation
 HEALTH-169: Analyst can't see Samples site, Admin can.
 HEALTH-168: Diagnosis ICD widget does not complete from Code, Description
