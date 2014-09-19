@@ -12,6 +12,6 @@ class ImmunizationHistoryView(BrowserView):
 
     def __call__(self):
         if 'submitted' in self.request:
-            self.context.setChronicConditions(self.request.form.get('ImmunizationHistory', ()))
+            self.context.setImmunizationHistory(self.request.form.get('ImmunizationHistory', ()))
             self.context.plone_utils.addPortalMessage(_p("Changes saved"))
         return self.template()
