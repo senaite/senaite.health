@@ -1,7 +1,22 @@
 /**
+ * Controller class for Batch readonly view
+ */
+function HealthBatchViewView() {
+
+    /**
+     * Entry-point method for BatchViewView
+     */
+    this.load = function() {
+
+        // These look silly in the edit screen under "Additional Notes"
+        $('div[id^="archetypes-fieldname-Remarks-"]').remove();
+    }
+}
+
+/**
  * Controller class for Batch edit/creation view
  */
-function BatchEditView() {
+function HealthBatchEditView() {
 
     var that = this;
     var refpatientuid = null;
@@ -179,8 +194,8 @@ function BatchEditView() {
         toggleMenstrualStatus();
         toggleSymptoms();
 
-	// Advertismen for too hight/low Basal body temperature
-	basalBodyTemperatureControl();
+        // Advertismen for too hight/low Basal body temperature
+        basalBodyTemperatureControl();
     }
 
     /**
@@ -542,7 +557,7 @@ function BatchEditView() {
      * Returns the overlay object suitable to be attached to the Patient's field
      */
     function getPatientOverlay() {
-        dateFormat = _b("date_format_short_datepicker");
+        dateFormat = _("date_format_short_datepicker");
         editpatient_overlay = {
             subtype: 'ajax',
             filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
@@ -564,7 +579,7 @@ function BatchEditView() {
                             changeMonth:true,
                             changeYear:true,
                             maxDate: '+0d',
-                            dateFormat: _b("date_format_short_datepicker"),
+                            dateFormat: _("date_format_short_datepicker"),
                             yearRange: "-100:+0"
                         })
                         .click(function(){$(this).attr('value', '');})
@@ -683,18 +698,18 @@ function BatchEditView() {
     }
 
     function basalBodyTemperatureControl() {
-	$( "[id^='BasalBodyTemperature-Day']" ).change(function() {
-	    if ( parseInt($(this).val()) > 41 ) {
-		$(this).next().remove(".warning");
-		$(this).parent().append("<span class = 'warning'><img title='Very high temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
-	    }
-	    else if ( parseInt($(this).val()) < 32 ) {
-		$(this).next().remove(".warning");
-		$(this).parent().append("<span class = 'warning'><img title='Very low temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
-	    }
-	    else {
-		$(this).next().remove(".warning");
-	    }
-	});
+    $( "[id^='BasalBodyTemperature-Day']" ).change(function() {
+        if ( parseInt($(this).val()) > 41 ) {
+        $(this).next().remove(".warning");
+        $(this).parent().append("<span class = 'warning'><img title='Very high temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
+        }
+        else if ( parseInt($(this).val()) < 32 ) {
+        $(this).next().remove(".warning");
+        $(this).parent().append("<span class = 'warning'><img title='Very low temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
+        }
+        else {
+        $(this).next().remove(".warning");
+        }
+    });
     }
 }

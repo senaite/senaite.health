@@ -1,7 +1,9 @@
+'use strict;'
+
 /**
  * Controller class for Patient edit/creation view
  */
-function PatientEditView() {
+function HealthPatientEditView() {
 
     var that = this;
 
@@ -19,6 +21,7 @@ function PatientEditView() {
     this.getClientUIDReferrer = function() {
         // Force first to check if the referrer is a Patient Batches view. In
         // that case, the refclientuid var will be set by the following method
+        var refclientuid = '';
         if (document.referrer.search('/clients/') >= 0) {
             clientid = document.referrer.split("clients")[1].split("/")[1];
             $.ajax({
@@ -49,6 +52,15 @@ function PatientEditView() {
         $('.template-base_edit #archetypes-fieldname-ImmunizationHistory').hide();
         $('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
         $('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
+
+	// Adapt datepicker to current needs
+	$("#BirthDate").datepicker("destroy");
+	$("#BirthDate").datepicker({
+	    dateFormat: "yy-mm-dd",
+	    changeMonth:true,
+	    changeYear:true,
+	    yearRange: "-100:+0",
+	});
 
         if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
             $('#archetypes-fieldname-MenstrualStatus').hide();
@@ -258,7 +270,7 @@ function PatientEditView() {
 /**
  * Controller for patient's publication preferences section
  */
-function PatientPublicationPrefsEditView() {
+function HealthPatientPublicationPrefsEditView() {
 
     var that = this
     that.publicationprefs_section = $("#archetypes-fieldname-PublicationPreferences");

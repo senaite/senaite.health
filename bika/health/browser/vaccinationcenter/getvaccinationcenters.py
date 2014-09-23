@@ -26,7 +26,12 @@ class ajaxGetVaccinationCenters(BrowserView):
             brains = [p for p in brains if p.Title.lower().find(searchTerm) > -1]
 
         for p in brains:
-            rows.append({'Title': p.Title})
+            rows.append({'Title': p.Title,
+                         #This one is used to avoid content/patient.py
+                         #L221 to use Title to fill the box, it could
+                         #be ambiguous for other parameters like
+                         #<<Immunization>> which could use Title too.
+                         'VaccinationCenter': p.Title})
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'Title'))
         if sord == 'desc':

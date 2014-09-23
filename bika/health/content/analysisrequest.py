@@ -6,7 +6,6 @@ from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
 from bika.lims.fields import *
 from bika.lims import bikaMessageFactory as _b
-from bika.lims.adapters.widgetvisibility import WidgetVisibility as _WV
 from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.interfaces import IAnalysisRequest
 from bika.lims.vocabularies import CatalogVocabulary
@@ -31,11 +30,13 @@ class AnalysisRequestSchemaExtender(object):
             relationship = 'AnalysisRequestDoctor',
             widget=ReferenceWidget(
                 label=_('Doctor'),
-                size=12,
+                size=20,
                 render_own_label=True,
                 visible={'edit': 'visible',
                          'view': 'visible',
-                         'add': 'visible'},
+                         'add': 'edit',
+                         'header_table': 'visible',
+                         'secondary': 'disabled'},
                 catalog_name='portal_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
@@ -60,11 +61,12 @@ class AnalysisRequestSchemaExtender(object):
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
                 label=_('Patient'),
-                size=12,
+                size=20,
                 render_own_label=True,
                 visible={'edit': 'visible',
                          'view': 'visible',
-                         'add': 'visible'},
+                         'add': 'edit',
+                         'secondary': 'disabled'},
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
@@ -108,7 +110,7 @@ class AnalysisRequestSchemaExtender(object):
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
                 label=_("Client Patient ID"),
-                size=12,
+                size=20,
                 colModel=[
                     {'columnName': 'id',
                                     'width': '20',
@@ -132,7 +134,8 @@ class AnalysisRequestSchemaExtender(object):
                 render_own_label=True,
                 visible={'edit': 'visible',
                          'view': 'visible',
-                         'add': 'visible'},
+                         'add': 'edit',
+                         },
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,

@@ -12,7 +12,7 @@ class DoctorsView(ClientContactsView):
         self.contentFilter = {'portal_type': 'Doctor',
                               'sort_on': 'sortable_title'}
         self.context_actions = {}
-        self.title = _("Doctors")
+        self.title = self.context.translate(_("Doctors"))
         self.icon = self.portal_url + "/++resource++bika.health.images/doctor_big.png"
         self.description = ""
         self.show_sort_column = False
@@ -21,7 +21,8 @@ class DoctorsView(ClientContactsView):
         self.pagesize = 50
 
         self.columns = {
-            'getDoctorID': {'title': _('Doctor ID')},
+            'getDoctorID': {'title': _('Doctor ID'),
+                            'index': 'getDoctorID'},
             'getFullname': {'title': _('Full Name'),
                             'index': 'getFullname'},
             'getEmailAddress': {'title': _('Email Address')},

@@ -7,7 +7,7 @@ class BatchFolderContentsView(BaseView):
 
     def __init__(self, context, request):
         super(BatchFolderContentsView, self).__init__(context, request)
-        self.title = _("Cases")
+        self.title = self.context.translate(_("Cases"))
         self.columns = {
             'BatchID': {'title': _('Case ID')},
             'getPatientID': {'title': _('Patient ID'), 'toggle': True},

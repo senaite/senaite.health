@@ -1,7 +1,15 @@
 3.2 ()
 ------------------
-
+HEALTH-174: Unable to add an AR to a Case (missing Client)
+HEALTH-163: Cannot be chosen Immunisation items from dropdown list.
+HEALTH-162: Cannot choose Drug Prohibition Explanation
+HEALTH-169: Analyst can't see Samples site, Admin can.
+HEALTH-168: Diagnosis ICD widget does not complete from Code, Description
+HEALTH-161: In Add Patient, after introducing the Birth Date, the patient's age don't get filled automatically.
+HEALTH-150: Compatibility with the new JS loader machinery
+HEALTH-149: Compatibility with the new Bika LIMS reporting subsystem
 HEALTH-152: Upgrade the test data worksheet
+HEALTH-145: Health icons not used. And 1 more
 
 
 3.1.2.1 (2014-08-05)

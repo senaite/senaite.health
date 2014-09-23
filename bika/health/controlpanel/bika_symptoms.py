@@ -26,7 +26,7 @@ class SymptomsView(BikaListingView):
         self.context_actions={_('Add'):
                                 {'url': 'createObject?type_name=Symptom',
                                  'icon': '++resource++bika.lims.images/add.png'}}
-        self.title=_("Symptoms")
+        self.title=self.context.translate(_("Symptoms"))
         self.icon = self.portal_url + "/++resource++bika.health.images/symptom_big.png"
         self.description=_("Additional Symptoms not covered by ICD codes, can be entered here.")
         self.show_sort_column=False

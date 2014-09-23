@@ -13,7 +13,7 @@ class ajaxGetSymptoms(BrowserView):
     def __call__(self):
         plone.protect.CheckAuthenticator(self.request)
         title = 'title' in self.request and self.request['title'] or ''
-        searchTerm = (len(title) == 0 and 'searchTerm' in self.request) and self.request['searchTerm'].lower() or title.lower()
+        self.searchTerm = (len(title) == 0 and 'searchTerm' in self.request) and self.request['searchTerm'].lower() or title.lower()
         page = 'page' in self.request and self.request['page'] or 1
         nr_rows = 'rows' in self.request and self.request['rows'] or 10
         sord = 'sord' in self.request and self.request['sord'] or 'asc'
@@ -23,35 +23,21 @@ class ajaxGetSymptoms(BrowserView):
         # lookup objects from ZODB
         brains = self.bika_setup_catalog(portal_type='Symptom',
                                          inactive_state='active')
-        if brains and searchTerm:
-            brains = [p for p in brains if p.Title.lower().find(searchTerm) > -1
-                      or p.Description.lower().find(searchTerm) > -1]
-        for p in brains:
-            p = p.getObject()
-            if (len(title) > 0 and p.Title() == title):
-                rows.append({'Code': p.getCode(),
-                             'Title': p.Title(),
-                             'Description': p.Description()})
-            elif len(title) == 0:
-                rows.append({'Code': p.getCode(),
-                             'Title': p.Title(),
-                             'Description': p.Description()})
+        if brains and self.searchTerm:
+            for brain in brains:
+                obj = brain.getObject()
+                symptom = {'Code': obj.getCode(),
+                           'Title': obj.Title(),
+                           'Description': obj.Description()}
+                rows.append(symptom)
 
         # lookup objects from ICD code list
         for icd9 in icd9_codes['R']:
-            if icd9['code'].find(searchTerm) > -1 \
-                or icd9['short'].lower().find(searchTerm) > -1 \
-                    or icd9['long'].lower().find(searchTerm) > -1:
+            rows.append({'Code': icd9['code'],
+                         'Title': icd9['short'],
+                         'Description': icd9['long']})
 
-                if (len(title) > 0 and icd9['short'] == title):
-                    rows.append({'Code': icd9['code'],
-                                 'Title': icd9['short'],
-                                 'Description': icd9['long']})
-                elif len(title) == 0:
-                    rows.append({'Code': icd9['code'],
-                                 'Title': icd9['short'],
-                                 'Description': icd9['long']})
-
+        rows = self.filterBySearchCriteria(rows)
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'Title'))
         if sord == 'desc':
             rows.reverse()
@@ -63,3 +49,40 @@ class ajaxGetSymptoms(BrowserView):
                'rows': rows[(int(page) - 1) * int(nr_rows): int(page) * int(nr_rows)]}
 
         return json.dumps(ret)
+
+    def filterBySearchCriteria(self, rows):
+        """
+        Used to filter by code, title or description when you are typing the fields
+        """
+        return [r for r in rows if 
+                r.get('Code','').lower().find(self.searchTerm) > -1 or
+                r.get('Title','').lower().find(self.searchTerm) > -1 or
+                r.get('Description','').lower().find(self.searchTerm) > -1]
+
+
+class ajaxGetSymptomsByCode(ajaxGetSymptoms):
+
+    def filterBySearchCriteria(self, rows):
+        """
+        Used to filter by code when you are typing on code field
+        """
+        return [r for r in rows if r.get('Code','').lower().find(self.searchTerm) > -1]
+
+
+class ajaxGetSymptomsByTitle(ajaxGetSymptoms):
+
+    def filterBySearchCriteria(self, rows):
+        """
+        Used to filter by title when you are typing on title field
+        """
+        return [r for r in rows if r.get('Title','').lower().find(self.searchTerm) > -1]
+
+
+class ajaxGetSymptomsByDesc(ajaxGetSymptoms):
+
+    def filterBySearchCriteria(self, rows):
+        """
+        Used to filter by description when you are typing on
+        description field
+        """
+        return [r for r in rows if r.get('Description','').lower().find(self.searchTerm) > -1]
