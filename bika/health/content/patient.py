@@ -152,7 +152,7 @@ schema = Person.schema.copy() + Schema((
                  description=_("A list of patient treatments and drugs administered."),
                      combogrid_options={
                          'Drug': {
-                             'colModel': [{'columnName':'Title', 'width':'30', 'label':_('Title')},
+                             'colModel': [{'columnName':'Drug', 'width':'30', 'label':_('Title')},
                                           {'columnName':'Description', 'width':'70', 'label':_('Description')}],
                              'url': 'getdrugs',
                              'showOn': True,

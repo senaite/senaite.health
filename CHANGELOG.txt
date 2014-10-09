@@ -1,5 +1,7 @@
 3.2 ()
 ------------------
+
+HEALTH-176: Cannot choose a drug from the dropdown list on Patient->allergies
 HEALTH-174: Unable to add an AR to a Case (missing Client)
 HEALTH-163: Cannot be chosen Immunisation items from dropdown list.
 HEALTH-162: Cannot choose Drug Prohibition Explanation
