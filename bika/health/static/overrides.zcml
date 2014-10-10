@@ -4,6 +4,9 @@
            xmlns:browser="http://namespaces.zope.org/browser"
            xmlns:five="http://namespaces.zope.org/five">
 
+  <!-- Seems that overide doesen't work with images. To modify the
+       image follow bika/health/static/js/utils.js -->
+
 	     <browser:resource
 	        name="hazardous_big.png"
 	        image="images/hazardous_big.png"
@@ -15,5 +18,18 @@
             image="images/hazardous.png"
             layer="bika.lims.interfaces.IBikaLIMS"
             />
+
+	     <browser:resource
+            name="client_big.png"
+            image="images/client_big.png"
+            layer="bika.lims.interfaces.IBikaLIMS"
+            />
+
+	     <browser:resource
+            name="client.png"
+            image="images/client.png"
+            layer="bika.lims.interfaces.IBikaLIMS"
+            />
+
 
 </configure>

@@ -24,7 +24,7 @@ class CaseSyndromicClassificationsView(BikaListingView):
         self.context_actions = {_('Add'):
                                 {'url': 'createObject?type_name=CaseSyndromicClassification',
                                  'icon': '++resource++bika.lims.images/add.png'}}
-        self.title = _("Case Syndromic Classifications")
+        self.title = self.context.translate(_("Case Syndromic Classifications"))
         self.icon = self.portal_url + "/++resource++bika.health.images/casesyndromicclassification_big.png"
         self.description = ""
         self.show_sort_column = False

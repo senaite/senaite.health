@@ -12,4 +12,28 @@
     layer="bika.lims.interfaces.IBikaLIMS"
   />
 
+  <browser:page
+    for="*"
+    name="getsymptomsbycode"
+    class=".getsymptoms.ajaxGetSymptomsByCode"
+    permission="zope.Public"
+    layer="bika.lims.interfaces.IBikaLIMS"
+  />
+
+  <browser:page
+    for="*"
+    name="getsymptomsbytitle"
+    class=".getsymptoms.ajaxGetSymptomsByTitle"
+    permission="zope.Public"
+    layer="bika.lims.interfaces.IBikaLIMS"
+  />
+
+  <browser:page
+    for="*"
+    name="getsymptomsbydesc"
+    class=".getsymptoms.ajaxGetSymptomsByDesc"
+    permission="zope.Public"
+    layer="bika.lims.interfaces.IBikaLIMS"
+  />
+
 </configure>

@@ -1,19 +1,8 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
- <javascript authenticated="False"
-              id="++resource++bika.health.js/utils.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              expression=""
-              inline="False"
-              insert-after="++resource++bika.lims.js/jquery.json.js"/>
-
   <javascript authenticated="True"
-              id="++resource++bika.health.js/doctor.js"
+              id="++resource++bika.health.js/bika.health.analysisrequest.add.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
@@ -24,7 +13,7 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/client.js"
+              id="++resource++bika.health.js/bika.health.batch.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
@@ -35,17 +24,7 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.analysisrequest_add.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              inline="False"
-              insert-after="*"/>
-
-  <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.patient_edit.js"
+              id="++resource++bika.health.js/bika.health.bikasetup.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
@@ -56,7 +35,7 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.batch_view.js"
+              id="++resource++bika.health.js/bika.health.client.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
@@ -67,7 +46,7 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.batch_edit.js"
+              id="++resource++bika.health.js/bika.health.patient.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
@@ -78,7 +57,7 @@
               insert-after="*"/>
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.bikasetup_edit.js"
+              id="++resource++bika.health.js/bika.health.site.js"
               cacheable="True"
               compression="safe"
               conditionalcomment=""
@@ -88,17 +67,8 @@
               inline="False"
               insert-after="*"/>
 
-  <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.client_edit.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              expression=""
-              inline="False"
-              insert-after="*"/>
 
+  <!-- Add javascripts ALWAYS BEFORE this one -->
   <javascript authenticated="True"
               id="++resource++bika.health.js/bika.health.loader.js"
               cacheable="True"
@@ -110,4 +80,25 @@
               inline="False"
               insert-after="*"/>
 
+  <javascript authenticated="False"
+              id="++resource++bika.health.js/bika.health.utils.js"
+              cacheable="True"
+              compression="safe"
+              conditionalcomment=""
+              cookable="True"
+              enabled="on"
+              expression=""
+              inline="False"
+              insert-after="*"/>
+
+  <!-- Remove javascripts not longer used -->
+  <javascript id="++resource++bika.health.js/utils.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/doctor.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/client.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/bika.health.analysisrequest_add.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/bika.health.patient_edit.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/bika.health.batch_view.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/bika.health.batch_edit.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/bika.health.bikasetup_edit.js" enabled="False"/>
+  <javascript id="++resource++bika.health.js/bika.health.client_edit.js" enabled="False"/>
 </object>

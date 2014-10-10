@@ -1,14 +1,14 @@
 id: front-page
-title: Welcome to Gaob Bika LIMS 3
-description: This is 3.0 RC1 of 24 Sept 2012
+title: Welcome to Bika Health 3.1.5 - Naringenin
+description: Bika Laboratory Information Management System customised for use in Health laboratories.
 subject:
 relatedItems:
 location:
 language:
-effectiveDate: 2011/01/01 23:00:00 GMT+2
+effectiveDate: 2014/10/10 14:00:00 GMT+2
 expirationDate: None
-creation_date: 2011/01/01 23:00:00 GMT+2
-modification_date: 2012/09/24 03:22:36.020815 GMT+2
+creation_date: 2014/10/10 14:00:00 GMT+2
+modification_date: 2014/10/10 14:00:00 GMT+2
 creators: admin
 contributors:
 rights:
@@ -21,30 +21,31 @@ Content-Type: text/html
 <div style="margin-bottom:30px;" class="center">
 <h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;text-align:left;"> Workflow</h2>
 <p style="line-height:140%;font-size:1.2em;text-align:left;padding-bottom:15px;">
-     The Bika LIMS workflow fits all lab disciplines, conforming to the ISO 17025 standard. Bika is Open Source, flexible and allows customisations to your lab's specific requirements.</p>
-<img src="workflow-diagram.png" alt="Bika LIMS" class="image-inline" title="Bika LIMS"/>
+     Bika Health inherits Gaob LIMS 3's ISO 17025 compliant functionality, and adds Patients, Doctors, Clinical Cases and Referring Institutions. Bika Health is Free and Open Source, and can be customised to your lab's specific requirements.</p>
+<img src="health-workflow-diagram.png" alt="Bika Health" class="image-inline" title="Bika Health"/>
 </div>
 <div style="margin-bottom:30px;">
 <div style="float:left;width:47%;">
-<h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;">The meaning of Gaob</h2>
-<p style="line-height:140%;font-size:1.2em;">In the tradition of <i>Chief </i>Inkosi Bika LIMS 2 using a title for a release, this edition is code-named<i> </i>Gaob Bika LIMS 3. Gaob, <i>King,</i> is taken from <a class="external-link" href="http://www.san.org.za/">Khoi San</a> Nama, language of <a class="external-link" href="http://www.independent.co.uk/news/science/worlds-most-ancient-race-traced-in-dna-study-1677113.html">the world's first people</a>.</p>
+<h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;">The meaning of Naringenine</h2>
+<p style="line-height:140%;font-size:1.2em;">
+<a href='http://en.wikipedia.org/wiki/Naringenin' class='external-link'>Naringenin</a> is a flavanone, a typeof flavonoid, that is considered to have a bioactive effect on human health as antioxidant, free radical scavenger, anti-inflammatory, carbohydrate metabolism promoter, and immune system modulator. It is the predominant flavanone in grapefruit.</p>
 
 <h2 style="margin-bottom:10px;padding-top:15px;border-bottom:1px solid #888;font-size:1.6em;">Documentation</h2>
         <p style="line-height:140%;font-size:1.2em;">
             Work in progress:
         <ul style="font-size:1.2em;margin-left:15px;">
-                <li><a class="external-link" href="http://demo.bikalabs.com/knowledge-centre/manual/bika-3-user-manual">User Manual</a></li>
+                <li><a class="external-link" href="http://demo.bikalabs.com/knowledge-centre/manual/bika-3-user-manual">Bika LIMS User Manual</a></li>
                 <li><a href="http://demo.bikalabs.com/knowledge-centre/manual/bika-3-user-manual/introduction-and-overview"><span class="state-published">Introduction and Overview</span></a></li>
-                <li><a href="http://demo.bikalabs.com/knowledge-centre/manual/bika-3-user-manual/setup-and-configuration"><span class="state-published">Setup and Configuration</span></a></li>
+                <li><a href="http://github.com/bikalabs/Bika-LIMS/wiki"><span class="state-published">Bika LIMS Wiki</span></a></li>
     </ul>
         </p>
 
-        <h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;padding-top:15px;">Gaob Bika LIMS 3 installation</h2>
+        <h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;padding-top:15px;">Bika Health 3 Installation</h2>
         <p style="line-height:140%;font-size:1.2em;">
-            Gaob Bika 3 installs easily:
+            Bika Health can be installed easily on Windows, Mac OS X, Linux, BSD and other platforms:
     <ul style="font-size:1.2em;margin-left:15px;">
-              <li><a href="http://www.bikalabs.com/helpcentre/manual/bika-installation-guides/bika-on-ubuntu-linux/installing-bika-lims-3">Linux</a></li>
-              <li><a href="http://www.bikalabs.com/helpcentre/manual/bika-installation-guides/bika-on-windows/installing-bika-lims-3-0">Windows</a></li>
+              <li><a href="https://github.com/bikalabs/bika.health/wiki/Installing-Bika-Health-Extension">Installing Bika Health</a></li>
+              <li><a href="https://github.com/bikalabs/Bika-LIMS/wiki/Bika-LIMS-Installation">Installing Bika LIMS</a></li>
     </ul>
         </p>
   </div>
@@ -52,18 +53,18 @@ Content-Type: text/html
 
         <h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;">Source code</h2>
         <p style="line-height:140%;font-size:1.2em;">
-            If you want more power, install Gaob Bika 3 by retrieving the source directly from the code repository for updates. It's the recommended installation method for developers and users who want to test the latest version.
+            If you want more power, install Bika Health 3 by retrieving the source directly from the code repository for updates. It's the recommended installation method for developers and users who want to test the latest version.
       <ul style="font-size:1.2em;margin-left:15px;">
-               <li><a href="https://github.com/bikalabs/Bika-LIMS/tree/master/docs/installation.txt">Installation</a></li>
-               <li><a href="https://github.com/bikalabs/Bika-LIMS/tree/dev">Source repository</a></li>
-               <li><a class="external-link" href="http://www.bikalabs.com/softwarecenter/bika/releases/3.0">Bika 3 Project page</a></li>
+               <li><a href="https://github.com/bikalabs/bika.health">Source code repository</a></li>
+               <li><a href="https://github.com/bikalabs/bika.health/tree/develop">Development branch/a></li>
+               <li><a class="external-link" href="https://pypi.python.org/pypi/bika.health/3.1.2.1">Bika Health at PyPI</a></li>
       </ul>
         </p>
 
         <h2 style="margin-bottom:10px;border-bottom:1px solid #888;font-size:1.6em;padding-top:15px;">Feedback and support</h2>
 <ul style="font-size:1.2em;margin-left:15px;">
 <li>Bika mailing lists: <a class="external-link" href="https://groups.google.com/forum/?hl=en#%21forum/bika-design">LIMS design</a>, <a class="external-link" href="http://lists.sourceforge.net/lists/listinfo/bika-users">Users</a> and <a class="external-link" href="http://lists.sourceforge.net/lists/listinfo/bika-developers">Developers</a></li>
-<li>Bug reporting, issues and feature requests: <a class="external-link" href="https://github.com/bikalabs/Bika-LIMS/issues">Public issue tracker</a></li>
+<li>Bug reporting, issues and feature requests: <a class="external-link" href="http://jira.bikalabs.com/">Public issue tracker</a></li>
 <li>IRC: <a class="chatzilla-link" href="http://webchat.freenode.net?channels=bika" id="ch-url-anchor">irc://freenode.net/#bika</a>, the #bika channel on irc.freenode.net</li>
 </ul>
     </div>

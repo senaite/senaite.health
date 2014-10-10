@@ -1,13 +1,32 @@
-3.2
+3.1.5 (2014-10-10)
 ------------------
 
+HEALTH-176: Cannot choose a drug from the dropdown list on Patient->allergies
+HEALTH-174: Unable to add an AR to a Case (missing Client)
+HEALTH-163: Cannot be chosen Immunisation items from dropdown list.
+HEALTH-162: Cannot choose Drug Prohibition Explanation
+HEALTH-169: Analyst can't see Samples site, Admin can.
+HEALTH-168: Diagnosis ICD widget does not complete from Code, Description
+HEALTH-161: In Add Patient, after introducing the Birth Date, the patient's age don't get filled automatically.
+HEALTH-157: Patient field is missing in AR add views
+HEALTH-150: Compatibility with the new JS loader machinery
+HEALTH-164: Editing a patient, location not have to be important on Travel History field
+HEALTH-166: "Patient Age at Case Onset Date" in Add Case cannot be filled
+HEALTH-172: Anything is displayed on drugs list
+HEALTH-173: ImmunizationHistory cannot save data
+HEALTH-149: Compatibility with the new Bika LIMS reporting subsystem
+HEALTH-152: Upgrade the test data worksheet
 HEALTH-145: Health icons not used. And 1 more
+HEALTH-152: Upgrade the test data worksheet
+
+- Plus Bika-LIMS 3.1.5: http://git.io/ogjDuQ
 
 
 3.1.2.1 (2014-08-05)
 ------------------
 
 HEALTH-144: Set up data: Identifier Types NameError: global name '_id' is not defined
+HEALTH-143: Can not create site
 
 
 3.1.2 (2014-07-25)

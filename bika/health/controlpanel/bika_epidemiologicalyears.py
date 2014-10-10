@@ -21,7 +21,7 @@ class EpidemiologicalYearsView(BikaListingView):
         self.context_actions = {_('Add'):
                                 {'url': 'createObject?type_name=EpidemiologicalYear',
                                  'icon': '++resource++bika.lims.images/add.png'}}
-        self.title = _("Epidemiological Years")
+        self.title = self.context.translate(_("Epidemiological Years"))
         self.icon = self.portal_url + "/++resource++bika.health.images/epidemiologicalyear_big.png"
         self.description = _("Epidemiological year calendars")
         self.show_sort_column = False

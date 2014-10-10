@@ -17,6 +17,7 @@
 
   <include file="permissions.zcml" />
 
+  <include package=".adapters"/>
   <include package=".content"/>
   <include package=".controlpanel"/>
   <include package=".browser"/>

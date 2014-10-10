@@ -28,7 +28,18 @@ class ajaxGetImmunizations(BrowserView):
         for p in brains:
             rows.append({'Title': p.Title,
                          'UID': p.UID,
-                         'Description': p.Description})
+                         'Description': p.Description,
+                         'Immunization': p.Title #This one is used to
+                                                 #avoid content/
+                                                 #patient.py L221 to
+                                                 #use Title to fill
+                                                 #the box, it could be
+                                                 #ambiguous for other
+                                                 #parameters like
+                                                 #<<Vaccination
+                                                 #Center>> which could
+                                                 #use Title too.
+                         })
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'Title'))
         if sord == 'desc':

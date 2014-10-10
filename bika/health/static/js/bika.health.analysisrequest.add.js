@@ -1,7 +1,7 @@
 /**
  * Controller class for AnalysisRequest add view
  */
-function AnalysisRequestAddView() {
+function HealthAnalysisRequestAddView() {
 
     var that = this;
 
@@ -100,7 +100,6 @@ function AnalysisRequestAddView() {
                         $("#ar_" + colposition + "_Patient").val(data['PatientFullname']);
                         $("#ar_" + colposition + "_Patient").attr('uid',data['PatientUID']);
                         $("#ar_" + colposition + "_Patient_uid").val(data['PatientUID']);
-                        $("#ar_" + colposition + "_Patient").attr("disabled", false);
                         $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
                     } else {
                         // No patient found. Set anonymous patient
@@ -115,7 +114,6 @@ function AnalysisRequestAddView() {
             $("#ar_" + colposition + "_Patient").val('');
             $("#ar_" + colposition + "_Patient").attr('uid', '');
             $("#ar_" + colposition + "_Patient_uid").val('');
-            $("#ar_" + colposition + "_Patient").attr("disabled", false);
             $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
         }
     }
@@ -177,20 +175,16 @@ function AnalysisRequestAddView() {
                             $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
                             $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
                             $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
-                            $("#ar_" + col +"_Client").attr('disabled', true);
 
                             $("#ar_" + col +"_Patient").val(data['PatientTitle']);
                             $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
                             $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
-                            $("#ar_" + col +"_Patient").attr('disabled', true);
 
                             $("#ar_" + col +"_Doctor").val(data['DoctorTitle']);
                             $("#ar_" + col +"_Doctor").attr('uid',data['DoctorUID']);
                             $("#ar_" + col +"_Doctor_uid").val(data['DoctorUID']);
-                            $("#ar_" + col +"_Doctor").attr('disabled', true);
 
                             $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
-                            $("#ar_" + col +"_ClientPatientID").attr('disabled', true);
 
                             // Hide the previous fields and replace them by labels
                             $("#ar_" + col +"_Client").hide();
@@ -208,10 +202,10 @@ function AnalysisRequestAddView() {
                             base_query['getParentUID'] = data['ClientUID'];
                             applyComboFilter(element, base_query);
                         }
+                        return true;
                     }
                 }
             });
-            return $("#ar_0_Patient").attr('uid',data['PatientUID']) != '';
         }
         return false;
     }
@@ -376,17 +370,14 @@ function AnalysisRequestAddView() {
         $("#ar_" + col +"_Client").attr('uid',data['ClientUID']);
         $("#ar_" + col +"_Client").attr('cid',data['ClientSysID']);
         $("#ar_" + col +"_Client_uid").val(data['ClientUID']);
-        $("#ar_" + col +"_Client").attr('disabled', true);
 
         $("#ar_" + col +"_Patient").val(data['PatientFullname']);
         $("#ar_" + col +"_Patient").attr('uid',data['PatientUID']);
         $("#ar_" + col +"_Patient_uid").val(data['PatientUID']);
-        $("#ar_" + col +"_Patient").attr('disabled', true);
 
         $("#ar_" + col +"_ClientPatientID").val(data['ClientPatientID']);
         $("#ar_" + col +"_ClientPatientID").attr('uid',data['PatientUID']);
         $("#ar_" + col +"_ClientPatientID_uid").val(data['PatientUID']);
-        $("#ar_" + col +"_ClientPatientID").attr('disabled', true);
 
         // Only allow the selection of batches from this patient
         element = $("#ar_" + col + "_Batch")
@@ -406,13 +397,11 @@ function AnalysisRequestAddView() {
         $("#ar_" + colposition + "_Patient").val('');
         $("#ar_" + colposition + "_Patient").attr('uid', '');
         $("#ar_" + colposition + "_Patient_uid").val('');
-        $("#ar_" + colposition + "_Patient").attr("disabled", false);
         $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
 
         $("#ar_" + col +"_ClientPatientID").val('');
         $("#ar_" + col +"_ClientPatientID").attr('uid','');
         $("#ar_" + col +"_ClientPatientID_uid").val('');
-        $("#ar_" + col +"_ClientPatientID").attr('disabled', false);
         $("#ar_" + colposition + "_ClientPatientID").combogrid("option", "disabled", false);
 
         frombatch = window.location.href.search('/batches/') >= 0;
