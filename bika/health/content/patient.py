@@ -548,10 +548,14 @@ class Patient(Person):
         pa = self.getPhysicalAddress() and self.getPhysicalAddress() or {'country': '', 'state': ''}
         pa['country'] = self.REQUEST.form.get('CountryState', {'country': ''})['country']
         pa['state'] = self.REQUEST.form.get('CountryState', {'state': ''})['state']
+        import pdb;pdb.set_trace()
         if not pa['country']:
             return
 
-        return self.setPhysicalAddress(pa)
+#return self.setPhysicalAddress(pa)
+                #self.schema()['CountryState']
+        return self.Schema()['CountryState'].set(self.Schema()['CountryState'],value)
+
 
     def getCountryState(self):
         return self.getPhysicalAddress()
