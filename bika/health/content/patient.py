@@ -545,20 +545,18 @@ class Patient(Person):
         return ' '.join(arr)
 
     def setCountryState(self, value):
-        pa = self.getPhysicalAddress() and self.getPhysicalAddress() or {'country': '', 'state': ''}
+        pa = self.getPhysicalAddress() if self.getPhysicalAddress() else {'country': '', 'state': ''}
         pa['country'] = self.REQUEST.form.get('CountryState', {'country': ''})['country']
         pa['state'] = self.REQUEST.form.get('CountryState', {'state': ''})['state']
-        import pdb;pdb.set_trace()
         if not pa['country']:
             return
 
-#return self.setPhysicalAddress(pa)
-                #self.schema()['CountryState']
-        return self.Schema()['CountryState'].set(self.Schema()['CountryState'],value)
-
+        return self.getField('CountryState').set(self,pa)
 
     def getCountryState(self):
-        return self.getPhysicalAddress()
+        return self.getField('CountryState').get(self) \
+            if self.getField('CountryState').get(self) \
+            else self.getPhysicalAddress()
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)
