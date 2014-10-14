@@ -544,17 +544,10 @@ class Patient(Person):
         arr.append(splitted['day'] and str(splitted['day']) + 'd' or '')
         return ' '.join(arr)
 
-    def setCountryState(self, value):
-        pa = self.getPhysicalAddress() and self.getPhysicalAddress() or {'country': '', 'state': ''}
-        pa['country'] = self.REQUEST.form.get('CountryState', {'country': ''})['country']
-        pa['state'] = self.REQUEST.form.get('CountryState', {'state': ''})['state']
-        if not pa['country']:
-            return
-
-        return self.setPhysicalAddress(pa)
-
     def getCountryState(self):
-        return self.getPhysicalAddress()
+        return self.getField('CountryState').get(self) \
+            if self.getField('CountryState').get(self) \
+            else self.getPhysicalAddress()
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)
