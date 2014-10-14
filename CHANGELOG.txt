@@ -1,4 +1,10 @@
-3.2 ()
+next()
+------------------
+
+HEALTH-184: Add Case: Patient Age at Case Onset Date doesn't get filled after introduce the Onset Date.
+
+
+3.1.5 (2014-10-10)
 ------------------
 
 HEALTH-176: Cannot choose a drug from the dropdown list on Patient->allergies
@@ -18,6 +24,8 @@ HEALTH-149: Compatibility with the new Bika LIMS reporting subsystem
 HEALTH-152: Upgrade the test data worksheet
 HEALTH-145: Health icons not used. And 1 more
 HEALTH-152: Upgrade the test data worksheet
+
+- Plus Bika-LIMS 3.1.5: http://git.io/ogjDuQ
 
 
 3.1.2.1 (2014-08-05)
