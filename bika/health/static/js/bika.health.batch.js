@@ -519,14 +519,22 @@ function HealthBatchEditView() {
             $("#PatientAgeAtCaseOnsetDate_year").val(ageyear);
             $("#PatientAgeAtCaseOnsetDate_month").val(agemonth);
             $("#PatientAgeAtCaseOnsetDate_day").val(ageday);
-
-        } else {
-            $("#PatientAgeAtCaseOnsetDate_year").val('');
-            $("#PatientAgeAtCaseOnsetDate_month").val('');
-            $("#PatientAgeAtCaseOnsetDate_day").val('');
+            $("#OnsetDate").next().remove(".warning");
+        }
+        else if (now < dob) {
+            erasePatientAgeatCaseOnsetDate();
+            $("#PatientAgeAtCaseOnsetDate_day").next().remove(".warning");
+            $("#OnsetDate").parent().append("<span class = 'warning'><img title='Onset Date must be bigger than Patients Birth Date' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
+        }
+        else {
+            erasePatientAgeatCaseOnsetDate();
         }
     }
-
+    function erasePatientAgeatCaseOnsetDate() {
+        $("#PatientAgeAtCaseOnsetDate_year").val('');
+        $("#PatientAgeAtCaseOnsetDate_month").val('');
+        $("#PatientAgeAtCaseOnsetDate_day").val('');
+    }
     /**
      * Sets the Patient Overlay for creation/edition, adding a link for creation
      * or edition next to the Patient field

@@ -1,3 +1,9 @@
+next()
+------------------
+
+HEALTH-184: Add Case: Patient Age at Case Onset Date doesn't get filled after introduce the Onset Date.
+
+
 3.1.5 (2014-10-10)
 ------------------
 
