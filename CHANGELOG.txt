@@ -1,3 +1,10 @@
+next()
+------------------
+
+HEALTH-189: Patient Edit page: After define a country, it is not saved.
+HEALTH-184: Add Case: Patient Age at Case Onset Date doesn't get filled after introduce the Onset Date.
+
+
 3.1.5 (2014-10-10)
 ------------------
 
