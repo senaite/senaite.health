@@ -170,7 +170,7 @@ class AnalysisRequestPublishView(_AnalysisRequestPublishView):
         return outaddress
 
     def get_recipients(self, ar):
-        recips = super(AnalysisRequestPublish, self).get_recipients(ar)
+        recips = super(AnalysisRequestPublishView, self).get_recipients(ar)
 
         bs = self.context.bika_setup
         sch = bs.Schema()
