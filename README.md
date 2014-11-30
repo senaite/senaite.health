@@ -30,3 +30,8 @@ If you have questions, please post to one of our mailing lists:
 * Developers: http://lists.sourceforge.net/lists/listinfo/bika-developers
 
 Please log issues, feature requests, or bug reports in the [issue tracker](http://jira.bikalabs.com/)
+
+Professional services and support
+---------------------------------
+* Naralabs, http://naralabs.com
+* Bika Lab Systems, http://bikalabs.com
