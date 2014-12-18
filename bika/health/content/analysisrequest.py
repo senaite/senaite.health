@@ -70,6 +70,7 @@ class AnalysisRequestSchemaExtender(object):
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
+                showAddButton=True,
             ),
         ),
 
