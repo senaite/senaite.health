@@ -73,6 +73,8 @@ function HealthAnalysisRequestAddView() {
         // Check if the current selected client has contacts. If client has no
         // contacts, prevent from saving the AR and inform the user
         checkClientContacts();
+        //It loads a overlay window when the add button is clicked.
+        loadAddButtonOveray();
     };
 
     // ------------------------------------------------------------------------
@@ -450,5 +452,13 @@ function HealthAnalysisRequestAddView() {
             delete base_query['getParentUID'];
             applyComboFilter(element, base_query);
         }
+    }
+    function loadAddButtonOveray(){
+        /**
+         * Add the overlay conditions for the AddButton.
+         */
+        $("a.add_button_overlay").click(function{
+
+        })
     }
 }

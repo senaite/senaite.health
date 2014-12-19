@@ -73,6 +73,7 @@ class AnalysisRequestSchemaExtender(object):
                 # Render an Add image for quickly patient adding.
                 showAddButton={'edit': 'visible',
                                'add': 'visible',},
+                addButtonUrl="/patients/portal_factory/Patient/patien/edit"
             ),
         ),
 
