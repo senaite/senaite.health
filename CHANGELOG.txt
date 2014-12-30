@@ -1,5 +1,6 @@
 next()
 ------------------
+HEALTH-178: Past Medical History, Travell History and Immunization History data: Impossible to remove the last set of data.
 HEALTH-208: Incompatibilty with new Bika LIMS' add site templates
 HEALTH-197: Health's results report error
 HEALTH-189: Patient Edit page: After define a country, it is not saved.
