@@ -59,7 +59,7 @@ function HealthPatientEditView() {
 	    dateFormat: "yy-mm-dd",
 	    changeMonth:true,
 	    changeYear:true,
-	    yearRange: "-100:+0",
+	    yearRange: "-100:+0"
 	});
 
         if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
@@ -410,5 +410,29 @@ function HealthPatientPublicationPrefsEditView() {
             }
         });
         return $(that.allowresults).is(':checked');
+    }
+}
+
+/**
+ * Controller for patient's widgets, to remove the last set of data when it isn't empty.
+ * Issue HEALTH-178
+ */
+function HealthPatientGlobalWidgetEditView() {
+    var that = this;
+    that.load = function() {
+        RemoveLastSet();
+    }
+
+    function RemoveLastSet() {
+        /**
+         *Function used to remove the last set of data when it isn't empty.
+         */
+        $("[class^='records_row_'] .rw_deletebtn").click(function () {
+            var nrows = $(this).closest("table tr")
+            console.log(nrows);
+            if (nrows.length == 1) {
+                $(this).closest("tr").find("input").val("");
+            }
+        });
     }
 }

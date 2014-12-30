@@ -22,7 +22,8 @@ window.bika.health.controllers =  {
     "#batch-base-edit":
         ['HealthBatchEditView',
          'HealthPatientEditView',
-         'HealthPatientPublicationPrefsEditView'],
+         'HealthPatientPublicationPrefsEditView',
+         'HealthPatientGlobalWidgetEditView'],
 
     "#patient-base-edit":
         ['HealthPatientEditView',
@@ -36,6 +37,9 @@ window.bika.health.controllers =  {
 
     ".template-base_edit.portaltype-client":
         ['HealthClientEditView'],
+
+    ".portaltype-patient":
+        ['HealthPatientGlobalWidgetEditView']
 
 };
 
