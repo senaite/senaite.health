@@ -39,47 +39,18 @@ window.bika.health.controllers =  {
 
 };
 
-/**
- * Initializes only the js controllers needed for the current view.
- * Initializes the JS objects from the controllers dictionary for which
- * there is at least one match with the dict key. The JS objects are
- * loaded in the same order as defined in the controllers dict.
- */
-window.bika.health.initview = function() {
-    var loaded = new Array();
-    var controllers = window.bika.health.controllers;
-    for (var key in controllers) {
-        if ($(key).length) {
-            controllers[key].forEach(function(js) {
-                if ($.inArray(js, loaded) < 0) {
-                    console.debug('[bika.health.loader] Loading '+js);
-                    try {
-                        obj = new window[js]();
-                        obj.load();
-                        // Register the object for further access
-                        window.bika.health[js]=obj;
-                        loaded.push(js);
-                    } catch (e) {
-                       // statements to handle any exceptions
-                       var msg = '[bika.health.loader] Unable to load '+js+": "+ e.message +"\n"+e.stack;
-                       console.warn(msg);
-                       window.bika.lims.error(msg);
-                    }
-                }
-            });
-        }
-    }
-    return loaded.length;
-};
-
 window.bika.health.initialized = false;
 
 /**
  * Initializes all bika.health js stuff
+ * Add the bika.health controllers inside bikia.lims controllers'
+ * dict to be load together.
  */
 window.bika.health.initialize = function() {
     if (bika.lims.initialized == true) {
-        return window.bika.health.initview();
+        window.bika.lims.controllers = $.extend(window.bika.lims.controllers, window.bika.health.controllers);
+        // We need to force bika.lims.loader to load the bika.health controllers
+        return window.bika.lims.initview();
     }
     // We should wait after bika.lims being initialized
     setTimeout(function() {
