@@ -73,8 +73,6 @@ function HealthAnalysisRequestAddView() {
         // Check if the current selected client has contacts. If client has no
         // contacts, prevent from saving the AR and inform the user
         checkClientContacts();
-        //It loads a overlay window when the add button is clicked.
-        loadAddButtonOveray();
     };
 
     // ------------------------------------------------------------------------
@@ -456,50 +454,5 @@ function HealthAnalysisRequestAddView() {
             delete base_query['getParentUID'];
             applyComboFilter(element, base_query);
         }
-    }
-
-    function loadAddButtonOveray() {
-        /**
-         * Add the overlay conditions for the AddButton.
-         */
-        $("a.add_button_overlay").prepOverlay(getOverlayConf());
-    }
-
-    function getOverlayConf() {
-        /**
-         * Define the overlay configuration parameters.
-         */
-        edit_overlay = {
-            subtype: 'ajax',
-            filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
-            formselector: '#analysisrequest-overlay-base-edit',
-            closeselector: '[name="form.button.cancel"]',
-            width: '70%',
-            noform: 'close',
-            config: {
-                onLoad: function() {
-                    // Reload bika.lims.initalize method with the needed overlay's health controllers.
-                    // This is done to work with specific js and widgets in the overlay.
-                    if ($("a.add_button_overlay").attr("data_js_controllers")){
-                        window.bika.lims.loadControllers(false,$("a.data_js_controllers").value);
-                        console.log(window.bika.lims.loadControllers(false,$("a.data_js_controllers").value))
-                    }
-                    // Reinitialize the JS for the current overlay view
-                    bika.lims.initialize();
-                    // Address widget
-                    $.ajax({
-                        url: 'bika_widgets/addresswidget.js',
-                        dataType: 'script',
-                        async: false
-                    });
-                    $.ajax({
-                        url: 'bika_widgets/datetimewidget.js',
-                        dataType: 'script',
-                        async: false
-                    });
-                }
-            }
-        }
-        return edit_overlay;
     }
 }
