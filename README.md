@@ -10,6 +10,8 @@ Installation and upgrades
 Bika Health can be installed on Windows, Mac OS X, Linux, BSD and other platforms:
 https://github.com/bikalabs/bika.health/wiki/Installing-Bika-Health-Extension
 
+Please note that **Bika Health 3.1.5 is not compatible with Bika LIMS > 3.1.5**, so you'll need to set the version of Bika LIMS to 3.1.5 manually in the buildout. Follow the instructions [Installing Bika Health Extension](https://github.com/bikalabs/bika.health/wiki/Installing-Bika-Health-Extension).
+
 You might also find useful the following recipes:
 - Installing Bika LIMS: https://github.com/bikalabs/Bika-LIMS/wiki/Bika-LIMS-Installation
 - Installing Plone: https://plone.org/documentation/manual/installing-plone
