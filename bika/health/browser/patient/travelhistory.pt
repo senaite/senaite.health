@@ -40,7 +40,7 @@
                     }
                     if (start != '' && end != ''){
                         if (Date.parse(end) < Date.parse(start)) {
-                            window.bika_utils.portalMessage(_('end date must be after start date'));
+                            window.bika.lims.portalMessage('End date must be after start date');
                             $(this).val('');
                         }
                     }
