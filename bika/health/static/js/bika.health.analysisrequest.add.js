@@ -236,7 +236,7 @@ function HealthAnalysisRequestAddView() {
                     }
                 }
             });
-            return $("#ar_0_Patient").attr('uid',data['PatientUID']) != '';
+            return $("#ar_0_Patient").attr('uid') != '';
         }
         return false;
     }
