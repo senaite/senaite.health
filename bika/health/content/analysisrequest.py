@@ -42,8 +42,9 @@ class AnalysisRequestSchemaExtender(object):
                 showOn=True,
                 # Render an Add image for quickly patient adding.
                 showAddButton={'edit': 'visible',
-                               'add': 'visible',},
-                addButtonUrl="/doctors/portal_factory/Doctor/new/edit",
+                               'add': 'visible',
+                               # The window's content-to-display URL: "/patients/portal_factory/Patient/patien/edit"
+                               'addButtonUrl': "/doctors/portal_factory/Doctor/new/edit"}
             ),
         ),
 
@@ -76,8 +77,9 @@ class AnalysisRequestSchemaExtender(object):
                 showOn=True,
                 # Render an Add image for quickly patient adding.
                 showAddButton={'edit': 'visible',
-                               'add': 'visible',},
-                addButtonUrl="/patients/createObject?type_name=Patient",
+                               'add': 'visible',
+                               # The window's content-to-display URL: "/patients/portal_factory/Patient/patien/edit"
+                               'addButtonUrl': "/patients/createObject?type_name=Patient"}
             ),
         ),
 
