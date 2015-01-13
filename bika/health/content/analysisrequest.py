@@ -39,7 +39,7 @@ class AnalysisRequestSchemaExtender(object):
                          'secondary': 'disabled'},
                 catalog_name='portal_catalog',
                 base_query={'inactive_state': 'active'},
-                showOn=True,
+                showOn=True
             ),
         ),
 
@@ -70,6 +70,15 @@ class AnalysisRequestSchemaExtender(object):
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
+                # Render an Add image for quickly patient adding.
+                showAddButton={'edit': 'visible',
+                               'add': 'visible',
+                               # The window's content-to-display URL: "/patients/portal_factory/Patient/patient/edit"
+                               'addButtonUrl': "/patients/portal_factory/Patient/new/edit",
+                               # String separated by commas with health js controllers' keys
+                               # to load for each overlay opened. We use string and commas because is
+                               # easy to work with them in bika.lims.loader.
+                               'addButtonJSControllers': "#patient-base-edit"}
             ),
         ),
 
