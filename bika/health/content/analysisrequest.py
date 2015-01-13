@@ -44,7 +44,11 @@ class AnalysisRequestSchemaExtender(object):
                 showAddButton={'edit': 'visible',
                                'add': 'visible',
                                # The window's content-to-display URL: "/patients/portal_factory/Patient/patien/edit"
-                               'addButtonUrl': "/doctors/portal_factory/Doctor/new/edit"}
+                               'addButtonUrl': "/doctors/portal_factory/Doctor/new/edit",
+                               # String separated by commas with health js controllers' keys
+                               # to load for each overlay opened. We use a string and commas because is
+                               # easy to work with in bika.lims.loader.
+                               'addButtonJSControllers': "#doctor-base-edit"}
             ),
         ),
 
@@ -79,7 +83,11 @@ class AnalysisRequestSchemaExtender(object):
                 showAddButton={'edit': 'visible',
                                'add': 'visible',
                                # The window's content-to-display URL: "/patients/portal_factory/Patient/patien/edit"
-                               'addButtonUrl': "/patients/createObject?type_name=Patient"}
+                               'addButtonUrl': "/patients/createObject?type_name=Patient",
+                               # String separated by commas with health js controllers' keys
+                               # to load for each overlay opened. We use a string and commas because is
+                               # easy to work with in bika.lims.loader.
+                               'addButtonJSControllers': "#patient-base-edit"}
             ),
         ),
 
