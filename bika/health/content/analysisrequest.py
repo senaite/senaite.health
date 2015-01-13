@@ -45,7 +45,8 @@ class AnalysisRequestSchemaExtender(object):
 
         ExtComputedField(
             'DoctorUID',
-            expression='context.getDoctor() and context.getDoctor().UID() or None',
+            # It looks like recursive, but we must pass through the Schema to obtain data. In this way we allow to LIMS obtain it.
+            expression="context.Schema()['Doctor'].get(context).UID() if context.Schema()['Doctor'].get(context) else None",
             widget=ComputedWidget(
                 visible=False,
             ),

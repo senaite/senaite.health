@@ -1,7 +1,10 @@
 next()
 ------------------
 HEALTH-136: [+ Add] Patient button on AR Create form.
+HEALTH-179: "Copy to new" button in AR, doesn't copy the selected data.
 HEALTH-197: Health's results report error.
+HEALTH-204: Batch.samples error loading page
+HEALTH-177: Past Medical History and Drug History's end date selection error.
 HEALTH-178: Past Medical History, Travell History and Immunization History data: Impossible to remove the last set of data.
 HEALTH-208: Incompatibilty with new Bika LIMS' add site templates
 HEALTH-197: Health's results report error
