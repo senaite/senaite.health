@@ -49,10 +49,10 @@ window.bika.health.initialized = false;
 window.bika.health.initialize = function() {
     if (bika.lims.initialized == true) {
         window.bika.lims.controllers = $.extend(window.bika.lims.controllers, window.bika.health.controllers);
-        // We need to force bika.lims.loader to load the bika.health controllers
+        // We need to force bika.lims.loader to load the bika.health controllers.
         return window.bika.lims.initview();
     }
-    // We should wait after bika.lims being initialized
+    // We should wait after bika.lims being initialized.
     setTimeout(function() {
         return window.bika.health.initialize();
     }, 500);
@@ -61,7 +61,7 @@ window.bika.health.initialize = function() {
 (function( $ ) {
 $(document).ready(function(){
 
-    // Initializes bika.health
+    // Initializes bika.health.
     var length = window.bika.health.initialize();
     window.bika.health.initialized = true;
 
