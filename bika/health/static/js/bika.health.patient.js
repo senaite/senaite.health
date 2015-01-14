@@ -53,14 +53,14 @@ function HealthPatientEditView() {
         $('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
         $('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
 
-	// Adapt datepicker to current needs
-	$("#BirthDate").datepicker("destroy");
-	$("#BirthDate").datepicker({
-	    dateFormat: "yy-mm-dd",
-	    changeMonth:true,
-	    changeYear:true,
-	    yearRange: "-100:+0"
-	});
+    // Adapt datepicker to current needs
+    $("#BirthDate").datepicker("destroy");
+    $("#BirthDate").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth:true,
+        changeYear:true,
+        yearRange: "-100:+0"
+    });
 
         if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
             $('#archetypes-fieldname-MenstrualStatus').hide();
@@ -434,5 +434,16 @@ function HealthPatientGlobalWidgetEditView() {
                 $(this).closest("tr").find("input").val("");
             }
         });
+    }
+}
+
+
+function HealthPatientOverlayHandler() {
+    var that = this;
+    that.load = function() {
+    }
+
+    that.onLoad = function(overlay) {
+        console.warn("Hola caracola");
     }
 }

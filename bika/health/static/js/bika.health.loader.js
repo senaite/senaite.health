@@ -39,7 +39,10 @@ window.bika.health.controllers =  {
         ['HealthClientEditView'],
 
     ".portaltype-patient":
-        ['HealthPatientGlobalWidgetEditView']
+        ['HealthPatientGlobalWidgetEditView'],
+
+    "div.overlay #patient-base-edit":
+        ['HealthPatientOverlayHandler'],
 
 };
 

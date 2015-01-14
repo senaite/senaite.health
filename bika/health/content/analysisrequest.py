@@ -39,7 +39,22 @@ class AnalysisRequestSchemaExtender(object):
                          'secondary': 'disabled'},
                 catalog_name='portal_catalog',
                 base_query={'inactive_state': 'active'},
-                showOn=True
+                showOn=True,
+                add_button={
+                    'visible': True,
+                    'url': 'doctors/portal_factory/Doctor/new/edit',
+                    'return_fields': ['Firstname', 'Surname'],
+                    #'js_controllers': ['#patient-base-edit',],
+                    #'overlay_onLoadJSHelper': 'bika_widgets/addresswidget.js',
+                    #'overlay_onBeforeCloseJSHelper': 'bika_widgets/addresswidget.js',
+                    #'overlay_options': {
+                    #    'filter': 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
+                    #    'formselector': 'form[id$="base-edit"]',
+                    #    'closeselector': '[name="form.button.cancel"]',
+                    #    'width': '70%',
+                    #    'noform': 'close',
+                    #},
+                }
             ),
         ),
 
@@ -71,15 +86,22 @@ class AnalysisRequestSchemaExtender(object):
                 catalog_name='bika_patient_catalog',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
-                # Render an Add image for quickly patient adding.
-                showAddButton={'edit': 'visible',
-                               'add': 'visible',
-                               # The window's content-to-display URL: "/patients/portal_factory/Patient/patient/edit"
-                               'addButtonUrl': "/patients/portal_factory/Patient/new/edit",
-                               # String separated by commas with health js controllers' keys
-                               # to load for each overlay opened. We use string and commas because is
-                               # easy to work with them in bika.lims.loader.
-                               'addButtonJSControllers': "#patient-base-edit"}
+                add_button={
+                    'visible': True,
+                    'url': 'patients/portal_factory/Patient/new/edit',
+                    'return_fields': ['Firstname', 'Surname'],
+                    'js_controllers': ['#patient-base-edit',],
+                    'overlay_handler': 'bika.lims.HealthPatientOverlayHandler',
+                    #'overlay_onLoadJSHelper': 'bika_widgets/addresswidget.js',
+                    #'overlay_onBeforeCloseJSHelper': 'bika_widgets/addresswidget.js',
+                    #'overlay_options': {
+                    #    'filter': 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
+                    #    'formselector': 'form[id$="base-edit"]',
+                    #    'closeselector': '[name="form.button.cancel"]',
+                    #    'width': '70%',
+                    #    'noform': 'close',
+                    #},
+                }
             ),
         ),
 
