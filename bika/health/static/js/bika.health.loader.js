@@ -59,7 +59,7 @@ window.bika.health.initialize = function() {
         // We need to force bika.lims.loader to load the bika.health controllers.
         return window.bika.lims.initview();
     }
-    // We should wait after bika.lims being initialized.
+    // We should wait after bika.lims has been initialized.
     setTimeout(function() {
         return window.bika.health.initialize();
     }, 500);

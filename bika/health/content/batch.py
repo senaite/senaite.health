@@ -149,6 +149,12 @@ class BatchSchemaExtender(object):
                 colModel = [{'columnName':'DoctorID','width':'20','label':_('Doctor ID')},
                             {'columnName':'Title','width':'80','label':_('Full Name')},
                             ],
+                add_button={
+                    'visible': True,
+                    'url': 'doctors/portal_factory/Doctor/new/edit',
+                    'return_fields': ['Firstname', 'Surname'],
+                    'js_controllers': ['#doctor-base-edit',],
+                }
             ),
         ),
         # ExtComputedField('DoctorID',
@@ -176,7 +182,14 @@ class BatchSchemaExtender(object):
                 showOn=True,
                 colModel = [{'columnName':'getPatientID','width':'20','label':_('Patient ID')},
                             {'columnName':'Title','width':'40','label':_('Full Name')},
-                            {'columnName':'PatientIdentifiers', 'width':'40','label':_('Additional Identifiers')}]
+                            {'columnName':'PatientIdentifiers', 'width':'40','label':_('Additional Identifiers')}],
+                add_button={
+                    'visible': True,
+                    'url': 'patients/portal_factory/Patient/new/edit',
+                    'return_fields': ['Firstname', 'Surname'],
+                    'js_controllers': ['#patient-base-edit',],
+                    'overlay_handler': 'HealthPatientOverlayHandler',
+                }
             ),
         ),
         # ExtComputedField('PatientID',

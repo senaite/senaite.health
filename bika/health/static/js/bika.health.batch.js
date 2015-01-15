@@ -283,7 +283,7 @@ function HealthBatchEditView() {
             console.log('Unable to retrieve the Referrer Patient for UID ' + that.getPatientUIDReferrer());
 
         } else if (succeed) {
-            loadPatientOverlay();
+           // loadPatientOverlay();
             fillPatientAgeAtCaseOnsetDate();
             toggleMenstrualStatus();
             toggleSymptoms();
@@ -324,7 +324,7 @@ function HealthBatchEditView() {
             $('input[name="PatientBirthDate"]').val('');
             $('input[name="PatientGender"]').val('');
 
-            loadPatientOverlay();
+            //loadPatientOverlay();
             fillPatientAgeAtCaseOnsetDate();
             toggleMenstrualStatus();
             toggleSymptoms();
@@ -351,7 +351,7 @@ function HealthBatchEditView() {
             $('#Doctor').attr('uid', '');
             $('#Doctor_uid').val('');
         }
-        loadDoctorOverlay();
+        //loadDoctorOverlay();
         return succeed;
     }
 
@@ -539,7 +539,7 @@ function HealthBatchEditView() {
      * Sets the Patient Overlay for creation/edition, adding a link for creation
      * or edition next to the Patient field
      */
-    function loadPatientOverlay() {
+  /*  function loadPatientOverlay() {
         if (!$('a.add_patient').length) {
             $("input[id=Patient]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
                     ' class="add_patient"' +
@@ -559,12 +559,12 @@ function HealthBatchEditView() {
             ' </a>');
             $('a.edit_patient').prepOverlay(getPatientOverlay());
         }
-    }
+    }*/
 
     /**
      * Returns the overlay object suitable to be attached to the Patient's field
      */
-    function getPatientOverlay() {
+ /*   function getPatientOverlay() {
         dateFormat = _("date_format_short_datepicker");
         editpatient_overlay = {
             subtype: 'ajax',
@@ -626,8 +626,8 @@ function HealthBatchEditView() {
             }
         }
         return editpatient_overlay;
-    }
-
+    }*/
+/*
     function loadDoctorOverlay() {
         if (!$('a.add_doctor').length) {
             $("#Doctor").after('<a style="border-bottom:none !important;margin-left:.5;"' +
@@ -704,7 +704,7 @@ function HealthBatchEditView() {
         }
         return editdoctor_overlay;
     }
-
+*/
     function basalBodyTemperatureControl() {
     $( "[id^='BasalBodyTemperature-Day']" ).change(function() {
         if ( parseInt($(this).val()) > 41 ) {
