@@ -283,7 +283,6 @@ function HealthBatchEditView() {
             console.log('Unable to retrieve the Referrer Patient for UID ' + that.getPatientUIDReferrer());
 
         } else if (succeed) {
-           // loadPatientOverlay();
             fillPatientAgeAtCaseOnsetDate();
             toggleMenstrualStatus();
             toggleSymptoms();
@@ -324,7 +323,6 @@ function HealthBatchEditView() {
             $('input[name="PatientBirthDate"]').val('');
             $('input[name="PatientGender"]').val('');
 
-            //loadPatientOverlay();
             fillPatientAgeAtCaseOnsetDate();
             toggleMenstrualStatus();
             toggleSymptoms();
@@ -535,176 +533,7 @@ function HealthBatchEditView() {
         $("#PatientAgeAtCaseOnsetDate_month").val('');
         $("#PatientAgeAtCaseOnsetDate_day").val('');
     }
-    /**
-     * Sets the Patient Overlay for creation/edition, adding a link for creation
-     * or edition next to the Patient field
-     */
-  /*  function loadPatientOverlay() {
-        if (!$('a.add_patient').length) {
-            $("input[id=Patient]").after('<a style="border-bottom:none !important;margin-left:.5;"' +
-                    ' class="add_patient"' +
-                    ' href="'+window.portal_url+'/patients/portal_factory/Patient/new/edit"' +
-                    ' rel="#overlay">' +
-                    ' <img style="padding-bottom:1px;" src="'+window.portal_url+'/++resource++bika.lims.images/add.png"/>' +
-                ' </a>');
-        }
-        $('a.add_patient').prepOverlay(getPatientOverlay());
-        $('a.edit_patient').remove();
-        patientid = $('#Patient').attr('pid');
-        if (patientid != null && patientid != '') {
-            $("a.add_patient").after('<a style="border-bottom:none !important;margin-left:.5;"' +
-                    ' class="edit_patient"' +
-                    ' href="'+window.portal_url+'/patients/portal_factory/Patient/'+patientid+'/edit"' +
-                    ' rel="#overlay">Edit' +
-            ' </a>');
-            $('a.edit_patient').prepOverlay(getPatientOverlay());
-        }
-    }*/
 
-    /**
-     * Returns the overlay object suitable to be attached to the Patient's field
-     */
- /*   function getPatientOverlay() {
-        dateFormat = _("date_format_short_datepicker");
-        editpatient_overlay = {
-            subtype: 'ajax',
-            filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
-            formselector: '#patient-base-edit',
-            closeselector: '[name="form.button.cancel"]',
-            width:'70%',
-            noform:'close',
-            config: {
-                onLoad: function() {
-                    // manually remove remarks
-                    this.getOverlay().find("#archetypes-fieldname-Remarks").remove();
-                    // remove menstrual status widget (accesible from case)
-                    this.getOverlay().find("#archetypes-fieldname-MenstrualStatus").remove();
-                    // reapply datepicker widget
-                    this.getOverlay().find("#BirthDate").live('click', function() {
-                        $(this).datepicker({
-                            showOn:'focus',
-                            showAnim:'',
-                            changeMonth:true,
-                            changeYear:true,
-                            maxDate: '+0d',
-                            dateFormat: _("date_format_short_datepicker"),
-                            yearRange: "-100:+0"
-                        })
-                        .click(function(){$(this).attr('value', '');})
-                        .focus();
-                    });
-
-                    // Address widget
-                    $.ajax({
-                        url: 'bika_widgets/addresswidget.js',
-                        dataType: 'script',
-                        async: false
-                    });
-
-                    // Set Client's default if needed
-                    clientuid = that.getClientUIDReferrer();
-                    if (clientuid) {
-                        $("#PrimaryReferrer option").not("[value='" + clientuid + "']").remove();
-                    }
-                },
-                onClose: function() {
-                    var Fullname = $("#Firstname").val() + " " + $("#Surname").val();
-                    if (Fullname.length > 1) {
-                        $.ajax({
-                            url: window.portal_url + "/getpatientinfo",
-                            type: 'POST',
-                            data: {'_authenticator': $('input[name="_authenticator"]').val(),
-                                    'Fullname': Fullname},
-                            dataType: "json",
-                            async: false,
-                            success: function(data, textStatus, $XHR){
-                                that.fillPatient(data['PatientUID']);
-                            }
-                        });
-                    }
-                }
-            }
-        }
-        return editpatient_overlay;
-    }*/
-/*
-    function loadDoctorOverlay() {
-        if (!$('a.add_doctor').length) {
-            $("#Doctor").after('<a style="border-bottom:none !important;margin-left:.5;"' +
-                    ' class="add_doctor"' +
-                    ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/new/edit"' +
-                    ' rel="#overlay">' +
-                    ' <img style="padding-bottom:1px;" src="'+window.portal_url+'/++resource++bika.lims.images/add.png"/>' +
-                ' </a>');
-        }
-        $('a.add_doctor').prepOverlay(getDoctorOverlay());
-
-        $('a.edit_doctor').remove();
-        duid = that.getDoctorUID();
-        if (duid != null) {
-            $.ajax({
-                url: window.portal_url + "/getdoctorinfo",
-                type: 'POST',
-                async: false,
-                data: {'_authenticator': $('input[name="_authenticator"]').val(),
-                       'UID': duid},
-                dataType: "json",
-                success: function(data, textStatus, $XHR){
-                    $("a.add_doctor").after('<a style="border-bottom:none !important;margin-left:.5;"' +
-                            ' class="edit_doctor"' +
-                            ' href="'+window.portal_url+'/doctors/portal_factory/Doctor/'+data['id']+'/edit"' +
-                            ' rel="#overlay">Edit' +
-                    ' </a>');
-                    $('a.edit_doctor').prepOverlay(getDoctorOverlay());
-                }
-            });
-        }
-    }
-
-    function getDoctorOverlay() {
-        editdoctor_overlay = {
-            subtype: 'ajax',
-            filter: 'head>*,#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.info',
-            formselector: '#doctor-base-edit',
-            closeselector: '[name="form.button.cancel"]',
-            width:'70%',
-            noform:'close',
-            config: {
-                onLoad: function() {
-                    // manually remove remarks
-                    this.getOverlay().find("#archetypes-fieldname-Remarks").remove();
-                    // Address widget
-                    $.ajax({
-                        url: 'bika_widgets/addresswidget.js',
-                        dataType: 'script',
-                        async: false
-                    });
-
-                },
-                onClose: function() {
-                    var Fullname = $("#Firstname").val() + " " + $("#Surname").val();
-                    if (Fullname.length > 1) {
-                        $.ajax({
-                            url: window.portal_url + "/getdoctorinfo",
-                            type: 'POST',
-                            data: {'_authenticator': $('input[name="_authenticator"]').val(),
-                                    'Fullname': Fullname},
-                            dataType: "json",
-                            success: function(data, textStatus, $XHR){
-                                $("#Doctor").val(data['Fullname']);
-                                $("#Doctor").attr('uid', data['UID']);
-                                $("#Doctor_uid").val(data['UID']);
-                                $("#Doctor_id").val(data['id']);
-                                that.fillDoctor(data['UID']);
-                            }
-                        });
-                    }
-                }
-            }
-        }
-        return editdoctor_overlay;
-    }
-*/
     function basalBodyTemperatureControl() {
     $( "[id^='BasalBodyTemperature-Day']" ).change(function() {
         if ( parseInt($(this).val()) > 41 ) {

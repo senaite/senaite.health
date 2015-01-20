@@ -154,6 +154,13 @@ class BatchSchemaExtender(object):
                     'url': 'doctors/portal_factory/Doctor/new/edit',
                     'return_fields': ['Firstname', 'Surname'],
                     'js_controllers': ['#doctor-base-edit',],
+                },
+                edit_button={
+                    'visible': True,
+                    # url with the root to create/edit a object.
+                    'url': 'doctors/portal_factory/Doctor',
+                    'return_fields': ['Firstname', 'Surname'],
+                    'js_controllers': ['#doctor-base-edit',],
                 }
             ),
         ),
@@ -186,6 +193,14 @@ class BatchSchemaExtender(object):
                 add_button={
                     'visible': True,
                     'url': 'patients/portal_factory/Patient/new/edit',
+                    'return_fields': ['Firstname', 'Surname'],
+                    'js_controllers': ['#patient-base-edit',],
+                    'overlay_handler': 'HealthPatientOverlayHandler',
+                },
+                edit_button={
+                    'visible': True,
+                    # url with the root to create/edit a object.
+                    'url': 'patients/portal_factory/Patient',
                     'return_fields': ['Firstname', 'Surname'],
                     'js_controllers': ['#patient-base-edit',],
                     'overlay_handler': 'HealthPatientOverlayHandler',
