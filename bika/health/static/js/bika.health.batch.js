@@ -349,7 +349,6 @@ function HealthBatchEditView() {
             $('#Doctor').attr('uid', '');
             $('#Doctor_uid').val('');
         }
-        //loadDoctorOverlay();
         return succeed;
     }
 
