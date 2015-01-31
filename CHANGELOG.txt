@@ -1,5 +1,6 @@
 next()
 ------------------
+HEALTH-204: Doctor Samples view broken
 HEALTH-200: Additional picklists don't work when creating Patients directly from the Case's view
 HEALTH-136: [+ Add] Patient button on AR Create form.
 HEALTH-179: "Copy to new" button in AR, doesn't copy the selected data.
