@@ -22,6 +22,7 @@ from bika.health.permissions import AddSymptom
 from bika.health.permissions import AddTreatment
 from bika.health.permissions import AddVaccinationCenter
 from bika.health.permissions import EditPatient
+from bika.health.permissions import AddInsuranceCompany
 from bika.health.permissions import ManageDoctors
 from bika.lims.permissions import AddAnalysisRequest
 from bika.lims.permissions import AddAnalysisSpec
@@ -68,6 +69,7 @@ def setupHealthVarious(context):
                    'bika_epidemiologicalyears',
                    'bika_identifiertypes',
                    'bika_casesyndromicclassifications',
+                   'bika_insurancecompany',
                    ):
         obj = bika_setup._getOb(obj_id)
         obj.unmarkCreationFlag()
@@ -148,6 +150,7 @@ def setupHealthPermissions(context):
     mp(AddDrug, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddImmunization, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddVaccinationCenter, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddInsuranceCompany, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddSymptom, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddDrugProhibition, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
 
@@ -296,6 +299,7 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('Drug', ['bika_setup_catalog'])
     at.setCatalogsByType('DrugProhibition', ['bika_setup_catalog'])
     at.setCatalogsByType('VaccinationCenter', ['bika_setup_catalog', ])
+    at.setCatalogsByType('InsuranceCompany', ['bika_setup_catalog', ])
     at.setCatalogsByType('Immunization', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseStatus', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseOutcome', ['bika_setup_catalog', ])

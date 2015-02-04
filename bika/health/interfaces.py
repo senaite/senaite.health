@@ -53,3 +53,9 @@ class IEpidemiologicalYears(Interface):
 
 class IIdentifierTypes(Interface):
     ""
+
+class IInsuranceCompany(Interface):
+    ""
+
+class IInsuranceCompanies(Interface):
+    ""

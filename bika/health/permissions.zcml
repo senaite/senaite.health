@@ -21,6 +21,7 @@
 <permission id="bika.health.permissions.AddDrug" title="BIKA: Add Drug"/>
 <permission id="bika.health.permissions.AddImunization" title="BIKA: Add Immunization"/>
 <permission id="bika.health.permissions.AddVaccinationCenter" title="BIKA: Add VaccinationCenter"/>
+<permission id="bika.health.permissions.AddInsuranceCompany" title="BIKA: Add InsuranceCompany"/>
 <permission id="bika.health.permissions.AddSymptom" title="BIKA: Add Symptom"/>
 <permission id="bika.health.permissions.AddDrugProhibition" title="BIKA: Add DrugProhibition"/>
 

@@ -50,6 +50,7 @@ def initialize(context):
     from content.treatment import Treatment
     from content.vaccinationcenter import VaccinationCenter
     from content.vaccinationcentercontact import VaccinationCenterContact
+    from content.insurancecompany import InsuranceCompany
 
     from controlpanel.bika_aetiologicagents import AetiologicAgents
     from controlpanel.bika_caseoutcomes import CaseOutcomes
