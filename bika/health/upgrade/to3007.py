@@ -6,7 +6,7 @@ from Products.CMFCore import permissions
 
 
 def upgrade(tool):
-    """Health-191: Giving patient view permissions to client contacts contact
+    """Health-191: Giving patient view permissions to referrer institutions contacts
     """
     portal = aq_parent(aq_inner(tool))
     setup = portal.portal_setup

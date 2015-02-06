@@ -58,7 +58,7 @@
         profile="bika.health:default"/>
 
 <genericsetup:upgradeStep
-        title="HEALTH-191 Giving patient view permissions to client contacts contact"
+        title="HEALTH-191 Giving patient view permissions to referrer institutions contacts"
         description=""
         source="3006"
         destination="3007"
