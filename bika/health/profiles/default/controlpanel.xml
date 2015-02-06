@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-
+<!-- Here are defined the content types that should be shown on the BikaLIMS  Configuration (Site Setup) -->
 <object name="portal_controlpanel" meta_type="Plone Control Panel Tool"
  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
  i18n:domain="plone">
