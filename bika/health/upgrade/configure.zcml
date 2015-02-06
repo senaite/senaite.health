@@ -56,4 +56,13 @@
         handler="bika.health.upgrade.to3006.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+<genericsetup:upgradeStep
+        title="HEALTH-191 Giving patient view permissions to client contacts contact"
+        description=""
+        source="3006"
+        destination="3007"
+        handler="bika.health.upgrade.to3007.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>

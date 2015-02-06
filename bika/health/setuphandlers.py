@@ -91,7 +91,7 @@ def setupHealthVarious(context):
     client.addAction(id="patients",
         name="Patients",
         action="string:${object_url}/patients",
-        permission="BIKA: Edit Patient",
+        permission="BIKA: View Patients",
         category="object",
         visible=True,
         icon_expr="string:${portal_url}/images/patient.png",
@@ -173,6 +173,7 @@ def setupHealthPermissions(context):
     mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
     mp(ManageClients, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 0)
     mp(permissions.AddPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'Client', 'RegulatoryInspector'], 1)
     mp(AddAnalysisSpec, ['Manager', 'LabManager', 'Owner'], 0)
     portal.clients.reindexObject()
 
@@ -187,11 +188,14 @@ def setupHealthPermissions(context):
     # /patients
     mp = portal.patients.manage_permission
     mp(AddPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
-    mp(EditPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
-    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(EditPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
+    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector', 'Client'], 1)
+    mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
+    mp(ViewSamples, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
+    mp(ViewBatches, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp(CancelAndReinstate, ['Manager', 'LabManager', 'LabClerk'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
+    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
     mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
     portal.patients.reindexObject()

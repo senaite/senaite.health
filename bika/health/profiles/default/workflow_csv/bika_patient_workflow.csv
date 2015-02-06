@@ -11,10 +11,13 @@ Id:,active,,,,,,,,,,,,,,,
 Title:,Active,,,,,,,,,,,,,,,
 Description:,,,,,,,,,,,,,,,,
 Transitions,,,,,,,,,,,,,,,,
-Permissions,Acquire,Owner,Manager,LabManager,LabClerk,Analyst,Sampler,Preserver,Verifier,RegulatoryInspector,Doctor,Publisher,Reader,Editor,Contributor,Anonymous
-BIKA: Cancel and reinstate,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N
-BIKA: Edit Patient,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N
-View,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N
-Access Contents Information,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N
-List folder contents,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N
-Modify portal content,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N
+Permissions,Acquire,Owner,Manager,LabManager,LabClerk,Analyst,Sampler,Preserver,Verifier,RegulatoryInspector,Doctor,Publisher,Reader,Editor,Contributor,Anonymous,Client
+BIKA: Cancel and reinstate,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N,N
+BIKA: Edit Patient,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N,Y
+BIKA: View AnalysisRequest,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N,Y
+BIKA: View Samples,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N,Y
+BIKA: View Batches,N,N,Y,Y,Y,N,N,N,N,N,N,N,N,N,N,N,Y
+View,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N,Y
+Access Contents Information,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N,Y
+List folder contents,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N,Y
+Modify portal content,N,N,Y,Y,Y,N,N,N,N,Y,Y,N,N,N,N,N,N
