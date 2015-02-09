@@ -40,6 +40,7 @@ ManageDoctors = "BIKA: Manage Doctors"
 ViewBatches = "BIKA: View Batches"
 ViewSamples = "BIKA: View Samples"
 ViewAnalysisRequests = "BIKA: View AnalysisRequests"
+ViewInsuranceCompanies = "BIKA: View InsuranceCompanies"
 
 # Patient permissions
 ViewPatients = 'BIKA: View Patients'
