@@ -20,7 +20,7 @@ def upgrade(tool):
 
     # Adding insurance companies in bika_setup
     at = getToolByName(portal, 'archetype_tool')
-    at.setCatalogsByType('InsuranceCompanies', ['bika_setup_catalog'])
+    at.setCatalogsByType('InsuranceCompany', ['bika_setup_catalog'])
     # If the type is not created yet, we should create it
     if not portal['bika_setup'].get('bika_insurancecompanies'):
         typestool.constructContent(type_name="InsuranceCompanies",

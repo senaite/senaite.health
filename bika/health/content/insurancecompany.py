@@ -32,4 +32,3 @@ class InsuranceCompany(Organisation):
         renameAfterCreation(self)
 
 registerType(InsuranceCompany, PROJECTNAME)
-

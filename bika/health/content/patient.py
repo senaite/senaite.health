@@ -391,6 +391,16 @@ schema = Person.schema.copy() + Schema((
                           "photos, will be included in emails to patient "
                           "if this option is enabled"))
     ),
+    ReferenceField('InsuranceCompany',
+        vocabulary='get_insurancecompanies',
+        allowed_types=('InsuranceCompany',),
+        relationship='InsuranceCompany',
+        required=False,
+        widget=SelectionWidget(
+            format='select',
+            label=_('Insurance Company'),
+            ),
+        ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -405,8 +415,9 @@ schema['HomePhone'].schemata = 'Personal'
 schema['MobilePhone'].schemata = 'Personal'
 #schema.moveField('PatientID', pos='top')
 schema.moveField('PrimaryReferrer', after='Surname')
+schema.moveField('InsuranceCompany', after='PrimaryReferrer')
 schema.moveField('PatientID', before='title')
-schema.moveField('PatientIdentifiers', after='PrimaryReferrer')
+schema.moveField('PatientIdentifiers', after='InsuranceCompany')
 schema.moveField('Gender', after='PatientIdentifiers')
 schema.moveField('Age', after='Gender')
 schema.moveField('BirthDate', after='Age')
@@ -468,6 +479,20 @@ class Patient(Person):
         clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
         clients.insert(0, ['', ''])
         return DisplayList(clients)
+
+    def get_insurancecompanies(self):
+        """
+        Return all the registered insurance companies.
+        """
+        bsc = getToolByName(self, 'bika_setup_catalog')
+        # Void selection
+        ret = [('', '')]
+        # Other selections
+        for ic in bsc(portal_type = 'InsuranceCompany',
+                      inactive_state = 'active',
+                      sort_on = 'sortable_title'):
+            ret.append((ic.UID, ic.Title))
+        return DisplayList(ret)
 
     def getPatientIdentifiersStr(self):
         ids = self.getPatientIdentifiers()

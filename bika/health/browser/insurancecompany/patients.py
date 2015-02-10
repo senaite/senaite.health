@@ -1,0 +1,27 @@
+from bika.health.browser.patients.folder_view import PatientsView
+from Products.CMFCore.utils import getToolByName
+
+""" This file contains patient's functions to be used in insurance company's stuff.
+"""
+
+
+class PatientsView(PatientsView):
+
+    def __init__(self, context, request):
+        super(PatientsView, self).__init__(context, request)
+        self.contentFilter['InsuranceCompany'] = self.context.UID()
+
+    def folderitems(self):
+        """ It filters patient's list by the current Insurance Company.
+        :return: A dict with the results filtered by Insurance Comp.
+        """
+        items = super(PatientsView, self).folderitems()
+        outitems = []
+        companyuid = self.context.UID()
+        for item in items:
+            if 'obj' in item and item.get('obj'):
+                pat = item.get('obj')
+                if pat.getInsuranceCompany() and \
+                   pat.getInsuranceCompany().UID() == companyuid:
+                    outitems.append(item)
+        return outitems
