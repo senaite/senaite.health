@@ -13,6 +13,10 @@ from bika.lims import bikaMessageFactory as _
 """
 
 class InvoiceFolderView(BikaListingView):
+    """
+    This class will build a list with the invoices that comes from the current Insurance Company's
+    patient.
+    """
     implements(IFolderContentsView, IViewView)  # Why??
 
     def __init__(self, context, request):
@@ -66,6 +70,7 @@ class InvoiceFolderView(BikaListingView):
         currency = currency_format(self.context, 'en')
         self.contentsMethod = self.getInvoices
         items = BikaListingView.folderitems(self)
+        import pdb;pdb.set_trace()
         for item in items:
             obj = item['obj']
             number_link = "<a href='%s'>%s</a>" % (
