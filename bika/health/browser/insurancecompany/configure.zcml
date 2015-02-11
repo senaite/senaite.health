@@ -12,4 +12,12 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
+    <browser:page
+      for="bika.health.interfaces.IInsuranceCompany"
+      name="invoicefolder"
+      class=".invoicefolder.InvoiceFolderContentsView"
+      permission="zope2.View"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
 </configure>

@@ -53,11 +53,11 @@ function HealthPatientEditView() {
         $('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
         $('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
         // It fills out the Insurance Company field.
-        var frominsurance = window.location.href.search('/bika_insurancecompanies/') >= 0;
+        var frominsurance = document.referrer.search('/bika_insurancecompanies/') >= 0;
         if (frominsurance){
             // The current Patient add View comes from an insurance companies folder view.
             // Automatically fill the Patient field
-            var iid = window.location.href.split("/bika_insurancecompanies/")[1].split("/")[0];
+            var iid = document.referrer.split("/bika_insurancecompanies/")[1].split("/")[0];
             fillInsuranceCompanyReferrer(iid);
         }
     // Adapt datepicker to current needs
