@@ -2,7 +2,7 @@ from bika.health.browser.patients.folder_view import PatientsView
 from bika.lims import bikaMessageFactory as _b
 from Products.CMFCore.utils import getToolByName
 
-""" This file contains patient's functions to be used in insurance company's stuff.
+""" This file contains overridden patient's functions to be used in insurance company's stuff.
 """
 
 
@@ -15,7 +15,8 @@ class PatientsView(PatientsView):
     def _initFormParams(self):
         super(PatientsView, self)._initFormParams()
         if _b('Add') in self.context_actions:
-            self.context_actions[_b('Add')]['url'] = '../../patients/createObject?type_name=Patient'
+            # We need to create the new element in the patients original url to avoid a creation error.
+            self.context_actions[_b('Add')]['url'] = self.portal_url + '/patients/createObject?type_name=Patient'
 
     def folderitems(self):
         """ It filters patient's list by the current Insurance Company.
