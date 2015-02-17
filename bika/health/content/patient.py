@@ -401,6 +401,13 @@ schema = Person.schema.copy() + Schema((
             label=_('Insurance Company'),
             ),
         ),
+    StringField('InsuranceNumber',
+                searchable=1,
+                required=0,
+                widget=StringWidget(
+                    label=_('Insurance Number'),
+                ),
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -415,9 +422,12 @@ schema['HomePhone'].schemata = 'Personal'
 schema['MobilePhone'].schemata = 'Personal'
 #schema.moveField('PatientID', pos='top')
 schema.moveField('PrimaryReferrer', after='Surname')
-schema.moveField('InsuranceCompany', after='PrimaryReferrer')
 schema.moveField('PatientID', before='title')
-schema.moveField('PatientIdentifiers', after='InsuranceCompany')
+schema.moveField('ClientPatientID', after='PatientID')
+schema.moveField('Anonymous', before='ClientPatientID')
+schema.moveField('InsuranceCompany', after='PrimaryReferrer')
+schema.moveField('InsuranceNumber', after='InsuranceCompany')
+schema.moveField('PatientIdentifiers', after='InsuranceNumber')
 schema.moveField('Gender', after='PatientIdentifiers')
 schema.moveField('Age', after='Gender')
 schema.moveField('BirthDate', after='Age')
@@ -425,8 +435,6 @@ schema.moveField('BirthDateEstimated', after='BirthDate')
 schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
-schema.moveField('ClientPatientID', after='PatientID')
-schema.moveField('Anonymous', before='ClientPatientID')
 
 
 class Patient(Person):
