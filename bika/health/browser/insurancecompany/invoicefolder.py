@@ -1,7 +1,10 @@
 from zope.interface.declarations import implements
 from plone.app.content.browser.interfaces import IFolderContentsView
+from bika.lims.permissions import AddInvoice
+from bika.lims.permissions import ManageInvoices
 from plone.app.layout.globals.interfaces import IViewView
 from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.browser.invoicefolder import InvoiceFolderContentsView
 from bika.lims.utils import currency_format
 
 
@@ -9,7 +12,7 @@ from bika.lims.permissions import AddInvoice
 from Products.CMFCore.utils import getToolByName
 from bika.lims import bikaMessageFactory as _
 
-""" This file contains a invoice type folder to be used in insurance company's stuff.
+""" This file contains an invoice type folder to be used in insurance company's stuff.
 """
 
 class InvoiceFolderView(BikaListingView):
@@ -17,13 +20,14 @@ class InvoiceFolderView(BikaListingView):
     This class will build a list with the invoices that comes from the current Insurance Company's
     patient.
     """
-    implements(IFolderContentsView, IViewView)  # Why??
+    implements(IFolderContentsView)
 
     def __init__(self, context, request):
         super(InvoiceFolderView, self).__init__(context, request)
         self.catalog = 'portal_catalog'
         self.contentFilter = {'portal_type': 'Invoice',
-                              'sort_on': 'sortable_title'}
+                              'sort_on': 'sortable_title',}
+                              # 'getInsuranceUID': self.context.UID()}
         self.context_actions = {}
         self.title = self.context.translate(_("Invoices"))
         self.icon = self.portal_url + "/++resource++bika.lims.images/invoice_big.png"
@@ -31,7 +35,6 @@ class InvoiceFolderView(BikaListingView):
         self.show_sort_column = False
         self.show_select_row = False
         self.show_select_column = False
-        self.contentsMethod = False
         self.pagesize = 25
         self.columns = {
             'id': {'title': _('Invoice Number'),
@@ -63,14 +66,34 @@ class InvoiceFolderView(BikaListingView):
             },
         ]
 
-    def getInvoices(self, contentFilter):
-        return self.context.objectValues('Invoice')
+    def __call__(self):
+        mtool = getToolByName(self.context, 'portal_membership')
+        if mtool.checkPermission(ManageInvoices, self.context):
+            self.show_select_column = True
+        return super(InvoiceFolderView, self).__call__()
 
-    def folderitems(self, full_objects = False):
+    def isItemAllowed(self, obj):
+        """
+        Check if the invoice should be shown in the insurance company's invoice folder.
+        To be shown the invoice should be related with a insurance company's patient.
+        :obj: An invoice object.
+        :return: True/False
+        """
+        iAR = obj.getAnalysisRequest() if obj.getAnalysisRequest() else None
+        # Get the AR's patient if the invoice has an AR related
+        patient = iAR.Schema()['Patient'].get(iAR) if iAR else None
+        # Get the patient's insurance company's UID if there is a patient
+        icuid = patient.getInsuranceCompany().UID() if patient else None
+        return icuid == self.context.UID()
+
+    def folderitems(self, full_objects=False):
+        """
+        :return: All the invoices related with the Insurance Company's clients.
+        """
         currency = currency_format(self.context, 'en')
-        self.contentsMethod = self.getInvoices
-        items = BikaListingView.folderitems(self)
-        import pdb;pdb.set_trace()
+        self.show_all = True
+        items = BikaListingView.folderitems(self, full_objects)
+        l = []
         for item in items:
             obj = item['obj']
             number_link = "<a href='%s'>%s</a>" % (
@@ -82,4 +105,5 @@ class InvoiceFolderView(BikaListingView):
             item['subtotal'] = currency(obj.getSubtotal())
             item['vatamount'] = currency(obj.getVATAmount())
             item['total'] = currency(obj.getTotal())
-        return items
+            l.append(item)
+        return l
