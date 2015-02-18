@@ -11,7 +11,6 @@ class InvoiceView(InvoiceViewLIMS):
     """
     # We need to load the templates from health
     template = ViewPageTemplateFile("templates/analysisrequest_invoice.pt")
-    #print_template = ViewPageTemplateFile("templates/analysisrequest_invoice_print.pt")
     content = ViewPageTemplateFile("templates/analysisrequest_invoice_content.pt")
 
     def __call__(self):
@@ -44,8 +43,6 @@ class InvoiceCreate(BaseClass):
         :param templateHTML: the html to render. We override it.
         :param to: the list with the receivers. Void in this case.
         """
-        # We want to use the template from health
-        templateHTML = self.print_template()
         # Check if the patient's "Send invoices to the insurance company" checkbox is checked.
         sendtoinsurance = self.context.Schema()['Patient'].get(self.context).getInvoiceToInsuranceCompany()
         if sendtoinsurance:

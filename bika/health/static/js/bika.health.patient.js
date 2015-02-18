@@ -138,8 +138,11 @@ function HealthPatientEditView() {
         $('#archetypes-fieldname-Gender #Gender').live('change', function(){
             toggleMenstrualStatus(this.value);
         });
-        $("input#InvoiceToInsuranceCompany").live('change',function() {
+        $("input#InsuranceNumber").live('change',function() {
             checkInsuranceNumber(this);
+        });
+        $("input#InvoiceToInsuranceCompany").live('change',function() {
+            checkInvoiceToInsuranceCompany(this);
         });
     }
 
@@ -296,16 +299,22 @@ function HealthPatientEditView() {
 
     function checkInsuranceNumber(item){
         /**
+         * Disable the 'Send invoices to the insurance company' checkbox if the Insurance number is void
+         */
+        if ($(item).val().length < 1) {
+            $("input#InvoiceToInsuranceCompany").prop('checked', false).unbind("click");
+        }
+    }
+
+    function checkInvoiceToInsuranceCompany(item){
+        /**
          * If 'Send invoices to the insurance company' is checked the Insurance Number becomes mandatory. This
          * function checks if there is an insurance number after the checkbox has been selected. If don't, the checkbox
          * will be disabled.
          */
-            setTimeout(function() {
         if (item.checked && $("input#InsuranceNumber").val().length < 1){
-
-                item.prop('checked', false);
-            }
-        }, 500);
+            $(item).prop('checked', false).unbind("click");
+        }
     }
 }
 

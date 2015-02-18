@@ -1,16 +1,14 @@
 <div summary="Invoice Info">
     <!-- Div Styled Table -->
     <div class="div-table-first-row">
-        <table class="invoice-info">
-            <td>
-                <label i18n:translate=""> Invoice To </label>
-                <span tal:content="view/contact"></span>
-            </td>
-            <td>
-                <label i18n:translate=""> Insurance Number </label>
-                <span tal:content="view/insurancenumber"></span>
-            </td>
-        </table>
+        <p>
+            <label i18n:translate=""> Invoice To </label>
+            <span tal:content="view/contact"></span>
+        </p>
+        <p>
+            <label i18n:translate=""> Insurance Number </label>
+            <span tal:content="view/insurancenumber"></span>
+        </p>
     </div>
     <tal:table tal:repeat="field view/headers">
         <div tal:define="oddrow repeat/field/odd;"
