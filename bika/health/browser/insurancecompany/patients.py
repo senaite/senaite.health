@@ -10,7 +10,6 @@ class PatientsView(PatientsView):
 
     def __init__(self, context, request):
         super(PatientsView, self).__init__(context, request)
-       # self.contentFilter['InsuranceCompany'] = self.context.UID()
 
     def _initFormParams(self):
         super(PatientsView, self)._initFormParams()
