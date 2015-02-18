@@ -138,6 +138,9 @@ function HealthPatientEditView() {
         $('#archetypes-fieldname-Gender #Gender').live('change', function(){
             toggleMenstrualStatus(this.value);
         });
+        $("input#InvoiceToInsuranceCompany").live('change',function() {
+            checkInsuranceNumber(this);
+        });
     }
 
     /**
@@ -289,6 +292,20 @@ function HealthPatientEditView() {
                 $('#InsuranceCompany').val(uid);
             }
         });
+    }
+
+    function checkInsuranceNumber(item){
+        /**
+         * If 'Send invoices to the insurance company' is checked the Insurance Number becomes mandatory. This
+         * function checks if there is an insurance number after the checkbox has been selected. If don't, the checkbox
+         * will be disabled.
+         */
+            setTimeout(function() {
+        if (item.checked && $("input#InsuranceNumber").val().length < 1){
+
+                item.prop('checked', false);
+            }
+        }, 500);
     }
 }
 

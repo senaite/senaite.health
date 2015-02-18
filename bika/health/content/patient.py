@@ -408,6 +408,13 @@ schema = Person.schema.copy() + Schema((
                     label=_('Insurance Number'),
                 ),
     ),
+    BooleanField('InvoiceToInsuranceCompany',
+        default=False,
+        widget=BooleanWidget(
+            label=_("Send invoices to the insurance company."),
+            description=_("If it is checked the invoices will be send to the insurance company."
+                          " In this case the insurance number will be mandatory."))
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -420,7 +427,9 @@ schema['title'].widget.visible = False
 schema['EmailAddress'].schemata = 'Personal'
 schema['HomePhone'].schemata = 'Personal'
 schema['MobilePhone'].schemata = 'Personal'
-#schema.moveField('PatientID', pos='top')
+schema['InsuranceCompany'].schemata = 'Insurance'
+schema['InsuranceNumber'].schemata = 'Insurance'
+schema['InvoiceToInsuranceCompany'].schemata = 'Insurance'
 schema.moveField('PrimaryReferrer', after='Surname')
 schema.moveField('PatientID', before='title')
 schema.moveField('ClientPatientID', after='PatientID')
