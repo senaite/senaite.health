@@ -26,8 +26,8 @@ class InvoiceFolderView(BikaListingView):
         super(InvoiceFolderView, self).__init__(context, request)
         self.catalog = 'portal_catalog'
         self.contentFilter = {'portal_type': 'Invoice',
-                              'sort_on': 'sortable_title',}
-                              # 'getInsuranceUID': self.context.UID()}
+                              'sort_on': 'sortable_title',
+                              'sort_order': 'reverse'}
         self.context_actions = {}
         self.title = self.context.translate(_("Invoices"))
         self.icon = self.portal_url + "/++resource++bika.lims.images/invoice_big.png"
