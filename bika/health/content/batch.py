@@ -154,6 +154,7 @@ class BatchSchemaExtender(object):
                     'url': 'doctors/portal_factory/Doctor/new/edit',
                     'return_fields': ['Firstname', 'Surname'],
                     'js_controllers': ['#doctor-base-edit',],
+                    'overlay_handler': 'HealthDoctorOverlayHandler',
                 },
                 edit_button={
                     'visible': True,
@@ -161,6 +162,7 @@ class BatchSchemaExtender(object):
                     'url': 'doctors/portal_factory/Doctor',
                     'return_fields': ['Firstname', 'Surname'],
                     'js_controllers': ['#doctor-base-edit',],
+                    'overlay_handler': 'HealthDonctorOverlayHandler',
                 }
             ),
         ),

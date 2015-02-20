@@ -1,5 +1,6 @@
 next()
 ------------------
+HEALTH-223: When you are adding a doctor through an overlay (add doctor button in cases), the address widgets don't work properly.
 HEALTH-204: Doctor Samples view broken
 HEALTH-200: Additional picklists don't work when creating Patients directly from the Case's view
 HEALTH-136: [+ Add] Patient button on AR Create form.

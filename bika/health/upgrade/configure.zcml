@@ -56,4 +56,13 @@
         handler="bika.health.upgrade.to3006.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+ <genericsetup:upgradeStep
+        title="HEALTH-223 his upgrade step registers the new js controller related with doctors."
+        description=""
+        source="3006"
+        destination="3007"
+        handler="bika.health.upgrade.to3007.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>
