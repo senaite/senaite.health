@@ -1,16 +1,18 @@
-Bika Health 3.1.5 (Naringenin)
-==============================
+Bika Health LIS
+===============
 
 Bika Laboratory Information Management System customised for use in Health laboratories.
 
-[Naringenin](http://en.wikipedia.org/wiki/Naringenin) is a flavanone, a typeof flavonoid, that is considered to have a bioactive effect on human health as antioxidant, free radical scavenger, anti-inflammatory, carbohydrate metabolism promoter, and immune system modulator. It is the predominant flavanone in grapefruit.
+Last stable version: **v3.1.6** · **Tangeritin** · released: 2015-02-27
+
+[**Tangeritin**](http://en.wikipedia.org/wiki/Tangeritin) is a flavone that is found in tangerine and other citrus peels. Tangeritin strengthens the cell wall and acts as a plant's defensive mechanism against disease-causing pathogens. Tangeritin shows enormous potential as an anticancer agent: *in vitro* studies show antimutagenic antiinvasive and antiproliferative effects.
 
 Installation and upgrades
 -------------------------
 Bika Health can be installed on Windows, Mac OS X, Linux, BSD and other platforms:
 https://github.com/bikalabs/bika.health/wiki/Installing-Bika-Health-Extension
 
-Please note that **Bika Health 3.1.5 is not compatible with Bika LIMS > 3.1.5**, so you'll need to set the version of Bika LIMS to 3.1.5 manually in the buildout. Follow the instructions [Installing Bika Health Extension](https://github.com/bikalabs/bika.health/wiki/Installing-Bika-Health-Extension).
+**Bika Health LIS 3.1.6 is only compatible with Bika LIMS 3.1.7**. Follow the instructions [Installing Bika Health Extension](https://github.com/bikalabs/bika.health/wiki/Installing-Bika-Health-Extension).
 
 You might also find useful the following recipes:
 - Installing Bika LIMS: https://github.com/bikalabs/Bika-LIMS/wiki/Bika-LIMS-Installation
