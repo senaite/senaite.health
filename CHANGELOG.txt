@@ -1,5 +1,6 @@
 3.1.6 (unreleased)
 ------------------
+HEALTH-223: When you are adding a doctor through an overlay (add doctor button in cases), the address widgets don't work properly.
 HEALTH-215: Correct Navigation tree order
 HEALTH-191: Client Contact permissions
 HEALTH-137: Medical Insurance for Patients. Alternative invoice workflow
