@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-
+<!-- Here are defined the content types that should be shown on BikaLIMS Configuration (Site Setup) -->
 <object name="portal_controlpanel" meta_type="Plone Control Panel Tool"
  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
  i18n:domain="plone">
@@ -116,6 +116,15 @@
     appId="bika.lims" category="bika" condition_expr=""
     icon_expr="string:++resource++bika.health.images/identifiertype.png"
     url_expr="string:$portal_url/bika_setup/bika_identifiertypes"
+    visible="True"
+    i18n:attributes="title">
+  <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <configlet title="Insurance Companies" action_id="bika_insurancecompanies"
+    appId="bika.lims" category="bika" condition_expr=""
+    icon_expr="string:++resource++bika.lims.images/laboratory.png"
+    url_expr="string:$portal_url/bika_setup/bika_insurancecompanies"
     visible="True"
     i18n:attributes="title">
   <permission>BIKA: Manage Bika</permission>

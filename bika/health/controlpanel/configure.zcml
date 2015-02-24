@@ -108,4 +108,12 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
+      <browser:page
+      for="bika.health.interfaces.IInsuranceCompanies"
+      name="folder_view"
+      class=".bika_insurancecompanies.InsuranceCompaniesView"
+      permission="bika.lims.ManageBika"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
 </configure>

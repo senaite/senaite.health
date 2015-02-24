@@ -52,7 +52,14 @@ function HealthPatientEditView() {
         $('.template-base_edit #archetypes-fieldname-ImmunizationHistory').hide();
         $('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
         $('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
-
+        // It fills out the Insurance Company field.
+        var frominsurance = document.referrer.search('/bika_insurancecompanies/') >= 0;
+        if (frominsurance){
+            // The current Patient add View comes from an insurance companies folder view.
+            // Automatically fill the Patient field
+            var iid = document.referrer.split("/bika_insurancecompanies/")[1].split("/")[0];
+            fillInsuranceCompanyReferrer(iid);
+        }
     // Adapt datepicker to current needs
     $("#BirthDate").datepicker("destroy");
     $("#BirthDate").datepicker({
@@ -130,6 +137,12 @@ function HealthPatientEditView() {
         });
         $('#archetypes-fieldname-Gender #Gender').live('change', function(){
             toggleMenstrualStatus(this.value);
+        });
+        $("input#InsuranceNumber").live('change',function() {
+            checkInsuranceNumber(this);
+        });
+        $("input#InvoiceToInsuranceCompany").live('change',function() {
+            checkInvoiceToInsuranceCompany(this);
         });
     }
 
@@ -264,6 +277,45 @@ function HealthPatientEditView() {
         var name = $('#PrimaryReferrer option[value!="'+uid+'"]').remove();
         $('#PrimaryReferrer').val(uid);
     }
+
+    function fillInsuranceCompanyReferrer(rid){
+        /**
+         * Select the Insurance Company with the rid and remove the other options.
+         * @ruid The referrer Insurance Company id.
+         */
+        var request_data = {
+            catalog_name: "bika_setup_catalog",
+            portal_type: 'InsuranceCompany',
+            id: rid
+        };
+        window.bika.lims.jsonapi_read(request_data, function (data){
+            if (data != null && data['success']== true) {
+                var uid = data.objects[0].UID;
+                $('#InsuranceCompany option[value!="'+uid+'"]').remove();
+                $('#InsuranceCompany').val(uid);
+            }
+        });
+    }
+
+    function checkInsuranceNumber(item){
+        /**
+         * Disable the 'Send invoices to the insurance company' checkbox if the Insurance number is void
+         */
+        if ($(item).val().length < 1) {
+            $("input#InvoiceToInsuranceCompany").prop('checked', false).unbind("click");
+        }
+    }
+
+    function checkInvoiceToInsuranceCompany(item){
+        /**
+         * If 'Send invoices to the insurance company' is checked the Insurance Number becomes mandatory. This
+         * function checks if there is an insurance number after the checkbox has been selected. If don't, the checkbox
+         * will be disabled.
+         */
+        if (item.checked && $("input#InsuranceNumber").val().length < 1){
+            $(item).prop('checked', false).unbind("click");
+        }
+    }
 }
 
 
@@ -383,6 +435,7 @@ function HealthPatientPublicationPrefsEditView() {
      */
     function fillDefaultPatientPrefs() {
         // Retrieve Patient's publication preferences
+        if (!$('#PrimaryReferrer').val()){ return false;}
         $.ajax({
             url: window.portal_url + "/ajax-client",
             type: 'POST',

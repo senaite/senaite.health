@@ -44,6 +44,7 @@ def initialize(context):
     from content.epidemiologicalyear import EpidemiologicalYear
     from content.identifiertype import IdentifierType
     from content.immunization import Immunization
+    from content.insurancecompany import InsuranceCompany
     from content.patient import Patient
     from content.patients import Patients
     from content.symptom import Symptom
@@ -62,6 +63,7 @@ def initialize(context):
     from controlpanel.bika_identifiertypes import IdentifierTypes
     from controlpanel.bika_immunizations import Immunizations
     from controlpanel.bika_treatments import Treatments
+    from controlpanel.bika_insurancecompanies import InsuranceCompanies
     from controlpanel.bika_vaccinationcenters import VaccinationCenters
 
     content_types, constructors, ftis = process_types(

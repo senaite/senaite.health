@@ -19,6 +19,8 @@ def upgrade(tool):
     setup.runImportStepFromProfile('profile-bika.health:default', 'controlpanel')
     setup.runImportStepFromProfile('profile-bika.health:default', 'factorytool')
     setup.runImportStepFromProfile('profile-bika.health:default', 'propertiestool')
+    setup.runImportStepFromProfile('profile-bika.health:default', 'jsregistry')
+    setup.runImportStepFromProfile('profile-bika.health:default', 'cssregistry')
     setup.runImportStepFromProfile('profile-bika.health:default', 'workflow')
     setup.runImportStepFromProfile('profile-bika.health:default', 'workflow-csv')
 
@@ -38,8 +40,8 @@ def upgrade(tool):
     obj.unmarkCreationFlag()
     obj.reindexObject()
     if not portal['bika_setup'].get('bika_insurancecompanies'):
-        logger.info("InsuranceCompanies not created")    
-    
+        logger.info("InsuranceCompanies not created")
+
     # Define permissions
     mp = portal.manage_permission
     mp(AddInsuranceCompany, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
