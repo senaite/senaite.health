@@ -76,4 +76,9 @@ def upgrade(tool):
         description="",
         condition="")
 
+    """ HEALTH-125 Reorder invoices and ARimports in the navigation bar.
+    """
+    portal.moveObjectToPosition('invoices', portal.objectIds().index('supplyorders'))
+    portal.moveObjectToPosition('arimports', portal.objectIds().index('referencesamples'))
+
     return True

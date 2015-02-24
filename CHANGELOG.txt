@@ -1,5 +1,6 @@
 3.1.6 (unreleased)
 ------------------
+HEALTH-215: Correct Navigation tree order
 HEALTH-191: Client Contact permissions
 HEALTH-137: Medical Insurance for Patients. Alternative invoice workflow
 HEALTH-204: Doctor Samples view broken
