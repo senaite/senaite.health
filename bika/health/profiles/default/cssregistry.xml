@@ -11,7 +11,7 @@
 
 <stylesheet
     id="++resource++bika.health.css/hide_editable_border.css"
-    expression="python:here.portal_type in ['Doctors', 'Patients', 'Drug', 'Drugs', 'Treatment', 'Treatments', 'Symptom', 'Symptoms', 'DrugProhibitions', 'VaccinationCenter', 'VaccinationCenters', 'Immunization', 'Immunizations', 'Disease', 'Diseases', 'CaseStatus', 'CaseStatuses', 'CaseOutcome', 'CaseOutcomes', 'CaseSyndromicClassification', 'CaseSyndromicClassifications', 'InsuranceCompany', 'InsuranceCompanies']"
+    expression="python:here.portal_type in ['Doctors', 'Patients', 'Drug', 'Drugs', 'Treatment', 'Treatments', 'Symptom', 'Symptoms', 'DrugProhibitions', 'VaccinationCenter', 'VaccinationCenters', 'Immunization', 'Immunizations', 'Disease', 'Diseases', 'CaseStatus', 'CaseStatuses', 'CaseOutcome', 'CaseOutcomes', 'CaseSyndromicClassification', 'CaseSyndromicClassifications', 'InsuranceCompanies']"
     media="screen"
     rel="stylesheet"
     rendering="link"
