@@ -88,7 +88,7 @@ class AnalysisRequestPublishView(_AnalysisRequestPublishView):
             if 'Doctor' in ar.Schema() else None
 
     def get_mail_subject(self, ar):
-        subject, totline = doPublish.get_mail_subject(self, ar)
+        subject, totline = super(AnalysisRequestPublishView, self).get_mail_subject(ar)
         client = ar.aq_parent
         subject_items = client.getEmailSubject()
         if 'health.cp' in subject_items:
@@ -170,7 +170,7 @@ class AnalysisRequestPublishView(_AnalysisRequestPublishView):
         return outaddress
 
     def get_recipients(self, ar):
-        recips = super(AnalysisRequestPublish, self).get_recipients(ar)
+        recips = super(AnalysisRequestPublishView, self).get_recipients(ar)
 
         bs = self.context.bika_setup
         sch = bs.Schema()

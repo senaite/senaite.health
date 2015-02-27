@@ -4,6 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
 from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.utils import logged_in_client
 from bika.health.config import PROJECTNAME
 from bika.health.interfaces import IPatients
 from bika.health.permissions import *
@@ -117,6 +118,23 @@ class PatientsView(BikaListingView):
 
 
     def folderitems(self):
+        # Obtain the member and member's role.
+        pm = getToolByName(self.context, "portal_membership")
+        member = pm.getAuthenticatedMember()
+        roles = member.getRoles()
+        # Limit results to those patients that "belong" to the member's client
+        if 'Client' in roles:
+            # It obtains the referrer institution which the current AuthenticatedMember belong.
+            client = logged_in_client(self.context, member)
+            self.contentFilter['getPrimaryReferrerUID'] = client.UID()
+            # hide PrimaryReferrer column
+            new_states = []
+            for x in self.review_states:
+                if 'getPrimaryReferrer' in x['columns']:
+                    x['columns'].remove("getPrimaryReferrer")
+                new_states.append(x)
+            self.review_states = new_states
+
         items = BikaListingView.folderitems(self)
         for x in range(len(items)):
             if 'obj' not in items[x]:
@@ -130,13 +148,14 @@ class PatientsView(BikaListingView):
                 (items[x]['url'], items[x]['getClientPatientID'])
             items[x]['replace']['Title'] = "<a href='%s/analysisrequests'>%s</a>" % \
                 (items[x]['url'], items[x]['Title'])
-
-            pr = obj.getPrimaryReferrer()
-            if pr:
-                items[x]['getPrimaryReferrer'] = pr.Title()
-                items[x]['replace']['getPrimaryReferrer'] = "<a href='%s/analysisrequests'>%s</a>" % \
+            if 'Client' not in roles:
+                # All the patients don't belong to the same client.
+                pr = obj.getPrimaryReferrer()
+                if pr:
+                    items[x]['getPrimaryReferrer'] = pr.Title()
+                    items[x]['replace']['getPrimaryReferrer'] = "<a href='%s/analysisrequests'>%s</a>" % \
                     (pr.absolute_url(), pr.Title())
-            else:
-                items[x]['getPrimaryReferrer'] = ''
+                else:
+                    items[x]['getPrimaryReferrer'] = ''
 
         return items

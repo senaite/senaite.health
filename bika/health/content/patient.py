@@ -391,6 +391,30 @@ schema = Person.schema.copy() + Schema((
                           "photos, will be included in emails to patient "
                           "if this option is enabled"))
     ),
+    ReferenceField('InsuranceCompany',
+        vocabulary='get_insurancecompanies',
+        allowed_types=('InsuranceCompany',),
+        relationship='InsuranceCompany',
+        required=False,
+        widget=SelectionWidget(
+            format='select',
+            label=_('Insurance Company'),
+            ),
+        ),
+    StringField('InsuranceNumber',
+                searchable=1,
+                required=0,
+                widget=StringWidget(
+                    label=_('Insurance Number'),
+                ),
+    ),
+    BooleanField('InvoiceToInsuranceCompany',
+        default=False,
+        widget=BooleanWidget(
+            label=_("Send invoices to the insurance company."),
+            description=_("If it is checked the invoices will be send to the insurance company."
+                          " In this case the insurance number will be mandatory."))
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -403,10 +427,16 @@ schema['title'].widget.visible = False
 schema['EmailAddress'].schemata = 'Personal'
 schema['HomePhone'].schemata = 'Personal'
 schema['MobilePhone'].schemata = 'Personal'
-#schema.moveField('PatientID', pos='top')
+schema['InsuranceCompany'].schemata = 'Insurance'
+schema['InsuranceNumber'].schemata = 'Insurance'
+schema['InvoiceToInsuranceCompany'].schemata = 'Insurance'
 schema.moveField('PrimaryReferrer', after='Surname')
 schema.moveField('PatientID', before='title')
-schema.moveField('PatientIdentifiers', after='PrimaryReferrer')
+schema.moveField('ClientPatientID', after='PatientID')
+schema.moveField('Anonymous', before='ClientPatientID')
+schema.moveField('InsuranceCompany', after='PrimaryReferrer')
+schema.moveField('InsuranceNumber', after='InsuranceCompany')
+schema.moveField('PatientIdentifiers', after='InsuranceNumber')
 schema.moveField('Gender', after='PatientIdentifiers')
 schema.moveField('Age', after='Gender')
 schema.moveField('BirthDate', after='Age')
@@ -414,8 +444,6 @@ schema.moveField('BirthDateEstimated', after='BirthDate')
 schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
-schema.moveField('ClientPatientID', after='PatientID')
-schema.moveField('Anonymous', before='ClientPatientID')
 
 
 class Patient(Person):
@@ -468,6 +496,20 @@ class Patient(Person):
         clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
         clients.insert(0, ['', ''])
         return DisplayList(clients)
+
+    def get_insurancecompanies(self):
+        """
+        Return all the registered insurance companies.
+        """
+        bsc = getToolByName(self, 'bika_setup_catalog')
+        # Void selection
+        ret = [('', '')]
+        # Other selections
+        for ic in bsc(portal_type = 'InsuranceCompany',
+                      inactive_state = 'active',
+                      sort_on = 'sortable_title'):
+            ret.append((ic.UID, ic.Title))
+        return DisplayList(ret)
 
     def getPatientIdentifiersStr(self):
         ids = self.getPatientIdentifiers()
@@ -544,17 +586,10 @@ class Patient(Person):
         arr.append(splitted['day'] and str(splitted['day']) + 'd' or '')
         return ' '.join(arr)
 
-    def setCountryState(self, value):
-        pa = self.getPhysicalAddress() and self.getPhysicalAddress() or {'country': '', 'state': ''}
-        pa['country'] = self.REQUEST.form.get('CountryState', {'country': ''})['country']
-        pa['state'] = self.REQUEST.form.get('CountryState', {'state': ''})['state']
-        if not pa['country']:
-            return
-
-        return self.setPhysicalAddress(pa)
-
     def getCountryState(self):
-        return self.getPhysicalAddress()
+        return self.getField('CountryState').get(self) \
+            if self.getField('CountryState').get(self) \
+            else self.getPhysicalAddress()
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)

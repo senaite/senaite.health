@@ -29,4 +29,9 @@
 
   <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
 
+  <browser:resource
+    file="skins/bika_health/logo.png"
+     name="bika-health-logo.png"
+   />
+
 </configure>

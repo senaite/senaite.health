@@ -11,6 +11,7 @@
     <include file="browser/sample/overrides.zcml" />
     <include file="browser/samples/overrides.zcml" />
     <include file="browser/worksheet/overrides.zcml" />
+    <include file="browser/overrides.zcml" />
     <include file="static/overrides.zcml" />
     <include file="setupdata/overrides.zcml" />
 

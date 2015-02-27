@@ -22,7 +22,8 @@ window.bika.health.controllers =  {
     "#batch-base-edit":
         ['HealthBatchEditView',
          'HealthPatientEditView',
-         'HealthPatientPublicationPrefsEditView'],
+         'HealthPatientPublicationPrefsEditView',
+         'HealthPatientGlobalWidgetEditView'],
 
     "#patient-base-edit":
         ['HealthPatientEditView',
@@ -37,51 +38,31 @@ window.bika.health.controllers =  {
     ".template-base_edit.portaltype-client":
         ['HealthClientEditView'],
 
-};
+    ".portaltype-patient":
+        ['HealthPatientGlobalWidgetEditView'],
 
-/**
- * Initializes only the js controllers needed for the current view.
- * Initializes the JS objects from the controllers dictionary for which
- * there is at least one match with the dict key. The JS objects are
- * loaded in the same order as defined in the controllers dict.
- */
-window.bika.health.initview = function() {
-    var loaded = new Array();
-    var controllers = window.bika.health.controllers;
-    for (var key in controllers) {
-        if ($(key).length) {
-            controllers[key].forEach(function(js) {
-                if ($.inArray(js, loaded) < 0) {
-                    console.debug('[bika.health.loader] Loading '+js);
-                    try {
-                        obj = new window[js]();
-                        obj.load();
-                        // Register the object for further access
-                        window.bika.health[js]=obj;
-                        loaded.push(js);
-                    } catch (e) {
-                       // statements to handle any exceptions
-                       var msg = '[bika.health.loader] Unable to load '+js+": "+ e.message +"\n"+e.stack;
-                       console.warn(msg);
-                       window.bika.lims.error(msg);
-                    }
-                }
-            });
-        }
-    }
-    return loaded.length;
+    "div.overlay #patient-base-edit":
+        ['HealthPatientOverlayHandler'],
+
+    "div.overlay #doctor-base-edit":
+        ['HealthDoctorOverlayHandler']
+
 };
 
 window.bika.health.initialized = false;
 
 /**
  * Initializes all bika.health js stuff
+ * Add the bika.health controllers inside bikia.lims controllers'
+ * dict to be load together.
  */
 window.bika.health.initialize = function() {
     if (bika.lims.initialized == true) {
-        return window.bika.health.initview();
+        window.bika.lims.controllers = $.extend(window.bika.lims.controllers, window.bika.health.controllers);
+        // We need to force bika.lims.loader to load the bika.health controllers.
+        return window.bika.lims.initview();
     }
-    // We should wait after bika.lims being initialized
+    // We should wait after bika.lims has been initialized.
     setTimeout(function() {
         return window.bika.health.initialize();
     }, 500);
@@ -90,7 +71,7 @@ window.bika.health.initialize = function() {
 (function( $ ) {
 $(document).ready(function(){
 
-    // Initializes bika.health
+    // Initializes bika.health.
     var length = window.bika.health.initialize();
     window.bika.health.initialized = true;
 

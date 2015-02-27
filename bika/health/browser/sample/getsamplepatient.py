@@ -20,7 +20,7 @@ class ajaxGetSamplePatient(BrowserView):
                 sample = proxies[0].getObject();
                 prefix = sample.getSampleType().getPrefix()
                 ars = sample.getAnalysisRequests()
-                ars = {ar.id:ar for ar in ars}
+                ars = dict((ar.id,ar) for ar in ars)
                 for key in sorted(ars, key=lambda key: ars[key]):
                     ar = ars[key]
                     patient = ar.Schema().getField('Patient').get(ar) \

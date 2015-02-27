@@ -1,3 +1,23 @@
+3.1.6 (unreleased)
+------------------
+HEALTH-223: When you are adding a doctor through an overlay (add doctor button in cases), the address widgets don't work properly.
+HEALTH-215: Correct Navigation tree order
+HEALTH-191: Client Contact permissions
+HEALTH-137: Medical Insurance for Patients. Alternative invoice workflow
+HEALTH-204: Doctor Samples view broken
+HEALTH-200: Additional picklists don't work when creating Patients directly from the Case's view
+HEALTH-136: [+ Add] Patient button on AR Create form.
+HEALTH-179: "Copy to new" button in AR, doesn't copy the selected data.
+HEALTH-197: Health's results report error.
+HEALTH-204: Batch.samples error loading page
+HEALTH-177: Past Medical History and Drug History's end date selection error.
+HEALTH-178: Past Medical History, Travell History and Immunization History data: Impossible to remove the last set of data.
+HEALTH-208: Incompatibilty with new Bika LIMS' add site templates
+HEALTH-197: Health's results report error
+HEALTH-189: Patient Edit page: After define a country, it is not saved.
+HEALTH-184: Add Case: Patient Age at Case Onset Date doesn't get filled after introduce the Onset Date.
+
+
 3.1.5 (2014-10-10)
 ------------------
 

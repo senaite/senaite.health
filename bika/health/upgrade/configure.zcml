@@ -56,4 +56,13 @@
         handler="bika.health.upgrade.to3006.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+<genericsetup:upgradeStep
+        title="Bika Health 3.1.6"
+        description=""
+        source="3006"
+        destination="316"
+        handler="bika.health.upgrade.to316.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>

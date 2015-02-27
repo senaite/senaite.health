@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.1.5'
+version = '3.1.6'
 
 setup(name='bika.health',
       version=version,
-      description="Bika Health Open Source LIMS",
+      description="Bika Health Open Source LIS",
       long_description=open("README.md").read() + "\n\n" +
-                       open("CHANGELOG.txt").read(),
+                       open("docs/CHANGELOG.txt").read(),
       # Get more strings from
       # http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
@@ -33,7 +33,7 @@ setup(name='bika.health',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'bika.lims>=3.1.5',
+          'bika.lims==3.1.7',
           'archetypes.schemaextender',
           'collective.wtf',
       ],

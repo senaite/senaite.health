@@ -21,6 +21,7 @@
   <include package=".epidemiologicalyear"/>
   <include package=".identifiertype"/>
   <include package=".immunization"/>
+  <include package=".insurancecompany"/>
   <include package=".patient"/>
   <include package=".patients"/>
   <include package=".sample"/>
