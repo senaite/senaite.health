@@ -3,9 +3,9 @@ Bika Health LIS
 
 Bika Laboratory Information Management System customised for use in Health laboratories.
 
-Last stable version: **v3.1.6** · **Tangeritin** · released: 2015-02-27
+Last stable version: **v3.1.6** · released: 2015-02-27
 
-[**Tangeritin**](http://en.wikipedia.org/wiki/Tangeritin) is a flavone that is found in tangerine and other citrus peels. Tangeritin strengthens the cell wall and acts as a plant's defensive mechanism against disease-causing pathogens. Tangeritin shows enormous potential as an anticancer agent: *in vitro* studies show antimutagenic antiinvasive and antiproliferative effects.
+[**Naringenin**](http://en.wikipedia.org/wiki/Naringenin) is a flavanone, a typeof flavonoid, that is considered to have a bioactive effect on human health as antioxidant, free radical scavenger, anti-inflammatory, carbohydrate metabolism promoter, and immune system modulator. It is the predominant flavanone in grapefruit.
 
 Installation and upgrades
 -------------------------
@@ -21,6 +21,7 @@ You might also find useful the following recipes:
 
 Documentation
 -------------
+- Bika Health Wiki: http://github.com/bikalabs/bika.health/wiki
 - Bika LIMS User Manual: http://demo.bikalabs.com/knowledge-centre/manual/bika-3-user-manual
 - Bika LIMS Wiki: http://github.com/bikalabs/Bika-LIMS/wiki
 
