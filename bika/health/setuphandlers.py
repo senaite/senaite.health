@@ -12,6 +12,7 @@ from bika.health.permissions import ViewPatients
 from bika.health.permissions import ViewBatches
 from bika.health.permissions import ViewSamples
 from bika.health.permissions import ViewAnalysisRequests
+from bika.health.permissions import ViewInsuranceCompanies
 from bika.health.permissions import AddAetiologicAgent
 from bika.health.permissions import AddDoctor
 from bika.health.permissions import AddDrug
@@ -21,6 +22,7 @@ from bika.health.permissions import AddPatient
 from bika.health.permissions import AddSymptom
 from bika.health.permissions import AddTreatment
 from bika.health.permissions import AddVaccinationCenter
+from bika.health.permissions import AddInsuranceCompany
 from bika.health.permissions import EditPatient
 from bika.health.permissions import ManageDoctors
 from bika.lims.permissions import AddAnalysisRequest
@@ -68,6 +70,7 @@ def setupHealthVarious(context):
                    'bika_epidemiologicalyears',
                    'bika_identifiertypes',
                    'bika_casesyndromicclassifications',
+                   'bika_insurancecompanies',
                    ):
         obj = bika_setup._getOb(obj_id)
         obj.unmarkCreationFlag()
@@ -77,6 +80,10 @@ def setupHealthVarious(context):
     portal.moveObjectToPosition('doctors', portal.objectIds().index('samples'))
     portal.moveObjectToPosition('patients', portal.objectIds().index('samples'))
     portal.moveObjectToPosition('batches', portal.objectIds().index('samples'))
+
+    # Resort Invoices and AR Invoice (HEALTH-215) in navigation
+    portal.moveObjectToPosition('invoices', portal.objectIds().index('supplyorders'))
+    portal.moveObjectToPosition('arimports', portal.objectIds().index('referencesamples'))
 
     # Plone's jQuery gets clobbered when jsregistry is loaded.
     setup = portal.portal_setup
@@ -91,7 +98,7 @@ def setupHealthVarious(context):
     client.addAction(id="patients",
         name="Patients",
         action="string:${object_url}/patients",
-        permission="BIKA: Edit Patient",
+        permission="BIKA: View Patients",
         category="object",
         visible=True,
         icon_expr="string:${portal_url}/images/patient.png",
@@ -148,6 +155,7 @@ def setupHealthPermissions(context):
     mp(AddDrug, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddImmunization, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddVaccinationCenter, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddInsuranceCompany, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddSymptom, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddDrugProhibition, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
 
@@ -161,6 +169,7 @@ def setupHealthPermissions(context):
     mp(ViewBatches, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(ViewInsuranceCompanies, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
 
     # /clients folder permissions
     # Member role must have view permission on /clients, to see the list.
@@ -173,6 +182,7 @@ def setupHealthPermissions(context):
     mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
     mp(ManageClients, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 0)
     mp(permissions.AddPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
+    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'Client', 'RegulatoryInspector'], 1)
     mp(AddAnalysisSpec, ['Manager', 'LabManager', 'Owner'], 0)
     portal.clients.reindexObject()
 
@@ -187,11 +197,14 @@ def setupHealthPermissions(context):
     # /patients
     mp = portal.patients.manage_permission
     mp(AddPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
-    mp(EditPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
-    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(EditPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
+    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector', 'Client'], 1)
+    mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
+    mp(ViewSamples, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
+    mp(ViewBatches, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp(CancelAndReinstate, ['Manager', 'LabManager', 'LabClerk'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
+    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
     mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
     portal.patients.reindexObject()
@@ -296,6 +309,7 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('Drug', ['bika_setup_catalog'])
     at.setCatalogsByType('DrugProhibition', ['bika_setup_catalog'])
     at.setCatalogsByType('VaccinationCenter', ['bika_setup_catalog', ])
+    at.setCatalogsByType('InsuranceCompany', ['bika_setup_catalog', ])
     at.setCatalogsByType('Immunization', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseStatus', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseOutcome', ['bika_setup_catalog', ])

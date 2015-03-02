@@ -52,15 +52,22 @@ function HealthPatientEditView() {
         $('.template-base_edit #archetypes-fieldname-ImmunizationHistory').hide();
         $('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
         $('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
-
-	// Adapt datepicker to current needs
-	$("#BirthDate").datepicker("destroy");
-	$("#BirthDate").datepicker({
-	    dateFormat: "yy-mm-dd",
-	    changeMonth:true,
-	    changeYear:true,
-	    yearRange: "-100:+0",
-	});
+        // It fills out the Insurance Company field.
+        var frominsurance = document.referrer.search('/bika_insurancecompanies/') >= 0;
+        if (frominsurance){
+            // The current Patient add View comes from an insurance companies folder view.
+            // Automatically fill the Patient field
+            var iid = document.referrer.split("/bika_insurancecompanies/")[1].split("/")[0];
+            fillInsuranceCompanyReferrer(iid);
+        }
+    // Adapt datepicker to current needs
+    $("#BirthDate").datepicker("destroy");
+    $("#BirthDate").datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth:true,
+        changeYear:true,
+        yearRange: "-100:+0"
+    });
 
         if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
             $('#archetypes-fieldname-MenstrualStatus').hide();
@@ -130,6 +137,12 @@ function HealthPatientEditView() {
         });
         $('#archetypes-fieldname-Gender #Gender').live('change', function(){
             toggleMenstrualStatus(this.value);
+        });
+        $("input#InsuranceNumber").live('change',function() {
+            checkInsuranceNumber(this);
+        });
+        $("input#InvoiceToInsuranceCompany").live('change',function() {
+            checkInvoiceToInsuranceCompany(this);
         });
     }
 
@@ -264,6 +277,45 @@ function HealthPatientEditView() {
         var name = $('#PrimaryReferrer option[value!="'+uid+'"]').remove();
         $('#PrimaryReferrer').val(uid);
     }
+
+    function fillInsuranceCompanyReferrer(rid){
+        /**
+         * Select the Insurance Company with the rid and remove the other options.
+         * @ruid The referrer Insurance Company id.
+         */
+        var request_data = {
+            catalog_name: "bika_setup_catalog",
+            portal_type: 'InsuranceCompany',
+            id: rid
+        };
+        window.bika.lims.jsonapi_read(request_data, function (data){
+            if (data != null && data['success']== true) {
+                var uid = data.objects[0].UID;
+                $('#InsuranceCompany option[value!="'+uid+'"]').remove();
+                $('#InsuranceCompany').val(uid);
+            }
+        });
+    }
+
+    function checkInsuranceNumber(item){
+        /**
+         * Disable the 'Send invoices to the insurance company' checkbox if the Insurance number is void
+         */
+        if ($(item).val().length < 1) {
+            $("input#InvoiceToInsuranceCompany").prop('checked', false).unbind("click");
+        }
+    }
+
+    function checkInvoiceToInsuranceCompany(item){
+        /**
+         * If 'Send invoices to the insurance company' is checked the Insurance Number becomes mandatory. This
+         * function checks if there is an insurance number after the checkbox has been selected. If don't, the checkbox
+         * will be disabled.
+         */
+        if (item.checked && $("input#InsuranceNumber").val().length < 1){
+            $(item).prop('checked', false).unbind("click");
+        }
+    }
 }
 
 
@@ -383,6 +435,7 @@ function HealthPatientPublicationPrefsEditView() {
      */
     function fillDefaultPatientPrefs() {
         // Retrieve Patient's publication preferences
+        if (!$('#PrimaryReferrer').val()){ return false;}
         $.ajax({
             url: window.portal_url + "/ajax-client",
             type: 'POST',
@@ -410,5 +463,63 @@ function HealthPatientPublicationPrefsEditView() {
             }
         });
         return $(that.allowresults).is(':checked');
+    }
+}
+
+/**
+ * Controller for patient's widgets, to remove the last set of data when it isn't empty.
+ * Issue HEALTH-178
+ */
+function HealthPatientGlobalWidgetEditView() {
+    var that = this;
+    that.load = function() {
+        RemoveLastSet();
+    }
+
+    function RemoveLastSet() {
+        /**
+         *Function used to remove the last set of data when it isn't empty.
+         */
+        $("[class^='records_row_'] .rw_deletebtn").click(function () {
+            var nrows = $(this).closest("table tr")
+            console.log(nrows);
+            if (nrows.length == 1) {
+                $(this).closest("tr").find("input").val("");
+            }
+        });
+    }
+}
+
+/**
+ * Patient's overlay edit view Handler. Used by add buttons to
+ * manage the behaviour of the overlay.
+ */
+function HealthPatientOverlayHandler() {
+    var that = this;
+
+    // Needed for bika.lims.loader to register the object at runtime
+    that.load = function() {}
+
+    /**
+     * Event fired on overlay.onLoad()
+     * Hides undesired contents from inside the overlay and also
+     * loads additional javascripts still not managed by the bika.lims
+     * loader
+     */
+    that.onLoad = function(event) {
+
+        // Manually remove remarks
+        event.getOverlay().find("#archetypes-fieldname-Remarks").remove();
+
+        // Remove menstrual status widget to avoid my suicide
+        // with a "500 service internal error"
+        event.getOverlay().find("#archetypes-fieldname-MenstrualStatus").remove();
+
+        // Address widget
+        $.ajax({
+            url: 'bika_widgets/addresswidget.js',
+            dataType: 'script',
+            async: false
+        });
     }
 }
