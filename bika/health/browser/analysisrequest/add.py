@@ -7,6 +7,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
     The main AR Add form adapted for health usage
     """
     health_template = ViewPageTemplateFile("templates/ar_add.pt")
+    patient_template = ViewPageTemplateFile("templates/ar_addpatient.pt")
 
     def __call__(self):
         # Getting the checkbox value

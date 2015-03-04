@@ -1,0 +1,66 @@
+<table>
+    <tbody>
+    <tr>
+        <th>Patient Details</th>
+    </tr>
+
+    <tr>
+        <th>Patient ID Number</th>
+        <td>
+            <!--tal:content="python: una box amb els diferents pacients creats" -->
+        </td>
+    </tr>
+
+    <tr>
+        <th>Patient Surname</th>
+        <td>
+            <!--tal:content="python: una box amb els diferents pacients creats" -->
+        </td>
+        <th>Patient First Name</th>
+        <td>
+            <!--tal:content="python: una box amb els diferents pacients creats" -->
+        </td>
+    </tr>
+
+    <tr>
+        <th>Date of birth</th>
+        <td>
+            <!--tal:content="python: data -->
+        </td>
+        <th>Gender</th>
+        <td>
+            <!-- Checkbox?-->
+        </td>
+    </tr>
+
+    <tr>
+        <th>Telephone number</th>
+        <td>
+            <!-- -->
+        </td>
+        <th>Cellphone number</th>
+        <td>
+            <!-- -->
+        </td>
+    </tr>
+
+    <tr>
+        <th>Patient ID Number</th>
+        <td>
+            <!--tal:content="python: una box amb els diferents pacients creats" -->
+        </td>
+    </tr>
+
+    <tr>
+        <th>Email</th>
+        <td>
+            <!-- -->
+        </td>
+    </tr>
+
+
+    </tbody>
+</table>
+
+
+
