@@ -1,66 +1,38 @@
-<table>
-    <tbody>
-    <tr>
-        <th>Patient Details</th>
-    </tr>
+<div>
+    <div>
+        <span i18n:translate="">Patient Details</span>
+    </div>
 
-    <tr>
-        <th>Patient ID Number</th>
-        <td>
-            <!--tal:content="python: una box amb els diferents pacients creats" -->
-        </td>
-    </tr>
-
-    <tr>
-        <th>Patient Surname</th>
-        <td>
-            <!--tal:content="python: una box amb els diferents pacients creats" -->
-        </td>
-        <th>Patient First Name</th>
-        <td>
-            <!--tal:content="python: una box amb els diferents pacients creats" -->
-        </td>
-    </tr>
-
-    <tr>
-        <th>Date of birth</th>
-        <td>
-            <!--tal:content="python: data -->
-        </td>
-        <th>Gender</th>
-        <td>
-            <!-- Checkbox?-->
-        </td>
-    </tr>
-
-    <tr>
-        <th>Telephone number</th>
-        <td>
-            <!-- -->
-        </td>
-        <th>Cellphone number</th>
-        <td>
-            <!-- -->
-        </td>
-    </tr>
-
-    <tr>
-        <th>Patient ID Number</th>
-        <td>
-            <!--tal:content="python: una box amb els diferents pacients creats" -->
-        </td>
-    </tr>
-
-    <tr>
-        <th>Email</th>
-        <td>
-            <!-- -->
-        </td>
-    </tr>
-
-
-    </tbody>
-</table>
-
-
+    <div tal:repeat="field python:view.get_patient_fields()">
+        <tal:def define="
+            fieldName python:field.getName();
+            field_macro here/widgets/field/macros/edit;
+            accessor python:field.getAccessor(context);
+            widget python:field.widget;
+            errors python:{};
+            mode string:edit;
+            pcontext python:view.get_patient_context();">
+            <!-- Label division -->
+            <div tal:content="string:${fieldName}">
+                <label class="formQuestion">
+                    <span tal:replace="python:view.context.translate(widget.Label(here))"/>
+                    <span class="fieldRequired"
+                            tal:condition="field/required"
+                          title="Required"
+                            i18n:attributes="title title_required;">&nbsp;</span>
+                    <em style="display:block"
+                        class="discreet"
+                            tal:define="description python:view.context.translate(widget.Description(here))"
+                            tal:content="structure description"
+                            tal:attributes="id string:${fieldName}_help">Help </em>
+                </label>
+            </div>
+            <!-- Data division -->
+            <div>
+                <!--span tal:content="python:pcontext.widget(fieldName, mode='edit')"/-->
+                <metal:field use-macro="python:pcontext.widget(fieldName, mode='edit')"/>
+            </div>
+        </tal:def>
+    </div>
+</div>
 
