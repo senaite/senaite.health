@@ -1,6 +1,7 @@
 from bika.lims.browser.analysisrequest.add import AnalysisRequestAddView as AnalysisRequestAddViewLIMS
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone.utils import _createObjectByType
+import json
 from Products.CMFCore.utils import getToolByName
 
 class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
@@ -54,3 +55,10 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         patients_brains = getToolByName(self.context, 'bika_patient_catalog')(portal_type='Patient')
         return patients_brains[0].getObject()
 
+    def get_json_format(self, d):
+        """
+        Given some data, it get its json format.
+        :param d: Data to be formatted.
+        :return: The formatted data in JSON.
+        """
+        return json.dumps(d)

@@ -1,38 +1,169 @@
 <div>
     <div>
-        <span i18n:translate="">Patient Details</span>
+      <div>
+        <label class="formQuestion" for="PatientDetails" i18n:translate=""> Patient Details </label>
+        <div id="archetypes-fieldname-PatientDetails" class="field ArchetypesStringWidget " data-fieldname="PatientDetails">
+            <input id="PatientDetails"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   value=""
+                   name="PatientDetails"/>
+        </div>
+    </div>
     </div>
 
-    <div tal:repeat="field python:view.get_patient_fields()">
-        <tal:def define="
-            fieldName python:field.getName();
-            field_macro here/widgets/field/macros/edit;
-            accessor python:field.getAccessor(context);
-            widget python:field.widget;
-            errors python:{};
-            mode string:edit;
-            pcontext python:view.get_patient_context();">
-            <!-- Label division -->
-            <div tal:content="string:${fieldName}">
-                <label class="formQuestion">
-                    <span tal:replace="python:view.context.translate(widget.Label(here))"/>
-                    <span class="fieldRequired"
-                            tal:condition="field/required"
-                          title="Required"
-                            i18n:attributes="title title_required;">&nbsp;</span>
-                    <em style="display:block"
-                        class="discreet"
-                            tal:define="description python:view.context.translate(widget.Description(here))"
-                            tal:content="structure description"
-                            tal:attributes="id string:${fieldName}_help">Help </em>
-                </label>
-            </div>
-            <!-- Data division -->
-            <div>
-                <!--span tal:content="python:pcontext.widget(fieldName, mode='edit')"/-->
-                <metal:field use-macro="python:pcontext.widget(fieldName, mode='edit')"/>
-            </div>
-        </tal:def>
+    <div>
+        <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Patient ID </label>
+        <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
+            <input id="ClientPatientID"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   value=""
+                   name="ClientPatientID"/>
+        </div>
     </div>
+
+    <div>
+        <span i18n:translate="">Patient Surname</span>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Patient" id="archetypes-fieldname-Patient">
+            <input type="text"
+                   name="ar.0.Patient:record"
+                   id="ar_0_Patient"
+                   class="blurrable firstToFocus referencewidget"
+                   size="20"
+                   minlength="0"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
+                    "
+                   ui_item="Title"
+                   catalog_name="portal_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input type="hidden" name="Patient_uid" id="Patient_uid" />
+        </div>
+    </div>
+
+    <div>
+        <span i18n:translate="">Patient First Name</span>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Patient" id="archetypes-fieldname-Patient">
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input type="text"
+                   name="ar.0.Patient:record"
+                   id="ar_0_Patient"
+                   class="blurrable firstToFocus referencewidget"
+                   size="20"
+                   minlength="0"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
+                    "
+                   ui_item="Title"
+                   catalog_name="portal_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input type="hidden" name="Patient_uid" id="Patient_uid" />
+        </div>
+    </div>
+
+    <div>
+        <label  class="formQuestion" for="BirthDate" i18n:translate="">Date of birth</label>
+        <div id="archetypes-fieldname-BirthDate" class="field ArchetypesDateTimeWidget " data-fieldname="BirthDate">
+            <input id="BirthDate"
+                   class="blurrable firstToFocus hasDatepicker"
+                   type="text"
+                   datetimepicker="0"
+                   datepicker="1"
+                   value=""
+                   name="BirthDate"
+                   required="required"/>
+        </div>
+        <label class="formQuestion" for="BirthDateEstimated"> Birth date is estimated </label>
+        <div id="archetypes-fieldname-BirthDateEstimated" class="field ArchetypesBooleanWidget " data-fieldname="BirthDateEstimated">
+            <input id="BirthDateEstimated" class="noborder" type="checkbox" name="BirthDateEstimated:boolean" value="on"/>
+        <input type="hidden" name="BirthDateEstimated:boolean:default" value="" originalvalue="">
+        </div>
+    </div>
+
+    <div>
+        <label class="formQuestion" for="Gender" i18n:translate="">Gender</label>
+        <div id="archetypes-fieldname-Gender" class="field ArchetypesSelectionWidget " data-fieldname="Gender">
+            <select id="Gender" name="Gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="dk" selected="selected">Don't Know</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div>
+        <label class="formQuestion" for="HomePhone" i18n:translate="">Home Phone</label>
+        <div id="archetypes-fieldname-HomePhone" class="field ArchetypesStringWidget" data-fieldname="HomePhone">
+            <input id="HomePhone"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   placeholder=""
+                   value=""
+                   name="HomePhone"
+                   originalvalue="">
+        </div>
+    </div>
+
+    <div>
+        <label class="formQuestion" for="MobilePhone" i18n:translate="">Mobile Phone</label>
+        <div id="archetypes-fieldname-MobilePhone" class="field ArchetypesStringWidget" data-fieldname="MobilePhone">
+            <input id="MobilePhone"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   placeholder=""
+                   value=""
+                   name="MobilePhone"
+                   originalvalue="">
+        </div>
+    </div>
+
+    <div>
+        <label class="formQuestion" for="BusinessPhone" i18n:translate="">Business Phone</label>
+        <div id="archetypes-fieldname-BusinessPhone" class="field ArchetypesStringWidget" data-fieldname="BusinessPhone">
+            <input id="BusinessPhone"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   placeholder=""
+                   value=""
+                   name="BusinessPhone"
+                   originalvalue="">
+        </div>
+    </div>
+
+    <div>
+        <label class="formQuestion" for="EmailAddress" i18n:translate="">E-mail</label>
+        <div  id="archetypes-fieldname-EmailAddress" class="field ArchetypesStringWidget " data-fieldname="EmailAddress">
+            <input
+                    id="EmailAddress"
+                    class="blurrable firstToFocus"
+                    type="text"
+                    placeholder=""
+                    maxlength="255"
+                    size="30"
+                    value=""
+                    name="ar.0.EmailAddress:record"
+                    originalvalue=""/>
+        </div>
+    </div>
+
+    <div>
+        <label class="formQuestion" for="Signature" i18n:translate="">Signature</label>
+        <div></div>
+    </div>
+
+
 </div>
 

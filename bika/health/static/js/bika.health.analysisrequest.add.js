@@ -250,28 +250,36 @@ function HealthAnalysisRequestAddView() {
             clientuid = $("#ar_" + col + "_Client_uid").val();
 
             // Batch searches
-            element = $("#ar_" + col + "_Batch")
-            base_query = $.parseJSON($(element).attr("base_query"));
-            base_query['getClientUID'] = clientuid;
-            applyComboFilter(element, base_query);
+            element = $("#ar_" + col + "_Batch");
+            if (element.length > 0){
+                base_query = $.parseJSON($(element).attr("base_query"));
+                base_query['getClientUID'] = clientuid;
+                applyComboFilter(element, base_query);
+            }
 
             // Patient searches
-            element = $("#ar_" + col + "_Patient")
-            base_query = $.parseJSON($(element).attr("base_query"));
-            base_query['getPrimaryReferrerUID'] = clientuid;
-            applyComboFilter(element, base_query);
+            element = $("#ar_" + col + "_Patient");
+            if (element.length > 0) {
+                base_query = $.parseJSON($(element).attr("base_query"));
+                base_query['getPrimaryReferrerUID'] = clientuid;
+                applyComboFilter(element, base_query);
+            }
 
             // CPID searches
             element = $("#ar_" + col + "_ClientPatientID")
-            base_query = $.parseJSON($(element).attr("base_query"));
-            base_query['getPrimaryReferrerUID'] = clientuid;
-            applyComboFilter(element, base_query);
+            if (element.length > 0) {
+                base_query = $.parseJSON($(element).attr("base_query"));
+                base_query['getPrimaryReferrerUID'] = clientuid;
+                applyComboFilter(element, base_query);
+            }
 
             // Contact searches
             element = $("#ar_" + col + "_Contact")
-            base_query = $.parseJSON($(element).attr("base_query"));
-            base_query['getParentUID'] = clientuid;
-            applyComboFilter(element, base_query);
+            if (element.length > 0) {
+                base_query = $.parseJSON($(element).attr("base_query"));
+                base_query['getParentUID'] = clientuid;
+                applyComboFilter(element, base_query);
+            }
         }
     }
 
