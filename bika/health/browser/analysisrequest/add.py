@@ -11,6 +11,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
     health_template = ViewPageTemplateFile("templates/ar_add.pt")
     patient_template = ViewPageTemplateFile("templates/ar_addpatient.pt")
     doctor_referrer_template = ViewPageTemplateFile("templates/ar_add_doctor_referrer.pt")
+    insurance_template = ViewPageTemplateFile("templates/ar_insurance.pt")
 
     def __init__(self, context, request):
         AnalysisRequestAddViewLIMS.__init__(self, context, request)

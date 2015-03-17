@@ -1,10 +1,10 @@
 <div>
     <!-- Refering doctor -->
     <div>
-        <label class="formQuestion" for="Doctor" i18n:translate="">Refering Doctor
-            <span class="required" title="Required"> </span>
-        </label>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Doctor" id="archetypes-fieldname-Doctor">
+            <label class="formQuestion" for="Doctor" i18n:translate="">Refering Doctor
+                <span class="required" title="Required"> </span>
+            </label>
             <span></span>
             <div class="fieldErrorBox"></div>
             <input type="text"
@@ -28,14 +28,14 @@
     </div>
     <!-- This input will be fill out after a doctor has been chosen -->
     <div>
-        <label class="formQuestion" for="DoctorsCode" i18n:translate="">Doctor's Code</label>
         <div>
+            <label class="formQuestion" for="DoctorsCode" i18n:translate="">Doctor's Code</label>
             <input type="text"/>
         </div>
     </div>
     <!-- Copies to doctors -->
     <div id="archetypes-fieldname-CCEmails" class="field ArchetypesStringWidget" data-fieldname="CCEmails">
-        <label class="formQuestion" for="Doctor" i18n:translate="">Refering <Doctor></Doctor>
+        <label class="formQuestion" for="Doctor" i18n:translate="">CC Doctor <Doctor></Doctor>
         <span></span>
             <div class="fieldErrorBox"></div>
         </label>
