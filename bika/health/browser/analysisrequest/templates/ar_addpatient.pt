@@ -1,6 +1,6 @@
 <div>
+    <!-- Details ill be saved as remarks -->
     <div>
-      <div>
         <label class="formQuestion" for="PatientDetails" i18n:translate=""> Patient Details </label>
         <div id="archetypes-fieldname-PatientDetails" class="field ArchetypesStringWidget " data-fieldname="PatientDetails">
             <input id="PatientDetails"
@@ -10,8 +10,8 @@
                    name="PatientDetails"/>
         </div>
     </div>
-    </div>
 
+<!-- Patient ID -->
     <div>
         <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Patient ID </label>
         <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
@@ -23,47 +23,36 @@
         </div>
     </div>
 
+    <!-- Choose if the patient will be created or selected from still created patients -->
     <div>
-        <span i18n:translate="">Patient Surname</span>
-        <div class="field ArchetypesReferenceWidget " data-fieldname="Patient" id="archetypes-fieldname-Patient">
-            <input type="text"
-                   name="ar.0.Patient:record"
-                   id="ar_0_Patient"
-                   class="blurrable firstToFocus referencewidget"
-                   size="20"
-                   minlength="0"
-                   search_query="{}"
-                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
-                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
-                    "
-                   ui_item="Title"
-                   catalog_name="portal_catalog"
-                   resetbutton="False"
-                   maxlength="255"
-                   searchicon="True"
-                   showon="True"
-                   placeholder="" />
-            <input type="hidden" name="Patient_uid" id="Patient_uid" />
+        <label class="formQuestion" for="NewPatient"> New Patient
+            <span class="required" title="Required"> </span>
+        </label>
+        <div id="archetypes-fieldname-NewPatient" class="field ArchetypesBooleanWidget " data-fieldname="ExistingPtaient">
+            <input id="NewPatient" class="noborder" type="checkbox" name="NewPatient:boolean" value="on"/>
+            <input type="hidden" name="NewPatient:boolean:default" value="" originalvalue="">
         </div>
     </div>
 
+    <!-- This div-input is only shown when New Patient checkbox is UNselected -->
     <div>
-        <span i18n:translate="">Patient First Name</span>
+        <label class="formQuestion" for="Patient" i18n:translate="">Patient Full Name
+            <span class="required" title="Required"> </span>
+        </label>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Patient" id="archetypes-fieldname-Patient">
             <span></span>
             <div class="fieldErrorBox"></div>
             <input type="text"
                    name="ar.0.Patient:record"
                    id="ar_0_Patient"
-                   class="blurrable firstToFocus referencewidget"
+                   class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg has_combogrid_widget"
                    size="20"
                    minlength="0"
                    search_query="{}"
-                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
-                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
-                    "
+                   tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'getPatientID', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '40'}, {'columnName': 'PatientIdentifiers', 'label': 'Additional Identifiers', 'width': '40'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});"
                    ui_item="Title"
-                   catalog_name="portal_catalog"
+                   catalog_name="bika_patient_catalog"
                    resetbutton="False"
                    maxlength="255"
                    searchicon="True"
@@ -73,9 +62,39 @@
         </div>
     </div>
 
+    <!-- This div-input is only shown when New Patient checkbox is selected -->
     <div>
-        <label  class="formQuestion" for="BirthDate" i18n:translate="">Date of birth</label>
-        <div id="archetypes-fieldname-BirthDate" class="field ArchetypesDateTimeWidget " data-fieldname="BirthDate">
+        <label class="formQuestion" for="Surname" i18n:translate="">Patient Surname
+            <span class="required" title="Required"> </span>
+        </label>
+        <span></span>
+        <div class="fieldErrorBox"></div>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Surname" id="archetypes-fieldname-Surname">
+            <!-- This input is only shown when New Patient checkbox is selected -->
+            <input id="Surname" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" size="30" value="" name="Surname"/>
+        </div>
+    </div>
+
+    <!-- This div-input is only shown when New Patient checkbox is selected -->
+    <div>
+        <label i18n:translate="">Patient First Name
+            <span class="required" title="Required"> </span>
+        </label>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Firstname" id="archetypes-fieldname-Firstname">
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input id="Firstname" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" size="30" value="" name="Firstname"/>
+        </div>
+    </div>
+
+    <!-- Birth date -->
+    <div>
+        <label  class="formQuestion" for="BirthDate" i18n:translate="">Date of birth
+            <span class="required" title="Required"> </span>
+        </label>
+        <div id="archetypes-fieldname-BirthDate" class="field ArchetypesDateTimeWidget" data-fieldname="BirthDate">
+            <span></span>
+            <div class="fieldErrorBox"></div>
             <input id="BirthDate"
                    class="blurrable firstToFocus hasDatepicker"
                    type="text"
@@ -85,6 +104,7 @@
                    name="BirthDate"
                    required="required"/>
         </div>
+        <!-- Select to know if the date is stimated -->
         <label class="formQuestion" for="BirthDateEstimated"> Birth date is estimated </label>
         <div id="archetypes-fieldname-BirthDateEstimated" class="field ArchetypesBooleanWidget " data-fieldname="BirthDateEstimated">
             <input id="BirthDateEstimated" class="noborder" type="checkbox" name="BirthDateEstimated:boolean" value="on"/>
@@ -159,6 +179,7 @@
         </div>
     </div>
 
+    <!-- Signature, if the request is printed -->
     <div>
         <label class="formQuestion" for="Signature" i18n:translate="">Signature</label>
         <div></div>
