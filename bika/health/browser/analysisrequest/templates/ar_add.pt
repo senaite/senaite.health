@@ -95,29 +95,16 @@
     <input type="hidden"
            id="PhysicalPath"
             tal:attributes="here python:'/'.join(context.getPhysicalPath()[:-3])"/>
+    <!-- patient template -->
+    <span tal:replace="structure view/patient_template"></span>
 
-    <table summary="Add analysis requests"
-           class="listing analysisrequest add nosort"
-           cellpadding="0" cellspacing="0">
-        <tbody>
-        <tr>
-            <td>
-                <!-- patient template -->
-                <span tal:replace="structure view/patient_template"></span>
-            </td>
-
-            <td>
-                <!-- doctor template -->
-            </td>
-        </tr>
-
-        </tbody>
+    <!-- doctor template -->
+    <span tal:replace="structure view/doctor_referrer_template"></span>
         <!-- VIEWLET CASE -->
         <!-- ANALYSIS -->
 
 
 
-</table>
 </form>
 </div>
 </body>

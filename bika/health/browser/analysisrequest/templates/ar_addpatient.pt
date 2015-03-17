@@ -1,17 +1,6 @@
 <div>
-    <!-- Details ill be saved as remarks -->
-    <div>
-        <label class="formQuestion" for="PatientDetails" i18n:translate=""> Patient Details </label>
-        <div id="archetypes-fieldname-PatientDetails" class="field ArchetypesStringWidget " data-fieldname="PatientDetails">
-            <input id="PatientDetails"
-                   class="blurrable firstToFocus"
-                   type="text"
-                   value=""
-                   name="PatientDetails"/>
-        </div>
-    </div>
-
-<!-- Patient ID -->
+    <label i18n:translate=""> Patient Details </label>
+    <!-- Patient ID -->
     <div>
         <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Patient ID </label>
         <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
@@ -182,7 +171,7 @@
     <!-- Signature, if the request is printed -->
     <div>
         <label class="formQuestion" for="Signature" i18n:translate="">Signature</label>
-        <div></div>
+        <div id="section-signatures"></div>
     </div>
 
 
