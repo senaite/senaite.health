@@ -676,7 +676,6 @@ class Patient(Person):
         If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
         the current patient fields.
         """
-        import pdb;pdb.set_trace()
         return self.getPostalAddress() \
             if self.getPatientAsGuarantor() \
             else self.getField('GuarantorPostalAddress').get(self)

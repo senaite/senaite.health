@@ -144,9 +144,10 @@ function HealthPatientEditView() {
         $("input#InvoiceToInsuranceCompany").live('change',function() {
             checkInvoiceToInsuranceCompany(this);
         });
-        $("#PatientGuarantor").live('change',function() {
-            hide_show_guarantor_fields(this);
-        })
+        $("#PatientAsGuarantor").live('change',function() {
+            hide_show_guarantor_fields();
+        });
+        hide_show_guarantor_fields();
     }
 
     /**
@@ -320,16 +321,20 @@ function HealthPatientEditView() {
         }
     }
 
-    function hide_show_guarantor_fields(element){
+    function hide_show_guarantor_fields(){
         /**
          * If the Patient is the guarantor checkbox is set, the guarantor's fields are going to be hide.
          * In the opposite situation, the opposite action is going to happen.
          */
-        if (element.checked){
-
+        var fields = $('[data-fieldname*="Guarantor"]').not('#archetypes-fieldname-PatientAsGuarantor');
+        var address_widget = $('[id*="GuarantorPostalAddress"]').closest('fieldset');
+        if ($("#PatientAsGuarantor").attr('checked')?true:false){
+            fields.hide();
+            address_widget.hide();
         }
         else {
-
+            fields.show();
+            address_widget.show();
         }
     }
 }
