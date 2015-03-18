@@ -144,6 +144,9 @@ function HealthPatientEditView() {
         $("input#InvoiceToInsuranceCompany").live('change',function() {
             checkInvoiceToInsuranceCompany(this);
         });
+        $("#PatientGuarantor").live('change',function() {
+            hide_show_guarantor_fields(this);
+        })
     }
 
     /**
@@ -314,6 +317,19 @@ function HealthPatientEditView() {
          */
         if (item.checked && $("input#InsuranceNumber").val().length < 1){
             $(item).prop('checked', false).unbind("click");
+        }
+    }
+
+    function hide_show_guarantor_fields(element){
+        /**
+         * If the Patient is the guarantor checkbox is set, the guarantor's fields are going to be hide.
+         * In the opposite situation, the opposite action is going to happen.
+         */
+        if (element.checked){
+
+        }
+        else {
+
         }
     }
 }
