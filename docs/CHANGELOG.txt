@@ -1,6 +1,6 @@
 3.1.7 (unreleased)
 ------------------
-
+HEALTH-251_ Add guarantor details in insurance companies
 
 3.1.6 (2015-02-27)
 ------------------
