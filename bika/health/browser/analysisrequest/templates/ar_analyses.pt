@@ -1,0 +1,56 @@
+<div>
+<!-- Sampling date -->
+    <div>
+        <div id="archetypes-fieldname-SamplingDate" class="field ArchetypesDateTimeWidget " data-fieldname="SamplingDate">
+            <label class="formQuestion">
+                Sampling Date
+                <span class="fieldRequired" title="Required"> </span>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input id="ar_0_SamplingDate"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   datetimepicker="0"
+                   datepicker="1"
+                   value=""
+                   name="ar.0.SamplingDate:record"
+                   tabindex="21"
+                   autocomplete="off">
+        </div>
+    </div>
+
+    <!-- Sample Type -->
+    <div>
+        <div id="archetypes-fieldname-SampleType" class="field ArchetypesReferenceWidget" data-fieldname="SampleType">
+            <label class="formQuestion">
+                Sample Type
+                <span class="fieldRequired" title="Required"> </span>
+                <em id="SampleType_help" class="discreet">Create a new sample of this type</em>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input id="ar_0_SampleType"
+                   class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
+                   type="text"
+                   placeholder=""
+                   showon="True"
+                   searchicon="True" maxlength="255"
+                   resetbutton="False"
+                    tal:attributes="combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
+                    base_query python:view.get_json_format({'portal_type': 'SampleType', 'inactive_state': 'active'})"
+                   catalog_name="bika_setup_catalog"
+                   search_query="{}"
+                   ui_item="Title"
+                   minlength="0"
+                   name="ar.0.SampleType:record"
+                   autocomplete="off"
+                   role="textbox"
+                   aria-autocomplete="list"
+                   aria-haspopup="true"
+                   tabindex="22">
+            <input id="ar_0_SampleType_uid" type="hidden" name="ar.0.SampleType_uid:record">
+        </div>
+    </div>
+
+</div>

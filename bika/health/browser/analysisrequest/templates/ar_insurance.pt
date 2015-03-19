@@ -1,14 +1,26 @@
 <div>
     <label i18n:translate=""> Account to </label>
+
+    <!-- Choose if the patient is the same as the guarantor -->
+    <div>
+        <div id="archetypes-fieldname-PatientAsGuarantor" class="field ArchetypesBooleanWidget " data-fieldname="PatientAsGuarantor">
+            <label class="formQuestion" for="PatientAsGuarantor"> Patient as guarantor</label>
+            <input id="PatientAsGuarantor" class="noborder" type="checkbox" name="PatientAsGuarantor:boolean" value="on"/>
+            <input type="hidden" name="PatientAsGuarantor:boolean:default" value="true" originalvalue="">
+        </div>
+    </div>
+
+    <!-- If the patient and the guarantor is the same person and the patient already exists, the following fields will be fill out with the existing patient's data -->
     <!-- Insurance Number -->
     <div>
-        <div  id="archetypes-fieldname-InsuranceNumber" class="field ArchetypesStringWidget" data-fieldname="InsuranceNumber">
-            <label class="formQuestion" for="InsuranceNumber" i18n:translate=""> Guarantor ID Number </label>
-            <input id="InsuranceNumber"
+        <div  id="archetypes-fieldname-GuarantorID" class="field ArchetypesStringWidget" data-fieldname="GuarantorID">
+            <label class="formQuestion" for="GuarantorID" i18n:translate=""> Guarantor ID Number </label>
+            <span id="GuarantorID_help" class="formHelp">The ID number (Insurance Number) from the person whose contract cover the current patient.</span>
+            <input id="GuarantorID"
                    class="blurrable firstToFocus"
                    type="text"
                    placeholder=""
-                   name="InsuranceNumber"
+                   name="GuarantorID"
                    originalvalue=""/>
         </div>
     </div>
@@ -42,18 +54,68 @@
 
     </div>
 
-    <!-- After select an Insurance Company, all the fields should be write out -->
+    <!-- If the patient and the guarantor is the same person, the following fields will be fill out with the patient's data -->
 
-    <div id="archetypes-fieldname-Phone" class="field ArchetypesStringWidget " data-fieldname="Phone">
-        <label class="formQuestion" for="Phone">Phone</label>
-        <input id="Phone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" name="Phone">
+    <div id="archetypes-fieldname-GuarantorSurname" class="field ArchetypesStringWidget " data-fieldname="GuarantorSurname">
+        <span></span>
+        <label class="formQuestion" for="GuarantorSurname">Guarantor's Surname</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorSurname"
+               class="blurrable firstToFocus"
+               type="text"
+               placeholder=""
+               maxlength="255"
+               name="GuarantorSurname"
+               originalvalue="">
     </div>
 
-    <div id="archetypes-fieldname-EmailAddress" class="field ArchetypesStringWidget " data-fieldname="EmailAddress">
-        <label class="formQuestion" for="EmailAddress">Email Address</label>
-        <input id="EmailAddress" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" name="EmailAddress">
+    <div id="archetypes-fieldname-GuarantorFirstname" class="field ArchetypesStringWidget" data-fieldname="GuarantorFirstname">
+        <span></span>
+        <label class="formQuestion" for="GuarantorFirstname">Guarantor's First Name</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorFirstname" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorFirstname" originalvalue="">
     </div>
 
+    <!-- Rendering the whole widget -->
+    <!--div>
+        <tal:fields tal:define="field_macro here/widgets/field/macros/view; field python:here.Schema()['maintext']">
+
+            <tal:if_visible define="mode string:view;
+                          visState python:field.widget.isVisible(here, mode);
+                          visCondition python:field.widget.testCondition(context.aq_inner.aq_parent, portal, context);"
+                            condition="python:visState == 'visible' and visCondition">
+                <metal:use_field use-macro="field_macro" />
+            </tal:if_visible>
+        </tal:fields>
+    </div-->
+
+    <div id="archetypes-fieldname-GuarantorBusinessPhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorBusinessPhone">
+        <span></span>
+        <label class="formQuestion" for="GuarantorBusinessPhone">
+            Guarantor's Phone (business)
+        </label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorBusinessPhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorBusinessPhone" originalvalue="">
+    </div>
+
+
+    <div id="archetypes-fieldname-GuarantorHomePhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorHomePhone">
+        <span></span>
+        <label class="formQuestion" for="GuarantorHomePhone">
+            Guarantor's Phone (home)
+        </label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorHomePhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorHomePhone" originalvalue="">
+    </div>
+
+    <div id="archetypes-fieldname-GuarantorMobilePhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorMobilePhone">
+        <span></span>
+        <label class="formQuestion" for="GuarantorMobilePhone">
+            Guarantor's Phone (mobile)
+        </label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorMobilePhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorMobilePhone" originalvalue="">
+    </div>
 
 </div>
 

@@ -3,6 +3,8 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFPlone.utils import _createObjectByType
 import json
 from Products.CMFCore.utils import getToolByName
+from bika.lims.browser.widgets import AddressWidget
+
 
 class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
     """
@@ -12,6 +14,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
     patient_template = ViewPageTemplateFile("templates/ar_addpatient.pt")
     doctor_referrer_template = ViewPageTemplateFile("templates/ar_add_doctor_referrer.pt")
     insurance_template = ViewPageTemplateFile("templates/ar_insurance.pt")
+    analyses_template = ViewPageTemplateFile("templates/ar_analyses.pt")
 
     def __init__(self, context, request):
         AnalysisRequestAddViewLIMS.__init__(self, context, request)
@@ -47,7 +50,6 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         for field in schema_fields:
             if field.required or field.getName() in self._pfields:
                 fields.append(field)
-        import pdb; pdb.set_trace()
         return fields
 
     def get_patient_context(self):

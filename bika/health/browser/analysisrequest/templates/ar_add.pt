@@ -95,17 +95,76 @@
     <input type="hidden"
            id="PhysicalPath"
             tal:attributes="here python:'/'.join(context.getPhysicalPath()[:-3])"/>
-    <!-- patient template -->
-    <span tal:replace="structure view/patient_template"></span>
+    <!-- Contact person -->
 
-    <!-- doctor template -->
+    <div id="archetypes-fieldname-Contact" class="field ArchetypesReferenceWidget" data-fieldname="Contact">
+        <label class="formQuestion" for="Patient" i18n:translate="">Contact
+            <span class="required" title="Required"> </span>
+        </label>
+        <span></span>
+        <div class="fieldErrorBox"></div>
+        <input id="ar_0_Contact"
+               class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg has_combogrid_widget"
+               type="text"
+               placeholder=""
+               showon="True"
+               searchicon="True"
+               maxlength="255"
+               resetbutton="False"
+                tal:attributes="combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'UID', 'hidden': True}, {'columnName': 'Fullname', 'label': 'Name', 'width': '50'}, {'columnName': 'EmailAddress', 'label': 'Email Address', 'width': '50'}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '400px', 'showOn': True, 'force_all': True});
+                        base_query python:view.get_json_format({'portal_type':['Contact'],'inactive_state':'active', 'getParentUID':''})"
+               catalog_name="portal_catalog"
+               search_query="{}"
+               ui_item="Title"
+               minlength="0"
+               name="ar.0.Contact:record"
+               autocomplete="off"
+               role="textbox"
+               aria-autocomplete="list"
+               aria-haspopup="true"
+               tabindex="10" />
+
+
+        <input id="ar_0_Contact_uid" type="hidden" name="ar.0.Contact_uid:record">
+    </div>
+
+    <!-- Patient template -->
+    <span tal:replace="structure view/patient_template"></span>
+    <!-- Doctor template -->
     <span tal:replace="structure view/doctor_referrer_template"></span>
     <!-- Insurance template -->
     <span tal:replace="structure view/insurance_template"></span>
-        <!-- VIEWLET CASE -->
-        <!-- ANALYSIS -->
+    <!-- Analyses template -->
+    <span tal:replace="structure view/analyses_template"></span>
 
 
+    <!-- Submit button -->
+    <input class="context button allowMultiSubmit"
+           type="submit"
+           name="save_button"
+            i18n:attributes="value"
+           value="Save"/>
+
+    <div class="discreeter">
+        <p>  <!-- AVS this should be conditional if any dryables present -->
+            <img src="" tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry.png">
+            <span i18n:translate="">
+            Can be <r></r>eported as dry matter</span>
+        </p>
+
+        <!-- XXX this also -->
+        <p tal:condition="python:context.bika_setup.laboratory.getLaboratoryAccredited()">
+            <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/accredited.png">
+            <span i18n:translate="">
+                Methods included in the
+                <tal:block
+                        replace="here/bika_setup/laboratory/AccreditationBody"
+                        i18n:name="accreditation_body"/>
+                schedule of Accreditation for this Laboratory.
+                Analysis remarks are not accredited
+            </span>
+        </p>
+    </div>
 
 </form>
 </div>
