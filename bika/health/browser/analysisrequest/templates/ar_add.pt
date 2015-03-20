@@ -123,9 +123,35 @@
                aria-autocomplete="list"
                aria-haspopup="true"
                tabindex="10" />
-
-
         <input id="ar_0_Contact_uid" type="hidden" name="ar.0.Contact_uid:record">
+    </div>
+
+
+    <div id="archetypes-fieldname-Priority" class="field ArchetypesReferenceWidget " data-fieldname="Priority">
+        <label class="formQuestion">Priority</label>
+        <span></span>
+        <input id="ar_0_Priority"
+               class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
+               type="text"
+               placeholder=""
+               showon="True"
+               searchicon="True"
+               maxlength="255"
+               resetbutton="False"
+                tal:attributes=" combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'sortKey', 'hidden': True}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'sortKey', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
+                        base_query python:view.get_json_format({'portal_type': ['ARPriority'], 'inactive_state': 'active'})"
+               catalog_name="bika_setup_catalog"
+               ui_item="Title"
+               search_query="{}"
+               minlength="0"
+               size="10"
+               name="ar.0.Priority:record"
+               autocomplete="off"
+               role="textbox"
+               aria-autocomplete="list"
+               aria-haspopup="true"
+               tabindex="36">
+        <input id="ar_0_Priority_uid" type="hidden" name="ar.0.Priority_uid:record">
     </div>
 
     <!-- Patient template -->

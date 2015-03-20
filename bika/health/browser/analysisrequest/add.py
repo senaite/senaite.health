@@ -21,6 +21,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         # An array where are located all the the schema patient's fields to show on the ar_add
         self._pfields = ['PatientID', 'Surname', 'Firstname', 'BirthDate', 'Gender', 'HomePhone', 'MobilePhone',
                          'BusinessPhone', 'EmailAddress']
+        self.w = AddressWidget()
 
     def __call__(self):
         # Getting the checkbox value
