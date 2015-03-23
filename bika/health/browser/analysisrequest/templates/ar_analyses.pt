@@ -53,4 +53,61 @@
         </div>
     </div>
 
+    <!-- Analysis Services -->
+
+    <div class="analysisservices">
+        <div tal:repeat="department python:view.getDepartments()">
+            <span class="DepartmentTitle" tal:content="python:department[1]"/>
+            <table summary="Add analysis requests"
+                   class="listing analysisrequest add nosort">
+                <!--Obtaining the categories and the point of captures -->
+                <tal:i define="
+                             cats view/Categories;
+                             POINTS_OF_CAPTURE python: modules['bika.lims.config'].POINTS_OF_CAPTURE;">
+                    <!-- Dividing the analyses on field and lab captured -->
+                    <tal:i repeat="poc python:['field', 'lab']">
+                        <tal:has_poc tal:condition="python:poc in cats">
+                            <thead class="pointofcapture"
+                                    tal:attributes="id poc">
+                            <tr>
+                                <!-- Getting the point of captured label -->
+                                <th tal:attributes="colspan python:view.col_count">
+                                    <span tal:content="python:POINTS_OF_CAPTURE.getValue(poc)"/>
+                                </th>
+                            </tr>
+                            </thead>
+
+                                <!-- Sorting the categories on their name -->
+                                <tal:i tal:define="sortedcats python:cats[poc];
+                                        dummy python:sortedcats.sort(lambda x, y: cmp(x[1], y[1]))"
+                                        repeat="cat sortedcats">
+                                        <thead tal:condition="python:view.categoryInDepartment(cat, department[0])">
+                                        <!-- Print each category -->
+                                        <tr class="analysiscategory">
+                                            <th tal:content="python:cat[1]"
+                                                    tal:define="add_prefill python:cat[0] in view.DefaultCategories();"
+                                                    tal:attributes="
+                                                    id python:'cat_%s_%s'%(poc, cat[1]);
+                                                    colspan python:view.col_count;
+                                                    poc poc;
+                                                    cat python:cat[0];
+                                                    class python: 'analysiscategory collapsed%s' % (' prefill' if add_prefill else '')"/>
+                                        </tr>
+                                        </thead>
+                                        <!-- Print each analysis -->
+                                        <tbody class="analysisservices" tal:attributes="
+                                                id python:poc + '_' + cat[0]"
+                                                tal:condition="python:view.categoryInDepartment(cat, department[0])">
+                                        <tr></tr>
+                                        </tbody>
+                                </tal:i>
+
+                        </tal:has_poc>
+                    </tal:i>
+                </tal:i>
+            </table>
+        </div>
+        <!-- Quoting template -->
+        <span tal:replace="structure view/prices_template"></span>
+    </div>
 </div>

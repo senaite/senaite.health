@@ -12,6 +12,8 @@
                 tal:attributes="src python:portal.absolute_url() + '/bika_widgets/datetimewidget.js'"></script>
         <script type="text/javascript"
                 tal:attributes="src python:portal.absolute_url() + '/bika_widgets/referencewidget.js'"></script>
+        <script type="text/javascript"
+                tal:attributes="src python:portal.absolute_url() + '/bika_widgets/addresswidget.js'"></script>
         <link rel="stylesheet" type="text/css" media="all" href=""
                 tal:attributes="href string:${portal/absolute_url}/bika_widgets/referencewidget.css" />
     </metal:block>
@@ -31,13 +33,8 @@
         portal context/@@plone_portal_state/portal;
         plone_view context/@@plone;
         portal_state context/@@plone_portal_state;
-        currencies python:modules['zope.i18n.locales'].locales.getLocale('en').numbers.currencies;
-        currency python:context.bika_setup.getCurrency();
-        checkPermission nocall: context/portal_membership/checkPermission;
         tabindex view/tabindex;
-        partitionable view/partitioned_services;
-        ShowPrices python:context.bika_setup.getShowPrices();">
-
+        partitionable view/partitioned_services;">
 
 <form id="analysisrequest_edit_form"
     name="analysisrequest_edit_form"
