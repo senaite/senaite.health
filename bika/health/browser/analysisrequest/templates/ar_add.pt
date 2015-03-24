@@ -101,7 +101,7 @@
         <span></span>
         <div class="fieldErrorBox"></div>
         <input id="ar_0_Contact"
-               class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg has_combogrid_widget"
+               class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
                type="text"
                placeholder=""
                showon="True"
@@ -152,14 +152,34 @@
     </div>
 
     <!-- Patient template -->
-    <span tal:replace="structure view/patient_template"></span>
+    <!--span tal:replace="structure view/patient_template"></span-->
     <!-- Doctor template -->
-    <span tal:replace="structure view/doctor_referrer_template"></span>
+    <!--span tal:replace="structure view/doctor_referrer_template"></span-->
     <!-- Insurance template -->
-    <span tal:replace="structure view/insurance_template"></span>
-    <!-- Analyses template -->
-    <span tal:replace="structure view/analyses_template"></span>
+    <!--span tal:replace="structure view/insurance_template"></span-->
 
+    <!-- These hidden fields are used to obtain the client's UID -->
+    <tal:hidden
+        tal:repeat="field python:view.get_fields_with_visibility('hidden')">
+        <tal:columns tal:repeat="column python:range(view.col_count)"
+                tal:define="val python:field.getAccessor(context)()">
+            <input
+                type="hidden"
+                tal:attributes="
+                    name string:ar.${column}.${field/getName}:record;
+                    id string:ar_${column}_${field/getName};
+                    value val/Title|nothing;"/>
+             <input
+                type="hidden"
+                tal:attributes="
+                    name string:ar.${column}.${field/getName}_uid:record;
+                    id string:ar_${column}_${field/getName}_uid;
+                    value val/UID|nothing;">
+        </tal:columns>
+    </tal:hidden>
+
+    <!-- Analyses template -->
+    <!--span tal:replace="structure view/analyses_template"></span-->
 
     <!-- Submit button -->
     <input class="context button allowMultiSubmit"
