@@ -152,7 +152,7 @@
     </div>
 
     <!-- Patient template -->
-    <!--span tal:replace="structure view/patient_template"></span-->
+    <span tal:replace="structure view/patient_template"></span>
     <!-- Doctor template -->
     <!--span tal:replace="structure view/doctor_referrer_template"></span-->
     <!-- Insurance template -->
@@ -192,7 +192,7 @@
         <p>  <!-- AVS this should be conditional if any dryables present -->
             <img src="" tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry.png">
             <span i18n:translate="">
-            Can be <r></r>eported as dry matter</span>
+            Can be reported as dry matter.</span>
         </p>
 
         <!-- XXX this also -->
@@ -204,7 +204,7 @@
                         replace="here/bika_setup/laboratory/AccreditationBody"
                         i18n:name="accreditation_body"/>
                 schedule of Accreditation for this Laboratory.
-                Analysis remarks are not accredited
+                Analysis remarks are not accredited.
             </span>
         </p>
     </div>

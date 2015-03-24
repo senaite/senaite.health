@@ -30,7 +30,8 @@ window.bika.health.controllers =  {
          'HealthPatientPublicationPrefsEditView'],
 
     ".template-ar_add #analysisrequest_edit_form":
-        ['HealthAnalysisRequestAddView', ],
+        ['HealthAnalysisRequestAddView',
+         'HealthStandardAnalysisRequestAddView' ],
 
     ".template-base_edit.portaltype-bikasetup":
         ['HealthBikaSetupEditView'],

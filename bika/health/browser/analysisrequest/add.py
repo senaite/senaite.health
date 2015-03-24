@@ -9,7 +9,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
     """
     The main AR Add form adapted for health usage
     """
-    health_template = ViewPageTemplateFile("templates/ar_add.pt")
+    health_template = ViewPageTemplateFile("templates/ar_add_health_standard.pt")
     patient_template = ViewPageTemplateFile("templates/ar_addpatient.pt")
     doctor_referrer_template = ViewPageTemplateFile("templates/ar_add_doctor_referrer.pt")
     insurance_template = ViewPageTemplateFile("templates/ar_insurance.pt")
