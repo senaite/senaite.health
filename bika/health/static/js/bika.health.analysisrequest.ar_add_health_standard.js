@@ -29,37 +29,29 @@ function HealthStandardAnalysisRequestAddView() {
             cancelPatientCreation();
             // The fields with patient data should be fill out and set them as readonly.
             setDataFromBatch();
-
-        } else if (frompatient) {
+        }
+        else if (frompatient) {
             // The current AR add View comes from a patient AR folder view.
             // Automatically fill the Client and Patient fields and set them
             // as readonly.
             cancelPatientCreation();
             setDataFromPatient()
-
         }
 
         if (!datafilled) {
-            // The current AR Add View doesn't come from a batch nor patient or
-            // data autofilling failed. Handle event firing when Patient or
-            // ClientPatientID fields change.
+            // The current AR Add View doesn't come from a batch nor patient .
+            // Handle event firing when Patient or ClientPatientID fields change.
             $('[id$="_ClientPatientID"]').bind("selected paste blur change", function () {
-
+               // To load the new patients data
+                $('input[id$="_Patient"]').trigger("change");
             });
 
             $('[id$="_Patient"]').bind("selected paste blur change", function () {
-
+                setPatientData($(this).attr('uid'));
             });
 
-            // When the user selects an earlier sample (from storage say) and creates a
-            // secondary AR for it, the Patient field should also be looked up and
-            // uneditable.
-            // See https://github.com/bikalabs/bika.health/issues/100
-            $('[id$="_Sample"]').bind("selected paste blur", function () {
-
-            });
             // Bind the checkbox event.
-            $('input#NewPatient').bind("click", function () {
+            $('input#NewPatient').bind("click change", function () {
                 hideShowFirstnameSurname();
             });
 
@@ -87,18 +79,43 @@ function HealthStandardAnalysisRequestAddView() {
 
     function hideShowFirstnameSurname(){
         /**
-         * Hide/show the fields surname, first name  and patient depending on the checkbox state
+         * Hide/show the fields surname, first name and patient depending on the checkbox state. This function clear
+         * all patient data too.
          */
         var cb = $('input#NewPatient');
         if (cb.prop('checked')) {
             $('div#archetypes-fieldname-Patient').hide();
             $('div#archetypes-fieldname-Surname').show();
             $('div#archetypes-fieldname-Firstname').show();
+
+            // Enable and clear all the fields
+            $('input#Surname').prop('disabled', false).val('');
+            $('input#Firstname').prop('disabled', false).val('');
+            $("input#BirthDate").prop('disabled', false).val('');
+            $('input#BirthDateEstimated').prop('disabled', false).prop('checked', false);
+            $('select#Gender').prop('disabled', false).val('dk');
+            $('input#BusinessPhone').prop('disabled', false).val('').attr('uid','');
+            $('input#HomePhone').prop('disabled', false).val('');
+            $('input#MobilePhone').prop('disabled', false).val('');
+            $('input#EmailAddress').prop('disabled', false).val('');
+            $('input#ClientPatientID').val('');
         }
         else {
+
             $('div#archetypes-fieldname-Patient').show();
             $('div#archetypes-fieldname-Surname').hide();
             $('div#archetypes-fieldname-Firstname').hide();
+
+            // Disable and clear all the fields
+            $('[id$="_Patient"]').val('').attr('uid','');
+            $("input#BirthDate").prop('disabled', true).val('');
+            $('input#BirthDateEstimated').prop('disabled', true).prop('checked', false);
+            $('select#Gender').prop('disabled', true).val('dk');
+            $('input#BusinessPhone').prop('disabled', true).val('');
+            $('input#HomePhone').prop('disabled', true).val('');
+            $('input#MobilePhone').prop('disabled', true).val('');
+            $('input#EmailAddress').prop('disabled', true).val('');
+            $('input#ClientPatientID').val('');
         }
     }
 
@@ -134,7 +151,7 @@ function HealthStandardAnalysisRequestAddView() {
 
     function setPatientData(patientuid){
         /**
-         * It fill out the patient data that remains from the bika.analysisrequest.add.js.
+         * It fill out the patient data that remains from the bika.analysisrequest.add.js and blocks it.
          * @patientuid The patientuid
          */
         $.ajaxSetup({async:false});
@@ -142,15 +159,18 @@ function HealthStandardAnalysisRequestAddView() {
             catalog_name: 'bika_patient_catalog',
             UID: patientuid
         },function(dataobj){
-            var data = dataobj.objects[0];
-            //$(".dynamic-field-label").remove();
-            $("#BirthDate").val(data['BirthDate']).prop('disabled', true);
-            $('#BirthDateEstimate').prop('checked', data['BirthDateEstimated']).prop('disabled', true);
-            $('select#Gender').val(data['Gender']).prop('disabled', true);
-            $('input#BusinessPhone').val(data['BusinessPhone']).prop('disabled', true);
-            $('input#HomePhone').val(data['HomePhone']).prop('disabled', true);
-            $('input#MobilePhone').val(data['MobilePhone']).prop('disabled', true);
-            $('input#EmailAddress').val(data['EmailAddress']).prop('disabled', true);
+            if (dataobj.objects.length > 0) {
+                var data = dataobj.objects[0];
+                //$(".dynamic-field-label").remove();
+                $("input#BirthDate").val(data['BirthDate']).prop('disabled', true);
+                $('input#BirthDateEstimated').prop('checked', data['BirthDateEstimated']).prop('disabled', true);
+                $('select#Gender').val(data['Gender']).prop('disabled', true);
+                $('input#BusinessPhone').val(data['BusinessPhone']).prop('disabled', true);
+                $('input#HomePhone').val(data['HomePhone']).prop('disabled', true);
+                $('input#MobilePhone').val(data['MobilePhone']).prop('disabled', true);
+                $('input#EmailAddress').val(data['EmailAddress']).prop('disabled', true);
+
+            }
         });
         $.ajaxSetup({async:false});
     }

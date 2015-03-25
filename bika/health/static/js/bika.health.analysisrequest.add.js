@@ -42,12 +42,18 @@ function HealthAnalysisRequestAddView() {
             // ClientPatientID fields change.
             $('[id$="_ClientPatientID"]').bind("selected paste blur change", function () {
                 colposition = $(this).closest('td').attr('column');
+                if (colposition == undefined){
+                    // We are on the health template
+                    colposition = 0}
                 loadPatient($(this).val(), colposition);
                 checkClientContacts();
             });
 
             $('[id$="_Patient"]').bind("selected paste blur change", function () {
                 colposition = $(this).closest('td').attr('column');
+                if (colposition == undefined){
+                    // We are on the health template
+                    colposition = 0}
                 uid = $("#" + this.id + "_uid").val();
                 loadClientPatientID(uid, colposition);
                 checkClientContacts();
@@ -59,6 +65,9 @@ function HealthAnalysisRequestAddView() {
             // See https://github.com/bikalabs/bika.health/issues/100
             $('[id$="_Sample"]').bind("selected paste blur", function () {
                 colposition = $(this).closest('td').attr('column');
+                if (colposition == undefined){
+                    // We are on the health template
+                    colposition = 0}
                 uid = $("#" + this.id + "_uid").val();
                 loadPatientFromSample(uid, colposition);
                 checkClientContacts();

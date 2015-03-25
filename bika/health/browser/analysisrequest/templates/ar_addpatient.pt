@@ -1,14 +1,24 @@
 <div>
     <label i18n:translate=""> Patient Details </label>
-    <!-- Patient ID -->
+    <!-- Client Patient ID -->
     <div>
         <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
-            <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Patient ID </label>
-            <input id="ar_0_ClientPatientID"
-                   class="blurrable firstToFocus"
-                   type="text"
-                   value=""
-                   name="ClientPatientID"/>
+            <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Client-Patient ID </label>
+            <input type="text"
+                   name="ar.0.ClientPatientID_uid:record"
+                   id="ar_0_ClientPatientID"
+                   class="blurrable firstToFocus referencewidget"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'id', 'align': 'left', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'ClientPatientID', 'align': 'left', 'label': 'Client PID', 'width': '20'}, {'columnName': 'Title', 'align': 'left', 'label': 'Fullname', 'width': '60'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['ClientPatientID'], 'sord': 'asc', 'discard_empty': ['ClientPatientID'], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'showOn': True, 'force_all': True})"
+                   ui_item="ClientPatientID"
+                   catalog_name="bika_patient_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input id="ar_0_ClientPatientID_uid" type="hidden" value="" name="ar.0.ClientPatientID_uid:record">
         </div>
     </div>
 
@@ -45,7 +55,7 @@
                    searchicon="True"
                    showon="True"
                    placeholder="" />
-            <input type="hidden" name="Patient_uid" id="Patient_uid" />
+            <input type="hidden" name="ar.0.Patient_uid:record" id="ar_0_Patient_uid" />
         </div>
     </div>
 
