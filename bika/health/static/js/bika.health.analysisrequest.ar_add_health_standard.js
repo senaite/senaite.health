@@ -77,6 +77,22 @@ function HealthStandardAnalysisRequestAddView() {
         cb.hide();
     }
 
+    function cleanPatientData(){
+        /**
+         * Clean all fields used by patient
+         */
+        $('[id$="_Patient"]').val('').attr('uid','');
+        $('input#Surname').val('');
+        $('input#Firstname').val('');
+        $("input#BirthDate").val('');
+        $('input#BirthDateEstimated').prop('checked', false);
+        $('select#Gender').val('dk');
+        $('input#BusinessPhone').val('').attr('uid','');
+        $('input#HomePhone').val('');
+        $('input#MobilePhone').val('');
+        $('input#EmailAddress').val('');
+        $('input#ar_0_ClientPatientID').val('').attr('uid','');
+    }
     function hideShowFirstnameSurname(){
         /**
          * Hide/show the fields surname, first name and patient depending on the checkbox state. This function clear
@@ -89,16 +105,17 @@ function HealthStandardAnalysisRequestAddView() {
             $('div#archetypes-fieldname-Firstname').show();
 
             // Enable and clear all the fields
-            $('input#Surname').prop('disabled', false).val('');
-            $('input#Firstname').prop('disabled', false).val('');
-            $("input#BirthDate").prop('disabled', false).val('');
+            $('input#Surname').prop('disabled', false);
+            $('input#Firstname').prop('disabled', false);
+            $("input#BirthDate").prop('disabled', false);
             $('input#BirthDateEstimated').prop('disabled', false).prop('checked', false);
             $('select#Gender').prop('disabled', false).val('dk');
-            $('input#BusinessPhone').prop('disabled', false).val('').attr('uid','');
-            $('input#HomePhone').prop('disabled', false).val('');
-            $('input#MobilePhone').prop('disabled', false).val('');
-            $('input#EmailAddress').prop('disabled', false).val('');
-            $('input#ClientPatientID').val('');
+            $('input#BusinessPhone').prop('disabled', false);
+            $('input#HomePhone').prop('disabled', false);
+            $('input#MobilePhone').prop('disabled', false);
+            $('input#EmailAddress').prop('disabled', false);
+            // We should clean the old data
+            cleanPatientData()
         }
         else {
 
@@ -107,15 +124,14 @@ function HealthStandardAnalysisRequestAddView() {
             $('div#archetypes-fieldname-Firstname').hide();
 
             // Disable and clear all the fields
-            $('[id$="_Patient"]').val('').attr('uid','');
-            $("input#BirthDate").prop('disabled', true).val('');
-            $('input#BirthDateEstimated').prop('disabled', true).prop('checked', false);
-            $('select#Gender').prop('disabled', true).val('dk');
-            $('input#BusinessPhone').prop('disabled', true).val('');
-            $('input#HomePhone').prop('disabled', true).val('');
-            $('input#MobilePhone').prop('disabled', true).val('');
-            $('input#EmailAddress').prop('disabled', true).val('');
-            $('input#ClientPatientID').val('');
+            $("input#BirthDate").prop('disabled', true);
+            $('input#BirthDateEstimated').prop('disabled', true);
+            $('select#Gender').prop('disabled', true);
+            $('input#BusinessPhone').prop('disabled', true);
+            $('input#HomePhone').prop('disabled', true);
+            $('input#MobilePhone').prop('disabled', true);
+            $('input#EmailAddress').prop('disabled', true);
+            cleanPatientData()
         }
     }
 
@@ -154,6 +170,10 @@ function HealthStandardAnalysisRequestAddView() {
          * It fill out the patient data that remains from the bika.analysisrequest.add.js and blocks it.
          * @patientuid The patientuid
          */
+        if (patientuid == ''){
+            // All data patient should be cleaned
+            cleanPatientData()
+        }
         $.ajaxSetup({async:false});
         window.bika.lims.jsonapi_read({
             catalog_name: 'bika_patient_catalog',
