@@ -4,7 +4,7 @@
     <div>
         <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
             <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Patient ID </label>
-            <input id="ClientPatientID"
+            <input id="ar_0_ClientPatientID"
                    class="blurrable firstToFocus"
                    type="text"
                    value=""
@@ -13,11 +13,10 @@
     </div>
 
     <!-- Choose if the patient will be created or selected from still created patients -->
-    <!-- camefrom attribute is used to know if the ar_add cames from batch (b), patient (p) or other (o) -->
     <div>
         <div id="archetypes-fieldname-NewPatient" class="field ArchetypesBooleanWidget " data-fieldname="ExistingPtaient">
             <label class="formQuestion" for="NewPatient"> New Patient</label>
-            <input id="NewPatient" class="noborder" type="checkbox" name="NewPatient:boolean" value="on" camefrom=""/>
+            <input id="NewPatient" class="noborder" type="checkbox" name="NewPatient:boolean" value="on"/>
             <input type="hidden" name="NewPatient:boolean:default" value="" originalvalue="">
         </div>
     </div>
@@ -92,7 +91,7 @@
                    name="BirthDate"
                    required="required"/>
         </div>
-        <!-- Select to know if the date is stimated -->
+        <!-- Select to know if the date is estimated -->
         <div id="archetypes-fieldname-BirthDateEstimated" class="field ArchetypesBooleanWidget " data-fieldname="BirthDateEstimated">
             <label class="formQuestion" for="BirthDateEstimated"> Birth date is estimated </label>
             <input id="BirthDateEstimated" class="noborder" type="checkbox" name="BirthDateEstimated:boolean" value="on"/>
