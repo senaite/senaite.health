@@ -15,8 +15,7 @@
                    minlength="0"
                    search_query="{}"
                     tal:attributes="base_query python:view.get_json_format({'portal_type': ['Doctor'], 'inactive_state': 'active'});
-                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'DoctorID', 'label': 'Doctor ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '80'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})
-                    "
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'DoctorID', 'label': 'Doctor ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '80'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})"
                    ui_item="Title"
                    catalog_name="portal_catalog"
                    resetbutton="False"
@@ -30,23 +29,32 @@
     <div>
         <div>
             <label class="formQuestion" for="DoctorsCode" i18n:translate="">Doctor's Code</label>
-            <input type="text"/>
+            <input type="text" id="DoctorsCode"/>
         </div>
     </div>
     <!-- Copies to doctors -->
-    <div id="archetypes-fieldname-CCEmails" class="field ArchetypesStringWidget" data-fieldname="CCEmails">
-        <label class="formQuestion" for="Doctor" i18n:translate="">CC Doctor <Doctor></Doctor>
+    <div id="archetypes-fieldname-CCDoctor" class="field ArchetypesStringWidget" data-fieldname="CCDoctor">
+        <label class="formQuestion" for="CCDoctor" i18n:translate="">CC Doctor
         <span></span>
             <div class="fieldErrorBox"></div>
         </label>
-        <input id="ar_0_CCEmails"
-               class="blurrable firstToFocus"
-               type="text" placeholder=""
-               maxlength="255" size="20"
-               value=""
-               name="ar.0.CCEmails:record"
-               tabindex="12"
-               autocomplete="off">
+            <input type="text"
+                   name="ar.0.CCDoctor:record"
+                   id="ar_0_CCDoctor"
+                   class="blurrable firstToFocus referencewidget"
+                   size="20"
+                   minlength="0"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Doctor'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'DoctorID', 'label': 'Doctor ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '80'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})"
+                   ui_item="Title"
+                   catalog_name="portal_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input type="hidden" name="CCDoctor_uid" id="CCDoctor_uid" />
     </div>
 
     <!-- Referral institution -->

@@ -26,7 +26,9 @@ function HealthStandardAnalysisRequestAddView() {
             // The current AR add View comes from a batch. Automatically fill
             // the Client, Patient and Doctor fields and set them as readonly.
             // Deactivate the option and fields to create a new patient
-            cancelPatientCreation();
+            var batchid = window.location.href.split("/batches/")[1].split("/")[0];
+            cancelPatientCreation(batchid);
+            setDoctorCodeFromBatch(batchid);
             // The fields with patient data should be fill out and set them as readonly.
             setDataFromBatch();
         }
@@ -54,14 +56,17 @@ function HealthStandardAnalysisRequestAddView() {
             $('input#NewPatient').bind("click change", function () {
                 hideShowFirstnameSurname();
             });
-
         };
+        $('[id$="_Doctor"]').bind("selected paste blur change", function () {
+            setDoctorCode();
+        });
         hideShowFirstnameSurname();
     };
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
 
+    // Patient template JS ----------------------------------------------------
     function cancelPatientCreation() {
         /**
          * If the "create a new patient" actions should be canceled, this function hides the specific fields to create
@@ -131,15 +136,14 @@ function HealthStandardAnalysisRequestAddView() {
             $('input#HomePhone').prop('disabled', true);
             $('input#MobilePhone').prop('disabled', true);
             $('input#EmailAddress').prop('disabled', true);
-            cleanPatientData()
+            //cleanPatientData()
         }
     }
 
-    function setDataFromBatch(){
+    function setDataFromBatch(batchid){
         /**
          * It obtains the patient data. The AR comes from the batch (case).
          */
-        var batchid = window.location.href.split("/batches/")[1].split("/")[0];
         $.ajaxSetup({async:false});
         window.bika.lims.jsonapi_read({
             catalog_name:'bika_catalog',
@@ -194,4 +198,39 @@ function HealthStandardAnalysisRequestAddView() {
         });
         $.ajaxSetup({async:false});
     }
+
+    // Doctor's template JS ------------------------------------------------
+
+    function setDoctorCode(){
+        /**
+         * Set the Doctor's code from the selected Referring Doctor.
+         */
+        var doctoruid = $('[id$="_Doctor"]').attr('uid');
+        $.ajaxSetup({async:false});
+        window.bika.lims.jsonapi_read({
+            catalog_name:'portal_catalog',
+            portal_type: 'Doctor',
+            UID:doctoruid
+        }, function(data){
+            $('input#DoctorsCode').val(data.objects[0]['DoctorID']);
+        });
+        $.ajaxSetup({async:false});
+    }
+
+    function setDoctorCodeFromBatch(batchid){
+        /**
+         * It blocks doctor's code and gives its value
+         */
+        $.ajaxSetup({async:false});
+        window.bika.lims.jsonapi_read({
+            catalog_name:'bika_catalog',
+            id:batchid
+        }, function(data){
+            $('input#DoctorsCode').val(data.objects[0]['getDoctorID']).prop('disabled', true)
+        });
+        $.ajaxSetup({async:true});
+    }
+
+
+
 }

@@ -154,7 +154,7 @@
     <!-- Patient template -->
     <span tal:replace="structure view/patient_template"></span>
     <!-- Doctor template -->
-    <!--span tal:replace="structure view/doctor_referrer_template"></span-->
+    <span tal:replace="structure view/doctor_referrer_template"></span>
     <!-- Insurance template -->
     <!--span tal:replace="structure view/insurance_template"></span-->
 
