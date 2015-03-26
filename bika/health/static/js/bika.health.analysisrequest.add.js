@@ -413,14 +413,14 @@ function HealthAnalysisRequestAddView() {
         // Only allow the selection of batches from this patient
         element = $("#ar_" + col + "_Batch")
         base_query = $.parseJSON($(element).attr("base_query"));
-        if (base_query =! null) {
+        if (base_query != null) {
             base_query['getPatientUID'] = data['PatientUID'];
             applyComboFilter(element, base_query);
         }
         // Contact searches
         element = $("#ar_" + col + "_Contact")
         base_query = $.parseJSON($(element).attr("base_query"));
-        if (base_query =! null) {
+        if (base_query != null) {
             base_query['getParentUID'] = data['ClientUID'];
             applyComboFilter(element, base_query);
         }

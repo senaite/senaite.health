@@ -179,7 +179,7 @@
     </tal:hidden>
 
     <!-- Analyses template -->
-    <!--span tal:replace="structure view/analyses_template"></span-->
+    <span tal:replace="structure view/analyses_template"></span>
 
     <!-- Submit button -->
     <input class="context button allowMultiSubmit"

@@ -147,7 +147,7 @@ function HealthStandardAnalysisRequestAddView() {
             catalog_name:'bika_patient_catalog',
             id:pid
         }, function(data){
-            setPatientData(data.objects[0]);
+            setPatientData(data.objects[0]['UID']);
             setInsuranceDataFromPatient(data.objects[0])
         });
         $.ajaxSetup({async:true});
@@ -185,6 +185,7 @@ function HealthStandardAnalysisRequestAddView() {
         $('input#EmailAddress').val('');
         $('input#ar_0_ClientPatientID').val('').attr('uid','');
     }
+
     function hideShowFirstnameSurname(){
         /**
          * Hide/show the fields surname, first name and patient depending on the checkbox state. This function clear
@@ -380,7 +381,7 @@ function HealthStandardAnalysisRequestAddView() {
     function setGuarantor(patientdata) {
         /**
          * Fill out all guarantor's fields.
-         * @patientdata It's a dictionary with tha patient's data
+         * @patientdata It's a dictionary with the patient's data
          */
         // The AR comes from batch or patients view
         $('input#PatientAsGuarantor').prop('checked', patientdata['PatientAsGuarantor']).prop('disabled', true);
