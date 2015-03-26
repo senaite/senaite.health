@@ -28,9 +28,8 @@ function HealthStandardAnalysisRequestAddView() {
             // Deactivate the option and fields to create a new patient
             var batchid = window.location.href.split("/batches/")[1].split("/")[0];
             cancelPatientCreation(batchid);
-            setDoctorCodeFromBatch(batchid);
-            // The fields with patient data should be fill out and set them as readonly.
-            setDataFromBatch();
+            // The fields with data should be fill out and set them as readonly.
+            setDataFromBatch(batchid);
         }
         else if (frompatient) {
             // The current AR add View comes from a patient AR folder view.
@@ -65,6 +64,43 @@ function HealthStandardAnalysisRequestAddView() {
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
+
+    function setDataFromBatch(batchid){
+        /**
+         * It obtains the patient data when the AR comes from the batch (case) view.
+         */
+        $.ajaxSetup({async:false});
+        // Get batch data
+        window.bika.lims.jsonapi_read({
+            catalog_name:'bika_catalog',
+            id:batchid
+        }, function(data){
+            // Set patient data
+            setPatientData(data.objects[0]['getPatientUID']);
+            // Set the doctor's code
+            $('input#DoctorsCode').val(data.objects[0]['getDoctorID']).prop('disabled', true);
+            // Set the insurance company and block the insurance fields if it's necessary
+            setInsuranceDataFromBatch(data.objects[0]['getPatientUID']);
+        });
+        $.ajaxSetup({async:true});
+    }
+
+    function setDataFromPatient(){
+        /**
+         * It obtains the patient data when the AR comes from the patient view.
+         */
+        var pid = document.referrer.split("/patients/")[1].split("/")[0];
+        $.ajaxSetup({async:false});
+        // Get patient data
+        window.bika.lims.jsonapi_read({
+            catalog_name:'bika_patient_catalog',
+            id:pid
+        }, function(data){
+            setPatientData(data.objects[0]);
+            setInsuranceDataFromPatient(data.objects[0])
+        });
+        $.ajaxSetup({async:true});
+    }
 
     // Patient template JS ----------------------------------------------------
     function cancelPatientCreation() {
@@ -140,35 +176,6 @@ function HealthStandardAnalysisRequestAddView() {
         }
     }
 
-    function setDataFromBatch(batchid){
-        /**
-         * It obtains the patient data. The AR comes from the batch (case).
-         */
-        $.ajaxSetup({async:false});
-        window.bika.lims.jsonapi_read({
-            catalog_name:'bika_catalog',
-            id:batchid
-        }, function(data){
-            setPatientData(data.objects[0]['getPatientUID'])
-        });
-        $.ajaxSetup({async:true});
-    }
-
-    function setDataFromPatient(){
-        /**
-         * It obtains the patient data. The AR comes from the patient.
-         */
-        var pid = document.referrer.split("/patients/")[1].split("/")[0];
-        $.ajaxSetup({async:false});
-        window.bika.lims.jsonapi_read({
-            catalog_name:'bika_patient_catalog',
-            id:pid
-        }, function(data){
-            setPatientData(data.objects[0])
-        });
-        $.ajaxSetup({async:true});
-    }
-
     function setPatientData(patientuid){
         /**
          * It fill out the patient data that remains from the bika.analysisrequest.add.js and blocks it.
@@ -217,20 +224,84 @@ function HealthStandardAnalysisRequestAddView() {
         $.ajaxSetup({async:false});
     }
 
-    function setDoctorCodeFromBatch(batchid){
+    // Insurance's template JS --------------------------------------------------
+
+    function setInsuranceDataFromBatch(patientuid){
         /**
-         * It blocks doctor's code and gives its value
+         * The function checks if the patient is related with an insurance company. In the affirmative case,
+         * the insurance fields will be filled out and blocked
+         * @patientuid The patient uid where the function will look for the insurance company.
          */
         $.ajaxSetup({async:false});
         window.bika.lims.jsonapi_read({
-            catalog_name:'bika_catalog',
-            id:batchid
+            catalog_name:'bika_patient_catalog',
+            UID:patientuid
         }, function(data){
-            $('input#DoctorsCode').val(data.objects[0]['getDoctorID']).prop('disabled', true)
+            if (data.objects[0]['InsuranceCompany_uid'] != ''){
+                setInsurance(data.objects[0]['InsuranceCompany_uid']);
+            }
+            // Since data variable stores the patient fields, we can set all guarantor stuff.
+            setGuarantor(data.objects[0]);
         });
-        $.ajaxSetup({async:true});
+        $.ajaxSetup({async:false});
     }
 
+    function setInsuranceDataFromPatient(patientdata){
+        /**
+         * The function checks if the patient is related with an insurance company. In the affirmative case,
+         * the insurance fields will be filled out and blocked
+         * @patientuid The patient uid where the function will look for the insurance company.
+         */
+        // Check if patient is related with an insurance company
+        if (patientdata['InsuranceCompany_uid'] != ''){
+            setInsurance(patientdata['InsuranceCompany_uid']);
+        }
+        // Fill out guarantor's fields
+        setGuarantor(patientdata);
+    }
 
+    function setInsurance(insuranceuid){
+        /**
+         * This function fill out the insurance field and block it.
+         * @insuranceuid The insurance company UID
+         */
+        $.ajaxSetup({async:false});
+        window.bika.lims.jsonapi_read({
+            catalog_name:'bika_setup_catalog',
+            content_type: 'InsuranceCompany',
+            UID: insuranceuid
+        }, function(dataobj){
+            var data = dataobj.objects[0]
+            $('input#ar_0_InsuranceCompany').val(data['Title']).attr('uid',data['UID']).prop('disabled', true);
+        });
+        $.ajaxSetup({async:false});
+    }
+
+    function setGuarantor(patientdata) {
+        /**
+         * Fill out all guarantor's fields.
+         * If a new patient is being created (New Patient checkbox -> true), the function checks the checkbox
+         * PatientAsGuarantor.
+         * If the checkbox's value is true, guarantor's fields will be set from the new patient and blocked.
+         * If the AR is using an existing patient (New Patient checkbox -> false or the AR cames from a batch or patient
+         * view), all guarantors fields will be blocked, and its value will be set from the selected patient.
+         * @patientdata It's a dictionary with tha patient's data
+         */
+        // The AR comes from batch or patients view
+        $('input#PatientAsGuarantor').prop('checked', patientdata['PatientAsGuarantor']).prop('disabled', true);
+        $('input#GuarantorID').val(patientdata['GuarantorID']).prop('disabled', true);
+        $('input#GuarantorSurname').val(patientdata['GuarantorSurname']).prop('disabled', true);
+        $('input#GuarantorFirstname').val(patientdata['GuarantorFirstname']).prop('disabled', true);
+        console.log(patientdata['PostalAddress']['country']);
+        $('select[id="PostalAddress.country"]').val(patientdata['PostalAddress']['country']).prop('disabled', true);
+        $('select[id="PostalAddress.state"]').val(patientdata['PostalAddress']['state']).prop('disabled', true);
+        $('select[id="PostalAddress.district"]').val(patientdata['PostalAddress']['district']).prop('disabled', true);
+        $('input[id="PostalAddress.city"]').val(patientdata['PostalAddress']['city']).prop('disabled', true);
+        $('input[id="PostalAddress.zip"]').val(patientdata['PostalAddress']['zip']).prop('disabled', true);
+        $('textarea[id="PostalAddress.address"]').val(patientdata['PostalAddress']['address']).prop('disabled', true);
+        $('input#GuarantorBusinessPhone').val(patientdata['GuarantorBusinessPhone']).prop('disabled', true);
+        $('input#GuarantorHomePhone').val(patientdata['GuarantorHomePhone']).prop('disabled', true);
+        $('input#GuarantorMobilePhone').val(patientdata['GuarantorMobilePhone']).prop('disabled', true);
+    }
 
 }

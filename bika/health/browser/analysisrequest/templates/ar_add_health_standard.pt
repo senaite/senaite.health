@@ -156,7 +156,7 @@
     <!-- Doctor template -->
     <span tal:replace="structure view/doctor_referrer_template"></span>
     <!-- Insurance template -->
-    <!--span tal:replace="structure view/insurance_template"></span-->
+    <span tal:replace="structure view/insurance_template"></span>
 
     <!-- These hidden fields are used to obtain the client's UID -->
     <tal:hidden
