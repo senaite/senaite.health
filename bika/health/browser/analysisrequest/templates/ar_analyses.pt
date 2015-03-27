@@ -53,8 +53,34 @@
         </div>
     </div>
 
-    <!-- Analysis Services -->
+    <div>
+        <!-- Analysis Specification -->
+        <div class="field ArchetypesReferenceWidget" data-fieldname="Specification" id="archetypes-fieldname-Specification">
+            <label class="formQuestion">
+                Analysis Specification
+                <em id="Specification_help" class="discreet">Choose default AR specification values</em>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input type="text"
+                   name="ar.0.Specification:record"
+                   id="ar_0_Specification"
+                   class="blurrable firstToFocus referencewidget"
+                   search_query="{}"
+                   tal:attributes="base_query python:view.get_json_format({'portal_type': 'AnalysisSpec'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'contextual_title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'SampleTypeTitle', 'align': 'left', 'label': 'SampleType', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})"
+                   ui_item="Title"
+                   catalog_name="bika_setup_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input type="hidden" name="ar.0.Specification_uid:record" id="ar_0_Specification_uid" />
+        </div>
+    </div>
 
+    <!-- Analysis Services -->
     <div class="analysisservices">
         <div tal:repeat="department python:view.getDepartments()">
             <span class="DepartmentTitle" tal:content="python:department[1]"/>

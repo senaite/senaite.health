@@ -23,7 +23,7 @@
                    searchicon="True"
                    showon="True"
                    placeholder="" />
-            <input type="hidden" name="Doctor_uid" id="Doctor_uid" /></div>
+            <input type="hidden" name="ar.0.Doctor_uid:record" id="ar_0_Doctor_uid" /></div>
     </div>
     <!-- This input will be fill out after a doctor has been chosen -->
     <div>
