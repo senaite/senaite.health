@@ -65,3 +65,4 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         return getToolByName(self.context, 'bika_setup_catalog')(UID=category)[0]\
             .getObject().getDepartment().UID() == department
 
+

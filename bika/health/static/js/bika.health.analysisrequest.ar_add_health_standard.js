@@ -16,7 +16,7 @@ function HealthStandardAnalysisRequestAddView() {
      * -----------------------
      *  - Patient -> From patient. Fields blocked.
      *  - Guarantor and insurance -> From the current patient. Fields blocked
-     *  - The save button is going to crate -> a case, an AR
+     *  - The save button is going to crate -> a case, an AR from batch.
      *
      * AR coming from client:
      * ----------------------
@@ -24,12 +24,12 @@ function HealthStandardAnalysisRequestAddView() {
      *  -- If a new patient is being created (NewPatientCheckbox == selected) ->
      *                                                 - Guarantor's + insurance ready to be edited. Fields unblocked.
      *                                                 - Patient fields unblocked.
-     *  --- The save button is going to create -> a patient, a case, an AR
+     *  --- The save button is going to create -> a patient, a case related with the created patient, an AR inside the case
      *
      *  -- If an old patient is selected (NewPatientCheckbox == unselected) ->
      *                                                 - Guarantor + insurance from selected patient. Fields blocked.
      *                                                 - Patient fields blocked.
-     *  --- The save button is going to create -> a case, an AR
+     *  --- The save button is going to create -> a case, an AR.
      */
 
     var that = this;
@@ -52,7 +52,7 @@ function HealthStandardAnalysisRequestAddView() {
             // Deactivate the option and fields to create a new patient
             datafilled = true;
             var batchid = window.location.href.split("/batches/")[1].split("/")[0];
-            cancelPatientCreation(batchid);
+            cancelPatientCreationCheckBox();
             // The fields with data should be fill out and set them as readonly.
             setDataFromBatch(batchid);
         }
@@ -61,7 +61,7 @@ function HealthStandardAnalysisRequestAddView() {
             // Automatically fill the Client and Patient fields and set them
             // as readonly.
             datafilled = true;
-            cancelPatientCreation();
+            cancelPatientCreationCheckBox();
             setDataFromPatient()
         }
 
@@ -105,12 +105,16 @@ function HealthStandardAnalysisRequestAddView() {
             setDoctorCode();
         });
         $('input#PatientAsGuarantor').bind("selected paste blur change", function() {
-
+         // I'll work in that once I've finished with all the creations
         });
 
         // Functions to execute at page load
         hideShowFirstnameSurname();
         disableInsuranceData();
+        // Unbind previous (from lims) loadAjaxSubmitHandler on submit button.
+        $("#analysisrequest_edit_form").ajaxFormUnbind();
+        // Bind the new handler
+        loadAjaxSubmitHealthHandler(frombatch, frompatient);
     };
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
@@ -153,20 +157,14 @@ function HealthStandardAnalysisRequestAddView() {
         $.ajaxSetup({async:true});
     }
 
-    // Patient template JS ----------------------------------------------------
-    function cancelPatientCreation() {
+    // Patient template controller ----------------------------------------------------
+    function cancelPatientCreationCheckBox() {
         /**
-         * If the "create a new patient" actions should be canceled, this function hides the specific fields to create
+         * If the "create a new patient" actions should be canceled, this function clear the checkbox to create
          * a new patient and deactivates the possibility of interact with the checkbox.
          */
         var cb = $('input#NewPatient');
-        cb.prop('checked', false);
-        // Prevent to be checked
-        cb.on('click', function(e){
-                e.preventDefault();
-                return false;
-        });
-        cb.hide();
+        cb.prop('disabled', true).prop('checked', false);
     }
 
     function cleanPatientData(){
@@ -207,6 +205,7 @@ function HealthStandardAnalysisRequestAddView() {
             $('input#HomePhone').prop('disabled', false);
             $('input#MobilePhone').prop('disabled', false);
             $('input#EmailAddress').prop('disabled', false);
+            $('input#ar_0_ClientPatientID').prop('disabled', false);
             // We should clean the old data
             cleanPatientData()
         }
@@ -224,7 +223,7 @@ function HealthStandardAnalysisRequestAddView() {
             $('input#HomePhone').prop('disabled', true);
             $('input#MobilePhone').prop('disabled', true);
             $('input#EmailAddress').prop('disabled', true);
-            //cleanPatientData()
+            $('input#ar_0_ClientPatientID').prop('disabled', true);
         }
     }
 
@@ -235,7 +234,9 @@ function HealthStandardAnalysisRequestAddView() {
          */
         if (patientuid == ''){
             // All data patient should be cleaned
-            cleanPatientData()
+            cleanPatientData();
+            // Disabling the reference input client-patient uid to allow to introduce a patient from here
+            $('input#ar_0_ClientPatientID').prop('disabled', false);
         }
         $.ajaxSetup({async:false});
         window.bika.lims.jsonapi_read({
@@ -252,12 +253,13 @@ function HealthStandardAnalysisRequestAddView() {
                 $('input#HomePhone').val(data['HomePhone']).prop('disabled', true);
                 $('input#MobilePhone').val(data['MobilePhone']).prop('disabled', true);
                 $('input#EmailAddress').val(data['EmailAddress']).prop('disabled', true);
+                $('input#ar_0_ClientPatientID').val(data['ClientPatientID']).prop('disabled', true);
             }
         });
         $.ajaxSetup({async:false});
     }
 
-    // Doctor's template JS ------------------------------------------------
+    // Doctor's template controller ------------------------------------------------
 
     function setDoctorCode(){
         /**
@@ -275,7 +277,7 @@ function HealthStandardAnalysisRequestAddView() {
         $.ajaxSetup({async:false});
     }
 
-    // Insurance's template JS --------------------------------------------------
+    // Insurance's template controller --------------------------------------------------
 
     function setInsuranceDataFromBatch(patientuid){
         /**
@@ -397,6 +399,124 @@ function HealthStandardAnalysisRequestAddView() {
         $('input#GuarantorBusinessPhone').val(patientdata['GuarantorBusinessPhone']).prop('disabled', true);
         $('input#GuarantorHomePhone').val(patientdata['GuarantorHomePhone']).prop('disabled', true);
         $('input#GuarantorMobilePhone').val(patientdata['GuarantorMobilePhone']).prop('disabled', true);
+    }
+
+    // Defining the health submit handler -----------------------------------------------------
+
+    function loadAjaxSubmitHealthHandler(frombatch, frompatient){
+        /**
+         * This functions build the options to create the objects and binds the needed function to create the objects
+         * after submit
+         * @frombatch This variable is >0 if the Analysis Request comes from a batch
+         * @frompatient This variable is >0 if the Analysis Request comes from a patient
+         */
+        $('input#global_save_button').bind('click', function(){
+            // If the Analysis Request comes form a case (batch), the fields ClientPatientID, Doctor and Patient should
+            // be copied form their forms to the Analysis Request form.
+            if (frombatch){
+                // Coping the patient
+                $('form#analysisrequest_edit_form input#ar_0_Patient').attr('uid', $('input#ar_0_Patient.referencewidget').attr('uid'));
+                // Coping the doctor
+                $('input#ar_0_Doctor').attr('uid', $('input#ar_0_Doctor.referencewidget').attr('uid'));
+                // Coping the Client-Patient-ID
+                $('form#analysisrequest_edit_form input#ar_0_ClientPatientID').attr('uid', $('input#ar_0_ClientPatientID.referencewidget').attr('uid'));
+                // Click on analysis request form to trigger the AR creation
+                $('form#analysisrequest_edit_form input[name="save_button"]').click();
+            }
+        });
+        var options = createAR();
+        $("#analysisrequest_edit_form").ajaxForm(options);
+
+    }
+
+    // Creating an AR ---------------------------------------------------------------------
+
+    function createAR(){
+        /**
+         * This function creates an Analysis Request.
+         */
+        var options = {
+            url: window.location.href.split("/portal_factory")[0] + "/analysisrequest_submit",
+            dataType: "json",
+            data: {"_authenticator": $("input[name='_authenticator']").val()},
+            beforeSubmit: function() {
+                $("input[class~='context']").prop("disabled",true);
+            },
+            success: function(responseText) {
+                var destination;
+                if(responseText.success !== undefined){
+                    if(responseText.stickers !== undefined){
+                        destination = window.location.href
+                            .split("/portal_factory")[0];
+                        var ars = responseText.stickers;
+                        var template = responseText.stickertemplate;
+                        var q = "/sticker?template="+template+"&items=";
+                        q = q + ars.join(",");
+                        window.location.replace(destination+q);
+                    } else {
+                        destination = window.location.href
+                            .split("/portal_factory")[0];
+                        window.location.replace(destination);
+                    }
+                } else {
+                    var msg = "";
+                    for(var error in responseText.errors){
+                        var x = error.split(".");
+                        var e;
+                        if (x.length == 2){
+                            e = x[1] + ", Column " + (+x[0]) + ": ";
+                        } else {
+                            e = "";
+                        }
+                        msg = msg + e + responseText.errors[error] + "<br/>";
+                    }
+                    window.bika.lims.portalMessage(msg);
+                    window.scroll(0,0);
+                    $("input[class~='context']").prop("disabled", false);
+                }
+            },
+            error: function(XMLHttpRequest, statusText) {
+                window.bika.lims.portalMessage(statusText);
+                window.scroll(0,0);
+                $("input[class~='context']").prop("disabled", false);
+            }
+        };
+        return options;
+    }
+    // Creating a Patient ----------------------------------------------------------------
+
+    // function createPatient(){}
+
+    // Creating a batch (case) ------------------------------------------------------------
+
+    function createCase(){
+        /**
+         * This function read the data from the doctor and the patient, and consequently creates a case
+         */
+        var patient = $('input#ar_0_Patient').attr('uid'); //val();
+        var clientpatientid = $('input#ar_0_ClientPatientID').val();
+        var doctor = $('input#ar_0_Doctor').attr('uid');//val();
+        var request_data = {
+            obj_path: '/Plone/batches',
+            obj_type: 'Batch',
+            ClientPatientID: clientpatientid,
+            Patient: "catalog_name:bika_patient_catalog|portal_type:Patient|UID:" + patient,
+            Doctor:"portal_type:Doctor|UID:" + doctor
+        };
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: window.portal_url + "/@@API/create",
+            data: request_data,
+            success: function(){
+                return true;
+            },
+            error: function(XMLHttpRequest, statusText) {
+                window.bika.lims.portalMessage(statusText);
+                window.scroll(0,0);
+                $("input[class~='context']").prop("disabled", false);
+            }
+        });
     }
 
 }

@@ -36,6 +36,26 @@
         tabindex view/tabindex;
         partitionable view/partitioned_services;">
 
+    <form id="analysisrequest_patient_edit_form"
+          name="analysisrequest_patient_edit_form"
+            tal:attributes="action string:${view/portal_url}/patients/portal_factory/Patient/edit"
+          method="POST"
+          enctype="multipart/form-data">
+        <input type="hidden" name="submitted" value="1" />
+        <span tal:replace="structure context/@@authenticator/authenticator"/>
+        <input type="hidden" name="came_from" tal:attributes="value view/came_from" />
+
+        <!-- Patient template -->
+        <span tal:replace="structure view/patient_template"></span>
+        <!-- Insurance template -->
+        <span tal:replace="structure view/insurance_template"></span>
+
+        <input id="form.button.save" name="form.button.save" type="submit" value="Save"/>
+    </form>
+
+    <!-- Doctor template -->
+    <span tal:replace="structure view/doctor_referrer_template"></span>
+
 <form id="analysisrequest_edit_form"
     name="analysisrequest_edit_form"
     method="POST">
@@ -92,6 +112,13 @@
     <input type="hidden"
            id="PhysicalPath"
             tal:attributes="here python:'/'.join(context.getPhysicalPath()[:-3])"/>
+
+    <!-- These fields are used to create the Analysis Request -->
+    <input id="ar_0_Patient" name="ar.0.Patient:record" type="hidden"/>
+    <input id="ar_0_Doctor" type="hidden"/>
+    <input id="ar_0_ClientPatientID" type="hidden"/>
+    <input id="ar_0_Batch" type="hidden"/>
+
     <!-- Contact person -->
 
     <div id="archetypes-fieldname-Contact" class="field ArchetypesReferenceWidget" data-fieldname="Contact">
@@ -151,13 +178,6 @@
         <input id="ar_0_Priority_uid" type="hidden" name="ar.0.Priority_uid:record">
     </div>
 
-    <!-- Patient template -->
-    <span tal:replace="structure view/patient_template"></span>
-    <!-- Doctor template -->
-    <span tal:replace="structure view/doctor_referrer_template"></span>
-    <!-- Insurance template -->
-    <span tal:replace="structure view/insurance_template"></span>
-
     <!-- These hidden fields are used to obtain the client's UID -->
     <tal:hidden
         tal:repeat="field python:view.get_fields_with_visibility('hidden')">
@@ -181,12 +201,13 @@
     <!-- Analyses template -->
     <span tal:replace="structure view/analyses_template"></span>
 
-    <!-- Submit button -->
+    <!-- AnalysisRequest submit button -->
     <input class="context button allowMultiSubmit"
            type="submit"
            name="save_button"
             i18n:attributes="value"
-           value="Save"/>
+           value="Save"
+           hidden="true"/>
 
     <div class="discreeter">
         <p>  <!-- AVS this should be conditional if any dryables present -->
@@ -210,6 +231,13 @@
     </div>
 
 </form>
+    <!-- submit all the forms -->
+    <input class="context button allowMultiSubmit"
+           type="submit"
+           id="global_save_button"
+           name="global_save_button"
+            i18n:attributes="value"
+           value="Save"/>
 </div>
 </body>
 </html>
