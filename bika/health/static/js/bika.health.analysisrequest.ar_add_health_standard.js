@@ -124,6 +124,7 @@ function HealthStandardAnalysisRequestAddView() {
         /**
          * It obtains the patient data when the AR comes from the batch (case) view.
          */
+        $('#archetypes-fieldname-Batch').remove();
         $.ajaxSetup({async:false});
         // Get batch data
         window.bika.lims.jsonapi_read({
@@ -256,7 +257,7 @@ function HealthStandardAnalysisRequestAddView() {
                 $('input#ar_0_ClientPatientID').val(data['ClientPatientID']).prop('disabled', true);
             }
         });
-        $.ajaxSetup({async:false});
+        $.ajaxSetup({async:true});
     }
 
     // Doctor's template controller ------------------------------------------------
@@ -274,7 +275,7 @@ function HealthStandardAnalysisRequestAddView() {
         }, function(data){
             $('input#DoctorsCode').val(data.objects[0]['DoctorID']);
         });
-        $.ajaxSetup({async:false});
+        $.ajaxSetup({async:true});
     }
 
     // Insurance's template controller --------------------------------------------------
@@ -301,7 +302,7 @@ function HealthStandardAnalysisRequestAddView() {
                 // Since data variable stores the patient fields, we can set all guarantor stuff.
                 setGuarantor(data.objects[0]);
             });
-            $.ajaxSetup({async: false});
+            $.ajaxSetup({async: true});
         }
     }
 
@@ -376,7 +377,7 @@ function HealthStandardAnalysisRequestAddView() {
                 var data = dataobj.objects[0];
                 $('input#ar_0_InsuranceCompany').val(data['Title']).attr('uid', data['UID']).prop('disabled', true);
             });
-            $.ajaxSetup({async: false});
+            $.ajaxSetup({async: true});
         }
     }
 
@@ -417,17 +418,20 @@ function HealthStandardAnalysisRequestAddView() {
         $('input#global_save_button').bind('click', function(){
             // If the Analysis Request comes form a case (batch), the fields ClientPatientID, Doctor and Patient should
             // be copied form their forms to the Analysis Request form.
-            if (frombatch){
-                // Coping the patient from the patient's creation form to the analysis request's creation form
-                $("form#analysisrequest_patient_edit_form #archetypes-fieldname-Patient")
-                    .clone().appendTo("form#analysisrequest_edit_form");
-                // Coping the doctor
-                $("div#archetypes-fieldname-Doctor")
-                    .clone().appendTo("form#analysisrequest_edit_form");
-                // Coping the Client-Patient-ID
-                $("form#analysisrequest_patient_edit_form #archetypes-fieldname-ClientPatientID")
-                    .clone().appendTo("form#analysisrequest_edit_form");
+            if (frompatient){
+                // Creating a case
+                createCase();
             }
+            // Coping the patient from the patient's creation form to the analysis request's creation form
+            $("form#analysisrequest_patient_edit_form #archetypes-fieldname-Patient")
+                .clone().appendTo("form#analysisrequest_edit_form").hide();
+            // Coping the doctor
+            $("div#archetypes-fieldname-Doctor")
+                .clone().appendTo("form#analysisrequest_edit_form").hide();
+            // Coping the Client-Patient-ID
+            $("form#analysisrequest_patient_edit_form #archetypes-fieldname-ClientPatientID")
+                .clone().appendTo("form#analysisrequest_edit_form").hide();
+
             var options = createAR();
             $("#analysisrequest_edit_form").ajaxForm(options);
             // Click on analysis request form to trigger the AR creation
@@ -497,25 +501,38 @@ function HealthStandardAnalysisRequestAddView() {
 
     function createCase(){
         /**
-         * This function read the data from the doctor and the patient, and consequently creates a case
+         * This function read the data from the doctor and the patient, and consequently creates a case.
+         * Finally it fills the case input inside the analysis request form.
          */
-        var patient = $('input#ar_0_Patient').attr('uid'); //val();
-        var clientpatientid = $('input#ar_0_ClientPatientID').val();
-        var doctor = $('input#ar_0_Doctor').attr('uid');//val();
+        var patientuid = $('input#ar_0_Patient').attr('uid');
+        var doctoruid = $('input#ar_0_Doctor').attr('uid');
+        var clientuid = $('input#ar_0_Client').attr('uid');
         var request_data = {
             obj_path: '/Plone/batches',
             obj_type: 'Batch',
-            ClientPatientID: clientpatientid,
-            Patient: "catalog_name:bika_patient_catalog|portal_type:Patient|UID:" + patient,
-            Doctor:"portal_type:Doctor|UID:" + doctor
+            Patient: "catalog_name:bika_patient_catalog|portal_type:Patient|UID:" + patientuid,
+            Doctor:"portal_type:Doctor|UID:" + doctoruid,
+            Client:"portal_type:Client|UID:" + clientuid
         };
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "POST",
             dataType: "json",
             url: window.portal_url + "/@@API/create",
             data: request_data,
-            success: function(){
-                return true;
+            success: function(data){
+                // Getting the case's uid
+                window.bika.lims.jsonapi_read({
+                    catalog_name: 'bika_catalog',
+                    content_type: 'Batch',
+                    id: data['obj_id']
+                }, function (dataobj) {
+                    // Coping the required fields to allow the form to create the analysis request itself.
+                    $('form#analysisrequest_edit_form input#ar_0_Batch').attr('uid', dataobj.objects[0]['UID']);
+                    $('form#analysisrequest_edit_form input#ar_0_Batch_uid').val(dataobj.objects[0]['UID']);
+                });
+                // Coping the required fields to allow the form to create the analysis request itself.
+                $('form#analysisrequest_edit_form input#ar_0_Batch').val(data['obj_id']);
             },
             error: function(XMLHttpRequest, statusText) {
                 window.bika.lims.portalMessage(statusText);
@@ -523,6 +540,7 @@ function HealthStandardAnalysisRequestAddView() {
                 $("input[class~='context']").prop("disabled", false);
             }
         });
+        $.ajaxSetup({async: true});
     }
 
 }
