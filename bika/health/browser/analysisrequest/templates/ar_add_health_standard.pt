@@ -113,12 +113,6 @@
            id="PhysicalPath"
             tal:attributes="here python:'/'.join(context.getPhysicalPath()[:-3])"/>
 
-    <!-- These fields are used to create the Analysis Request -->
-    <input id="ar_0_Patient" name="ar.0.Patient:record" type="hidden"/>
-    <input id="ar_0_Doctor" type="hidden"/>
-    <input id="ar_0_ClientPatientID" type="hidden"/>
-    <input id="ar_0_Batch" type="hidden"/>
-
     <!-- Contact person -->
 
     <div id="archetypes-fieldname-Contact" class="field ArchetypesReferenceWidget" data-fieldname="Contact">

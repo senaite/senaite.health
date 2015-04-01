@@ -406,7 +406,11 @@ function HealthStandardAnalysisRequestAddView() {
     function loadAjaxSubmitHealthHandler(frombatch, frompatient){
         /**
          * This functions build the options to create the objects and binds the needed function to create the objects
-         * after submit
+         * after submit.
+         * Since the different objects definitions are split into different forms, on form submit we have to create
+         * each object (if it's necessary) from every form, and copy its data into the analysis request form to create
+         * the analysis request with all the recently created objects.
+         *
          * @frombatch This variable is >0 if the Analysis Request comes from a batch
          * @frompatient This variable is >0 if the Analysis Request comes from a patient
          */
@@ -414,19 +418,21 @@ function HealthStandardAnalysisRequestAddView() {
             // If the Analysis Request comes form a case (batch), the fields ClientPatientID, Doctor and Patient should
             // be copied form their forms to the Analysis Request form.
             if (frombatch){
-                // Coping the patient
-                $('form#analysisrequest_edit_form input#ar_0_Patient').attr('uid', $('input#ar_0_Patient.referencewidget').attr('uid'));
+                // Coping the patient from the patient's creation form to the analysis request's creation form
+                $("form#analysisrequest_patient_edit_form #archetypes-fieldname-Patient")
+                    .clone().appendTo("form#analysisrequest_edit_form");
                 // Coping the doctor
-                $('input#ar_0_Doctor').attr('uid', $('input#ar_0_Doctor.referencewidget').attr('uid'));
+                $("div#archetypes-fieldname-Doctor")
+                    .clone().appendTo("form#analysisrequest_edit_form");
                 // Coping the Client-Patient-ID
-                $('form#analysisrequest_edit_form input#ar_0_ClientPatientID').attr('uid', $('input#ar_0_ClientPatientID.referencewidget').attr('uid'));
-                // Click on analysis request form to trigger the AR creation
-                $('form#analysisrequest_edit_form input[name="save_button"]').click();
+                $("form#analysisrequest_patient_edit_form #archetypes-fieldname-ClientPatientID")
+                    .clone().appendTo("form#analysisrequest_edit_form");
             }
+            var options = createAR();
+            $("#analysisrequest_edit_form").ajaxForm(options);
+            // Click on analysis request form to trigger the AR creation
+            $('form#analysisrequest_edit_form input[name="save_button"]').click();
         });
-        var options = createAR();
-        $("#analysisrequest_edit_form").ajaxForm(options);
-
     }
 
     // Creating an AR ---------------------------------------------------------------------
