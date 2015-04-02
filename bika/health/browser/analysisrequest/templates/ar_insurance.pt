@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <!-- If the patient and the guarantor is the same person and the patient already exists, the following fields will be fill out with the existing patient's data -->
+    <!-- If the patient and the guarantor is the same person and the patient already exists, the following fields will be disabled -->
     <!-- Insurance Number -->
     <div>
         <div  id="archetypes-fieldname-GuarantorID" class="field ArchetypesStringWidget" data-fieldname="GuarantorID">

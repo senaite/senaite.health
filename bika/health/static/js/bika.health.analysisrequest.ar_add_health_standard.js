@@ -531,10 +531,9 @@ function HealthStandardAnalysisRequestAddView() {
                 GuarantorID: $('#GuarantorID').val(),
                 GuarantorFirstname: $('#GuarantorFirstname').val(),
                 GuarantorSurname: $('#GuarantorSurname').val(),
-                'GuarantorPostalAddress.country': $('[id="PostalAddress.country"]').val(),
-                'GuarantorPostalAddress.state': $('[id="PostalAddress.state"]').val(),
-                'GuarantorPostalAddress.city': $('[id="PostalAddress.city"]').val(),
-                'GuarantorPostalAddress.address': $('[id="PostalAddress.address"]').val(),
+                PostalAddress: $.toJSON({country:$('[id="PostalAddress.country"]').val(), state:$('[id="PostalAddress.state"]').val(),
+                                city:$('[id="PostalAddress.city"]').val(), address:$('[id="PostalAddress.address"]').val(),
+                                zip:$('[id="PostalAddress.zip"]').val()}),
                 GuarantorHomePhone: $('#GuarantorHomePhone').val(),
                 GuarantorMobilePhone: $('#GuarantorMobilePhone').val(),
                 GuarantorBusinessPhone: $('#GuarantorBusinessPhone').val()
@@ -580,11 +579,13 @@ function HealthStandardAnalysisRequestAddView() {
          */
         var patientuid = $('input#ar_0_Patient').attr('uid');
         var doctoruid = $('input#ar_0_Doctor').attr('uid');
+        var clientuid = $('input#ar_0_Client').attr('uid');
         var request_data = {
             obj_path: '/Plone/batches',
             obj_type: 'Batch',
             Patient: "catalog_name:bika_patient_catalog|portal_type:Patient|UID:" + patientuid,
-            Doctor:"portal_type:Doctor|UID:" + doctoruid
+            Doctor:"portal_type:Doctor|UID:" + doctoruid,
+            Client:"portal_type:Client|UID:" + clientuid
         };
         $.ajaxSetup({async: false});
         $.ajax({
