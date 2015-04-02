@@ -579,7 +579,7 @@ function HealthStandardAnalysisRequestAddView() {
          */
         var patientuid = $('input#ar_0_Patient').attr('uid');
         var doctoruid = $('input#ar_0_Doctor').attr('uid');
-        var clientuid = $('input#ar_0_Client').attr('uid');
+        var clientuid = $('input#ar_0_Client_uid').val();
         var request_data = {
             obj_path: '/Plone/batches',
             obj_type: 'Batch',

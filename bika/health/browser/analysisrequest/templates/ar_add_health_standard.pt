@@ -29,13 +29,13 @@
 </metal:title>
 
 <div metal:fill-slot="content-core"
+        id="health-standard-ar-add-form"
         tal:define="
         portal context/@@plone_portal_state/portal;
         plone_view context/@@plone;
         portal_state context/@@plone_portal_state;
         tabindex view/tabindex;
         partitionable view/partitioned_services;">
-
     <form id="analysisrequest_patient_edit_form"
           name="analysisrequest_patient_edit_form"
             tal:attributes="action string:${view/portal_url}/patients/portal_factory/Patient/edit"
