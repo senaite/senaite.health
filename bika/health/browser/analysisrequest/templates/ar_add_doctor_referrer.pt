@@ -1,4 +1,6 @@
-<div>
+<div class='content-block doctor-block'>
+
+    <h2 i18n:translate="">Doctor Referrer</h2>
     <!-- Refering doctor -->
     <div>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Doctor" id="archetypes-fieldname-Doctor">
@@ -26,11 +28,9 @@
             <input type="hidden" name="ar.0.Doctor_uid:record" id="ar_0_Doctor_uid" /></div>
     </div>
     <!-- This input will be fill out after a doctor has been chosen -->
-    <div>
-        <div>
-            <label class="formQuestion" for="DoctorsCode" i18n:translate="">Doctor's Code</label>
-            <input type="text" id="DoctorsCode"/>
-        </div>
+    <div class='field'>
+        <label class="formQuestion" for="DoctorsCode" i18n:translate="">Doctor's Code</label>
+        <input type="text" id="DoctorsCode"/>
     </div>
     <!-- Copies to doctors -->
     <div id="archetypes-fieldname-CCDoctor" class="field ArchetypesStringWidget" data-fieldname="CCDoctor">
@@ -62,9 +62,6 @@
         <span></span>
         <div class="fieldErrorBox"></div>
         <label class="formQuestion" for="PrimaryReferrer">Referral Institution</label>
-        <div tal:content="python:view.context.getClient().Name"/>
-
-
-
+        <div class='readonly' tal:content="python:view.context.getClient().Name"/>
     </div>
 </div>

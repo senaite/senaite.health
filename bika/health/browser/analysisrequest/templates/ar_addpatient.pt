@@ -1,29 +1,8 @@
-<div>
-    <label i18n:translate=""> Patient Details </label>
-    <!-- Client Patient ID -->
-    <div>
-        <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
-            <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Client-Patient ID </label>
-            <input type="text"
-                   name="ar.0.ClientPatientID_uid:record"
-                   id="ar_0_ClientPatientID"
-                   class="blurrable firstToFocus referencewidget"
-                   search_query="{}"
-                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
-                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'id', 'align': 'left', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'ClientPatientID', 'align': 'left', 'label': 'Client PID', 'width': '20'}, {'columnName': 'Title', 'align': 'left', 'label': 'Fullname', 'width': '60'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['ClientPatientID'], 'sord': 'asc', 'discard_empty': ['ClientPatientID'], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'showOn': True, 'force_all': True})"
-                   ui_item="ClientPatientID"
-                   catalog_name="bika_patient_catalog"
-                   resetbutton="False"
-                   maxlength="255"
-                   searchicon="True"
-                   showon="True"
-                   placeholder="" />
-            <input id="ar_0_ClientPatientID_uid" type="hidden" value="" name="ar.0.ClientPatientID_uid:record">
-        </div>
-    </div>
+<div class="content-block patient-block">
+    <h2 i18n:translate="">Patient Details</h2>
 
     <!-- Choose if the patient will be created or selected from still created patients -->
-    <div>
+    <div class='content-line'>
         <div id="archetypes-fieldname-NewPatient" class="field ArchetypesBooleanWidget " data-fieldname="ExistingPtaient">
             <label class="formQuestion" for="NewPatient"> New Patient</label>
             <input id="NewPatient" class="noborder" type="checkbox" name="NewPatient:boolean" value="on"/>
@@ -32,7 +11,7 @@
     </div>
 
     <!-- This div-input is only shown when New Patient checkbox is UNselected -->
-    <div>
+    <div class='content-line'>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Patient" id="archetypes-fieldname-Patient">
             <label class="formQuestion" for="Patient" i18n:translate="">Patient Full Name
                 <span class="required" title="Required"> </span>
@@ -60,7 +39,7 @@
     </div>
 
     <!-- This div-input is only shown when New Patient checkbox is selected -->
-    <div>
+    <div class='content-line'>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Surname" id="archetypes-fieldname-Surname">
             <label class="formQuestion" for="Surname" i18n:translate="">Patient Surname
                 <span class="required" title="Required"> </span>
@@ -73,7 +52,7 @@
     </div>
 
     <!-- This div-input is only shown when New Patient checkbox is selected -->
-    <div>
+    <div class='content-line'>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Firstname" id="archetypes-fieldname-Firstname">
             <label i18n:translate="">Patient First Name
                 <span class="required" title="Required"> </span>
@@ -84,8 +63,30 @@
         </div>
     </div>
 
+    <!-- Client Patient ID -->
+    <div class='content-line'>
+        <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
+            <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Client-Patient ID </label>
+            <input type="text"
+                   name="ar.0.ClientPatientID_uid:record"
+                   id="ar_0_ClientPatientID"
+                   class="blurrable firstToFocus referencewidget"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'id', 'align': 'left', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'ClientPatientID', 'align': 'left', 'label': 'Client PID', 'width': '20'}, {'columnName': 'Title', 'align': 'left', 'label': 'Fullname', 'width': '60'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['ClientPatientID'], 'sord': 'asc', 'discard_empty': ['ClientPatientID'], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'showOn': True, 'force_all': True})"
+                   ui_item="ClientPatientID"
+                   catalog_name="bika_patient_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input id="ar_0_ClientPatientID_uid" type="hidden" value="" name="ar.0.ClientPatientID_uid:record">
+        </div>
+    </div>
+
     <!-- Birth date -->
-    <div>
+    <div class='content-line'>
         <div id="archetypes-fieldname-BirthDate" class="field ArchetypesDateTimeWidget" data-fieldname="BirthDate">
             <label  class="formQuestion" for="BirthDate" i18n:translate="">Date of birth
                 <span class="required" title="Required"> </span>
@@ -109,7 +110,7 @@
         </div>
     </div>
 
-    <div>
+    <div class='content-line'>
         <div id="archetypes-fieldname-Gender" class="field ArchetypesSelectionWidget " data-fieldname="Gender">
             <label class="formQuestion" for="Gender" i18n:translate="">Gender</label>
             <select id="Gender" name="Gender">
@@ -121,7 +122,7 @@
 
     </div>
 
-    <div>
+    <div class='content-line'>
         <div id="archetypes-fieldname-HomePhone" class="field ArchetypesStringWidget" data-fieldname="HomePhone">
             <label class="formQuestion" for="HomePhone" i18n:translate="">Home Phone</label>
             <input id="HomePhone"
@@ -134,7 +135,7 @@
         </div>
     </div>
 
-    <div>
+    <div class='content-line'>
         <div id="archetypes-fieldname-MobilePhone" class="field ArchetypesStringWidget" data-fieldname="MobilePhone">
             <label class="formQuestion" for="MobilePhone" i18n:translate="">Mobile Phone</label>
             <input id="MobilePhone"
@@ -147,7 +148,7 @@
         </div>
     </div>
 
-    <div>
+    <div class='content-line'>
         <div id="archetypes-fieldname-BusinessPhone" class="field ArchetypesStringWidget" data-fieldname="BusinessPhone">
             <label class="formQuestion" for="BusinessPhone" i18n:translate="">Business Phone</label>
             <input id="BusinessPhone"
@@ -160,7 +161,7 @@
         </div>
     </div>
 
-    <div>
+    <div class='content-line'>
         <div  id="archetypes-fieldname-EmailAddress" class="field ArchetypesStringWidget " data-fieldname="EmailAddress">
             <label class="formQuestion" for="EmailAddress" i18n:translate="">E-mail</label>
             <input
@@ -177,8 +178,8 @@
     </div>
 
     <!-- Signature, if the request is printed -->
-    <div>
-        <div id="section-signatures">
+    <div class='content-line'>
+        <div id="section-signatures" class="field">
             <label class="formQuestion" for="Signature" i18n:translate="">Signature</label>
         </div>
     </div>

@@ -36,6 +36,12 @@
         portal_state context/@@plone_portal_state;
         tabindex view/tabindex;
         partitionable view/partitioned_services;">
+
+
+    <!-- Doctor template -->
+    <span tal:replace="structure view/doctor_referrer_template"></span>
+    <div class='clearfix'></div>
+
     <form id="analysisrequest_patient_edit_form"
           name="analysisrequest_patient_edit_form"
             tal:attributes="action string:${view/portal_url}/patients/portal_factory/Patient/edit"
@@ -51,8 +57,7 @@
         <span tal:replace="structure view/insurance_template"></span>
     </form>
 
-    <!-- Doctor template -->
-    <span tal:replace="structure view/doctor_referrer_template"></span>
+    <div class='clearfix'></div>
 
     <form id="analysisrequest_edit_form"
           name="analysisrequest_edit_form"
