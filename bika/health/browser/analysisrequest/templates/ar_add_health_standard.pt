@@ -49,8 +49,6 @@
         <span tal:replace="structure view/patient_template"></span>
         <!-- Insurance template -->
         <span tal:replace="structure view/insurance_template"></span>
-
-        <input id="form.button.save" name="form.button.save" type="submit" value="Save"/>
     </form>
 
     <!-- Doctor template -->
@@ -186,6 +184,11 @@
                    aria-haspopup="true"
                    tabindex="36">
             <input id="ar_0_Priority_uid" type="hidden" name="ar.0.Priority_uid:record">
+        </div>
+
+        <div>
+            <label class="formQuestion" for="NewPatient"> Create a new case </label>
+            <input id="CreateNewCase" class="noborder" type="checkbox" name="CreateNewCase:boolean" value="on"/>
         </div>
 
         <!-- These hidden fields are used to obtain the client's UID -->

@@ -16,7 +16,7 @@ function HealthStandardAnalysisRequestAddView() {
      * -----------------------
      *  - Patient -> From patient. Fields blocked.
      *  - Guarantor and insurance -> From the current patient. Fields blocked
-     *  - The save button is going to crate -> a case, an AR from batch.
+     *  - The save button is going to crate -> a case if required, an AR (related with the case.)
      *
      * AR coming from client:
      * ----------------------
@@ -24,12 +24,12 @@ function HealthStandardAnalysisRequestAddView() {
      *  -- If a new patient is being created (NewPatientCheckbox == selected) ->
      *                                                 - Guarantor's + insurance ready to be edited. Fields unblocked.
      *                                                 - Patient fields unblocked.
-     *  --- The save button is going to create -> a patient, a case related with the created patient, an AR inside the case
+     *  --- The save button is going to create -> a patient, a case related with the created patient if required, an AR (inside the case)
      *
      *  -- If an old patient is selected (NewPatientCheckbox == unselected) ->
      *                                                 - Guarantor + insurance from selected patient. Fields blocked.
      *                                                 - Patient fields blocked.
-     *  --- The save button is going to create -> a case, an AR.
+     *  --- The save button is going to create -> a case if required, an AR.
      */
 
     var that = this;
@@ -55,6 +55,8 @@ function HealthStandardAnalysisRequestAddView() {
             cancelPatientCreationCheckBox();
             // The fields with data should be fill out and set them as readonly.
             setDataFromBatch(batchid);
+            // Hide and clear the CreateNewCase checkbox
+            $('input#CreateNewCase').prop('checked',false).prop('disabled', true)
         }
         else if (frompatient) {
             // The current AR add View comes from a patient AR folder view.
@@ -104,8 +106,16 @@ function HealthStandardAnalysisRequestAddView() {
         $('[id$="_Doctor"]').bind("selected paste blur change", function () {
             setDoctorCode();
         });
-        $('input#PatientAsGuarantor').bind("selected paste blur change", function() {
-         // I'll work in that once I've finished with all the creations
+        $('input#PatientAsGuarantor').bind("click", function() {
+            var cb = $('input#PatientAsGuarantor');
+            if (cb.prop('checked')) {
+                cleanAndEnableDisableInsuranceData(true);
+                cb.prop('disabled', false);
+                cb.prop('checked', true);
+            }
+            else{
+                cleanAndEnableDisableInsuranceData(false)
+            }
         });
 
         // Functions to execute at page load
@@ -114,7 +124,7 @@ function HealthStandardAnalysisRequestAddView() {
         // Unbind previous (from lims) loadAjaxSubmitHandler on submit button.
         $("#analysisrequest_edit_form").ajaxFormUnbind();
         // Bind the new handler
-        loadAjaxSubmitHealthHandler(frombatch, frompatient);
+        loadAjaxSubmitHealthHandler();
     };
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
@@ -352,7 +362,7 @@ function HealthStandardAnalysisRequestAddView() {
         /**
          * The function checks if the patient is related with an insurance company. In the affirmative case,
          * the insurance fields will be filled out and blocked
-         * @patientuid The patient uid where the function will look for the insurance company.
+         * @patientuid A dictionary with the patient data where the function will look for the insurance company.
          */
         // Check if patient is related with an insurance company
         if (patientdata['InsuranceCompany_uid'] != ''){
@@ -404,21 +414,22 @@ function HealthStandardAnalysisRequestAddView() {
 
     // Defining the health submit handler -----------------------------------------------------
 
-    function loadAjaxSubmitHealthHandler(frombatch, frompatient){
+    function loadAjaxSubmitHealthHandler(){
         /**
          * This functions build the options to create the objects and binds the needed function to create the objects
          * after submit.
          * Since the different objects definitions are split into different forms, on form submit we have to create
          * each object (if it's necessary) from every form, and copy its data into the analysis request form to create
          * the analysis request with all the recently created objects.
-         *
-         * @frombatch This variable is >0 if the Analysis Request comes from a batch
-         * @frompatient This variable is >0 if the Analysis Request comes from a patient
          */
         $('input#global_save_button').bind('click', function(){
             // If the Analysis Request comes form a case (batch), the fields ClientPatientID, Doctor and Patient should
-            // be copied form their forms to the Analysis Request form.
-            if (frompatient){
+            // be copied from their forms to the Analysis Request form.
+            if ($('input#NewPatient').prop('checked')){
+                // A patient should be created
+                createPatient();
+            }
+            if ($('input#CreateNewCase').prop('checked')){
                 // Creating a case
                 createCase();
             }
@@ -495,7 +506,70 @@ function HealthStandardAnalysisRequestAddView() {
     }
     // Creating a Patient ----------------------------------------------------------------
 
-    // function createPatient(){}
+    function createPatient(){
+        /**
+         * This function creates a patient via ajax and jsonapi from the data introduced in the form.
+         */
+        var request_data = {
+            obj_path: '/Plone/patients',
+            obj_type: 'Patient',
+            ClientPatientID: $('input#ar_0_ClientPatientID').val(),
+            Surname: $('#Surname').val(),
+            Firstname: $('#Firstname').val(),
+            BirthDate: $('#BirthDate').val(),
+            BirthDateEstimated: $('#BirthDateEstimated').prop('checked'),
+            Gender: $('#Gender').val(),
+            HomePhone: $('#HomePhone').val(),
+            MobilePhone: $('#MobilePhone').val(),
+            BusinessPhone: $('#BusinessPhone').val(),
+            EmailAddress: $('#EmailAddress').val(),
+            PatientAsGuarantor: $('#PatientAsGuarantor').prop('checked'),
+            PrimaryReferrer: "portal_type:Client|UID:" + $('input#ar_0_Client_uid').val()
+        };
+        if (!request_data['PatientAsGuarantor']){
+            var request_data_ext = {
+                GuarantorID: $('#GuarantorID').val(),
+                GuarantorFirstname: $('#GuarantorFirstname').val(),
+                GuarantorSurname: $('#GuarantorSurname').val(),
+                'GuarantorPostalAddress.country': $('[id="PostalAddress.country"]').val(),
+                'GuarantorPostalAddress.state': $('[id="PostalAddress.state"]').val(),
+                'GuarantorPostalAddress.city': $('[id="PostalAddress.city"]').val(),
+                'GuarantorPostalAddress.address': $('[id="PostalAddress.address"]').val(),
+                GuarantorHomePhone: $('#GuarantorHomePhone').val(),
+                GuarantorMobilePhone: $('#GuarantorMobilePhone').val(),
+                GuarantorBusinessPhone: $('#GuarantorBusinessPhone').val()
+            };
+            $.extend(request_data,request_data_ext)
+        }
+        $.ajaxSetup({async: false});
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: window.portal_url + "/@@API/create",
+            data: request_data,
+            success: function(data){
+                // Getting the case's uid
+                window.bika.lims.jsonapi_read({
+                    catalog_name: 'bika_patient_catalog',
+                    content_type: 'Patient',
+                    id: data['obj_id']
+                }, function (dataobj) {
+                    // After creating the new patient, we should fill this input. When we are creating the analysis request,
+                    // this input is going to be cloned to the analysis request form, and consequently, the AR and the
+                    // patient will be related.
+                    $('input#ar_0_Patient').attr('uid', dataobj.objects[0]['UID']);
+                    $('input#ar_0_Patient_uid').val(dataobj.objects[0]['UID']);
+                    $('input#ar_0_Patient').val(dataobj.objects[0]['title'])
+                });
+            },
+            error: function(XMLHttpRequest, statusText) {
+                window.bika.lims.portalMessage(statusText);
+                window.scroll(0,0);
+                $("input[class~='context']").prop("disabled", false);
+            }
+        });
+        $.ajaxSetup({async: true});
+    }
 
     // Creating a batch (case) ------------------------------------------------------------
 
@@ -506,13 +580,11 @@ function HealthStandardAnalysisRequestAddView() {
          */
         var patientuid = $('input#ar_0_Patient').attr('uid');
         var doctoruid = $('input#ar_0_Doctor').attr('uid');
-        var clientuid = $('input#ar_0_Client').attr('uid');
         var request_data = {
             obj_path: '/Plone/batches',
             obj_type: 'Batch',
             Patient: "catalog_name:bika_patient_catalog|portal_type:Patient|UID:" + patientuid,
-            Doctor:"portal_type:Doctor|UID:" + doctoruid,
-            Client:"portal_type:Client|UID:" + clientuid
+            Doctor:"portal_type:Doctor|UID:" + doctoruid
         };
         $.ajaxSetup({async: false});
         $.ajax({
@@ -521,17 +593,18 @@ function HealthStandardAnalysisRequestAddView() {
             url: window.portal_url + "/@@API/create",
             data: request_data,
             success: function(data){
-                // Getting the case's uid
+                // To obtain the case's uid
                 window.bika.lims.jsonapi_read({
                     catalog_name: 'bika_catalog',
                     content_type: 'Batch',
                     id: data['obj_id']
                 }, function (dataobj) {
-                    // Coping the required fields to allow the form to create the analysis request itself.
+                    // Writing the case's uid inside the analysis request creation's form. Thus when the analysis
+                    // request form submits, it will catch the case's uid and create it.
                     $('form#analysisrequest_edit_form input#ar_0_Batch').attr('uid', dataobj.objects[0]['UID']);
                     $('form#analysisrequest_edit_form input#ar_0_Batch_uid').val(dataobj.objects[0]['UID']);
                 });
-                // Coping the required fields to allow the form to create the analysis request itself.
+                // The case's input also needs their id.
                 $('form#analysisrequest_edit_form input#ar_0_Batch').val(data['obj_id']);
             },
             error: function(XMLHttpRequest, statusText) {
