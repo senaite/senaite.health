@@ -44,53 +44,53 @@
 }
 
 div.template-symptoms td input[type="text"] {
-	width:100%;
+    width:100%;
 }
 div.template-symptoms td,
 div.template-symptoms th {
-	padding: 0 5px 0px 5px;
+    padding: 0 5px 0px 5px;
 }
 div.template-symptoms td.Code,
 div.template-symptoms td.Onset {
-  	width:10%;
+    width:10%;
 }
 div.template-symptoms td.Title {
-	width:30%;
+    width:30%;
 }
 div.template-symptoms td.Description {
-	width:45%;
+    width:45%;
 }
 
 div.template-caseprovisionaldiagnosis td input[type="text"] {
-	width:100%;
+    width:100%;
 }
 div.template-caseprovisionaldiagnosis td,
 div.template-caseprovisionaldiagnosis th {
-	padding: 0 5px 0px 5px;
+    padding: 0 5px 0px 5px;
 }
 div.template-caseprovisionaldiagnosis td.Code,
 div.template-caseprovisionaldiagnosis td.Onset {
-  	width:10%;
+    width:10%;
 }
 div.template-caseprovisionaldiagnosis td.Title {
-	width:30%;
+    width:30%;
 }
 div.template-caseprovisionaldiagnosis td.Description {
-	width:45%;
+    width:45%;
 }
 
 .readonly-emphasize {
-	background: none repeat scroll 0 0 transparent;
-	  border: medium none;
-	  font-size: 1.8em;
-	  font-weight: bold;
+    background: none repeat scroll 0 0 transparent;
+      border: medium none;
+      font-size: 1.8em;
+      font-weight: bold;
 }
 div.cg-comboItem :not(.template-ar_add) {
-	height:100%;
+    height:100%;
 }
 div.cg-DivItem {
-	height:auto;
-	text-align:left;
+    height:auto;
+    text-align:left;
 }
 
 /* OVERWRITE FROM bika.lims/bika_listing.css */
@@ -183,6 +183,182 @@ table.bika-listing-table,
   cursor:pointer;
 }
 
+/* Health-standard AR add form */
+#content-core #health-standard-ar-add-form div.documentDescription {
+    border-top: 1px solid #ccc;
+    color: #333;
+    font-size: 1.8em;
+    font-weight: normal;
+    margin-top: 15px;
+    padding: 15px 0 8px;
+}
+#content-core #health-standard-ar-add-form div.content-block {
+    border: 1px solid #ccc;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field {
+    border-bottom: 1px solid #aaa;
+    padding: 5px;
+    min-height:16px;
+    margin-top:-2px;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field label {
+    float:left;
+    padding-top:2px;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field input,
+#content-core #health-standard-ar-add-form div.content-block div.field select,
+#content-core #health-standard-ar-add-form div.content-block div.field div.readonly {
+    float: right;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field select {
+    border-style: none none none solid;
+    border-width: medium medium medium 1px;
+    margin-top: -3px;
+    padding: 3px 0 4px 5px;
+    width: 61%;
+    background-color: #dfdfdf;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field input:after,
+#content-core #health-standard-ar-add-form div.content-block div.field select:after,
+#content-core #health-standard-ar-add-form div.content-block div.field div.readonly:after{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field input[type="text"],
+#content-core #health-standard-ar-add-form div.content-block div.field div.readonly {
+    background-color: #dfdfdf;
+    border: medium none;
+    margin: 0 -2px 0 0;
+    padding: 1px 0 2px 10px;
+    width: 60%;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field textarea {
+    background-color: #dedede;
+    border: medium none;
+    height: 32px;
+    margin: 5px -5px -5px;
+    padding: 5px;
+    color:#333;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field textarea:disabled {
+    background-color:#fff;
+    color:#555;
+}
+#content-core #health-standard-ar-add-form div.content-block span.formHelp {
+    display:none;
+    visibility:hidden;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field input[type="text"]:disabled,
+#content-core #health-standard-ar-add-form div.content-block div.field div.readonly,
+#content-core #health-standard-ar-add-form div.content-block div.field select:disabled {
+    background-color:#fff;
+    color: #555;
+    background-image:none;
+}
+#content-core #health-standard-ar-add-form div.content-block div.field input[type="checkbox"] {
+    margin-right: 59%;
+}
+#content-core #health-standard-ar-add-form div.content-block div.fieldErrorBox {
+    color: red;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+#content-core #health-standard-ar-add-form div.content-block h2 {
+    background-color: #436976;
+    border: 1px solid #436976;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: -1px -1px 0;
+    padding-left: 5px;
+    text-transform: uppercase;
+}
+#content-core #health-standard-ar-add-form div.content-block h3 {
+    background-color: #888;
+    color: #fff;
+    font-size: 1em;
+    padding-left: 5px;
+}
+#content-core #health-standard-ar-add-form div.content-block.patient-block,
+#content-core #health-standard-ar-add-form div.content-block.insurance-block {
+    width: 49.5%;
+}
+
+#content-core #health-standard-ar-add-form div.content-block.patient-block {
+    float:left;
+    max-height: 432px;
+    min-height: 432px;
+}
+#content-core #health-standard-ar-add-form div.content-block.insurance-block {
+    float: right;
+}
+#content-core #health-standard-ar-add-form div.content-block.patient-block div#section-signatures {
+    border-bottom:none;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block {
+    border:1px solid #fff;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block {
+    display: inline-block;
+    width: 24.6%;
+    vertical-align:top;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block h2 {
+    margin:0px;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block ul {
+    border: 1px solid #888;
+    list-style: none outside none;
+    margin: 0;
+    padding: 5px;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block ul li {
+    line-height:100%;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block ul li span.keyword {
+    color: #888;
+    font-size: 0.7em;
+    vertical-align: top;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block ul li span.title {
+    font-size: 0.85em;
+    line-height: 100%;
+    padding-left: 5px;
+    vertical-align: top;
+}
+#content-core #health-standard-ar-add-form div.clearfix {
+    clear: both;
+    padding-bottom: 10px;
+}
+
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block ul li .specs {
+    float:right;
+    display:none;
+}
+#content-core #health-standard-ar-add-form div.content-block.analyses-block div.department-block ul li .spec_bit {
+    border: 1px solid #888;
+    font-size: 0.8em;
+    margin-right: 3px;
+    padding-right: 1px;
+    text-align: right;
+    width: 20px;
+}
+#content div.ar-add-template-classic-button a {
+    background-color:#fff;
+    border: 1px solid #cdcdcd;
+    padding: 4px 10px;
+}
+#content div.ar-add-template-classic-button {
+    float:right;
+}
+#content div.ar-add-template-classic-button a:hover {
+    background-color: #ddd;
+    color:#fff;
+}
 /* OVERWRITE from ploneCustom.css in bika.lims */
 
 /* </dtml-with> */

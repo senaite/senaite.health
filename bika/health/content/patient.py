@@ -415,6 +415,64 @@ schema = Person.schema.copy() + Schema((
             description=_("If it is checked the invoices will be send to the insurance company."
                           " In this case the insurance number will be mandatory."))
     ),
+    BooleanField('PatientAsGuarantor',
+        schemata = 'Insurance',
+        default=True,
+        widget=BooleanWidget(
+            label=_("The patient is the guarantor."),
+            description=_("The patient and the guarantor are the same."))
+    ),
+    StringField('GuarantorID',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=StringWidget(
+            label=_('Guarantor ID'),
+            description=_("The ID number (Insurance Number) from the person whose contract cover the current patient.")
+        ),
+    ),
+    StringField('GuarantorSurname',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=StringWidget(
+            label=_("Guarantor's Surname"),
+        ),
+    ),
+    StringField('GuarantorFirstname',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=StringWidget(
+            label=_("Guarantor's First Name"),
+        ),
+    ),
+    StringField('GuarantorPostalAddress',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=AddressWidget(
+            label=_("Guarantor's postal address"),
+        ),
+    ),
+    StringField('GuarantorBusinessPhone',
+        schemata = 'Insurance',
+        widget = StringWidget(
+            label=_("Guarantor's Phone (business)"),
+        ),
+    ),
+    StringField('GuarantorHomePhone',
+        schemata = 'Insurance',
+        widget = StringWidget(
+            label=_("Guarantor's Phone (home)"),
+        ),
+    ),
+    StringField('GuarantorMobilePhone',
+        schemata = 'Insurance',
+        widget = StringWidget(
+            label=_("Guarantor's Phone (mobile)"),
+        ),
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -590,6 +648,62 @@ class Patient(Person):
         return self.getField('CountryState').get(self) \
             if self.getField('CountryState').get(self) \
             else self.getPhysicalAddress()
+
+    def getGuarantorID(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        :return: The guarantor ID (insurance number) from
+        """
+        return self.getInsuranceNumber() if self.getPatientAsGuarantor() else self.getField('GuarantorID').get(self)
+
+    def getGuarantorSurname(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getSurname() if self.getPatientAsGuarantor() else self.getField('GuarantorSurname').get(self)
+
+    def getGuarantorFirstname(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getFirstname() if self.getPatientAsGuarantor() else self.getField('GuarantorFirstname').get(self)
+
+    def getGuarantorPostalAddress(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getPostalAddress() \
+            if self.getPatientAsGuarantor() \
+            else self.getField('GuarantorPostalAddress').get(self)
+
+    def getGuarantorBusinessPhone(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getBusinessPhone() \
+            if self.getPatientAsGuarantor() \
+            else self.getField('GuarantorBusinessPhone').get(self)
+
+    def getGuarantorHomePhone(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getHomePhone() if self.getPatientAsGuarantor() else self.getField('GuarantorHomePhone').get(self)
+
+    def getGuarantorMobilePhone(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getMobilePhone() \
+            if self.getPatientAsGuarantor() \
+            else self.getField('GuarantorMobilePhone').get(self)
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)

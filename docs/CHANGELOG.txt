@@ -1,6 +1,7 @@
 3.1.7 (unreleased)
 ------------------
-
+HEALTH-140: AR Create per path lab standard form
+HEALTH-251: Add guarantor details in insurance companies
 
 3.1.6 (2015-02-27)
 ------------------
