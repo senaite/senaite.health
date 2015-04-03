@@ -1,139 +1,63 @@
-<div>
-<!-- Sampling date -->
-    <div>
-        <div id="archetypes-fieldname-SamplingDate" class="field ArchetypesDateTimeWidget " data-fieldname="SamplingDate">
-            <label class="formQuestion">
-                Sampling Date
-                <span class="fieldRequired" title="Required"> </span>
-            </label>
-            <span></span>
-            <div class="fieldErrorBox"></div>
-            <input id="ar_0_SamplingDate"
-                   class="blurrable firstToFocus"
-                   type="text"
-                   datetimepicker="0"
-                   datepicker="1"
-                   value=""
-                   name="ar.0.SamplingDate:record"
-                   tabindex="21"
-                   autocomplete="off">
+<div class="content-block analyses-block"
+     tal:define="categories python:view.Categories().values();
+                 categories python:[cat for cat in categories[0]];
+                 dummycats  python:categories.sort(lambda x, y: cmp(x[1], y[1]));">
+
+<!-- Group analyses by departments -->
+<tal:deptblock
+     define="departments python:view.getDepartments();
+             dummydepts  python:departments.sort(lambda x, y: cmp(x[1], y[1]));"
+     repeat="department departments">
+
+    <div class="department-block"
+         tal:define="deptcats python:[cat for cat in categories if view.categoryInDepartment(cat[0], department[0])];"
+         tal:condition="deptcats">
+        <h2 tal:content="python:department[1]"></h2>
+
+        <!-- Group analyses by categories -->
+        <tal:cat tal:repeat="category deptcats">
+        <div class='analysis-category-block'
+            tal:define="analyses python:[an.getObject() for an in view.getAvailableServices(category[0])];
+                        dummyans python:analyses.sort(lambda x, y: cmp(x.getKeyword(), y.getKeyword()));"
+            tal:condition="python:len(analyses) &gt; 0">
+            <h3 tal:content="python:category[1]"></h3>
+            <ul>
+                <li tal:repeat="analysis analyses">
+
+                    <!-- Analyses for department and category -->
+                    <tal:an define="keyword python:analysis.getKeyword();
+                                    uid     python:analysis.UID();
+                                    title   python:analysis.Title();">
+                    <span class="keyword" tal:content="keyword"></span>
+                    <input type="checkbox"
+                           class="cb"
+                           tal:attributes="id      uid;
+                                           value   uid;
+                                           title   title;
+                                           keyword keyword;
+                                           name    string:ar.0.Analyses:list:ignore_empty:record">
+                    <span class='title' tal:content="title"></span>
+
+                    <!-- Analysis Specifications -->
+                    <div class="specs">
+                    <tal:specs repeat="spec python:[('min','<'),('max','&gt;'),('error','%')]">
+                    <input class="spec_bit min"
+                           type="text"
+                           size="3"
+                           autocomplete="off"
+                           tal:attributes="keyword      keyword;
+                                           uid          uid;
+                                           name         python:'ar.0.%s.%s' % (spec[0], uid);
+                                           placeholder  python:spec[1];
+                                           class        python:'spec_bit %s' % spec[0];">
+                    </tal:specs>
+                    </div>
+                    </tal:an>
+                </li>
+            </ul>
         </div>
+        </tal:cat>
     </div>
-
-    <!-- Sample Type -->
-    <div>
-        <div id="archetypes-fieldname-SampleType" class="field ArchetypesReferenceWidget" data-fieldname="SampleType">
-            <label class="formQuestion">
-                Sample Type
-                <span class="fieldRequired" title="Required"> </span>
-                <em id="SampleType_help" class="discreet">Create a new sample of this type</em>
-            </label>
-            <span></span>
-            <div class="fieldErrorBox"></div>
-            <input id="ar_0_SampleType"
-                   class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
-                   type="text"
-                   placeholder=""
-                   showon="True"
-                   searchicon="True" maxlength="255"
-                   resetbutton="False"
-                    tal:attributes="combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
-                    base_query python:view.get_json_format({'portal_type': 'SampleType', 'inactive_state': 'active'})"
-                   catalog_name="bika_setup_catalog"
-                   search_query="{}"
-                   ui_item="Title"
-                   minlength="0"
-                   name="ar.0.SampleType:record"
-                   autocomplete="off"
-                   role="textbox"
-                   aria-autocomplete="list"
-                   aria-haspopup="true"
-                   tabindex="22">
-            <input id="ar_0_SampleType_uid" type="hidden" name="ar.0.SampleType_uid:record">
-        </div>
-    </div>
-
-    <div>
-        <!-- Analysis Specification -->
-        <div class="field ArchetypesReferenceWidget" data-fieldname="Specification" id="archetypes-fieldname-Specification">
-            <label class="formQuestion">
-                Analysis Specification
-                <em id="Specification_help" class="discreet">Choose default AR specification values</em>
-            </label>
-            <span></span>
-            <div class="fieldErrorBox"></div>
-            <input type="text"
-                   name="ar.0.Specification:record"
-                   id="ar_0_Specification"
-                   class="blurrable firstToFocus referencewidget"
-                   search_query="{}"
-                   tal:attributes="base_query python:view.get_json_format({'portal_type': 'AnalysisSpec'});
-                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'contextual_title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'SampleTypeTitle', 'align': 'left', 'label': 'SampleType', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})"
-                   ui_item="Title"
-                   catalog_name="bika_setup_catalog"
-                   resetbutton="False"
-                   maxlength="255"
-                   searchicon="True"
-                   showon="True"
-                   placeholder="" />
-            <input type="hidden" name="ar.0.Specification_uid:record" id="ar_0_Specification_uid" />
-        </div>
-    </div>
-
-    <!-- Analysis Services -->
-    <div class="analysisservices">
-        <div tal:repeat="department python:view.getDepartments()">
-            <span class="DepartmentTitle" tal:content="python:department[1]"/>
-            <table summary="Add analysis requests"
-                   class="listing analysisrequest add nosort">
-                <!--Obtaining the categories and the point of captures -->
-                <tal:i define="
-                             cats view/Categories;
-                             POINTS_OF_CAPTURE python: modules['bika.lims.config'].POINTS_OF_CAPTURE;">
-                    <!-- Dividing the analyses on field and lab captured -->
-                    <tal:i repeat="poc python:['field', 'lab']">
-                        <tal:has_poc tal:condition="python:poc in cats">
-                            <thead class="pointofcapture"
-                                    tal:attributes="id poc">
-                            <tr>
-                                <!-- Getting the point of captured label -->
-                                <th tal:attributes="colspan python:view.col_count">
-                                    <span tal:content="python:POINTS_OF_CAPTURE.getValue(poc)"/>
-                                </th>
-                            </tr>
-                            </thead>
-
-                                <!-- Sorting the categories on their name -->
-                                <tal:i tal:define="sortedcats python:cats[poc];
-                                        dummy python:sortedcats.sort(lambda x, y: cmp(x[1], y[1]))"
-                                        repeat="cat sortedcats">
-                                        <thead tal:condition="python:view.categoryInDepartment(cat, department[0])">
-                                        <!-- Print each category -->
-                                        <tr class="analysiscategory">
-                                            <th tal:content="python:cat[1]"
-                                                    tal:define="add_prefill python:cat[0] in view.DefaultCategories();"
-                                                    tal:attributes="
-                                                    id python:'cat_%s_%s'%(poc, cat[1]);
-                                                    colspan python:view.col_count;
-                                                    poc poc;
-                                                    cat python:cat[0];
-                                                    class python: 'analysiscategory collapsed%s' % (' prefill' if add_prefill else '')"/>
-                                        </tr>
-                                        </thead>
-                                        <!-- Print each analysis -->
-                                        <tbody class="analysisservices" tal:attributes="
-                                                id python:poc + '_' + cat[0]"
-                                                tal:condition="python:view.categoryInDepartment(cat, department[0])">
-                                        <tr></tr>
-                                        </tbody>
-                                </tal:i>
-
-                        </tal:has_poc>
-                    </tal:i>
-                </tal:i>
-            </table>
-        </div>
-        <!-- Quoting template -->
-        <span tal:replace="structure view/prices_template"></span>
-    </div>
+</tal:deptblock>
+<div class='clearfix'></div>
 </div>

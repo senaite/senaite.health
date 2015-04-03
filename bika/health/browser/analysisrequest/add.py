@@ -21,10 +21,13 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         # An array where are located all the the schema patient's fields to show on the ar_add
         self._pfields = ['PatientID', 'Surname', 'Firstname', 'BirthDate', 'Gender', 'HomePhone', 'MobilePhone',
                          'BusinessPhone', 'EmailAddress']
-        self.col_count = 1
+        self.templatename = self.request.get('tpl','')
         self.w = AddressWidget()
 
     def __call__(self):
+        if self.templatename == 'classic':
+            return AnalysisRequestAddViewLIMS.__call__(self)
+
         # Getting the checkbox value
         enable_bika_request_field = self.context.bika_setup.Schema().getField('EnableBikaAnalysisRequestRequestForm')
         enable_bika_request = enable_bika_request_field.get(self.context.bika_setup)
@@ -33,6 +36,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
             return AnalysisRequestAddViewLIMS.__call__(self)
         else:
             # Use the Health's template
+            self.col_count = 1
             self.request.set('disable_border', 1)
             return self.health_template()
 
@@ -65,4 +69,12 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         return getToolByName(self.context, 'bika_setup_catalog')(UID=category)[0]\
             .getObject().getDepartment().UID() == department
 
+    def getAvailableServices(self, categoryuid):
+        """ return a list of services brains """
+        bsc = getToolByName(self.context, 'bika_setup_catalog')
+        services = bsc(portal_type="AnalysisService",
+                       sort_on='sortable_title',
+                       inactive_state='active',
+                       getCategoryUID=categoryuid)
+        return services
 

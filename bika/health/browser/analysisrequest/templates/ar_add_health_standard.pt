@@ -22,10 +22,9 @@
 <body>
 
 <metal:title fill-slot="content-title">
-    <h1>
-        <img tal:condition="view/icon | nothing" tal:attributes="src view/icon"/>
-        <tal:new i18n:translate="">Request new analyses</tal:new>
-    </h1>
+    <div class="ar-add-template-classic-button">
+        <a href="ar_add?tpl=classic" i18n:translate="">Classic template</a>
+    </div>
 </metal:title>
 
 <div metal:fill-slot="content-core"
@@ -36,7 +35,6 @@
         portal_state context/@@plone_portal_state;
         tabindex view/tabindex;
         partitionable view/partitioned_services;">
-
 
     <!-- Doctor template -->
     <span tal:replace="structure view/doctor_referrer_template"></span>
@@ -59,10 +57,10 @@
 
     <div class='clearfix'></div>
 
+    <!-- Analysis Request -->
     <form id="analysisrequest_edit_form"
           name="analysisrequest_edit_form"
         method="POST">
-
         <input type="hidden" name="submitted" value="1" />
         <span tal:replace="structure context/@@authenticator/authenticator"/>
         <input type="hidden" name="came_from" tal:attributes="value view/came_from" />
@@ -132,13 +130,17 @@
             <input id='ar_0_Batch_uid' type='hidden' name='ar.0.Batch_uid:record'>
         </div>
 
-        <!-- Contact person -->
 
+        <div class="content-block ar-details-block">
+        <h2 i18n:translate="">Analysis Request details</h2>
+
+        <!-- Contact person -->
+        <div class='content-line'>
         <div id='archetypes-fieldname-Contact' class='field ArchetypesReferenceWidget' data-fieldname='Contact'>
-            <label class="formQuestion" for="Patient" i18n:translate="">Contact
-                <span class="required" title="Required"> </span>
-            </label>
             <span></span>
+            <label class="formQuestion" for="Patient" i18n:translate="">Contact Person
+            <span class="required" title="Required"></span>
+            </label>
             <div class="fieldErrorBox"></div>
             <input id="ar_0_Contact"
                    class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
@@ -162,11 +164,11 @@
                    tabindex="10" />
             <input id="ar_0_Contact_uid" type="hidden" name="ar.0.Contact_uid:record">
         </div>
+        </div>
 
-
+        <div class='content-line'>
         <div id="archetypes-fieldname-Priority" class="field ArchetypesReferenceWidget " data-fieldname="Priority">
             <label class="formQuestion">Priority</label>
-            <span></span>
             <input id="ar_0_Priority"
                    class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
                    type="text"
@@ -190,10 +192,13 @@
                    tabindex="36">
             <input id="ar_0_Priority_uid" type="hidden" name="ar.0.Priority_uid:record">
         </div>
+        </div>
 
-        <div>
-            <label class="formQuestion" for="NewPatient"> Create a new case </label>
+        <div class='content-line'>
+        <div class='field'>
+            <label class="formQuestion" for="NewPatient">Create new clinical case</label>
             <input id="CreateNewCase" class="noborder" type="checkbox" name="CreateNewCase:boolean" value="on"/>
+        </div>
         </div>
 
         <!-- These hidden fields are used to obtain the client's UID -->
@@ -216,6 +221,93 @@
             </tal:columns>
         </tal:hidden>
 
+
+        <!-- Sampling date -->
+        <div class='content-line'>
+            <div id="archetypes-fieldname-SamplingDate" class="field ArchetypesDateTimeWidget " data-fieldname="SamplingDate">
+                <label class="formQuestion">
+                    Sampling Date
+                    <span class="fieldRequired" title="Required"> </span>
+                </label>
+                <span></span>
+                <div class="fieldErrorBox"></div>
+                <input id="ar_0_SamplingDate"
+                       class="blurrable firstToFocus"
+                       type="text"
+                       datetimepicker="0"
+                       datepicker="1"
+                       value=""
+                       name="ar.0.SamplingDate:record"
+                       tabindex="21"
+                       autocomplete="off">
+            </div>
+        </div>
+
+        <!-- Sample Type -->
+        <div class='content-line'>
+            <div id="archetypes-fieldname-SampleType" class="field ArchetypesReferenceWidget" data-fieldname="SampleType">
+                <label class="formQuestion">
+                    Sample Type
+                    <span class="fieldRequired" title="Required"> </span>
+                </label>
+                <span></span>
+                <div class="fieldErrorBox"></div>
+                <input id="ar_0_SampleType"
+                       class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
+                       type="text"
+                       placeholder=""
+                       showon="True"
+                       searchicon="True" maxlength="255"
+                       resetbutton="False"
+                        tal:attributes="combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'Description', 'align': 'left', 'label': 'Description', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});
+                        base_query python:view.get_json_format({'portal_type': 'SampleType', 'inactive_state': 'active'})"
+                       catalog_name="bika_setup_catalog"
+                       search_query="{}"
+                       ui_item="Title"
+                       minlength="0"
+                       name="ar.0.SampleType:record"
+                       autocomplete="off"
+                       role="textbox"
+                       aria-autocomplete="list"
+                       aria-haspopup="true"
+                       tabindex="22">
+                <input id="ar_0_SampleType_uid" type="hidden" name="ar.0.SampleType_uid:record">
+            </div>
+        </div>
+
+        <div class='content-line'>
+            <!-- Analysis Specification -->
+            <div class="field ArchetypesReferenceWidget" data-fieldname="Specification" id="archetypes-fieldname-Specification">
+                <label class="formQuestion">
+                    Analysis Specification
+                </label>
+                <span></span>
+                <div class="fieldErrorBox"></div>
+                <input type="text"
+                       name="ar.0.Specification:record"
+                       id="ar_0_Specification"
+                       class="blurrable firstToFocus referencewidget"
+                       search_query="{}"
+                       tal:attributes="base_query python:view.get_json_format({'portal_type': 'AnalysisSpec'});
+                        combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'contextual_title', 'align': 'left', 'label': 'Title', 'width': '30'}, {'columnName': 'SampleTypeTitle', 'align': 'left', 'label': 'SampleType', 'width': '70'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})"
+                       ui_item="Title"
+                       catalog_name="bika_setup_catalog"
+                       resetbutton="False"
+                       maxlength="255"
+                       searchicon="True"
+                       showon="True"
+                       placeholder="" />
+                <input type="hidden" name="ar.0.Specification_uid:record" id="ar_0_Specification_uid" />
+            </div>
+        </div>
+        </div>
+
+        <div class='clearfix'></div>
+
+        <!-- Sample [hidden, secondary AR not allowed -->
+        <input type="hidden" name="ar.0.Sample:record" value="">
+        <input type="hidden" name="ar.0.Sample_uid:record" value="">
+
         <!-- Analyses template -->
         <span tal:replace="structure view/analyses_template"></span>
 
@@ -226,27 +318,6 @@
                 i18n:attributes="value"
                value="Save"
                hidden="true"/>
-
-        <div class="discreeter">
-            <p>  <!-- AVS this should be conditional if any dryables present -->
-                <img src="" tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/dry.png">
-                <span i18n:translate="">
-                Can be reported as dry matter.</span>
-            </p>
-
-            <!-- XXX this also -->
-            <p tal:condition="python:context.bika_setup.laboratory.getLaboratoryAccredited()">
-                <img tal:attributes="src string:${portal/absolute_url}/++resource++bika.lims.images/accredited.png">
-                <span i18n:translate="">
-                    Methods included in the
-                    <tal:block
-                            replace="here/bika_setup/laboratory/AccreditationBody"
-                            i18n:name="accreditation_body"/>
-                    schedule of Accreditation for this Laboratory.
-                    Analysis remarks are not accredited.
-                </span>
-            </p>
-        </div>
 
     </form>
     <!-- submit all the forms -->

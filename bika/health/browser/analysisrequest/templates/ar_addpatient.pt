@@ -10,6 +10,28 @@
         </div>
     </div>
 
+    <!-- Client Patient ID -->
+    <div class='content-line'>
+        <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget" data-fieldname="ClientPatientID">
+            <label class="formQuestion" for="ClientPatientID" i18n:translate="">Patient ID. No.</label>
+            <input type="text"
+                   name="ar.0.ClientPatientID_uid:record"
+                   id="ar_0_ClientPatientID"
+                   class="blurrable firstToFocus referencewidget"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'id', 'align': 'left', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'ClientPatientID', 'align': 'left', 'label': 'Client PID', 'width': '20'}, {'columnName': 'Title', 'align': 'left', 'label': 'Fullname', 'width': '60'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['ClientPatientID'], 'sord': 'asc', 'discard_empty': ['ClientPatientID'], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'showOn': True, 'force_all': True})"
+                   ui_item="ClientPatientID"
+                   catalog_name="bika_patient_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input id="ar_0_ClientPatientID_uid" type="hidden" value="" name="ar.0.ClientPatientID_uid:record">
+        </div>
+    </div>
+
     <!-- This div-input is only shown when New Patient checkbox is UNselected -->
     <div class='content-line'>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Patient" id="archetypes-fieldname-Patient">
@@ -63,28 +85,6 @@
         </div>
     </div>
 
-    <!-- Client Patient ID -->
-    <div class='content-line'>
-        <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget " data-fieldname="ClientPatientID">
-            <label class="formQuestion" for="ClientPatientID" i18n:translate=""> Client-Patient ID </label>
-            <input type="text"
-                   name="ar.0.ClientPatientID_uid:record"
-                   id="ar_0_ClientPatientID"
-                   class="blurrable firstToFocus referencewidget"
-                   search_query="{}"
-                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
-                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'id', 'align': 'left', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'ClientPatientID', 'align': 'left', 'label': 'Client PID', 'width': '20'}, {'columnName': 'Title', 'align': 'left', 'label': 'Fullname', 'width': '60'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['ClientPatientID'], 'sord': 'asc', 'discard_empty': ['ClientPatientID'], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'showOn': True, 'force_all': True})"
-                   ui_item="ClientPatientID"
-                   catalog_name="bika_patient_catalog"
-                   resetbutton="False"
-                   maxlength="255"
-                   searchicon="True"
-                   showon="True"
-                   placeholder="" />
-            <input id="ar_0_ClientPatientID_uid" type="hidden" value="" name="ar.0.ClientPatientID_uid:record">
-        </div>
-    </div>
-
     <!-- Birth date -->
     <div class='content-line'>
         <div id="archetypes-fieldname-BirthDate" class="field ArchetypesDateTimeWidget" data-fieldname="BirthDate">
@@ -124,7 +124,7 @@
 
     <div class='content-line'>
         <div id="archetypes-fieldname-HomePhone" class="field ArchetypesStringWidget" data-fieldname="HomePhone">
-            <label class="formQuestion" for="HomePhone" i18n:translate="">Home Phone</label>
+            <label class="formQuestion" for="HomePhone" i18n:translate="">Home Phoneome)</label>
             <input id="HomePhone"
                    class="blurrable firstToFocus"
                    type="text"
@@ -137,7 +137,7 @@
 
     <div class='content-line'>
         <div id="archetypes-fieldname-MobilePhone" class="field ArchetypesStringWidget" data-fieldname="MobilePhone">
-            <label class="formQuestion" for="MobilePhone" i18n:translate="">Mobile Phone</label>
+            <label class="formQuestion" for="MobilePhone" i18n:translate="">Cell Phone</label>
             <input id="MobilePhone"
                    class="blurrable firstToFocus"
                    type="text"

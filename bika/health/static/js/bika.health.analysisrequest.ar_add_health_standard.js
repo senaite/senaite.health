@@ -42,6 +42,7 @@ function HealthStandardAnalysisRequestAddView() {
      * Entry-point method for StandardAnalysisRequestAddView
      */
     this.load = function () {
+
         var datafilled = false;
         var frombatch = window.location.href.search('/batches/') >= 0;
         var frompatient = document.referrer.search('/patients/') >= 0;
@@ -125,6 +126,7 @@ function HealthStandardAnalysisRequestAddView() {
         $("#analysisrequest_edit_form").ajaxFormUnbind();
         // Bind the new handler
         loadAjaxSubmitHealthHandler();
+
     };
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS

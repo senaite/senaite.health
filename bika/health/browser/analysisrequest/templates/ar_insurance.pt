@@ -4,7 +4,7 @@
     <!-- Choose if the patient is the same as the guarantor -->
     <div class='content-line'>
         <div id="archetypes-fieldname-PatientAsGuarantor" class="field ArchetypesBooleanWidget " data-fieldname="PatientAsGuarantor">
-            <label class="formQuestion" for="PatientAsGuarantor"> Patient as guarantor</label>
+            <label class="formQuestion" for="PatientAsGuarantor">Patient as guarantor</label>
             <input id="PatientAsGuarantor" class="noborder" type="checkbox" name="PatientAsGuarantor:boolean" value="on"/>
             <input type="hidden" name="PatientAsGuarantor:boolean:default" value="true" originalvalue="">
         </div>
@@ -14,7 +14,7 @@
     <!-- Insurance Number -->
     <div class='content-line'>
         <div  id="archetypes-fieldname-GuarantorID" class="field ArchetypesStringWidget" data-fieldname="GuarantorID">
-            <label class="formQuestion" for="GuarantorID" i18n:translate=""> Guarantor ID Number </label>
+            <label class="formQuestion" for="GuarantorID" i18n:translate="">Guarantor ID Number</label>
             <span id="GuarantorID_help" class="formHelp">The ID number (Insurance Number) from the person whose contract cover the current patient.</span>
             <input id="GuarantorID"
                    class="blurrable firstToFocus"
@@ -76,31 +76,23 @@
         <input id="GuarantorFirstname" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorFirstname" originalvalue="">
     </div>
 
-
-    <div id="archetypes-fieldname-GuarantorBusinessPhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorBusinessPhone">
-        <span></span>
-        <label class="formQuestion" for="GuarantorBusinessPhone">
-            Guarantor's Phone (business)
-        </label>
-        <div class="fieldErrorBox"></div>
-        <input id="GuarantorBusinessPhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorBusinessPhone" originalvalue="">
-    </div>
-
-
     <div id="archetypes-fieldname-GuarantorHomePhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorHomePhone">
         <span></span>
-        <label class="formQuestion" for="GuarantorHomePhone">
-            Guarantor's Phone (home)
-        </label>
+        <label class="formQuestion" for="GuarantorHomePhone">Guarantor's Phone (home)</label>
         <div class="fieldErrorBox"></div>
         <input id="GuarantorHomePhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorHomePhone" originalvalue="">
     </div>
 
+    <div id="archetypes-fieldname-GuarantorBusinessPhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorBusinessPhone">
+        <span></span>
+        <label class="formQuestion" for="GuarantorBusinessPhone">Guarantor's Phone (business)</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorBusinessPhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorBusinessPhone" originalvalue="">
+    </div>
+
     <div id="archetypes-fieldname-GuarantorMobilePhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorMobilePhone">
         <span></span>
-        <label class="formQuestion" for="GuarantorMobilePhone">
-            Guarantor's Phone (mobile)
-        </label>
+        <label class="formQuestion" for="GuarantorMobilePhone">Guarantor's Phone (mobile)</label>
         <div class="fieldErrorBox"></div>
         <input id="GuarantorMobilePhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorMobilePhone" originalvalue="">
     </div>
