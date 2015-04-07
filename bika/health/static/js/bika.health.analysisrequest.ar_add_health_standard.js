@@ -218,14 +218,17 @@ function HealthStandardAnalysisRequestAddView() {
 
     function hideShowFirstnameSurname(){
         /**
-         * Hide/show the fields surname, first name and patient depending on the checkbox state. This function clear
-         * all patient data too.
+         * Hide/show the fields surname, first name and patient depending on the "New patient"'s checkbox state.
+         * This function clear all patient data too.
          */
         var cb = $('input#NewPatient');
         if (cb.prop('checked')) {
             $('div#archetypes-fieldname-Patient').hide();
             $('div#archetypes-fieldname-Surname').show();
             $('div#archetypes-fieldname-Firstname').show();
+            // Hiding the client-patient reference input and showing the simple one used when creating a patient
+            $('input#ar_0_ClientPatientID').hide();
+            $('input#ClientPatientID').show();
 
             // Enable and clear all the fields
             $('input#Surname').prop('disabled', false);
@@ -237,7 +240,6 @@ function HealthStandardAnalysisRequestAddView() {
             $('input#HomePhone').prop('disabled', false);
             $('input#MobilePhone').prop('disabled', false);
             $('input#EmailAddress').prop('disabled', false);
-            $('input#ar_0_ClientPatientID').prop('disabled', false);
             // We should clean the old data
             cleanPatientData()
         }
@@ -246,6 +248,9 @@ function HealthStandardAnalysisRequestAddView() {
             $('div#archetypes-fieldname-Patient').show();
             $('div#archetypes-fieldname-Surname').hide();
             $('div#archetypes-fieldname-Firstname').hide();
+            // Showing the client-patient reference input and hiding the simple one
+            $('input#ar_0_ClientPatientID').show();
+            $('input#ClientPatientID').hide().val('');
 
             // Disable and clear all the fields
             $("input#BirthDate").prop('disabled', true);
@@ -255,7 +260,7 @@ function HealthStandardAnalysisRequestAddView() {
             $('input#HomePhone').prop('disabled', true);
             $('input#MobilePhone').prop('disabled', true);
             $('input#EmailAddress').prop('disabled', true);
-            $('input#ar_0_ClientPatientID').prop('disabled', true);
+            //$('input#ar_0_ClientPatientID').prop('disabled', true);
         }
     }
 
@@ -318,7 +323,7 @@ function HealthStandardAnalysisRequestAddView() {
          */
         if (patientuid == ''){
             // It means that the patient fields have been cleaned of data.
-            cleanAndEnableDisableInsuranceData(false);
+            cleanAndEnableDisableInsuranceData(true);
         }
         else {
             $.ajaxSetup({async: false});
@@ -533,7 +538,7 @@ function HealthStandardAnalysisRequestAddView() {
         var request_data = {
             obj_path: '/Plone/patients',
             obj_type: 'Patient',
-            ClientPatientID: $('input#ar_0_ClientPatientID').val(),
+            ClientPatientID: $('input#ClientPatientID').val(),
             Surname: $('#Surname').val(),
             Firstname: $('#Firstname').val(),
             BirthDate: $('#BirthDate').val(),

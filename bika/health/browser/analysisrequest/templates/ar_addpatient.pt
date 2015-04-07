@@ -13,7 +13,8 @@
     <!-- Client Patient ID -->
     <div class='content-line'>
         <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget" data-fieldname="ClientPatientID">
-            <label class="formQuestion" for="ClientPatientID" i18n:translate="">Clint-Patient ID. No.</label>
+            <label class="formQuestion" for="ClientPatientID" i18n:translate="">Client-Patient ID. No.</label>
+            <!-- Used when selecting an existing patient -->
             <input type="text"
                    name="ar.0.ClientPatientID_uid:record"
                    id="ar_0_ClientPatientID"
@@ -29,6 +30,8 @@
                    showon="True"
                    placeholder="" />
             <input id="ar_0_ClientPatientID_uid" type="hidden" value="" name="ar.0.ClientPatientID_uid:record">
+            <!-- Used when creating a new patient -->
+            <input id="ClientPatientID" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="ClientPatientID">
         </div>
     </div>
 
