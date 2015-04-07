@@ -51,7 +51,7 @@
                    minlength="0"
                    search_query="{}"
                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
-                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'getPatientID', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '40'}, {'columnName': 'PatientIdentifiers', 'label': 'Additional Identifiers', 'width': '40'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});"
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'getPatientID', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '40'}, {'columnName': 'PatientIdentifiers', 'label': 'Additional Identifiers', 'width': '40'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title', 'getPatientID'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});"
                    ui_item="Title"
                    catalog_name="bika_patient_catalog"
                    resetbutton="False"
@@ -60,6 +60,10 @@
                    showon="True"
                    placeholder="" />
             <input type="hidden" name="ar.0.Patient_uid:record" id="ar_0_Patient_uid" />
+        </div>
+        <div class='field' id="PatientID">
+            <label class="formQuestion" for="PatientID" i18n:translate="">Patient ID</label>
+            <input type="text" id="PatientID" disabled="True"/>
         </div>
     </div>
 

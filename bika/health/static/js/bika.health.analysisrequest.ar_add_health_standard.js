@@ -214,6 +214,7 @@ function HealthStandardAnalysisRequestAddView() {
         $('input#MobilePhone').val('');
         $('input#EmailAddress').val('');
         $('input#ar_0_ClientPatientID').val('').attr('uid','');
+        $('input#PatientID').val('')
     }
 
     function hideShowFirstnameSurname(){
@@ -224,6 +225,7 @@ function HealthStandardAnalysisRequestAddView() {
         var cb = $('input#NewPatient');
         if (cb.prop('checked')) {
             $('div#archetypes-fieldname-Patient').hide();
+            $('div#PatientID').hide();
             $('div#archetypes-fieldname-Surname').show();
             $('div#archetypes-fieldname-Firstname').show();
             // Hiding the client-patient reference input and showing the simple one used when creating a patient
@@ -246,6 +248,7 @@ function HealthStandardAnalysisRequestAddView() {
         else {
 
             $('div#archetypes-fieldname-Patient').show();
+            $('div#PatientID').show();
             $('div#archetypes-fieldname-Surname').hide();
             $('div#archetypes-fieldname-Firstname').hide();
             // Showing the client-patient reference input and hiding the simple one
@@ -290,6 +293,7 @@ function HealthStandardAnalysisRequestAddView() {
                 $('input#MobilePhone').val(data['MobilePhone']).prop('disabled', true);
                 $('input#EmailAddress').val(data['EmailAddress']).prop('disabled', true);
                 $('input#ar_0_ClientPatientID').val(data['ClientPatientID']).prop('disabled', true);
+                $('input#PatientID').val(data['getPatientID'])
             }
         });
         $.ajaxSetup({async:true});
