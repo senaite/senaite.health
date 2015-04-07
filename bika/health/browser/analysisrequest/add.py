@@ -18,9 +18,6 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
 
     def __init__(self, context, request):
         AnalysisRequestAddViewLIMS.__init__(self, context, request)
-        # An array where are located all the the schema patient's fields to show on the ar_add
-        self._pfields = ['PatientID', 'Surname', 'Firstname', 'BirthDate', 'Gender', 'HomePhone', 'MobilePhone',
-                         'BusinessPhone', 'EmailAddress']
         self.templatename = self.request.get('tpl','')
         self.w = AddressWidget()
 
@@ -42,7 +39,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
 
     def get_json_format(self, d):
         """
-        Given some data, it get its json format.
+        Given some data, it gets its json format.
         :param d: Data to be formatted.
         :return: The formatted data in JSON.
         """
@@ -50,7 +47,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
 
     def getDepartments(self):
         """
-        It obtain the different departments
+        It obtains the different departments
         :return: A list with the department names and UID's [(UID,Name),....]
         """
         dep = getToolByName(self.context, 'bika_setup_catalog')(portal_type='Department')
@@ -61,7 +58,7 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
 
     def categoryInDepartment(self, category, department):
         """
-        Check if the category belongs to the department
+        It checks if the category belongs to the department
         :param category: The category UID
         :param department: The department UID
         :return: True or False
@@ -70,7 +67,8 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
             .getObject().getDepartment().UID() == department
 
     def getAvailableServices(self, categoryuid):
-        """ return a list of services brains """
+        """ Return a list of services brains
+        """
         bsc = getToolByName(self.context, 'bika_setup_catalog')
         services = bsc(portal_type="AnalysisService",
                        sort_on='sortable_title',

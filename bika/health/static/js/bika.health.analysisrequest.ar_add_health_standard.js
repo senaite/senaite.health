@@ -1,5 +1,5 @@
 /**
- * Controller class for AnalysisRequest add view for health standard
+ * Controller class for AnalysisRequest add view for health standard template
  */
 function HealthStandardAnalysisRequestAddView() {
     /**
@@ -16,7 +16,7 @@ function HealthStandardAnalysisRequestAddView() {
      * -----------------------
      *  - Patient -> From patient. Fields blocked.
      *  - Guarantor and insurance -> From the current patient. Fields blocked
-     *  - The save button is going to crate -> a case if required, an AR (related with the case.)
+     *  - The save button is going to crate -> a case if the checkbox is selected, an AR (related with the case.)
      *
      * AR coming from client:
      * ----------------------
@@ -30,6 +30,24 @@ function HealthStandardAnalysisRequestAddView() {
      *                                                 - Guarantor + insurance from selected patient. Fields blocked.
      *                                                 - Patient fields blocked.
      *  --- The save button is going to create -> a case if required, an AR.
+     *
+     *  How it works?
+     *  =============
+     *  We can came from three different positions: from a batch, from a patient or from a client.
+     *  If we come from a batch, all the client, patient, insurance and doctor's fields will be filled out.
+     *  If we come from a patient, the client, patient and insurance will be filled out. We can decide if we want to
+     *  create a new batch related with the new analysis request.
+     *  If we come from a client(insurance company), we will be able to select an existent patient or create a new one.
+     *  In the case we've selected an existing patient, all patient and insurance's fields will be blocked and filled out.
+     *  If the checkbox "new patient" is selected all fields will be enabled.
+     *
+     *  The "GLOBAL" SAVE BUTTON: When the user has filled out all the required fields, he clicks on the save button.
+     *  This is NOT the form's button! So after clicking this button, the JS will check if a new patient and a new case
+     *  should be created and related each other.
+     *  Once these objects' creation (or not) have finished, the data from the patient and the case is copied inside
+     *  the analysis request's html form. Then, the javascript clicks on the hidden save button from the form.
+     *  Consequently the ajaxForm is gonna create the new Analysis Request.
+     *
      */
 
     var that = this;
@@ -60,7 +78,7 @@ function HealthStandardAnalysisRequestAddView() {
             $('input#CreateNewCase').prop('checked',false).prop('disabled', true)
         }
         else if (frompatient) {
-            // The current AR add View comes from a patient AR folder view.
+            // The current AR add View comes from a patient's AR folder view.
             // Automatically fill the Client and Patient fields and set them
             // as readonly.
             datafilled = true;
@@ -69,7 +87,7 @@ function HealthStandardAnalysisRequestAddView() {
         }
 
         if (!datafilled) {
-            // The current AR Add View doesn't come from a batch nor patient .
+            // The current AR Add View doesn't come from a batch nor patient.
             // Handle event firing when Patient or ClientPatientID fields change.
 
             // ClientPatientID changed
@@ -134,7 +152,7 @@ function HealthStandardAnalysisRequestAddView() {
 
     function setDataFromBatch(batchid){
         /**
-         * It obtains the patient data when the AR comes from the batch (case) view.
+         * It obtains the patient's data when the AR comes from the batch (case) view.
          */
         $('#archetypes-fieldname-Batch').remove();
         $.ajaxSetup({async:false});
@@ -171,6 +189,7 @@ function HealthStandardAnalysisRequestAddView() {
     }
 
     // Patient template controller ----------------------------------------------------
+
     function cancelPatientCreationCheckBox() {
         /**
          * If the "create a new patient" actions should be canceled, this function clear the checkbox to create
@@ -242,11 +261,11 @@ function HealthStandardAnalysisRequestAddView() {
 
     function setPatientData(patientuid){
         /**
-         * It fill out the patient data that remains from the bika.analysisrequest.add.js and blocks it.
-         * @patientuid The patientuid
+         * It fills out the patient data that remains from the bika.analysisrequest.add.js and blocks it.
+         * @patientuid The patient's uid
          */
         if (patientuid == ''){
-            // All data patient should be cleaned
+            // All data patient should be cleaned because no patient has been selected
             cleanPatientData();
             // Disabling the reference input client-patient uid to allow to introduce a patient from here
             $('input#ar_0_ClientPatientID').prop('disabled', false);
@@ -258,7 +277,6 @@ function HealthStandardAnalysisRequestAddView() {
         },function(dataobj){
             if (dataobj.objects.length > 0) {
                 var data = dataobj.objects[0];
-                //$(".dynamic-field-label").remove();
                 $("input#BirthDate").val(data['BirthDate']).prop('disabled', true);
                 $('input#BirthDateEstimated').prop('checked', data['BirthDateEstimated']).prop('disabled', true);
                 $('select#Gender').val(data['Gender']).prop('disabled', true);
@@ -296,7 +314,7 @@ function HealthStandardAnalysisRequestAddView() {
         /**
          * The function checks if the patient is related with an insurance company. In the affirmative case,
          * the insurance fields will be filled out and blocked
-         * @patientuid The patient uid where the function will look for the insurance company.
+         * @patientuid The patient's uid where the function will look for the insurance company.
          */
         if (patientuid == ''){
             // It means that the patient fields have been cleaned of data.
@@ -363,8 +381,8 @@ function HealthStandardAnalysisRequestAddView() {
     function setInsuranceDataFromPatient(patientdata){
         /**
          * The function checks if the patient is related with an insurance company. In the affirmative case,
-         * the insurance fields will be filled out and blocked
-         * @patientuid A dictionary with the patient data where the function will look for the insurance company.
+         * the insurance fields will be filled out and blocked.
+         * @patientuid A dictionary with the patient's data where the function will look for the insurance company.
          */
         // Check if patient is related with an insurance company
         if (patientdata['InsuranceCompany_uid'] != ''){
@@ -395,7 +413,7 @@ function HealthStandardAnalysisRequestAddView() {
 
     function setGuarantor(patientdata) {
         /**
-         * Fill out all guarantor's fields.
+         * It fills out all guarantor's fields.
          * @patientdata It's a dictionary with the patient's data
          */
         // The AR comes from batch or patients view
@@ -418,10 +436,10 @@ function HealthStandardAnalysisRequestAddView() {
 
     function loadAjaxSubmitHealthHandler(){
         /**
-         * This functions build the options to create the objects and binds the needed function to create the objects
+         * This functions builds the options to create the objects and binds the needed functions to create the objects
          * after submit.
-         * Since the different objects definitions are split into different forms, on form submit we have to create
-         * each object (if it's necessary) from every form, and copy its data into the analysis request form to create
+         * Since the different objects definitions are split into different forms, on the form's submit we have to create
+         * every object (if it's necessary) from every form, and copy its data into the analysis request's form to create
          * the analysis request with all the recently created objects.
          */
         $('input#global_save_button').bind('click', function(){
@@ -555,9 +573,9 @@ function HealthStandardAnalysisRequestAddView() {
                     content_type: 'Patient',
                     id: data['obj_id']
                 }, function (dataobj) {
-                    // After creating the new patient, we should fill this input. When we are creating the analysis request,
-                    // this input is going to be cloned to the analysis request form, and consequently, the AR and the
-                    // patient will be related.
+                    // After creating the new patient, we should fill the "existing patient"'s input. When we are
+                    // creating the analysis request, this input is going to be cloned to the analysis request form, and
+                    // consequently, the AR and the patient will be related.
                     $('input#ar_0_Patient').attr('uid', dataobj.objects[0]['UID']);
                     $('input#ar_0_Patient_uid').val(dataobj.objects[0]['UID']);
                     $('input#ar_0_Patient').val(dataobj.objects[0]['title'])
@@ -576,8 +594,8 @@ function HealthStandardAnalysisRequestAddView() {
 
     function createCase(){
         /**
-         * This function read the data from the doctor and the patient, and consequently creates a case.
-         * Finally it fills the case input inside the analysis request form.
+         * This function reads the data from the doctor and the patient, and consequently creates a case.
+         * Finally it fills the case's input inside the analysis request form.
          */
         var patientuid = $('input#ar_0_Patient').attr('uid');
         var doctoruid = $('input#ar_0_Doctor').attr('uid');
@@ -618,5 +636,4 @@ function HealthStandardAnalysisRequestAddView() {
         });
         $.ajaxSetup({async: true});
     }
-
 }

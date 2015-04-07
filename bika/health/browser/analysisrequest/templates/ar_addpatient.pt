@@ -1,7 +1,7 @@
 <div class="content-block patient-block">
     <h2 i18n:translate="">Patient Details</h2>
 
-    <!-- Choose if the patient will be created or selected from still created patients -->
+    <!-- To choose if the patient will be created or selected from created patients -->
     <div class='content-line'>
         <div id="archetypes-fieldname-NewPatient" class="field ArchetypesBooleanWidget " data-fieldname="ExistingPtaient">
             <label class="formQuestion" for="NewPatient"> New Patient</label>
@@ -13,7 +13,7 @@
     <!-- Client Patient ID -->
     <div class='content-line'>
         <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget" data-fieldname="ClientPatientID">
-            <label class="formQuestion" for="ClientPatientID" i18n:translate="">Patient ID. No.</label>
+            <label class="formQuestion" for="ClientPatientID" i18n:translate="">Clint-Patient ID. No.</label>
             <input type="text"
                    name="ar.0.ClientPatientID_uid:record"
                    id="ar_0_ClientPatientID"
@@ -177,7 +177,7 @@
         </div>
     </div>
 
-    <!-- Signature, if the request is printed -->
+    <!-- Signature, to use when the request is printed -->
     <div class='content-line'>
         <div id="section-signatures" class="field">
             <label class="formQuestion" for="Signature" i18n:translate="">Signature</label>

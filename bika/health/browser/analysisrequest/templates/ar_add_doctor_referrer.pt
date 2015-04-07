@@ -1,10 +1,10 @@
 <div class='content-block doctor-block'>
 
     <h2 i18n:translate="">Doctor and Referral Institution</h2>
-    <!-- Refering doctor -->
+    <!-- Referring doctor -->
     <div>
         <div class="field ArchetypesReferenceWidget " data-fieldname="Doctor" id="archetypes-fieldname-Doctor">
-            <label class="formQuestion" for="Doctor" i18n:translate="">Refering Doctor
+            <label class="formQuestion" for="Doctor" i18n:translate="">Referring Doctor
                 <span class="required" title="Required"> </span>
             </label>
             <span></span>
@@ -64,3 +64,4 @@
         <div class='readonly' tal:content="python:view.context.getClient().Name"/>
     </div>
 </div>
+

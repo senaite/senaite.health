@@ -165,7 +165,7 @@
             <input id="ar_0_Contact_uid" type="hidden" name="ar.0.Contact_uid:record">
         </div>
         </div>
-
+        <!-- Priority -->
         <div class='content-line'>
         <div id="archetypes-fieldname-Priority" class="field ArchetypesReferenceWidget " data-fieldname="Priority">
             <label class="formQuestion">Priority</label>
@@ -320,7 +320,7 @@
                hidden="true"/>
 
     </form>
-    <!-- submit all the forms -->
+    <!-- Submit all the forms. Used to control the creation-flow with javascript-->
     <input class="context button allowMultiSubmit"
            type="submit"
            id="global_save_button"
