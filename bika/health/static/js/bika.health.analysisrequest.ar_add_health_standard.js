@@ -144,6 +144,9 @@ function HealthStandardAnalysisRequestAddView() {
         $("#analysisrequest_edit_form").ajaxFormUnbind();
         // Bind the new handler
         loadAjaxSubmitHealthHandler();
+        $('input#print').bind('click', function(){
+            printAnalysisRequest()
+        });
 
     };
     // ------------------------------------------------------------------------
@@ -644,5 +647,13 @@ function HealthStandardAnalysisRequestAddView() {
             }
         });
         $.ajaxSetup({async: true});
+    }
+
+    <!-- Printing the Analysis Request -->
+    function printAnalysisRequest(){
+        /**
+         * This function triggers the browser's print-page option.
+         */
+        window.print()
     }
 }
