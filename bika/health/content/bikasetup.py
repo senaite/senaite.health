@@ -99,11 +99,11 @@ class BikaSetupSchemaExtender(object):
             schemata="Analyses",
             default=False,
             widget=BooleanWidget(
-                label=_("Enable Bika Analysis Request requests style."),
-                description=_("Enable the secondary analysis request form' style. This request has some features like "
-                              "allow you to register more than one analysis request at the same time. It's useful if "
-                              "you are supposed to register a big amount of patients and its analysis request at the "
-                              "same time.")
+                label=_("Enable Bika's analysis request form."),
+                description=_("It enables the secondary analysis request form. This request has some characteristic "
+                              "features as allowing you to register more than one analysis request at the same time. "
+                              "It's useful if you are supposed to register a big amount of analysis request at the same "
+                              "time.")
             )
         ),
     ]
