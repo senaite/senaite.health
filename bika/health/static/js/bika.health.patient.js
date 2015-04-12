@@ -323,7 +323,7 @@ function HealthPatientEditView() {
 
     function hide_show_guarantor_fields(){
         /**
-         * If the Patient is the guarantor checkbox is set, the guarantor's fields are going to be hide.
+         * If the "Patient is the guarantor" checkbox is set, the guarantor's fields are going to be hidden.
          * In the opposite situation, the opposite action is going to happen.
          */
         var fields = $('[data-fieldname*="Guarantor"]').not('#archetypes-fieldname-PatientAsGuarantor');

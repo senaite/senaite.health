@@ -43,7 +43,7 @@ function HealthAnalysisRequestAddView() {
             $('[id$="_ClientPatientID"]').bind("selected paste blur change", function () {
                 colposition = $(this).closest('td').attr('column');
                 if (colposition == undefined){
-                    // We are on the health template
+                    // we are on the specific health template
                     colposition = 0}
                 loadPatient($(this).val(), colposition);
                 checkClientContacts();
@@ -52,7 +52,7 @@ function HealthAnalysisRequestAddView() {
             $('[id$="_Patient"]').bind("selected paste blur change", function () {
                 colposition = $(this).closest('td').attr('column');
                 if (colposition == undefined){
-                    // We are on the health template
+                    // we are on the specific health template
                     colposition = 0}
                 uid = $("#" + this.id + "_uid").val();
                 loadClientPatientID(uid, colposition);
@@ -66,7 +66,7 @@ function HealthAnalysisRequestAddView() {
             $('[id$="_Sample"]').bind("selected paste blur", function () {
                 colposition = $(this).closest('td').attr('column');
                 if (colposition == undefined){
-                    // We are on the health template
+                    // we are on the specific health template
                     colposition = 0}
                 uid = $("#" + this.id + "_uid").val();
                 loadPatientFromSample(uid, colposition);

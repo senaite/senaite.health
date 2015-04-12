@@ -1,7 +1,7 @@
 <div class="content-block insurance-block">
     <h2 i18n:translate="">Account to</h2>
 
-    <!-- Choose if the patient is the same as the guarantor -->
+    <!-- To choose if the patient is the same as the guarantor -->
     <div class='content-line'>
         <div id="archetypes-fieldname-PatientAsGuarantor" class="field ArchetypesBooleanWidget " data-fieldname="PatientAsGuarantor">
             <label class="formQuestion" for="PatientAsGuarantor">Patient as guarantor</label>
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <!-- If the patient and the guarantor is the same person and the patient already exists, the following fields will be disabled -->
+    <!-- If the patient and the guarantor are the same person and the patient already exists, the following fields will be disabled -->
     <!-- Insurance Number -->
     <div class='content-line'>
         <div  id="archetypes-fieldname-GuarantorID" class="field ArchetypesStringWidget" data-fieldname="GuarantorID">
@@ -54,7 +54,7 @@
 
     </div>
 
-    <!-- If the patient and the guarantor is the same person, the following fields will be fill out with the patient's data -->
+    <!-- If the patient and the guarantor are the same person, the following fields will disabled -->
 
     <div id="archetypes-fieldname-GuarantorSurname" class="field ArchetypesStringWidget " data-fieldname="GuarantorSurname">
         <span></span>
