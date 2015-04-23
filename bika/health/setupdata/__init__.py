@@ -347,8 +347,8 @@ class Analysis_Specifications(WorksheetImporter):
                 'keyword': service.getKeyword(),
                 'min': row['min'] if row['min'] else '0',
                 'max': row['max'] if row['max'] else '0',
-                'minpanic': row['min'] if row['min'] else '0',
-                'maxpanic': row['max'] if row['max'] else '0',
+                'minpanic': row['minpanic'] if row['minpanic'] else '0',
+                'maxpanic': row['maxpanic'] if row['maxpanic'] else '0',
                 'error': row['error'] if row['error'] else '0'
             })
         # write objects.

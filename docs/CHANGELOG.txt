@@ -1,5 +1,6 @@
 3.1.7 (unreleased)
 ------------------
+HEALTH-228: Load Setup data bugs
 HEALTH-140: AR Create per path lab standard form
 HEALTH-251: Add guarantor details in insurance companies
 
