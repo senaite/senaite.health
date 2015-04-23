@@ -323,8 +323,11 @@ class Patients(WorksheetImporter):
 
             obj.unmarkCreationFlag()
             transaction.savepoint(optimistic=True)
-            # To maintain the patient spreadsheet's IDs, we cannot do a 'renameaftercreation()'
-            obj.aq_inner.aq_parent.manage_renameObject(obj.id, row.get('PatientID'))
+            if row.get('PatientID'):
+                # To maintain the patient spreadsheet's IDs, we cannot do a 'renameaftercreation()'
+                obj.aq_inner.aq_parent.manage_renameObject(obj.id, row.get('PatientID'))
+            else:
+                renameAfterCreation(obj)
 
 class Analysis_Specifications(WorksheetImporter):
 
