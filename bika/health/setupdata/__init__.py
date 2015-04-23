@@ -8,6 +8,7 @@ from bika.lims.interfaces import ISetupDataSetList
 from bika.lims.utils import tmpID
 from pkg_resources import resource_filename
 from zope.interface import implements
+import transaction
 
 
 class SetupDataSetList(SDL):
@@ -280,7 +281,8 @@ class Patients(WorksheetImporter):
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
             Fullname = (row['Firstname'] + " " + row.get('Surname', '')).strip()
-            obj.edit(title=Fullname,
+            obj.edit(PatientID=row.get('PatientID'),
+                     title=Fullname,
                      ClientPatientID = row.get('ClientPatientID', ''),
                      Salutation = row.get('Salutation', ''),
                      Firstname = row.get('Firstname', ''),
@@ -320,7 +322,12 @@ class Patients(WorksheetImporter):
                     logger.error("Unable to load Feature %s"%row['Feature'])
 
             obj.unmarkCreationFlag()
-            renameAfterCreation(obj)
+            transaction.savepoint(optimistic=True)
+            if row.get('PatientID'):
+                # To maintain the patient spreadsheet's IDs, we cannot do a 'renameaftercreation()'
+                obj.aq_inner.aq_parent.manage_renameObject(obj.id, row.get('PatientID'))
+            else:
+                renameAfterCreation(obj)
 
 class Analysis_Specifications(WorksheetImporter):
 
