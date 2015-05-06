@@ -377,6 +377,30 @@ class Analysis_Specifications(WorksheetImporter):
                 renameAfterCreation(obj)
 
 
+class Insurance_Companies(WorksheetImporter):
+    
+    def Import(self):
+        folder = self.context.bika_setup.bika_insurancecompanies
+        for row in self.get_rows(3):
+            obj = _createObjectByType("InsuranceCompany", folder, tmpID())
+            if row.get('Name', None):
+                obj.edit(
+                    Name=row.get('Name', ''),
+                    EmailAddress=row.get('EmailAddress', ''),
+                    Phone=row.get('Phone', ''),
+                    Fax=row.get('Fax', ''),
+                    TaxNumber=row.get('TaxNumber', ''),
+                    AccountType=row.get('AccountType', {}),
+                    AccountName=row.get('AccountName', {}),
+                    AccountNumber=row.get('AccountNumber', ''),
+                    BankName=row.get('BankName', ''),
+                    BankBranch=row.get('BankBranch', ''),
+                )
+                self.fill_contactfields(row, obj)
+                self.fill_addressfields(row, obj)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
 
 from bika.lims.exportimport.setupdata import Setup as BaseSetup
 
@@ -394,3 +418,4 @@ class Setup(BaseSetup):
             EnablePanicAlert=self.to_bool(values.get('EnablePanicAlert', True)),
             EnableAnalysisRemarks=self.to_bool(values.get('EnableAnalysisRemarks', True))
         )
+
