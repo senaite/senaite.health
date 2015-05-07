@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Ethnicities</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/patient.png</property>
+ <property name="content_icon">++resource++bika.health.images/patient_big.png</property>
  <property name="content_meta_type">Ethnicities</property>
  <property name="product">bika.health</property>
  <property name="factory">addEthnicities</property>
