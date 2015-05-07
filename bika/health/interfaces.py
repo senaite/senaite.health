@@ -59,3 +59,8 @@ class IInsuranceCompany(Interface):
 
 class IInsuranceCompanies(Interface):
     ""
+
+class IEthnicity(Interface):
+    """
+    Ethnicity content type marker
+    """

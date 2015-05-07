@@ -20,6 +20,7 @@ AddVaccinationCenter = 'BIKA: Add VaccinationCenter'
 AddSymptom = 'BIKA: Add Symptom'
 AddDrugProhibition = 'BIKA: Add DrugProhibition'
 AddInsuranceCompany = 'BIKA: Add InsuranceCompany'
+AddEthnicity = 'BIKA: Add Ethnicity'
 
 # Add Permissions for specific types, if required
 ADD_CONTENT_PERMISSIONS = {
@@ -32,7 +33,8 @@ ADD_CONTENT_PERMISSIONS = {
     'VaccinationCenter': AddVaccinationCenter,
     'Symptom': AddSymptom,
     'DrugProhibition': AddDrugProhibition,
-    'InsuranceCompany': AddInsuranceCompany
+    'InsuranceCompany': AddInsuranceCompany,
+    'Ethnicity': AddEthnicity
 }
 
 ManageDoctors = "BIKA: Manage Doctors"

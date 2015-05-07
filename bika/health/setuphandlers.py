@@ -23,6 +23,7 @@ from bika.health.permissions import AddSymptom
 from bika.health.permissions import AddTreatment
 from bika.health.permissions import AddVaccinationCenter
 from bika.health.permissions import AddInsuranceCompany
+from bika.health.permissions import AddEthnicity
 from bika.health.permissions import EditPatient
 from bika.health.permissions import ManageDoctors
 from bika.lims.permissions import AddAnalysisRequest
@@ -158,6 +159,7 @@ def setupHealthPermissions(context):
     mp(AddInsuranceCompany, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddSymptom, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddDrugProhibition, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddEthnicity, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
 
     mp(ApplyVersionControl, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
     mp(SaveNewVersion, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
@@ -316,6 +318,7 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('EpidemiologicalYear', ['bika_setup_catalog', ])
     at.setCatalogsByType('IdentifierType', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseSyndromicClassification', ['bika_setup_catalog', ])
+    at.setCatalogsByType('Ethnicity', ['bika_setup_catalog', ])
 
     addIndex(bsc,'getGender', 'FieldIndex')
     addColumn(bsc,'getGender')
