@@ -18,6 +18,7 @@
  <object name="EpidemiologicalYear" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="EpidemiologicalYears" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Ethnicity" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Ethnicities" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="IdentifierType" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="IdentifierTypes" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Patient" meta_type="Factory-based Type Information with dynamic views"/>

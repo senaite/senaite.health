@@ -13,6 +13,7 @@ from bika.health.permissions import ViewBatches
 from bika.health.permissions import ViewSamples
 from bika.health.permissions import ViewAnalysisRequests
 from bika.health.permissions import ViewInsuranceCompanies
+from bika.health.permissions import ViewEthnicities
 from bika.health.permissions import AddAetiologicAgent
 from bika.health.permissions import AddDoctor
 from bika.health.permissions import AddDrug
@@ -72,6 +73,7 @@ def setupHealthVarious(context):
                    'bika_identifiertypes',
                    'bika_casesyndromicclassifications',
                    'bika_insurancecompanies',
+                   'bika_ethnicities',
                    ):
         obj = bika_setup._getOb(obj_id)
         obj.unmarkCreationFlag()
@@ -172,6 +174,7 @@ def setupHealthPermissions(context):
     mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewInsuranceCompanies, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(ViewEthnicities, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
 
     # /clients folder permissions
     # Member role must have view permission on /clients, to see the list.

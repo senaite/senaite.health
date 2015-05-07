@@ -43,6 +43,7 @@ ViewBatches = "BIKA: View Batches"
 ViewSamples = "BIKA: View Samples"
 ViewAnalysisRequests = "BIKA: View AnalysisRequests"
 ViewInsuranceCompanies = "BIKA: View InsuranceCompanies"
+ViewEthnicities = "BIKA: View Ethnicities"
 
 # Patient permissions
 ViewPatients = 'BIKA: View Patients'

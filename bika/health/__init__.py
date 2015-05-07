@@ -65,6 +65,7 @@ def initialize(context):
     from controlpanel.bika_immunizations import Immunizations
     from controlpanel.bika_treatments import Treatments
     from controlpanel.bika_insurancecompanies import InsuranceCompanies
+    from controlpanel.bika_ethnicities import Ethnicities
     from controlpanel.bika_vaccinationcenters import VaccinationCenters
 
     content_types, constructors, ftis = process_types(

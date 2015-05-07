@@ -33,6 +33,7 @@
 <permission id="bika.health.permissions.ViewSamples" title="BIKA: View Samples"/>
 <permission id="bika.health.permissions.ViewAnalysisRequests" title="BIKA: View AnalysisRequests"/>
 <permission id="bika.health.permissions.ViewInsuranceCompanies" title="BIKA: View InsuranceCompanies"/>
+<permission id="bika.health.permissions.ViewEthnicities" title="BIKA: View Ethnicities"/>
 
 # Patient permissions
 <permission id="bika.health.permissions.ViewPatients" title="BIKA: View Patients"/>
