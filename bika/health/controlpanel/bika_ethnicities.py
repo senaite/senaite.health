@@ -30,8 +30,8 @@ class EthnicitiesView(BikaListingView):
         self.pagesize = 25
 
         self.columns = {
-            'Name': {'title': _('Name'),
-                     'index': 'sortable_title'},
+            'Title': {'title': _('Ethnicity Name'),
+                      'index': 'sortable_title'},
 
             'Description': {'title': _('Description'),
                             'index': 'description',
@@ -43,18 +43,18 @@ class EthnicitiesView(BikaListingView):
              'title': _('Active'),
              'contentFilter': {'inactive_state': 'active'},
              'transitions': [{'id': 'deactivate'}, ],
-             'columns': ['Name',
+             'columns': ['Title',
                          'Description']},
             {'id': 'inactive',
              'title': _('Dormant'),
              'contentFilter': {'inactive_state': 'inactive'},
              'transitions': [{'id': 'activate'}, ],
-             'columns': ['Name',
+             'columns': ['Title',
                          'Description']},
             {'id': 'all',
              'title': _('All'),
              'contentFilter': {},
-             'columns': ['Name',
+             'columns': ['Title',
                          'Description']},
         ]
 
@@ -64,8 +64,8 @@ class EthnicitiesView(BikaListingView):
             if not items[x].has_key('obj'): continue
             obj = items[x]['obj']
             items[x]['Description'] = obj.Description()
-            items[x]['replace']['Name'] = "<a href='%s'>%s</a>" % \
-                (items[x]['url'], items[x]['Name'])
+            items[x]['replace']['Title'] = "<a href='%s'>%s</a>" % \
+                (items[x]['url'], items[x]['Title'])
 
         return items
 
