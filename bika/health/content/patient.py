@@ -20,6 +20,7 @@ from bika.health.permissions import *
 from bika.health.widgets import ReadonlyStringWidget
 from datetime import datetime
 from zope.interface import implements
+from Products.Archetypes.references import HoldingReference
 from bika.health.widgets.patientmenstrualstatuswidget import PatientMenstrualStatusWidget
 
 schema = Person.schema.copy() + Schema((
@@ -304,10 +305,12 @@ schema = Person.schema.copy() + Schema((
                     label=_('Birth place'),
                 ),
     ),
-    StringField('Ethnicity', schemata='Personal',
-                index='FieldIndex',
-                vocabulary=ETHNICITIES,
-                widget=ReferenceWidget(
+    ReferenceField('Ethnicity', schemata='Personal',
+                vocabulary='getEthnicitiesVocabulary',
+                allowed_types = ('Ethnicity',),
+                relationship = 'PatientEthnicity',
+                widget=SelectionWidget(
+                    format='select',
                     label=_('Ethnicity'),
                     description=_("Ethnicity eg. Asian, African, etc."),
                 ),
@@ -704,6 +707,19 @@ class Patient(Person):
         return self.getMobilePhone() \
             if self.getPatientAsGuarantor() \
             else self.getField('GuarantorMobilePhone').get(self)
+
+    def getEthnicitiesVocabulary(self, instance=None):
+        """
+        Obtain all the ethnicities registered in the system and returns them as a list
+        """
+        bsc = getToolByName(self, 'bika_setup_catalog')
+        items = [(c.UID, c.Title) \
+                for c in bsc(portal_type='Ethnicity',
+                             inactive_state = 'active')]
+        items.sort(lambda x,y:cmp(x[1], y[1]))
+        items.insert(0, ('', t(_(''))))
+        return DisplayList(items)
+
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)

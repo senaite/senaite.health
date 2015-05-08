@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode, _createObjectByType
 from bika.lims import logger
+from Products.CMFCore.utils import getToolByName
 from bika.lims.exportimport.dataimport import SetupDataSetList as SDL
 from bika.lims.exportimport.setupdata import WorksheetImporter
 from bika.lims.idserver import renameAfterCreation
@@ -262,6 +263,21 @@ class Doctors(WorksheetImporter):
             renameAfterCreation(obj)
 
 
+class Ethnicities(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_ethnicities
+        rows = self.get_rows(3)
+        for row in rows:
+            _id = folder.invokeFactory('Ethnicity', id=tmpID())
+            obj = folder[_id]
+            if row.get('Title', None):
+                obj.edit(title=row['Title'],
+                         description=row.get('Description', ''))
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
 class Patients(WorksheetImporter):
 
     def Import(self):
@@ -329,6 +345,7 @@ class Patients(WorksheetImporter):
             else:
                 renameAfterCreation(obj)
 
+
 class Analysis_Specifications(WorksheetImporter):
 
     def Import(self):
@@ -376,9 +393,8 @@ class Analysis_Specifications(WorksheetImporter):
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
 
-
-
 from bika.lims.exportimport.setupdata import Setup as BaseSetup
+
 
 class Setup(BaseSetup):
 
