@@ -84,7 +84,6 @@ def createEthnicities(context):
     """
     ethnicities = ['Native American', 'Asian', 'Black', 'Native Hawaiian or Other Pacific Islander', 'White',
                    'Hispanic or Latino']
-    results = []
     for ethnicityname in ethnicities:
         folder = context.bika_setup.bika_ethnicities
         # Generating a temporal object
