@@ -1,5 +1,8 @@
 3.1.7 (unreleased)
 ------------------
+Alert: This new release will remove the ethnicity field's value saved in each patient. We've made some changes
+in order to improve the flexibility to manage, create and disable ethnicities.
+
 HEALTH-245: Set-up data load. Patient ID conversion, alternatives
 HEALTH-227: Converting Patient IDs before import
 HEALTH-228: Load Setup data bugs
