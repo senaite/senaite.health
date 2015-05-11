@@ -305,7 +305,19 @@ schema = Person.schema.copy() + Schema((
                     label=_('Birth place'),
                 ),
     ),
-    ReferenceField('Ethnicity', schemata='Personal',
+    # TODO This field will be removed on release 319. We maintain this field on release 318
+    # because of the transference between string field and content type data.
+    StringField('Ethnicity', schemata='Personal',
+            index='FieldIndex',
+            vocabulary=ETHNICITIES,
+            widget=ReferenceWidget(
+                label=_('Ethnicity'),
+                description=_("Ethnicity eg. Asian, African, etc."),
+                visible=False,
+            ),
+    ),
+    # TODO This field will change its name on v319 and it'll be called Ethnicity
+    ReferenceField('Ethnicity_Obj', schemata='Personal',
                 vocabulary='getEthnicitiesVocabulary',
                 allowed_types = ('Ethnicity',),
                 relationship = 'PatientEthnicity',
@@ -719,6 +731,21 @@ class Patient(Person):
         items.sort(lambda x,y:cmp(x[1], y[1]))
         items.insert(0, ('', t(_(''))))
         return DisplayList(items)
+
+    # TODO This function will will be removed on v319
+    def getEthnicity(self):
+        """
+        This function exists because we are changing the construction of ethnicities. Until now, ethnicities options were
+        hand-coded but now they are a new content type. So we need to pass all patient's ethnicity values, but to do
+        such thing, we need to create new ethnicity types on upgrade step and edit patient ethnicity field to relate them
+        with its corresponding ethnicity content type.
+        :return:
+        """
+        return self.getEthnicity_Obj()
+
+    # TODO This function will be removed on v319
+    def setEthnicity(self, value):
+        self.setEthnicity_Obj(value)
 
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
