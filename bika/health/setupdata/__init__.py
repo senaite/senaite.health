@@ -309,7 +309,8 @@ class Patients(WorksheetImporter):
                      BirthDate = row.get('BirthDate', ''),
                      BirthDateEstimated =self.to_bool(row.get('BirthDateEstimated','False')),
                      BirthPlace = row.get('BirthPlace', ''),
-                     Ethnicity = row.get('Ethnicity', ''),
+                     # TODO Ethnicity_Obj -> Ethnicity on health v319
+                     Ethnicity_Obj = row.get('Ethnicity', ''),
                      Citizenship =row.get('Citizenship', ''),
                      MothersName = row.get('MothersName', ''),
                      CivilStatus =row.get('CivilStatus', ''),
