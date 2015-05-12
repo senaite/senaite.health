@@ -6,6 +6,8 @@ from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
+from bika.lims.utils import tmpID
+from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddAetiologicAgent
 from bika.health.permissions import ManageDoctors
 from bika.health.permissions import ViewPatients
@@ -38,6 +40,25 @@ from bika.lims.permissions import CancelAndReinstate
 
 class Empty:
     pass
+
+
+def setupEthnicities(bika_setup):
+    """
+    Creates standard ethnicities
+    """
+    ethnicities = ['Native American', 'Asian', 'Black', 'Native Hawaiian or Other Pacific Islander', 'White',
+                   'Hispanic or Latino']
+    for ethnicityName in ethnicities:
+        folder = bika_setup.bika_ethnicities
+        # Generating a temporal object
+        _id = folder.invokeFactory('Ethnicity', id=tmpID())
+        obj = folder[_id]
+        # Setting its values
+        obj.edit(title=ethnicityName,
+                 description='')
+        obj.unmarkCreationFlag()
+        renameAfterCreation(obj)
+    logger.info("Standard ethnicities enabled")
 
 
 def setupHealthVarious(context):
@@ -108,6 +129,8 @@ def setupHealthVarious(context):
         link_target="",
         description="",
         condition="")
+
+    setupEthnicities(bika_setup)
 
 
 def setupHealthGroupsAndRoles(context):
