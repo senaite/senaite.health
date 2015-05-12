@@ -292,6 +292,14 @@ class Patients(WorksheetImporter):
                 raise IndexError("Primary referrer invalid: '%s'" % row['PrimaryReferrer'])
 
             client = client[0].getObject()
+
+            # Getting an existing ethnicity
+            bsc = getToolByName(self.context, 'bika_setup_catalog')
+            ethnicity = bsc(portal_type='Ethnicity', Title=row.get('Ethnicity', ''))
+            if len(ethnicity) == 0:
+                raise IndexError("Invalid ethnicity: '%s'" % row['Ethnicity'])
+            ethnicity = ethnicity[0].getObject()
+
             _id = folder.invokeFactory('Patient', id=tmpID())
             obj = folder[_id]
             obj.unmarkCreationFlag()
@@ -310,7 +318,7 @@ class Patients(WorksheetImporter):
                      BirthDateEstimated =self.to_bool(row.get('BirthDateEstimated','False')),
                      BirthPlace = row.get('BirthPlace', ''),
                      # TODO Ethnicity_Obj -> Ethnicity on health v319
-                     Ethnicity_Obj = row.get('Ethnicity', ''),
+                     Ethnicity_Obj=ethnicity.UID(),
                      Citizenship =row.get('Citizenship', ''),
                      MothersName = row.get('MothersName', ''),
                      CivilStatus =row.get('CivilStatus', ''),
