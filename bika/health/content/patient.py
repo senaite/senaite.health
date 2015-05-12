@@ -337,6 +337,11 @@ schema = Person.schema.copy() + Schema((
                     label=_('Mothers name'),
                 ),
     ),
+    StringField('FathersName', schemata='Personal',
+            widget=StringWidget(
+                label=_('Fathers name'),
+            ),
+    ),
     StringField('CivilStatus', schemata='Personal',
                 widget=StringWidget(
                     label=_('Civil status'),
