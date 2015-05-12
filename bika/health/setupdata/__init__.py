@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode, _createObjectByType
 from bika.lims import logger
+from Products.CMFCore.utils import getToolByName
 from bika.lims.exportimport.dataimport import SetupDataSetList as SDL
 from bika.lims.exportimport.setupdata import WorksheetImporter
 from bika.lims.idserver import renameAfterCreation
@@ -262,6 +263,21 @@ class Doctors(WorksheetImporter):
             renameAfterCreation(obj)
 
 
+class Ethnicities(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_ethnicities
+        rows = self.get_rows(3)
+        for row in rows:
+            _id = folder.invokeFactory('Ethnicity', id=tmpID())
+            obj = folder[_id]
+            if row.get('Title', None):
+                obj.edit(title=row['Title'],
+                         description=row.get('Description', ''))
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
 class Patients(WorksheetImporter):
 
     def Import(self):
@@ -276,6 +292,14 @@ class Patients(WorksheetImporter):
                 raise IndexError("Primary referrer invalid: '%s'" % row['PrimaryReferrer'])
 
             client = client[0].getObject()
+
+            # Getting an existing ethnicity
+            bsc = getToolByName(self.context, 'bika_setup_catalog')
+            ethnicity = bsc(portal_type='Ethnicity', Title=row.get('Ethnicity', ''))
+            if len(ethnicity) == 0:
+                raise IndexError("Invalid ethnicity: '%s'" % row['Ethnicity'])
+            ethnicity = ethnicity[0].getObject()
+
             _id = folder.invokeFactory('Patient', id=tmpID())
             obj = folder[_id]
             obj.unmarkCreationFlag()
@@ -293,7 +317,8 @@ class Patients(WorksheetImporter):
                      BirthDate = row.get('BirthDate', ''),
                      BirthDateEstimated =self.to_bool(row.get('BirthDateEstimated','False')),
                      BirthPlace = row.get('BirthPlace', ''),
-                     Ethnicity = row.get('Ethnicity', ''),
+                     # TODO Ethnicity_Obj -> Ethnicity on health v319
+                     Ethnicity_Obj=ethnicity.UID(),
                      Citizenship =row.get('Citizenship', ''),
                      MothersName = row.get('MothersName', ''),
                      CivilStatus =row.get('CivilStatus', ''),
@@ -328,6 +353,7 @@ class Patients(WorksheetImporter):
                 obj.aq_inner.aq_parent.manage_renameObject(obj.id, row.get('PatientID'))
             else:
                 renameAfterCreation(obj)
+
 
 class Analysis_Specifications(WorksheetImporter):
 
@@ -376,7 +402,6 @@ class Analysis_Specifications(WorksheetImporter):
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
 
-
 class Insurance_Companies(WorksheetImporter):
     
     def Import(self):
@@ -401,8 +426,8 @@ class Insurance_Companies(WorksheetImporter):
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
 
-
 from bika.lims.exportimport.setupdata import Setup as BaseSetup
+
 
 class Setup(BaseSetup):
 

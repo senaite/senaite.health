@@ -87,6 +87,12 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
 
     <adapter
+      name="Ethnicities"
+      factory="bika.health.setupdata.Ethnicities"
+      provides="bika.lims.interfaces.ISetupDataImporter"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"/>
+
+    <adapter
       name="Patients"
       factory="bika.health.setupdata.Patients"
       provides="bika.lims.interfaces.ISetupDataImporter"

@@ -1,5 +1,6 @@
 3.1.7 (unreleased)
 ------------------
+
 HEALTH-245: Set-up data load. Patient ID conversion, alternatives
 HEALTH-227: Converting Patient IDs before import
 HEALTH-228: Load Setup data bugs

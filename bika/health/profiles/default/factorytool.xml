@@ -17,5 +17,6 @@
   <type portal_type="Treatment"/>
   <type portal_type="VaccinationCenter" />
   <type portal_type="InsuranceCompany"/>
+  <type portal_type="Ethnicity"/>
  </factorytypes>
 </object>
