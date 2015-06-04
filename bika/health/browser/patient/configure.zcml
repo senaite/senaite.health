@@ -96,7 +96,7 @@
 
     <browser:page
       for="bika.health.interfaces.IPatient"
-      name="patientmultifile"
+      name="multifile"
       class=".files.PatientMultifileView"
       permission="zope2.View"
       layer="bika.lims.interfaces.IBikaLIMS"
