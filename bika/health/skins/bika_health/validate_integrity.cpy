@@ -39,7 +39,8 @@ else:
                  'InsuranceCompany':  '/bika_setup/bika_insurancecompanies',
                  'EpidemiologicalYear': '/bika_setup/bika_epidemiologicalyears',
                  'IdentifierType': '/bika_setup/bika_identifiertypes',
-                 'Symptom': '/bika_setup/bika_symptoms' }
+                 'Symptom': '/bika_setup/bika_symptoms',
+                 'Multifile': context.aq_parent.absolute_url_path() + '/patientmultifile'}
 
     if context.portal_type in redirects:
         redirect = 'redirect_to:string:${portal_url}' + redirects[context.portal_type]
