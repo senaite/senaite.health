@@ -94,12 +94,4 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
-    <browser:page
-      for="bika.health.interfaces.IPatient"
-      name="multifile"
-      class=".files.PatientMultifileView"
-      permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
-    />
-
 </configure>
