@@ -13,7 +13,9 @@
  <property name="link_target"></property>
  <property name="global_allow">False</property>
  <property name="filter_content_types">True</property>
- <property name="allowed_content_types"/>
+ <property name="allowed_content_types">
+     <element value="Multifile"/>
+ </property>
  <property name="allow_discussion">False</property>
  <property name="default_view_fallback">False</property>
 
@@ -149,6 +151,17 @@
          i18n:attributes="title"
          visible="True">
   <permission value="View"/>
+ </action>
+
+  <action title="Attachments"
+        action_id="patientmultifile"
+        category="object"
+        condition_expr=""
+        icon_expr="string:${portal_url}/images/instrumentcertification.png"
+        url_expr="string:${object_url}/multifile"
+        i18n:attributes="title"
+        visible="True">
+    <permission value="View"/>
  </action>
 
 </object>
