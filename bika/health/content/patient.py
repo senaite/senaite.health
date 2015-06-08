@@ -20,6 +20,7 @@ from bika.health.permissions import *
 from bika.health.widgets import ReadonlyStringWidget
 from datetime import datetime
 from zope.interface import implements
+from Products.Archetypes.references import HoldingReference
 from bika.health.widgets.patientmenstrualstatuswidget import PatientMenstrualStatusWidget
 
 schema = Person.schema.copy() + Schema((
@@ -304,10 +305,24 @@ schema = Person.schema.copy() + Schema((
                     label=_('Birth place'),
                 ),
     ),
+    # TODO This field will be removed on release 319. We maintain this field on release 318
+    # because of the transference between string field and content type data.
     StringField('Ethnicity', schemata='Personal',
-                index='FieldIndex',
-                vocabulary=ETHNICITIES,
-                widget=ReferenceWidget(
+            index='FieldIndex',
+            vocabulary=ETHNICITIES,
+            widget=ReferenceWidget(
+                label=_('Ethnicity'),
+                description=_("Ethnicity eg. Asian, African, etc."),
+                visible=False,
+            ),
+    ),
+    # TODO This field will change its name on v319 and it'll be called Ethnicity
+    ReferenceField('Ethnicity_Obj', schemata='Personal',
+                vocabulary='getEthnicitiesVocabulary',
+                allowed_types = ('Ethnicity',),
+                relationship = 'PatientEthnicity',
+                widget=SelectionWidget(
+                    format='select',
                     label=_('Ethnicity'),
                     description=_("Ethnicity eg. Asian, African, etc."),
                 ),
@@ -321,6 +336,11 @@ schema = Person.schema.copy() + Schema((
                 widget=StringWidget(
                     label=_('Mothers name'),
                 ),
+    ),
+    StringField('FathersName', schemata='Personal',
+            widget=StringWidget(
+                label=_('Fathers name'),
+            ),
     ),
     StringField('CivilStatus', schemata='Personal',
                 widget=StringWidget(
@@ -414,6 +434,64 @@ schema = Person.schema.copy() + Schema((
             label=_("Send invoices to the insurance company."),
             description=_("If it is checked the invoices will be send to the insurance company."
                           " In this case the insurance number will be mandatory."))
+    ),
+    BooleanField('PatientAsGuarantor',
+        schemata = 'Insurance',
+        default=True,
+        widget=BooleanWidget(
+            label=_("The patient is the guarantor."),
+            description=_("The patient and the guarantor are the same."))
+    ),
+    StringField('GuarantorID',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=StringWidget(
+            label=_('Guarantor ID'),
+            description=_("The ID number (Insurance Number) from the person whose contract cover the current patient.")
+        ),
+    ),
+    StringField('GuarantorSurname',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=StringWidget(
+            label=_("Guarantor's Surname"),
+        ),
+    ),
+    StringField('GuarantorFirstname',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=StringWidget(
+            label=_("Guarantor's First Name"),
+        ),
+    ),
+    StringField('GuarantorPostalAddress',
+        searchable=1,
+        schemata = 'Insurance',
+        required=0,
+        widget=AddressWidget(
+            label=_("Guarantor's postal address"),
+        ),
+    ),
+    StringField('GuarantorBusinessPhone',
+        schemata = 'Insurance',
+        widget = StringWidget(
+            label=_("Guarantor's Phone (business)"),
+        ),
+    ),
+    StringField('GuarantorHomePhone',
+        schemata = 'Insurance',
+        widget = StringWidget(
+            label=_("Guarantor's Phone (home)"),
+        ),
+    ),
+    StringField('GuarantorMobilePhone',
+        schemata = 'Insurance',
+        widget = StringWidget(
+            label=_("Guarantor's Phone (mobile)"),
+        ),
     ),
 ))
 
@@ -590,6 +668,90 @@ class Patient(Person):
         return self.getField('CountryState').get(self) \
             if self.getField('CountryState').get(self) \
             else self.getPhysicalAddress()
+
+    def getGuarantorID(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        :return: The guarantor ID (insurance number) from
+        """
+        return self.getInsuranceNumber() if self.getPatientAsGuarantor() else self.getField('GuarantorID').get(self)
+
+    def getGuarantorSurname(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getSurname() if self.getPatientAsGuarantor() else self.getField('GuarantorSurname').get(self)
+
+    def getGuarantorFirstname(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getFirstname() if self.getPatientAsGuarantor() else self.getField('GuarantorFirstname').get(self)
+
+    def getGuarantorPostalAddress(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getPostalAddress() \
+            if self.getPatientAsGuarantor() \
+            else self.getField('GuarantorPostalAddress').get(self)
+
+    def getGuarantorBusinessPhone(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getBusinessPhone() \
+            if self.getPatientAsGuarantor() \
+            else self.getField('GuarantorBusinessPhone').get(self)
+
+    def getGuarantorHomePhone(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getHomePhone() if self.getPatientAsGuarantor() else self.getField('GuarantorHomePhone').get(self)
+
+    def getGuarantorMobilePhone(self):
+        """
+        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
+        the current patient fields.
+        """
+        return self.getMobilePhone() \
+            if self.getPatientAsGuarantor() \
+            else self.getField('GuarantorMobilePhone').get(self)
+
+    def getEthnicitiesVocabulary(self, instance=None):
+        """
+        Obtain all the ethnicities registered in the system and returns them as a list
+        """
+        bsc = getToolByName(self, 'bika_setup_catalog')
+        items = [(c.UID, c.Title) \
+                for c in bsc(portal_type='Ethnicity',
+                             inactive_state = 'active')]
+        items.sort(lambda x,y:cmp(x[1], y[1]))
+        items.insert(0, ('', t(_(''))))
+        return DisplayList(items)
+
+    # TODO This function will will be removed on v319
+    def getEthnicity(self):
+        """
+        This function exists because we are changing the construction of ethnicities. Until now, ethnicities options were
+        hand-coded but now they are a new content type. So we need to pass all patient's ethnicity values, but to do
+        such thing, we need to create new ethnicity types on upgrade step and edit patient ethnicity field to relate them
+        with its corresponding ethnicity content type.
+        :return:
+        """
+        return self.getEthnicity_Obj()
+
+    # TODO This function will be removed on v319
+    def setEthnicity(self, value):
+        self.setEthnicity_Obj(value)
+
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)

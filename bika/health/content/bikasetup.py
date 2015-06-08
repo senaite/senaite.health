@@ -95,6 +95,17 @@ class BikaSetupSchemaExtender(object):
                                 "preferences' tab.")
                 )
         ),
+        ExtBooleanField('EnableBikaAnalysisRequestRequestForm',
+            schemata="Analyses",
+            default=False,
+            widget=BooleanWidget(
+                label=_("Enable Bika's analysis request form."),
+                description=_("It enables the secondary analysis request form. This request has some characteristic "
+                              "features as allowing you to register more than one analysis request at the same time. "
+                              "It's useful if you are supposed to register a big amount of analysis request at the same "
+                              "time.")
+            )
+        ),
     ]
 
     def __init__(self, context):

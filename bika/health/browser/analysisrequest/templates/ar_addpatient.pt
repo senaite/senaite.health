@@ -1,0 +1,194 @@
+<div class="content-block patient-block">
+    <h2 i18n:translate="">Patient Details</h2>
+
+    <!-- To choose if the patient will be created or selected from created patients -->
+    <div class='content-line'>
+        <div id="archetypes-fieldname-NewPatient" class="field ArchetypesBooleanWidget " data-fieldname="ExistingPtaient">
+            <label class="formQuestion" for="NewPatient"> New Patient</label>
+            <input id="NewPatient" class="noborder" type="checkbox" name="NewPatient:boolean" value="on"/>
+            <input type="hidden" name="NewPatient:boolean:default" value="" originalvalue="">
+        </div>
+    </div>
+
+    <!-- Client Patient ID -->
+    <div class='content-line'>
+        <div id="archetypes-fieldname-ClientPatientID" class="field ArchetypesStringWidget" data-fieldname="ClientPatientID">
+            <label class="formQuestion" for="ClientPatientID" i18n:translate="">Client-Patient ID. No.</label>
+            <!-- Used when selecting an existing patient -->
+            <input type="text"
+                   name="ar.0.ClientPatientID_uid:record"
+                   id="ar_0_ClientPatientID"
+                   class="blurrable firstToFocus referencewidget"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'id', 'align': 'left', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'ClientPatientID', 'align': 'left', 'label': 'Client PID', 'width': '20'}, {'columnName': 'Title', 'align': 'left', 'label': 'Fullname', 'width': '60'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['ClientPatientID'], 'sord': 'asc', 'discard_empty': ['ClientPatientID'], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'showOn': True, 'force_all': True})"
+                   ui_item="ClientPatientID"
+                   catalog_name="bika_patient_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input id="ar_0_ClientPatientID_uid" type="hidden" value="" name="ar.0.ClientPatientID_uid:record">
+            <!-- Used when creating a new patient -->
+            <input id="ClientPatientID" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="ClientPatientID">
+        </div>
+    </div>
+
+    <!-- This div-input is only shown when New Patient checkbox is UNselected -->
+    <div class='content-line'>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Patient" id="archetypes-fieldname-Patient">
+            <label class="formQuestion" for="Patient" i18n:translate="">Patient Full Name
+                <span class="required" title="Required"> </span>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input type="text"
+                   name="ar.0.Patient:record"
+                   id="ar_0_Patient"
+                   class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
+                   size="20"
+                   minlength="0"
+                   search_query="{}"
+                   tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'getPatientID', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '40'}, {'columnName': 'PatientIdentifiers', 'label': 'Additional Identifiers', 'width': '40'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title', 'getPatientID'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});"
+                   ui_item="Title"
+                   catalog_name="bika_patient_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input type="hidden" name="ar.0.Patient_uid:record" id="ar_0_Patient_uid" />
+        </div>
+        <div class='field' id="PatientID">
+            <label class="formQuestion" for="PatientID" i18n:translate="">Patient ID</label>
+            <input type="text" id="PatientID" disabled="True"/>
+        </div>
+    </div>
+
+    <!-- This div-input is only shown when New Patient checkbox is selected -->
+    <div class='content-line'>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Surname" id="archetypes-fieldname-Surname">
+            <label class="formQuestion" for="Surname" i18n:translate="">Patient Surname
+                <span class="required" title="Required"> </span>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <!-- This input is only shown when New Patient checkbox is selected -->
+            <input id="Surname" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" size="30" value="" name="Surname"/>
+        </div>
+    </div>
+
+    <!-- This div-input is only shown when New Patient checkbox is selected -->
+    <div class='content-line'>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Firstname" id="archetypes-fieldname-Firstname">
+            <label i18n:translate="">Patient First Name
+                <span class="required" title="Required"> </span>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input id="Firstname" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" size="30" value="" name="Firstname"/>
+        </div>
+    </div>
+
+    <!-- Birth date -->
+    <div class='content-line'>
+        <div id="archetypes-fieldname-BirthDate" class="field ArchetypesDateTimeWidget" data-fieldname="BirthDate">
+            <label  class="formQuestion" for="BirthDate" i18n:translate="">Date of birth
+                <span class="required" title="Required"> </span>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input id="BirthDate"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   datetimepicker="0"
+                   datepicker="1"
+                   value=""
+                   name="BirthDate"
+                   required="required"/>
+        </div>
+        <!-- Select to know if the date is estimated -->
+        <div id="archetypes-fieldname-BirthDateEstimated" class="field ArchetypesBooleanWidget " data-fieldname="BirthDateEstimated">
+            <label class="formQuestion" for="BirthDateEstimated"> Birth date is estimated </label>
+            <input id="BirthDateEstimated" class="noborder" type="checkbox" name="BirthDateEstimated:boolean" value="on"/>
+            <input type="hidden" name="BirthDateEstimated:boolean:default" value="" originalvalue="">
+        </div>
+    </div>
+
+    <div class='content-line'>
+        <div id="archetypes-fieldname-Gender" class="field ArchetypesSelectionWidget " data-fieldname="Gender">
+            <label class="formQuestion" for="Gender" i18n:translate="">Gender</label>
+            <select id="Gender" name="Gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="dk" selected="selected">Don't Know</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class='content-line'>
+        <div id="archetypes-fieldname-HomePhone" class="field ArchetypesStringWidget" data-fieldname="HomePhone">
+            <label class="formQuestion" for="HomePhone" i18n:translate="">Home Phoneome)</label>
+            <input id="HomePhone"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   placeholder=""
+                   value=""
+                   name="HomePhone"
+                   originalvalue="">
+        </div>
+    </div>
+
+    <div class='content-line'>
+        <div id="archetypes-fieldname-MobilePhone" class="field ArchetypesStringWidget" data-fieldname="MobilePhone">
+            <label class="formQuestion" for="MobilePhone" i18n:translate="">Cell Phone</label>
+            <input id="MobilePhone"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   placeholder=""
+                   value=""
+                   name="MobilePhone"
+                   originalvalue="">
+        </div>
+    </div>
+
+    <div class='content-line'>
+        <div id="archetypes-fieldname-BusinessPhone" class="field ArchetypesStringWidget" data-fieldname="BusinessPhone">
+            <label class="formQuestion" for="BusinessPhone" i18n:translate="">Business Phone</label>
+            <input id="BusinessPhone"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   placeholder=""
+                   value=""
+                   name="BusinessPhone"
+                   originalvalue="">
+        </div>
+    </div>
+
+    <div class='content-line'>
+        <div  id="archetypes-fieldname-EmailAddress" class="field ArchetypesStringWidget " data-fieldname="EmailAddress">
+            <label class="formQuestion" for="EmailAddress" i18n:translate="">E-mail</label>
+            <input
+                    id="EmailAddress"
+                    class="blurrable firstToFocus"
+                    type="text"
+                    placeholder=""
+                    maxlength="255"
+                    size="30"
+                    value=""
+                    name="ar.0.EmailAddress:record"
+                    originalvalue=""/>
+        </div>
+    </div>
+
+    <!-- Signature, to use when the request is printed -->
+    <div class='content-line'>
+        <div id="section-signatures" class="field">
+            <label class="formQuestion" for="Signature" i18n:translate="">Signature</label>
+        </div>
+    </div>
+</div>
+

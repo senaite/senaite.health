@@ -1,0 +1,67 @@
+<div class='content-block doctor-block'>
+
+    <h2 i18n:translate="">Doctor and Referral Institution</h2>
+    <!-- Referring doctor -->
+    <div>
+        <div class="field ArchetypesReferenceWidget " data-fieldname="Doctor" id="archetypes-fieldname-Doctor">
+            <label class="formQuestion" for="Doctor" i18n:translate="">Referring Doctor
+                <span class="required" title="Required"> </span>
+            </label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+            <input type="text"
+                   name="ar.0.Doctor:record"
+                   id="ar_0_Doctor"
+                   class="blurrable firstToFocus referencewidget"
+                   size="20"
+                   minlength="0"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Doctor'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'DoctorID', 'label': 'Doctor ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '80'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})"
+                   ui_item="Title"
+                   catalog_name="portal_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input type="hidden" name="ar.0.Doctor_uid:record" id="ar_0_Doctor_uid" /></div>
+    </div>
+    <!-- This input will be fill out after a doctor has been chosen -->
+    <div class='field'>
+        <label class="formQuestion" for="DoctorsCode" i18n:translate="">Doctor's Code</label>
+        <input type="text" id="DoctorsCode"/>
+    </div>
+    <!-- Copies to doctors -->
+    <div id="archetypes-fieldname-CCDoctor" class="field ArchetypesStringWidget" data-fieldname="CCDoctor">
+        <span></span>
+        <div class="fieldErrorBox"></div>
+        <label class="formQuestion" for="CCDoctor" i18n:translate="">Copies to Doctors</label>
+        <input type="text"
+               name="ar.0.CCDoctor:record"
+               id="ar_0_CCDoctor"
+               class="blurrable firstToFocus referencewidget"
+               size="20"
+               minlength="0"
+               search_query="{}"
+                tal:attributes="base_query python:view.get_json_format({'portal_type': ['Doctor'], 'inactive_state': 'active'});
+                combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'DoctorID', 'label': 'Doctor ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '80'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True})"
+               ui_item="Title"
+               catalog_name="portal_catalog"
+               resetbutton="False"
+               maxlength="255"
+               searchicon="True"
+               showon="True"
+               placeholder="" />
+        <input type="hidden" name="CCDoctor_uid" id="CCDoctor_uid" />
+    </div>
+
+    <!-- Referral institution -->
+    <div id="archetypes-fieldname-PrimaryReferrer" class="field ArchetypesSelectionWidget " data-fieldname="PrimaryReferrer">
+        <span></span>
+        <div class="fieldErrorBox"></div>
+        <label class="formQuestion" for="PrimaryReferrer">Hospital and Ward</label>
+        <div class='readonly' tal:content="python:view.context.getClient().Name"/>
+    </div>
+</div>
+

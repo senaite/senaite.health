@@ -1,0 +1,63 @@
+<div class="content-block analyses-block"
+     tal:define="categories python:view.Categories().values();
+                 categories python:[cat for cat in categories[0]];
+                 dummycats  python:categories.sort(lambda x, y: cmp(x[1], y[1]));">
+
+<!-- Group analyses by departments -->
+<tal:deptblock
+     define="departments python:view.getDepartments();
+             dummydepts  python:departments.sort(lambda x, y: cmp(x[1], y[1]));"
+     repeat="department departments">
+
+    <div class="department-block"
+         tal:define="deptcats python:[cat for cat in categories if view.categoryInDepartment(cat[0], department[0])];"
+         tal:condition="deptcats">
+        <h2 tal:content="python:department[1]"></h2>
+
+        <!-- Group analyses by categories -->
+        <tal:cat tal:repeat="category deptcats">
+        <div class='analysis-category-block'
+            tal:define="analyses python:[an.getObject() for an in view.getAvailableServices(category[0])];
+                        dummyans python:analyses.sort(lambda x, y: cmp(x.getKeyword(), y.getKeyword()));"
+            tal:condition="python:len(analyses) &gt; 0">
+            <h3 tal:content="python:category[1]"></h3>
+            <ul>
+                <li tal:repeat="analysis analyses">
+
+                    <!-- Analyses for department and category -->
+                    <tal:an define="keyword python:analysis.getKeyword();
+                                    uid     python:analysis.UID();
+                                    title   python:analysis.Title();">
+                    <span class="keyword" tal:content="keyword"></span>
+                    <input type="checkbox"
+                           class="cb"
+                           tal:attributes="id      uid;
+                                           value   uid;
+                                           title   title;
+                                           keyword keyword;
+                                           name    string:ar.0.Analyses:list:ignore_empty:record">
+                    <span class='title' tal:content="title"></span>
+
+                    <!-- Analysis Specifications -->
+                    <div class="specs">
+                    <tal:specs repeat="spec python:[('min','<'),('max','&gt;'),('error','%')]">
+                    <input class="spec_bit min"
+                           type="text"
+                           size="3"
+                           autocomplete="off"
+                           tal:attributes="keyword      keyword;
+                                           uid          uid;
+                                           name         python:'ar.0.%s.%s' % (spec[0], uid);
+                                           placeholder  python:spec[1];
+                                           class        python:'spec_bit %s' % spec[0];">
+                    </tal:specs>
+                    </div>
+                    </tal:an>
+                </li>
+            </ul>
+        </div>
+        </tal:cat>
+    </div>
+</tal:deptblock>
+<div class='clearfix'></div>
+</div>

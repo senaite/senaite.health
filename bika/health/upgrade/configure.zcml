@@ -65,4 +65,13 @@
         handler="bika.health.upgrade.to316.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+<genericsetup:upgradeStep
+        title="Bika Health 3.1.7"
+        description=""
+        source="316"
+        destination="317"
+        handler="bika.health.upgrade.to317.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>

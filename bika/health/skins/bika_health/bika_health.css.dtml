@@ -44,53 +44,53 @@
 }
 
 div.template-symptoms td input[type="text"] {
-	width:100%;
+    width:100%;
 }
 div.template-symptoms td,
 div.template-symptoms th {
-	padding: 0 5px 0px 5px;
+    padding: 0 5px 0px 5px;
 }
 div.template-symptoms td.Code,
 div.template-symptoms td.Onset {
-  	width:10%;
+    width:10%;
 }
 div.template-symptoms td.Title {
-	width:30%;
+    width:30%;
 }
 div.template-symptoms td.Description {
-	width:45%;
+    width:45%;
 }
 
 div.template-caseprovisionaldiagnosis td input[type="text"] {
-	width:100%;
+    width:100%;
 }
 div.template-caseprovisionaldiagnosis td,
 div.template-caseprovisionaldiagnosis th {
-	padding: 0 5px 0px 5px;
+    padding: 0 5px 0px 5px;
 }
 div.template-caseprovisionaldiagnosis td.Code,
 div.template-caseprovisionaldiagnosis td.Onset {
-  	width:10%;
+    width:10%;
 }
 div.template-caseprovisionaldiagnosis td.Title {
-	width:30%;
+    width:30%;
 }
 div.template-caseprovisionaldiagnosis td.Description {
-	width:45%;
+    width:45%;
 }
 
 .readonly-emphasize {
-	background: none repeat scroll 0 0 transparent;
-	  border: medium none;
-	  font-size: 1.8em;
-	  font-weight: bold;
+    background: none repeat scroll 0 0 transparent;
+      border: medium none;
+      font-size: 1.8em;
+      font-weight: bold;
 }
 div.cg-comboItem :not(.template-ar_add) {
-	height:100%;
+    height:100%;
 }
 div.cg-DivItem {
-	height:auto;
-	text-align:left;
+    height:auto;
+    text-align:left;
 }
 
 /* OVERWRITE FROM bika.lims/bika_listing.css */

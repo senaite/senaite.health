@@ -24,4 +24,11 @@
     rendering="link"
     insert-after="*"/>
 
+<stylesheet
+    id="bika_health_standard_analysis_request.css"
+    media="all"
+    rel="stylesheet"
+    rendering="link"
+    insert-after="*"/>
+
 </object>
