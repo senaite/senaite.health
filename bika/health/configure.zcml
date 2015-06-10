@@ -31,7 +31,12 @@
 
   <browser:resource
     file="skins/bika_health/logo.png"
-     name="bika-health-logo.png"
+    name="bika-health-logo.png"
    />
+
+  <browser:resource
+    file="skins/bika_health/logo.png"
+    name="logo.png"
+  />
 
 </configure>
