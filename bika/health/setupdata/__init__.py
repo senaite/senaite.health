@@ -378,18 +378,22 @@ class Analysis_Specifications(WorksheetImporter):
             service = service[0].getObject()
             bucket[c_t][s_t].append({
                 'keyword': service.getKeyword(),
-                'min': row['min'] if row['min'] else '0',
-                'max': row['max'] if row['max'] else '0',
-                'minpanic': row['minpanic'] if row['minpanic'] else '0',
-                'maxpanic': row['maxpanic'] if row['maxpanic'] else '0',
-                'error': row['error'] if row['error'] else '0'
+                'min': row.get('min','0'),
+                'max': row.get('max','0'),
+                'minpanic': row.get('minpanic','0'),
+                'maxpanic': row.get('maxpanic','0'),
+                'error': row.get('error','0'),
             })
         # write objects.
         for c_t in bucket:
             if c_t == 'lab':
                 folder = self.context.bika_setup.bika_analysisspecs
             else:
-                folder = pc(portal_type='Client', title=c_t)[0].getObject()
+                folder = pc(portal_type='Client', title=c_t)
+                if (not folder or len(folder) != 1):
+                    logger.warn("Client %s not found. Omiting client specifications." % c_t)
+                    continue
+                folder = folder[0].getObject()
             for s_t in bucket[c_t]:
                 resultsrange = bucket[c_t][s_t]
                 sampletype = bsc(portal_type='SampleType', title=s_t)[0]
