@@ -107,7 +107,8 @@ def addPatientEthnicity(context, patient_list):
         # Getting the ethnicity uid
         bsc = getToolByName(context, 'bika_setup_catalog')
         bpc = getToolByName(context, 'bika_patient_catalog')
-        ethnicityUID= bsc(Portal_type='Ethnicity', Title=ethnicityname)[0].getObject().UID()
-        # Getting the patient object
-        patient = bpc(Portal_type='Patient', UID=patientUID)[0].getObject()
-        patient.setEthnicity(ethnicityUID)
+        if len(bsc(Portal_type='Ethnicity', Title=ethnicityname)[0].getObject().UID()) == 1:
+            ethnicityUID = bsc(Portal_type='Ethnicity', Title=ethnicityname)[0].getObject().UID()
+            # Getting the patient object
+            patient = bpc(Portal_type='Patient', UID=patientUID)[0].getObject()
+            patient.setEthnicity(ethnicityUID)
