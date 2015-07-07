@@ -1,5 +1,6 @@
 3.1.8 (unreleased)
 ------------------
+HEALTH-270: Error while importing patient with "yearinprefix" disabled
 HEALTH-266: View error on invoice from analysis request
 HEALTH-258: Add "File attachment" on Patient
 
