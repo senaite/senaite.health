@@ -289,7 +289,9 @@ class Patients(WorksheetImporter):
             pc = getToolByName(self.context, 'portal_catalog')
             client = pc(portal_type='Client', Title=row['PrimaryReferrer'])
             if len(client) == 0:
-                raise IndexError("Primary referrer invalid: '%s'" % row['PrimaryReferrer'])
+                error = "Primary referrer invalid: '%s'. Patient '%s %s' will not be uploaded"
+                logger.error(error, row['PrimaryReferrer'], row['Firstname'], row.get('Surname', ''))
+                continue
 
             client = client[0].getObject()
 
@@ -328,7 +330,7 @@ class Patients(WorksheetImporter):
             self.fill_addressfields(row, obj)
             if 'Photo' in row and row['Photo']:
                 try:
-                    path = resource_filename("bika.lims",
+                    path = resource_filename(self.dataset_project,
                                              "setupdata/%s/%s" \
                                              % (self.dataset_name, row['Photo']))
                     file_data = open(path, "rb").read()
@@ -338,7 +340,7 @@ class Patients(WorksheetImporter):
 
             if 'Feature' in row and row['Feature']:
                 try:
-                    path = resource_filename("bika.lims",
+                    path = resource_filename(self.dataset_project,
                                              "setupdata/%s/%s" \
                                              % (self.dataset_name, row['Feature']))
                     file_data = open(path, "rb").read()
