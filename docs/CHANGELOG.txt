@@ -8,6 +8,7 @@ HEALTH-258: Add "File attachment" on Patient
 
 3.1.7 (2015-06-09)
 ------------------
+HEALTH-282: Error loading Add Analysis request
 HEALTH-245: Set-up data load. Patient ID conversion, alternatives
 HEALTH-227: Converting Patient IDs before import
 HEALTH-228: Load Setup data bugs
