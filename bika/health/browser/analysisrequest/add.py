@@ -63,8 +63,11 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         :param department: The department UID
         :return: True or False
         """
-        return getToolByName(self.context, 'bika_setup_catalog')(UID=category)[0]\
-            .getObject().getDepartment().UID() == department
+        obj = getToolByName(self.context, 'bika_setup_catalog')(UID=category)
+        if obj:
+            return obj[0].getObject().getDepartment().UID() == department
+        else:
+            return False
 
     def getAvailableServices(self, categoryuid):
         """ Return a list of services brains
