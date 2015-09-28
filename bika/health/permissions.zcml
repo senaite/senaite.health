@@ -23,7 +23,8 @@
 <permission id="bika.health.permissions.AddVaccinationCenter" title="BIKA: Add VaccinationCenter"/>
 <permission id="bika.health.permissions.AddInsuranceCompany" title="BIKA: Add InsuranceCompany"/>
 <permission id="bika.health.permissions.AddSymptom" title="BIKA: Add Symptom"/>
-<permission id="bika.health.permissions.AddDrugProhibition" title="BIKA: Add DrugProhibition"/>
+<permission id="bika.health.permissions.AddDrugProhibition" title="BIKA: Add DrugProhibition"/>+
+<permission id="bika.health.permissions.AddEthnicity" title="BIKA: Add Ethnicity"/>
 
 <permission id="bika.health.ManageDoctors" title="BIKA: Manage Doctors"/>
 
@@ -32,6 +33,7 @@
 <permission id="bika.health.permissions.ViewSamples" title="BIKA: View Samples"/>
 <permission id="bika.health.permissions.ViewAnalysisRequests" title="BIKA: View AnalysisRequests"/>
 <permission id="bika.health.permissions.ViewInsuranceCompanies" title="BIKA: View InsuranceCompanies"/>
+<permission id="bika.health.permissions.ViewEthnicities" title="BIKA: View Ethnicities"/>
 
 # Patient permissions
 <permission id="bika.health.permissions.ViewPatients" title="BIKA: View Patients"/>

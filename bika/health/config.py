@@ -6,6 +6,12 @@ from bika.health.permissions import *
 
 PROJECTNAME = "bika.health"
 
+GENDERS = DisplayList((
+    ('male', _('Male')),
+    ('female', _('Female')),
+    ('dk', _("Don't Know")),
+    ))
+
 ETHNICITIES = DisplayList((
     ('Native American', _('Native American')),
     ('Asian', _('Asian')),
@@ -14,12 +20,6 @@ ETHNICITIES = DisplayList((
     ('White', _('White')),
     ('Hispanic or Latino', _('Hispanic or Latino')),
 ))
-
-GENDERS = DisplayList((
-    ('male', _('Male')),
-    ('female', _('Female')),
-    ('dk', _("Don't Know")),
-    ))
 
 GENDERS_APPLY = DisplayList((
     ('male', _('Male')),

@@ -6,6 +6,8 @@ from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
+from bika.lims.utils import tmpID
+from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddAetiologicAgent
 from bika.health.permissions import ManageDoctors
 from bika.health.permissions import ViewPatients
@@ -13,6 +15,7 @@ from bika.health.permissions import ViewBatches
 from bika.health.permissions import ViewSamples
 from bika.health.permissions import ViewAnalysisRequests
 from bika.health.permissions import ViewInsuranceCompanies
+from bika.health.permissions import ViewEthnicities
 from bika.health.permissions import AddAetiologicAgent
 from bika.health.permissions import AddDoctor
 from bika.health.permissions import AddDrug
@@ -23,6 +26,7 @@ from bika.health.permissions import AddSymptom
 from bika.health.permissions import AddTreatment
 from bika.health.permissions import AddVaccinationCenter
 from bika.health.permissions import AddInsuranceCompany
+from bika.health.permissions import AddEthnicity
 from bika.health.permissions import EditPatient
 from bika.health.permissions import ManageDoctors
 from bika.lims.permissions import AddAnalysisRequest
@@ -36,6 +40,25 @@ from bika.lims.permissions import CancelAndReinstate
 
 class Empty:
     pass
+
+
+def setupEthnicities(bika_setup):
+    """
+    Creates standard ethnicities
+    """
+    ethnicities = ['Native American', 'Asian', 'Black', 'Native Hawaiian or Other Pacific Islander', 'White',
+                   'Hispanic or Latino']
+    for ethnicityName in ethnicities:
+        folder = bika_setup.bika_ethnicities
+        # Generating a temporal object
+        _id = folder.invokeFactory('Ethnicity', id=tmpID())
+        obj = folder[_id]
+        # Setting its values
+        obj.edit(title=ethnicityName,
+                 description='')
+        obj.unmarkCreationFlag()
+        renameAfterCreation(obj)
+    logger.info("Standard ethnicities enabled")
 
 
 def setupHealthVarious(context):
@@ -71,6 +94,7 @@ def setupHealthVarious(context):
                    'bika_identifiertypes',
                    'bika_casesyndromicclassifications',
                    'bika_insurancecompanies',
+                   'bika_ethnicities',
                    ):
         obj = bika_setup._getOb(obj_id)
         obj.unmarkCreationFlag()
@@ -105,6 +129,8 @@ def setupHealthVarious(context):
         link_target="",
         description="",
         condition="")
+
+    setupEthnicities(bika_setup)
 
 
 def setupHealthGroupsAndRoles(context):
@@ -158,6 +184,7 @@ def setupHealthPermissions(context):
     mp(AddInsuranceCompany, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddSymptom, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddDrugProhibition, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddEthnicity, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
 
     mp(ApplyVersionControl, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
     mp(SaveNewVersion, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
@@ -170,6 +197,7 @@ def setupHealthPermissions(context):
     mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
     mp(ViewInsuranceCompanies, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
+    mp(ViewEthnicities, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
 
     # /clients folder permissions
     # Member role must have view permission on /clients, to see the list.
@@ -316,6 +344,7 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('EpidemiologicalYear', ['bika_setup_catalog', ])
     at.setCatalogsByType('IdentifierType', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseSyndromicClassification', ['bika_setup_catalog', ])
+    at.setCatalogsByType('Ethnicity', ['bika_setup_catalog', ])
 
     addIndex(bsc,'getGender', 'FieldIndex')
     addColumn(bsc,'getGender')

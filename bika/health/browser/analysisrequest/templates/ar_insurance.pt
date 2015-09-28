@@ -1,0 +1,174 @@
+<div class="content-block insurance-block">
+    <h2 i18n:translate="">Account to</h2>
+
+    <!-- To choose if the patient is the same as the guarantor -->
+    <div class='content-line'>
+        <div id="archetypes-fieldname-PatientAsGuarantor" class="field ArchetypesBooleanWidget " data-fieldname="PatientAsGuarantor">
+            <label class="formQuestion" for="PatientAsGuarantor">Patient as guarantor</label>
+            <input id="PatientAsGuarantor" class="noborder" type="checkbox" name="PatientAsGuarantor:boolean" value="on"/>
+            <input type="hidden" name="PatientAsGuarantor:boolean:default" value="true" originalvalue="">
+        </div>
+    </div>
+
+    <!-- If the patient and the guarantor are the same person and the patient already exists, the following fields will be disabled -->
+    <!-- Insurance Number -->
+    <div class='content-line'>
+        <div  id="archetypes-fieldname-GuarantorID" class="field ArchetypesStringWidget" data-fieldname="GuarantorID">
+            <label class="formQuestion" for="GuarantorID" i18n:translate="">Guarantor ID Number</label>
+            <span id="GuarantorID_help" class="formHelp">The ID number (Insurance Number) from the person whose contract cover the current patient.</span>
+            <input id="GuarantorID"
+                   class="blurrable firstToFocus"
+                   type="text"
+                   placeholder=""
+                   name="GuarantorID"
+                   originalvalue=""/>
+        </div>
+    </div>
+
+    <!-- Insurance company selector -->
+    <div class='content-line'>
+
+        <div class="field ArchetypesReferenceWidget" data-fieldname="InsuranceCompany" id="archetypes-fieldname-InsuranceCompany">
+            <label class="formQuestion" for="InsuranceCompany" i18n:translate="">Insurance Company</label>
+            <span></span>
+            <div class="fieldErrorBox"></div>
+
+            <input type="text"
+                   name="ar.0.InsuranceCompany:record"
+                   id="ar_0_InsuranceCompany"
+                   class="blurrable firstToFocus referencewidget ui-autocomplete-input input-bg"
+                   size="20"
+                   minlength="0"
+                   search_query="{}"
+                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['InsuranceCompany'], 'inactive_state': 'active'});
+                    combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'Title', 'label': 'Insurance Company', 'width': '40'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});"
+                   ui_item="Title"
+                   catalog_name="bika_setup_catalog"
+                   resetbutton="False"
+                   maxlength="255"
+                   searchicon="True"
+                   showon="True"
+                   placeholder="" />
+            <input type="hidden" name="InsuranceCompany_uid" id="InsuranceCompany_uid" />
+        </div>
+
+    </div>
+
+    <!-- If the patient and the guarantor are the same person, the following fields will disabled -->
+
+    <div id="archetypes-fieldname-GuarantorSurname" class="field ArchetypesStringWidget " data-fieldname="GuarantorSurname">
+        <span></span>
+        <label class="formQuestion" for="GuarantorSurname" i18n:translate="">Guarantor's Surname</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorSurname"
+               class="blurrable firstToFocus"
+               type="text"
+               placeholder=""
+               maxlength="255"
+               name="GuarantorSurname"
+               originalvalue="">
+    </div>
+
+    <div id="archetypes-fieldname-GuarantorFirstname" class="field ArchetypesStringWidget" data-fieldname="GuarantorFirstname">
+        <span></span>
+        <label class="formQuestion" for="GuarantorFirstname" i18n:translate="">Guarantor's First Name</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorFirstname" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorFirstname" originalvalue="">
+    </div>
+
+    <div id="archetypes-fieldname-GuarantorHomePhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorHomePhone">
+        <span></span>
+        <label class="formQuestion" for="GuarantorHomePhone">Guarantor's Phone (home)</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorHomePhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorHomePhone" originalvalue="">
+    </div>
+
+    <div id="archetypes-fieldname-GuarantorBusinessPhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorBusinessPhone">
+        <span></span>
+        <label class="formQuestion" for="GuarantorBusinessPhone">Guarantor's Phone (business)</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorBusinessPhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorBusinessPhone" originalvalue="">
+    </div>
+
+    <div id="archetypes-fieldname-GuarantorMobilePhone" class="field ArchetypesStringWidget " data-fieldname="GuarantorMobilePhone">
+        <span></span>
+        <label class="formQuestion" for="GuarantorMobilePhone">Guarantor's Phone (mobile)</label>
+        <div class="fieldErrorBox"></div>
+        <input id="GuarantorMobilePhone" class="blurrable firstToFocus" type="text" placeholder="" maxlength="255" value="" name="GuarantorMobilePhone" originalvalue="">
+    </div>
+
+    <!-- Address Widget -->
+
+    <div class='content-line postal-address'>
+        <metal:define define-macro="edit"
+                tal:define="
+                country python:view.context.bika_setup.getDefaultCountry();
+                state python:view.w.getStates(country);
+                district python:view.w.getDistricts(country, state);">
+            <h3 class="formQuestion" for="PostalAddress" i18n:translate="">Postal Address</h3>
+            <!-- Country -->
+            <div class='field'>
+                <label class="formQuestion" for="PostalAddress_country" i18n:translate="">Country</label>
+                <select size="1"
+                        name="PostalAddress.country:record"
+                        id="PostalAddress.country"
+                        tal:define="values python:view.w.getCountries();">
+                    <option value=""></option>
+                    <tal:x tal:repeat="value values">
+                        <option tal:content="python:value[1]"
+                                tal:attributes="value python:value[1];
+                                selected python:value[0] == country and 'selected' or ''">
+                        </option>
+                    </tal:x>
+                </select>
+            </div>
+            <!-- State -->
+            <div class='field'>
+                <label class="formQuestion" for="PostalAddress_state" i18n:translate="">State</label>
+                <select size="1"
+                        name="PostalAddress.state:record"
+                        id="PostalAddress.state"
+                        tal:define="values python:view.w.getStates(country)">
+                    <option value=""></option>
+                    <tal:x tal:repeat="value values">
+                        <option tal:content="python:value[2]"
+                                tal:attributes="value python:value[2];
+                                selected python:value[2] == state and 'selected' or ''">
+                        </option>
+                    </tal:x>
+                </select>
+            </div>
+        <!-- District -->
+            <div class='field'>
+                <label class="formQuestion" for="PostalAddress_district" i18n:translate="">District</label>
+                <select size="1"
+                        name="PostalAddress.district:record"
+                        id="PostalAddress.district"
+                        tal:define="values python:view.w.getDistricts(country, state)">
+                    <option value=''></option>
+                    <tal:x tal:repeat="value values">
+                        <option tal:content="python:value[2]"
+                                tal:attributes="value python:value[2];
+                                selected python:value[2] == district and 'selected' or ''">
+                        </option>
+                    </tal:x>
+                </select>
+            </div>
+        </metal:define>
+        <div class='field'>
+            <label class="formQuestion" for="PostalAddress_city" i18n:translate="">City</label>
+            <input id="PostalAddress.city" value="" name="PostalAddress.city:record" originalvalue="" type="text">
+        </div>
+        <div class='field'>
+            <label class="formQuestion" for="PostalAddress_zip" i18n:translate="">Postal Code</label>
+            <input id="PostalAddress.zip" value="" name="PostalAddress.zip:record" originalvalue="" type="text">
+        </div>
+        <div class='field'>
+            <label class="formQuestion" for="PostalAddress_zip" i18n:translate="">Address</label>
+            <textarea id="PostalAddress.address" name="PostalAddress.address:record"></textarea>
+        </div>
+    </div>
+
+</div>
+
+

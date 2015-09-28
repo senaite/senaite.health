@@ -35,6 +35,7 @@ def initialize(context):
     from content.aetiologicagent import AetiologicAgent
     from content.caseoutcome import CaseOutcome
     from content.casestatus import CaseStatus
+    from content.ethnicity import Ethnicity
     from content.casesyndromicclassification import CaseSyndromicClassification
     from content.disease import Disease
     from content.doctor import Doctor
@@ -64,6 +65,7 @@ def initialize(context):
     from controlpanel.bika_immunizations import Immunizations
     from controlpanel.bika_treatments import Treatments
     from controlpanel.bika_insurancecompanies import InsuranceCompanies
+    from controlpanel.bika_ethnicities import Ethnicities
     from controlpanel.bika_vaccinationcenters import VaccinationCenters
 
     content_types, constructors, ftis = process_types(

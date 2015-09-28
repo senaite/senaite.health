@@ -117,5 +117,11 @@
   </type>
   <type type_id="InsuranceCompanies"/>
 
+  <type type_id="Ethnicity">
+   <bound-workflow workflow_id="bika_one_state_workflow"/>
+   <bound-workflow workflow_id="bika_inactive_workflow"/>
+  </type>
+  <type type_id="Ethnicities"/>
+
  </bindings>
 </object>

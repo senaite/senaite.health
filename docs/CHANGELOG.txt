@@ -1,4 +1,12 @@
-3.1.6 (unreleased)
+3.1.7 (2015-06-09)
+------------------
+HEALTH-245: Set-up data load. Patient ID conversion, alternatives
+HEALTH-227: Converting Patient IDs before import
+HEALTH-228: Load Setup data bugs
+HEALTH-140: AR Create per path lab standard form
+HEALTH-251: Add guarantor details in insurance companies
+
+3.1.6 (2015-02-27)
 ------------------
 HEALTH-223: When you are adding a doctor through an overlay (add doctor button in cases), the address widgets don't work properly.
 HEALTH-215: Correct Navigation tree order

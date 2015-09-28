@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode, _createObjectByType
 from bika.lims import logger
+from Products.CMFCore.utils import getToolByName
 from bika.lims.exportimport.dataimport import SetupDataSetList as SDL
 from bika.lims.exportimport.setupdata import WorksheetImporter
 from bika.lims.idserver import renameAfterCreation
@@ -8,6 +9,7 @@ from bika.lims.interfaces import ISetupDataSetList
 from bika.lims.utils import tmpID
 from pkg_resources import resource_filename
 from zope.interface import implements
+import transaction
 
 
 class SetupDataSetList(SDL):
@@ -261,6 +263,21 @@ class Doctors(WorksheetImporter):
             renameAfterCreation(obj)
 
 
+class Ethnicities(WorksheetImporter):
+
+    def Import(self):
+        folder = self.context.bika_setup.bika_ethnicities
+        rows = self.get_rows(3)
+        for row in rows:
+            _id = folder.invokeFactory('Ethnicity', id=tmpID())
+            obj = folder[_id]
+            if row.get('Title', None):
+                obj.edit(title=row['Title'],
+                         description=row.get('Description', ''))
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
+
+
 class Patients(WorksheetImporter):
 
     def Import(self):
@@ -275,12 +292,21 @@ class Patients(WorksheetImporter):
                 raise IndexError("Primary referrer invalid: '%s'" % row['PrimaryReferrer'])
 
             client = client[0].getObject()
+
+            # Getting an existing ethnicity
+            bsc = getToolByName(self.context, 'bika_setup_catalog')
+            ethnicity = bsc(portal_type='Ethnicity', Title=row.get('Ethnicity', ''))
+            if len(ethnicity) == 0:
+                raise IndexError("Invalid ethnicity: '%s'" % row['Ethnicity'])
+            ethnicity = ethnicity[0].getObject()
+
             _id = folder.invokeFactory('Patient', id=tmpID())
             obj = folder[_id]
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
             Fullname = (row['Firstname'] + " " + row.get('Surname', '')).strip()
-            obj.edit(title=Fullname,
+            obj.edit(PatientID=row.get('PatientID'),
+                     title=Fullname,
                      ClientPatientID = row.get('ClientPatientID', ''),
                      Salutation = row.get('Salutation', ''),
                      Firstname = row.get('Firstname', ''),
@@ -291,7 +317,8 @@ class Patients(WorksheetImporter):
                      BirthDate = row.get('BirthDate', ''),
                      BirthDateEstimated =self.to_bool(row.get('BirthDateEstimated','False')),
                      BirthPlace = row.get('BirthPlace', ''),
-                     Ethnicity = row.get('Ethnicity', ''),
+                     # TODO Ethnicity_Obj -> Ethnicity on health v319
+                     Ethnicity_Obj=ethnicity.UID(),
                      Citizenship =row.get('Citizenship', ''),
                      MothersName = row.get('MothersName', ''),
                      CivilStatus =row.get('CivilStatus', ''),
@@ -320,7 +347,13 @@ class Patients(WorksheetImporter):
                     logger.error("Unable to load Feature %s"%row['Feature'])
 
             obj.unmarkCreationFlag()
-            renameAfterCreation(obj)
+            transaction.savepoint(optimistic=True)
+            if row.get('PatientID'):
+                # To maintain the patient spreadsheet's IDs, we cannot do a 'renameaftercreation()'
+                obj.aq_inner.aq_parent.manage_renameObject(obj.id, row.get('PatientID'))
+            else:
+                renameAfterCreation(obj)
+
 
 class Analysis_Specifications(WorksheetImporter):
 
@@ -347,8 +380,8 @@ class Analysis_Specifications(WorksheetImporter):
                 'keyword': service.getKeyword(),
                 'min': row['min'] if row['min'] else '0',
                 'max': row['max'] if row['max'] else '0',
-                'minpanic': row['min'] if row['min'] else '0',
-                'maxpanic': row['max'] if row['max'] else '0',
+                'minpanic': row['minpanic'] if row['minpanic'] else '0',
+                'maxpanic': row['maxpanic'] if row['maxpanic'] else '0',
                 'error': row['error'] if row['error'] else '0'
             })
         # write objects.
@@ -369,9 +402,32 @@ class Analysis_Specifications(WorksheetImporter):
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
 
-
+class Insurance_Companies(WorksheetImporter):
+    
+    def Import(self):
+        folder = self.context.bika_setup.bika_insurancecompanies
+        for row in self.get_rows(3):
+            obj = _createObjectByType("InsuranceCompany", folder, tmpID())
+            if row.get('Name', None):
+                obj.edit(
+                    Name=row.get('Name', ''),
+                    EmailAddress=row.get('EmailAddress', ''),
+                    Phone=row.get('Phone', ''),
+                    Fax=row.get('Fax', ''),
+                    TaxNumber=row.get('TaxNumber', ''),
+                    AccountType=row.get('AccountType', {}),
+                    AccountName=row.get('AccountName', {}),
+                    AccountNumber=row.get('AccountNumber', ''),
+                    BankName=row.get('BankName', ''),
+                    BankBranch=row.get('BankBranch', ''),
+                )
+                self.fill_contactfields(row, obj)
+                self.fill_addressfields(row, obj)
+                obj.unmarkCreationFlag()
+                renameAfterCreation(obj)
 
 from bika.lims.exportimport.setupdata import Setup as BaseSetup
+
 
 class Setup(BaseSetup):
 
@@ -387,3 +443,4 @@ class Setup(BaseSetup):
             EnablePanicAlert=self.to_bool(values.get('EnablePanicAlert', True)),
             EnableAnalysisRemarks=self.to_bool(values.get('EnableAnalysisRemarks', True))
         )
+
