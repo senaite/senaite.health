@@ -22,6 +22,10 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         self.w = AddressWidget()
 
     def __call__(self):
+        # Hacking the template condition to display only the classic analysis
+        # request view because the standard one is not compatible with the new
+        # bikalisting
+        self.templatename = 'classic'
         if self.templatename == 'classic':
             return AnalysisRequestAddViewLIMS.__call__(self)
 
