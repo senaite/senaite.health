@@ -78,4 +78,3 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
                        inactive_state='active',
                        getCategoryUID=categoryuid)
         return services
-
