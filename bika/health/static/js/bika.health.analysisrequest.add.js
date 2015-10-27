@@ -242,9 +242,7 @@ function HealthAnalysisRequestAddView() {
                 success: function (data, textStatus, $XHR) {
                     if (data['PatientUID'] != '') {
                         $(".dynamic-field-label").remove();
-                        for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
-                            fillPatientData(col, data);
-                        }
+                        fillPatientData(0, data); 
                     }
                 }
             });
