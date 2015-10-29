@@ -1,5 +1,6 @@
 3.1.8 (unreleased)
 ------------------
+HEALTH-269: Analysis Request Add compatibility with LIMS 3.1.9
 HEALTH-273: Error upgrading to 317
 HEALTH-270: Error while importing patient with "yearinprefix" disabled
 HEALTH-271: Analysis request invoice view broken

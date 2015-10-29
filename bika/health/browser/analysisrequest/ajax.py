@@ -1,7 +1,9 @@
 from bika.health import bikaMessageFactory as _
+from bika.lims.utils import t
 from bika.lims.browser.analysisrequest.add import ajaxAnalysisRequestSubmit as BaseClass
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
+from bika.lims.browser.analysisrequest.add import ajax_form_error
 from Products.CMFCore.utils import getToolByName
 import json
 
@@ -43,6 +45,10 @@ class AnalysisRequestSubmit(BaseClass):
 
                 values['Patient']=patient.UID()
                 state[key] = values
+            elif patuid == '':
+                msg = t(_('Required fields have no values: Patient'))
+                ajax_form_error(self.errors, arnum=key, message=msg)
+                continue
         formc['state'] = json.JSONEncoder().encode(state)
         self.request.form = formc
         return BaseClass.__call__(self)
