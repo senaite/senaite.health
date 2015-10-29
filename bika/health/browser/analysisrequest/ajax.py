@@ -21,7 +21,11 @@ class AnalysisRequestSubmit(BaseClass):
         for key in state.keys():
             values = state[key].copy()
             patuid = values.get('Patient', '')
-            if patuid == 'anonymous':
+            if patuid == '' and values.get('Analyses') != []:
+                msg = t(_('Required fields have no values: Patient'))
+                ajax_form_error(self.errors, arnum=key, message=msg)
+                continue
+            elif patuid == 'anonymous':
                 clientpatientid = values.get('ClientPatientID', '')
                 # Check if has already been created
                 proxies = bpc(getClientPatientID=clientpatientid)
@@ -45,10 +49,6 @@ class AnalysisRequestSubmit(BaseClass):
 
                 values['Patient']=patient.UID()
                 state[key] = values
-            elif patuid == '':
-                msg = t(_('Required fields have no values: Patient'))
-                ajax_form_error(self.errors, arnum=key, message=msg)
-                continue
         formc['state'] = json.JSONEncoder().encode(state)
         self.request.form = formc
         return BaseClass.__call__(self)
