@@ -40,8 +40,8 @@ function HealthAnalysisRequestAddView() {
             // The current AR Add View doesn't come from a batch nor patient or
             // data autofilling failed. Handle event firing when Patient or
             // ClientPatientID fields change.
-            $('[id$="_ClientPatientID"]').bind("selected paste blur change", function () {
-                colposition = $(this).closest('td').attr('column');
+            $('input[id^="ClientPatientID-"]').bind("selected paste blur change", function () {
+                colposition = get_arnum(this);
                 if (colposition == undefined){
                     // we are on the specific health template
                     colposition = 0}
@@ -49,8 +49,8 @@ function HealthAnalysisRequestAddView() {
                 checkClientContacts();
             });
 
-            $('[id$="_Patient"]').bind("selected paste blur change", function () {
-                colposition = $(this).closest('td').attr('column');
+            $('input[id^="Patient-"]').bind("selected paste blur change", function () {
+                colposition = get_arnum(this);
                 if (colposition == undefined){
                     // we are on the specific health template
                     colposition = 0}
@@ -63,8 +63,8 @@ function HealthAnalysisRequestAddView() {
             // secondary AR for it, the Patient field should also be looked up and
             // uneditable.
             // See https://github.com/bikalabs/bika.health/issues/100
-            $('[id$="_Sample"]').bind("selected paste blur", function () {
-                colposition = $(this).closest('td').attr('column');
+            $('input[id^="Sample-"]').bind("selected paste blur", function () {
+                colposition = get_arnum(this);
                 if (colposition == undefined){
                     // we are on the specific health template
                     colposition = 0}
@@ -106,24 +106,25 @@ function HealthAnalysisRequestAddView() {
                 dataType: "json",
                 success: function (data, textStatus, $XHR) {
                     if (data['PatientUID'] != '') {
-                        $("#ar_" + colposition + "_Patient").val(data['PatientFullname']);
-                        $("#ar_" + colposition + "_Patient").attr('uid', data['PatientUID']);
-                        $("#ar_" + colposition + "_Patient_uid").val(data['PatientUID']);
-                        $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
+                        $("#Patient-" + colposition)
+                            .val(data['PatientFullname'])
+                            .attr('uid', data['PatientUID'])
+                            .combogrid("option", "disabled", false);
+                        $("#Patient-" + colposition + "_uid").val(data['PatientUID']);
                     } else {
                         // No patient found. Set anonymous patient
-                        $("#ar_" + colposition + "_Patient").val(_('Anonymous'));
-                        $("#ar_" + colposition + "_Patient").attr('uid', 'anonymous');
-                        $("#ar_" + colposition + "_Patient_uid").val('anonymous');
+                        $("#Patient-" + colposition)
+                            .val(_('Anonymous'))
+                            .attr('uid', 'anonymous');
+                        $("#Patient-" + colposition + "_uid").val('anonymous');
                     }
                 }
             });
         } else {
             // Empty client patient id. Reset patient fields
-            $("#ar_" + colposition + "_Patient").val('');
-            $("#ar_" + colposition + "_Patient").attr('uid', '');
-            $("#ar_" + colposition + "_Patient_uid").val('');
-            $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
+            $("#Patient-" + colposition)
+                .val('').attr('uid', '').combogrid("option", "disabled", false);
+            $("#Patient-" + colposition + "_uid").val('');
         }
     }
 
@@ -148,16 +149,16 @@ function HealthAnalysisRequestAddView() {
                 },
                 dataType: "json",
                 success: function (data, textStatus, $XHR) {
-                    $("#ar_" + colposition + "_ClientPatientID").val(data['ClientPatientID']);
-                    $("#ar_" + colposition + "_ClientPatientID").attr('uid', uid);
-                    $("#ar_" + colposition + "_ClientPatientID_uid").val(uid);
+                    $("#ClientPatientID-" + colposition).val(data['ClientPatientID']);
+                    $("#ClientPatientID-" + colposition).attr('uid', uid);
+                    $("#ClientPatientID-" + colposition + "_uid").val(uid);
                 }
             });
         } else {
             // Empty client patient id. Reset patient fields
-            $("#ar_" + colposition + "_ClientPatientID").val('');
-            $("#ar_" + colposition + "_ClientPatientID").attr('uid', '');
-            $("#ar_" + colposition + "_ClientPatientID_uid").val('');
+            $("#ClientPatientID-" + colposition).val('');
+            $("#ClientPatientID-" + colposition).attr('uid', '');
+            $("#ClientPatientID-" + colposition + "_uid").val('');
         }
     }
 
@@ -179,34 +180,34 @@ function HealthAnalysisRequestAddView() {
                 success: function (data, textStatus, $XHR) {
                     if (data['PatientUID'] != '') {
                         $(".dynamic-field-label").remove();
-                        for (var col = 0; col < parseInt($("#col_count").val()); col++) {
-                            $("#ar_" + col + "_Client").val(data['ClientTitle']);
-                            $("#ar_" + col + "_Client").attr('uid', data['ClientUID']);
-                            $("#ar_" + col + "_Client").attr('cid', data['ClientSysID']);
-                            $("#ar_" + col + "_Client_uid").val(data['ClientUID']);
+                        for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
+                            $("#Client-" + col).val(data['ClientTitle']);
+                            $("#Client-" + col).attr('uid', data['ClientUID']);
+                            $("#Client-" + col).attr('cid', data['ClientSysID']);
+                            $("#Client-" + col + "_uid").val(data['ClientUID']);
 
-                            $("#ar_" + col + "_Patient").val(data['PatientTitle']);
-                            $("#ar_" + col + "_Patient").attr('uid', data['PatientUID']);
-                            $("#ar_" + col + "_Patient_uid").val(data['PatientUID']);
+                            $("#Patient-" + col).val(data['PatientTitle']);
+                            $("#Patient-" + col).attr('uid', data['PatientUID']);
+                            $("#Patient-" + col + "_uid").val(data['PatientUID']);
 
-                            $("#ar_" + col + "_Doctor").val(data['DoctorTitle']);
-                            $("#ar_" + col + "_Doctor").attr('uid', data['DoctorUID']);
-                            $("#ar_" + col + "_Doctor_uid").val(data['DoctorUID']);
+                            $("#Doctor-" + col).val(data['DoctorTitle']);
+                            $("#Doctor-" + col).attr('uid', data['DoctorUID']);
+                            $("#Doctor-" + col + "_uid").val(data['DoctorUID']);
 
-                            $("#ar_" + col + "_ClientPatientID").val(data['ClientPatientID']);
+                            $("#ClientPatientID-" + col).val(data['ClientPatientID']);
 
                             // Hide the previous fields and replace them by labels
-                            $("#ar_" + col + "_Client").hide();
-                            $("#ar_" + col + "_Patient").hide();
-                            $("#ar_" + col + "_Doctor").hide();
-                            $("#ar_" + col + "_ClientPatientID").hide();
-                            $("#ar_" + col + "_Client").after("<span class='dynamic-field-label'>" + $("#ar_" + col + "_Client").val() + "</span>");
-                            $("#ar_" + col + "_Patient").after("<span class='dynamic-field-label'>" + $("#ar_" + col + "_Patient").val() + "</span>");
-                            $("#ar_" + col + "_Doctor").after("<span class='dynamic-field-label'>" + $("#ar_" + col + "_Doctor").val() + "</span>");
-                            $("#ar_" + col + "_ClientPatientID").after("<span class='dynamic-field-label'>" + $("#ar_" + col + "_ClientPatientID").val() + "</span>");
+                            $("#Client-" + col).hide();
+                            $("#Patient-" + col).hide();
+                            $("#Doctor-" + col).hide();
+                            $("#ClientPatientID-" + col).hide();
+                            $("#Client-" + col).after("<span class='dynamic-field-label'>" + $("#Client-" + col).val() + "</span>");
+                            $("#Patient-" + col).after("<span class='dynamic-field-label'>" + $("#Patient-" + col).val() + "</span>");
+                            $("#Doctor-" + col).after("<span class='dynamic-field-label'>" + $("#Doctor-" + col).val() + "</span>");
+                            $("#ClientPatientID-" + col).after("<span class='dynamic-field-label'>" + $("#ClientPatientID-" + col).val() + "</span>");
 
                             // Contact searches
-                            element = $("#ar_" + col + "_Contact")
+                            element = $("#Contact-" + col)
                             base_query = $.parseJSON($(element).attr("base_query"));
                             base_query['getParentUID'] = data['ClientUID'];
                             applyComboFilter(element, base_query);
@@ -241,13 +242,11 @@ function HealthAnalysisRequestAddView() {
                 success: function (data, textStatus, $XHR) {
                     if (data['PatientUID'] != '') {
                         $(".dynamic-field-label").remove();
-                        for (var col = 0; col < parseInt($("#col_count").val()); col++) {
-                            fillPatientData(col, data);
-                        }
+                        fillPatientData(0, data); 
                     }
                 }
             });
-            return $("#ar_0_Patient").attr('uid') != '';
+            return $("#Patient-0").attr('uid') != '';
         }
         return false;
     }
@@ -255,11 +254,11 @@ function HealthAnalysisRequestAddView() {
     function filterComboSearches() {
         // Only allow the selection of batches, patients, contacts and CPIDs
         // from the current client
-        for (var col = 0; col < parseInt($("#col_count").val()); col++) {
-            clientuid = $("#ar_" + col + "_Client_uid").val();
+        for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
+            clientuid = $($("tr[fieldname='Client'] td[arnum='" + col + "'] input")[0]).attr("uid");
 
             // Batch searches
-            element = $("#ar_" + col + "_Batch");
+            element = $("#Batch-" + col);
             if (element.length > 0){
                 base_query = $.parseJSON($(element).attr("base_query"));
                 if (base_query != null) {
@@ -269,7 +268,7 @@ function HealthAnalysisRequestAddView() {
             }
 
             // Patient searches
-            element = $("#ar_" + col + "_Patient");
+            element = $("#Patient-" + col);
             if (element.length > 0) {
                 base_query = $.parseJSON($(element).attr("base_query"));
                 if (base_query != null) {
@@ -279,7 +278,7 @@ function HealthAnalysisRequestAddView() {
             }
 
             // CPID searches
-            element = $("#ar_" + col + "_ClientPatientID")
+            element = $("#ClientPatientID-" + col)
             if (element.length > 0) {
                 base_query = $.parseJSON($(element).attr("base_query"));
                 if (base_query != null) {
@@ -289,7 +288,7 @@ function HealthAnalysisRequestAddView() {
             }
 
             // Contact searches
-            element = $("#ar_" + col + "_Contact")
+            element = $("#Contact-" + col)
             if (element.length > 0) {
                 base_query = $.parseJSON($(element).attr("base_query"));
                 if (base_query != null) {
@@ -333,8 +332,8 @@ function HealthAnalysisRequestAddView() {
         // Populate an array of cids first in order to avoid excessive request
         // calls via ajax. Must of the cases will have the same client for all
         // columns.
-        for (var col = 0; col < parseInt($("#col_count").val()); col++) {
-            cid = $("#ar_" + col + "_Client").attr('cid');
+        for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
+            cid = $("#Client-" + col).attr('cid');
             if (cid != null && cid != '' && $.inArray(cid, cids) < 0) {
                 cids.push(cid);
             }
@@ -397,28 +396,28 @@ function HealthAnalysisRequestAddView() {
     }
 
     function fillPatientData(col, data) {
-        $("#ar_" + col + "_Client").val(data['ClientTitle']);
-        $("#ar_" + col + "_Client").attr('uid', data['ClientUID']);
-        $("#ar_" + col + "_Client").attr('cid', data['ClientSysID']);
-        $("#ar_" + col + "_Client_uid").val(data['ClientUID']);
+        $("#Client-" + col).val(data['ClientTitle']);
+        $("#Client-" + col).attr('uid', data['ClientUID']);
+        $("#Client-" + col).attr('cid', data['ClientSysID']);
+        $("#Client-" + col + "_uid").val(data['ClientUID']);
 
-        $("#ar_" + col + "_Patient").val(data['PatientFullname']);
-        $("#ar_" + col + "_Patient").attr('uid', data['PatientUID']);
-        $("#ar_" + col + "_Patient_uid").val(data['PatientUID']);
+        $("#Patient-" + col).val(data['PatientFullname']);
+        $("#Patient-" + col).attr('uid', data['PatientUID']);
+        $("#Patient-" + col + "_uid").val(data['PatientUID']);
 
-        $("#ar_" + col + "_ClientPatientID").val(data['ClientPatientID']);
-        $("#ar_" + col + "_ClientPatientID").attr('uid', data['PatientUID']);
-        $("#ar_" + col + "_ClientPatientID_uid").val(data['PatientUID']);
+        $("#ClientPatientID-" + col).val(data['ClientPatientID']);
+        $("#ClientPatientID-" + col).attr('uid', data['PatientUID']);
+        $("#ClientPatientID-" + col + "_uid").val(data['PatientUID']);
 
         // Only allow the selection of batches from this patient
-        element = $("#ar_" + col + "_Batch")
+        element = $("#Batch-" + col)
         base_query = $.parseJSON($(element).attr("base_query"));
         if (base_query != null) {
             base_query['getPatientUID'] = data['PatientUID'];
             applyComboFilter(element, base_query);
         }
         // Contact searches
-        element = $("#ar_" + col + "_Contact")
+        element = $("#Contact-" + col)
         base_query = $.parseJSON($(element).attr("base_query"));
         if (base_query != null) {
             base_query['getParentUID'] = data['ClientUID'];
@@ -428,15 +427,15 @@ function HealthAnalysisRequestAddView() {
 
     function resetPatientData(col) {
         // Empty client patient id. Reset patient fields
-        $("#ar_" + colposition + "_Patient").val('');
-        $("#ar_" + colposition + "_Patient").attr('uid', '');
-        $("#ar_" + colposition + "_Patient_uid").val('');
-        $("#ar_" + colposition + "_Patient").combogrid("option", "disabled", false);
+        $("#Patient-" + col).val('');
+        $("#Patient-" + col).attr('uid', '');
+        $("#Patient-" + col + "_uid").val('');
+        $("#Patient-" + col).combogrid("option", "disabled", false);
 
-        $("#ar_" + col + "_ClientPatientID").val('');
-        $("#ar_" + col + "_ClientPatientID").attr('uid', '');
-        $("#ar_" + col + "_ClientPatientID_uid").val('');
-        $("#ar_" + colposition + "_ClientPatientID").combogrid("option", "disabled", false);
+        $("#ClientPatientID-" + col).val('');
+        $("#ClientPatientID-" + col).attr('uid', '');
+        $("#ClientPatientID-" + col + "_uid").val('');
+        $("#ClientPatientID-" + col).combogrid("option", "disabled", false);
 
         frombatch = window.location.href.search('/batches/') >= 0;
         frompatient = document.referrer.search('/patients/') >= 0;
@@ -473,16 +472,34 @@ function HealthAnalysisRequestAddView() {
         } else {
 
             // Clear the batches selection from this patient
-            element = $("#ar_" + col + "_Batch")
+            element = $("#Batch-" + col)
             base_query = $.parseJSON($(element).attr("base_query"));
             delete base_query['getPatientUID'];
             applyComboFilter(element, base_query);
 
             // Contact searches
-            element = $("#ar_" + col + "_Contact")
+            element = $("#Contact-" + col)
             base_query = $.parseJSON($(element).attr("base_query"));
             delete base_query['getParentUID'];
             applyComboFilter(element, base_query);
         }
+    }
+    function get_arnum(element) {
+        // Should be able to deduce the arnum of any form element
+        var arnum
+        // Most AR schema field widgets have [arnum=<arnum>] on their parent TD
+        arnum = $(element).parents("[arnum]").attr("arnum")
+        if (arnum) {
+            return arnum
+        }
+        // analysisservice checkboxes have an ar.<arnum> class on the parent TD
+        var td = $(element).parents("[class*='ar\\.']")
+        if (td.length > 0) {
+            var arnum = $(td).attr("class").split('ar.')[1].split()[0]
+            if (arnum) {
+                return arnum
+            }
+        }
+        console.error("No arnum found for element " + element)
     }
 }
