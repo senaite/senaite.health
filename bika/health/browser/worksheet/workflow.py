@@ -3,7 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
 from bika.lims import logger
-from bika.lims.browser.worksheet import \
+from bika.lims.browser.worksheet.workflow import \
     WorksheetWorkflowAction as BaseClass
 from bika.lims.utils import encode_header
 from bika.lims.utils import isActive
