@@ -1,7 +1,9 @@
 from bika.health import bikaMessageFactory as _
+from bika.lims.utils import t
 from bika.lims.browser.analysisrequest.add import ajaxAnalysisRequestSubmit as BaseClass
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
+from bika.lims.browser.analysisrequest.add import ajax_form_error
 from Products.CMFCore.utils import getToolByName
 import json
 
@@ -19,7 +21,11 @@ class AnalysisRequestSubmit(BaseClass):
         for key in state.keys():
             values = state[key].copy()
             patuid = values.get('Patient', '')
-            if patuid == 'anonymous':
+            if patuid == '' and values.get('Analyses') != []:
+                msg = t(_('Required fields have no values: Patient'))
+                ajax_form_error(self.errors, arnum=key, message=msg)
+                continue
+            elif patuid == 'anonymous':
                 clientpatientid = values.get('ClientPatientID', '')
                 # Check if has already been created
                 proxies = bpc(getClientPatientID=clientpatientid)
