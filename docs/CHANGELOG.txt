@@ -1,5 +1,6 @@
 3.1.8 (unreleased)
 ------------------
+HEALTH-281: Error in Bika Setup › Insurance Companies > Invoices
 HEALTH-305: Having invoices
 HEALTH-370: Worksheet architecture has changed in LIMS
 HEALTH-269: Analysis Request Add compatibility with LIMS 3.1.9
