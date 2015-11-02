@@ -83,7 +83,8 @@ class InvoiceFolderView(BikaListingView):
         # Get the AR's patient if the invoice has an AR related
         patient = iAR.Schema()['Patient'].get(iAR) if iAR else None
         # Get the patient's insurance company's UID if there is a patient
-        icuid = patient.getInsuranceCompany().UID() if patient else None
+        icuid = patient.getInsuranceCompany().UID() \
+                if patient and patient.getInsuranceCompany() else None
         return icuid == self.context.UID()
 
     def folderitems(self, full_objects=False):

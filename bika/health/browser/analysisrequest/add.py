@@ -22,6 +22,10 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         self.w = AddressWidget()
 
     def __call__(self):
+        # Hacking the template condition to display only the classic analysis
+        # request view because the standard one is not compatible with the new
+        # bikalisting
+        self.templatename = 'classic'
         if self.templatename == 'classic':
             return AnalysisRequestAddViewLIMS.__call__(self)
 
@@ -63,8 +67,11 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
         :param department: The department UID
         :return: True or False
         """
-        return getToolByName(self.context, 'bika_setup_catalog')(UID=category)[0]\
-            .getObject().getDepartment().UID() == department
+        obj = getToolByName(self.context, 'bika_setup_catalog')(UID=category)
+        if obj:
+            return obj[0].getObject().getDepartment().UID() == department
+        else:
+            return False
 
     def getAvailableServices(self, categoryuid):
         """ Return a list of services brains
@@ -75,4 +82,3 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
                        inactive_state='active',
                        getCategoryUID=categoryuid)
         return services
-

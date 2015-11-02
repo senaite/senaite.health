@@ -2,8 +2,16 @@
            xmlns:zcml="http://namespaces.zope.org/browser"
            xmlns:fss="http://namespaces.zope.org/browser"
            xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:plone="http://namespaces.plone.org/plone"
            xmlns:five="http://namespaces.zope.org/five">
 
+    <include package="plone.resource" file="meta.zcml"/>
+    <plone:static
+        directory="templates/reports"
+        type="reports"
+        name="bika.health"
+    />
+   
     <browser:page
       for="*"
       name="email_popup"

@@ -23,11 +23,11 @@
 
 <metal:title fill-slot="content-title">
     <!-- Load print page -->
-    <div class="ar-add-template-classic-button">
+    <div class="ar-add-template-classic-button" style="display: none;">
         <input type="button" value="Print" id="print" i18n:translate=""/>
     </div>
     <!-- Show the classic bika template -->
-    <div class="ar-add-template-classic-button">
+    <div class="ar-add-template-classic-button" style="display: none;">
         <a href="ar_add?tpl=classic" i18n:translate="">Classic template</a>
     </div>
 </metal:title>
