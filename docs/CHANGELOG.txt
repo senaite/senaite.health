@@ -1,5 +1,19 @@
+3.1.8 (2015-11-03)
+------------------
+HEALTH-301: Use newer version of Health flow diagram in next release
+HEALTH-281: Error in Bika Setup › Insurance Companies > Invoices
+HEALTH-305: Having invoices
+HEALTH-370: Worksheet architecture has changed in LIMS
+HEALTH-269: Analysis Request Add compatibility with LIMS 3.1.9
+HEALTH-273: Error upgrading to 317
+HEALTH-270: Error while importing patient with "yearinprefix" disabled
+HEALTH-271: Analysis request invoice view broken
+HEALTH-266: View error on invoice from analysis request
+HEALTH-258: Add "File attachment" on Patient
+
 3.1.7 (2015-06-09)
 ------------------
+HEALTH-282: Error loading Add Analysis request
 HEALTH-245: Set-up data load. Patient ID conversion, alternatives
 HEALTH-227: Converting Patient IDs before import
 HEALTH-228: Load Setup data bugs

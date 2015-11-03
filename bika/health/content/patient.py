@@ -752,6 +752,12 @@ class Patient(Person):
     def setEthnicity(self, value):
         self.setEthnicity_Obj(value)
 
+    def getDocuments(self):
+        """
+        Return all the multifile objects related with the patient
+        """
+        return self.objectValues('Multifile')
+
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)

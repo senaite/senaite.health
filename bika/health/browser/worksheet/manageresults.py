@@ -1,7 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from bika.health import bikaMessageFactory as _
 from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange
-from bika.lims.browser.worksheet import \
+from bika.lims.browser.worksheet.views import \
     ManageResultsView as BaseView
 
 

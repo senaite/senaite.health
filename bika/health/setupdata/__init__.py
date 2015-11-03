@@ -9,7 +9,7 @@ from bika.lims.interfaces import ISetupDataSetList
 from bika.lims.utils import tmpID
 from pkg_resources import resource_filename
 from zope.interface import implements
-import transaction
+import transaction, os.path
 
 
 class SetupDataSetList(SDL):
@@ -289,7 +289,9 @@ class Patients(WorksheetImporter):
             pc = getToolByName(self.context, 'portal_catalog')
             client = pc(portal_type='Client', Title=row['PrimaryReferrer'])
             if len(client) == 0:
-                raise IndexError("Primary referrer invalid: '%s'" % row['PrimaryReferrer'])
+                error = "Primary referrer invalid: '%s'. Patient '%s %s' will not be uploaded"
+                logger.error(error, row['PrimaryReferrer'], row['Firstname'], row.get('Surname', ''))
+                continue
 
             client = client[0].getObject()
 
@@ -328,20 +330,22 @@ class Patients(WorksheetImporter):
             self.fill_addressfields(row, obj)
             if 'Photo' in row and row['Photo']:
                 try:
-                    path = resource_filename("bika.lims",
+                    path = resource_filename(self.dataset_project,
                                              "setupdata/%s/%s" \
                                              % (self.dataset_name, row['Photo']))
-                    file_data = open(path, "rb").read()
+                    file_data = open(path, "rb").read() if os.path.isfile(path) \
+                        else open(path+'.jpg', "rb").read()
                     obj.setPhoto(file_data)
                 except:
                     logger.error("Unable to load Photo %s"%row['Photo'])
 
             if 'Feature' in row and row['Feature']:
                 try:
-                    path = resource_filename("bika.lims",
+                    path = resource_filename(self.dataset_project,
                                              "setupdata/%s/%s" \
                                              % (self.dataset_name, row['Feature']))
-                    file_data = open(path, "rb").read()
+                    file_data = open(path, "rb").read() if os.path.isfile(path) \
+                        else open(path+'.pdf', "rb").read()
                     obj.setFeature(file_data)
                 except:
                     logger.error("Unable to load Feature %s"%row['Feature'])
@@ -350,7 +354,9 @@ class Patients(WorksheetImporter):
             transaction.savepoint(optimistic=True)
             if row.get('PatientID'):
                 # To maintain the patient spreadsheet's IDs, we cannot do a 'renameaftercreation()'
-                obj.aq_inner.aq_parent.manage_renameObject(obj.id, row.get('PatientID'))
+                if obj.getPatientID() != row.get('PatientID'):
+                    transaction.savepoint(optimistic=True)
+                    obj.aq_inner.aq_parent.manage_renameObject(obj.id, row.get('PatientID'))
             else:
                 renameAfterCreation(obj)
 
@@ -375,21 +381,29 @@ class Analysis_Specifications(WorksheetImporter):
             if not service:
                 service = bsc(portal_type='AnalysisService',
                               getKeyword=row['service'])
-            service = service[0].getObject()
-            bucket[c_t][s_t].append({
+            try:
+                service = service[0].getObject()
+                bucket[c_t][s_t].append({
                 'keyword': service.getKeyword(),
-                'min': row['min'] if row['min'] else '0',
-                'max': row['max'] if row['max'] else '0',
-                'minpanic': row['minpanic'] if row['minpanic'] else '0',
-                'maxpanic': row['maxpanic'] if row['maxpanic'] else '0',
-                'error': row['error'] if row['error'] else '0'
-            })
+                'min': row.get('min','0'),
+                'max': row.get('max','0'),
+                'minpanic': row.get('minpanic','0'),
+                'maxpanic': row.get('maxpanic','0'),
+                'error': row.get('error','0'),
+                })
+            except IndexError:
+                warning = "Error with service name %s on sheet %s. Service not uploaded."
+                logger.warning(warning, row.get('service', ''), self.sheetname)
         # write objects.
         for c_t in bucket:
             if c_t == 'lab':
                 folder = self.context.bika_setup.bika_analysisspecs
             else:
-                folder = pc(portal_type='Client', title=c_t)[0].getObject()
+                folder = pc(portal_type='Client', title=c_t)
+                if (not folder or len(folder) != 1):
+                    logger.warn("Client %s not found. Omiting client specifications." % c_t)
+                    continue
+                folder = folder[0].getObject()
             for s_t in bucket[c_t]:
                 resultsrange = bucket[c_t][s_t]
                 sampletype = bsc(portal_type='SampleType', title=s_t)[0]
