@@ -5,15 +5,6 @@ function HealthAnalysisRequestAddView() {
 
     var that = this;
 
-    // ------------------------------------------------------------------------
-    // PUBLIC ACCESSORS
-    // ------------------------------------------------------------------------
-
-
-    // ------------------------------------------------------------------------
-    // PUBLIC FUNCTIONS
-    // ------------------------------------------------------------------------
-
     /**
      * Entry-point method for AnalysisRequestAddView
      */
@@ -207,10 +198,8 @@ function HealthAnalysisRequestAddView() {
                             $("#ClientPatientID-" + col).after("<span class='dynamic-field-label'>" + $("#ClientPatientID-" + col).val() + "</span>");
 
                             // Contact searches
-                            element = $("#Contact-" + col)
-                            base_query = $.parseJSON($(element).attr("base_query"));
-                            base_query['getParentUID'] = data['ClientUID'];
-                            applyComboFilter(element, base_query);
+                            element = $("#Contact-" + col)[0];
+                            filter_combogrid(element, "getParentUID", data['ClientUID']);
                         }
                         return true;
                     }
@@ -242,7 +231,7 @@ function HealthAnalysisRequestAddView() {
                 success: function (data, textStatus, $XHR) {
                     if (data['PatientUID'] != '') {
                         $(".dynamic-field-label").remove();
-                        fillPatientData(0, data); 
+                        fillPatientData(0, data);
                     }
                 }
             });
@@ -260,61 +249,26 @@ function HealthAnalysisRequestAddView() {
             // Batch searches
             element = $("#Batch-" + col);
             if (element.length > 0){
-                base_query = $.parseJSON($(element).attr("base_query"));
-                if (base_query != null) {
-                    base_query['getClientUID'] = clientuid;
-                    applyComboFilter(element, base_query);
-                }
+                filter_combogrid(element[0], "getClientUID", clientuid);
             }
 
             // Patient searches
             element = $("#Patient-" + col);
             if (element.length > 0) {
-                base_query = $.parseJSON($(element).attr("base_query"));
-                if (base_query != null) {
-                    base_query['getPrimaryReferrerUID'] = clientuid;
-                    applyComboFilter(element, base_query);
-                }
+                filter_combogrid(element[0], "getPrimaryReferrerUID", clientuid);
             }
 
             // CPID searches
-            element = $("#ClientPatientID-" + col)
+            element = $("#ClientPatientID-" + col);
             if (element.length > 0) {
-                base_query = $.parseJSON($(element).attr("base_query"));
-                if (base_query != null) {
-                    base_query['getPrimaryReferrerUID'] = clientuid;
-                    applyComboFilter(element, base_query);
-                }
+                filter_combogrid(element[0], "getPrimaryReferrerUID", clientuid);
             }
 
             // Contact searches
-            element = $("#Contact-" + col)
+            element = $("#Contact-" + col);
             if (element.length > 0) {
-                base_query = $.parseJSON($(element).attr("base_query"));
-                if (base_query != null) {
-                    base_query['getParentUID'] = clientuid;
-                    applyComboFilter(element, base_query);
-                }
+                filter_combogrid(element[0], "getParentUID", clientuid);
             }
-        }
-    }
-
-    function applyComboFilter(element, base_query) {
-        if (element.length > 0) {
-            $(element).attr("base_query", $.toJSON(base_query));
-            options = $.parseJSON($(element).attr("combogrid_options"));
-            options.url = window.location.href.split("/ar_add")[0] + "/" + options.url
-            options.url = options.url + '?_authenticator=' + $('input[name="_authenticator"]').val();
-            options.url = options.url + '&catalog_name=' + $(element).attr('catalog_name');
-            options.url = options.url + '&base_query=' + $.toJSON(base_query);
-            options.url = options.url + '&search_query=' + $(element).attr('search_query');
-            options.url = options.url + '&colModel=' + $.toJSON($.parseJSON($(element).attr('combogrid_options'))["colModel"]);
-            options.url = options.url + '&search_fields=' + $.toJSON($.parseJSON($(element).attr('combogrid_options'))["search_fields"]);
-            options.url = options.url + '&discard_empty=' + $.toJSON($.parseJSON($(element).attr('combogrid_options'))["discard_empty"]);
-            options['force_all'] = 'false';
-            $(element).combogrid(options);
-            $(element).addClass("has_combogrid_widget");
-            $(element).attr('search_query', '{}');
         }
     }
 
@@ -410,19 +364,12 @@ function HealthAnalysisRequestAddView() {
         $("#ClientPatientID-" + col + "_uid").val(data['PatientUID']);
 
         // Only allow the selection of batches from this patient
-        element = $("#Batch-" + col)
-        base_query = $.parseJSON($(element).attr("base_query"));
-        if (base_query != null) {
-            base_query['getPatientUID'] = data['PatientUID'];
-            applyComboFilter(element, base_query);
-        }
+        element = $("#Batch-" + col);
+        filter_combogrid(element[0], "getPatientUID", data['PatientUID']);
+
         // Contact searches
-        element = $("#Contact-" + col)
-        base_query = $.parseJSON($(element).attr("base_query"));
-        if (base_query != null) {
-            base_query['getParentUID'] = data['ClientUID'];
-            applyComboFilter(element, base_query);
-        }
+        element = $("#Contact-" + col);
+        filter_combogrid(element[0], "getParentUID", data['ClientUID']);
     }
 
     function resetPatientData(col) {
@@ -472,16 +419,12 @@ function HealthAnalysisRequestAddView() {
         } else {
 
             // Clear the batches selection from this patient
-            element = $("#Batch-" + col)
-            base_query = $.parseJSON($(element).attr("base_query"));
-            delete base_query['getPatientUID'];
-            applyComboFilter(element, base_query);
+            element = $("#Batch-" + col);
+            filter_combogrid(element[0], "getPatientUID", "");
 
             // Contact searches
-            element = $("#Contact-" + col)
-            base_query = $.parseJSON($(element).attr("base_query"));
-            delete base_query['getParentUID'];
-            applyComboFilter(element, base_query);
+            element = $("#Contact-" + col);
+            filter_combogrid(element[0], "getParentUID", "");
         }
     }
     function get_arnum(element) {
@@ -501,5 +444,15 @@ function HealthAnalysisRequestAddView() {
             }
         }
         console.error("No arnum found for element " + element)
+    }
+
+    /**
+     * Apply or modify a query filter for a reference widget.
+     * This will set the options, then re-create the combogrid widget
+     * with the new filter key/value.
+     * Delegates the action to window.bika.lims.AnalysisRequestAddByCol.filter_combogrid
+     */
+    function filter_combogrid(element, filterkey, filtervalue){
+        window.bika.lims.AnalysisRequestAddByCol.filter_combogrid(element,filterkey,filtervalue,'base_query');
     }
 }
