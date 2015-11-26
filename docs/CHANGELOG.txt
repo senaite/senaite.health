@@ -1,5 +1,6 @@
 3.1.9 (unreleased)
 ------------------
+HEALTH-413: Dashboard not showing
 HEALTH-402: In Analysis Request Add form, contact doesn't get selected
 
 3.1.8 (2015-11-03)
