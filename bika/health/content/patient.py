@@ -493,6 +493,12 @@ schema = Person.schema.copy() + Schema((
             label=_("Guarantor's Phone (mobile)"),
         ),
     ),
+    BooleanField('ConsentSMS',
+                 default=False,
+                 widget=BooleanWidget(
+                     label=_('Consent to SMS'),
+                 ),
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -522,6 +528,7 @@ schema.moveField('BirthDateEstimated', after='BirthDate')
 schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
+schema.moveField('ConsentSMS', after='PrimaryReferrer')
 
 
 class Patient(Person):
