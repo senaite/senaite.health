@@ -7,7 +7,7 @@ from bika.health.widgets import *
 from plone.indexer.decorator import indexer
 from bika.health import bikaMessageFactory as _
 from bika.lims.config import PUBLICATION_PREFS
-from zope.component import adapts
+from zope.component import adapts, getAdapters
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 
 @indexer(IClient)
@@ -41,7 +41,7 @@ class ClientSchemaExtender(object):
                               "preferences' tab."))
         ),
         ExtLinesField('PatientPublicationPreferences',
-            vocabulary=PUBLICATION_PREFS,
+            vocabulary='getPublicationPrefs',
             schemata='Results Reports',
             widget=MultiSelectionWidget(
                 label=_("Default publication preference for Patients"),
@@ -77,3 +77,9 @@ class ClientSchemaExtender(object):
         sch.insert(sch.index('PatientPublicationPreferences'), 'AllowResultsDistributionToPatients')
         schematas['Results Reports'] = sch
         return schematas
+
+    def getPublicationPrefs(self):
+        pubprefs = PUBLICATION_PREFS
+        for name, adapter in getAdapters((self.context, ), ICustomPubPref):
+            pubprefs.add(adapter(result))
+        return pubprefs
