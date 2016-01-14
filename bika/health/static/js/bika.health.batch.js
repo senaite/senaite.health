@@ -71,22 +71,32 @@ function HealthBatchEditView() {
      * @return patientuid or null
      */
     this.getPatientUIDReferrer = function() {
-       if (refpatientuid == null && document.referrer.search('/patients/') >= 0) {
-            pid = document.referrer.split("patients")[1].split("/")[1];
-            $.ajax({
-                url: window.portal_url + "/getpatientinfo",
-                type: 'POST',
-                async: false,
-                data: {'_authenticator': $('input[name="_authenticator"]').val(),
-                       'PatientID': pid,},
-                dataType: "json",
-                success: function(data, textStatus, $XHR) {
-                    if (data['PatientUID'] != null && data['PatientUID']!='') {
-                        refpatientuid = data['PatientUID'] != '' ? data['PatientUID'] : null;
-                        refclientuid = data['ClientUID'] != '' ? data['ClientUID'] : null;
+        if (refpatientuid == null) {
+            // Getting the cookie with the patient's uid
+            // -- readCookie is giving me ""uid""
+            var cpuid = readCookie('patient_uid').replace(/"/g,'');
+            // Without cpuid look for the referrer page url
+            if (!cpuid && document.referrer.search('/patients/') >= 0) {
+                pid = document.referrer.split("patients")[1].split("/")[1];
+                $.ajax({
+                    url: window.portal_url + "/getpatientinfo",
+                    type: 'POST',
+                    async: false,
+                    data: {'_authenticator': $('input[name="_authenticator"]').val(),
+                           'PatientID': pid,},
+                    dataType: "json",
+                    success: function(data, textStatus, $XHR) {
+                        if (data['PatientUID'] != null && data['PatientUID']!='') {
+                            refpatientuid = data['PatientUID'] != '' ? data['PatientUID'] : null;
+                            refclientuid = data['ClientUID'] != '' ? data['ClientUID'] : null;
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                // Delete cookie
+                document.cookie = "patient_uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/Plone/batches/portal_factory/Batch/;";
+                refpatientuid = cpuid;
+            }
         }
         return refpatientuid != '' ? refpatientuid : null;
     }
