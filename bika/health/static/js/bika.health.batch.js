@@ -94,7 +94,7 @@ function HealthBatchEditView() {
                 });
             } else {
                 // Delete cookie
-                document.cookie = "patient_uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/Plone/batches/portal_factory/Batch/;";
+                document.cookie = "patient_uid=; expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
                 refpatientuid = cpuid;
             }
         }
