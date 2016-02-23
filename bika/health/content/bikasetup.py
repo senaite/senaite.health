@@ -1,12 +1,12 @@
 from Products.Archetypes.Widget import BooleanWidget
 from archetypes.schemaextender.interfaces import ISchemaExtender,\
     IOrderableSchemaExtender
-from bika.lims.config import PUBLICATION_PREFS
 from bika.lims.fields import *
 from bika.health import bikaMessageFactory as _
 from bika.lims.interfaces import IBikaSetup
-from zope.component import adapts
+from zope.component import adapts, getAdapters
 from zope.interface import implements
+from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 
 class BikaSetupSchemaExtender(object):
@@ -69,7 +69,7 @@ class BikaSetupSchemaExtender(object):
                               "Patient's 'Publication preferences' tab."))
         ),
         ExtLinesField('PatientPublicationPreferences',
-            vocabulary= PUBLICATION_PREFS,
+            vocabulary_factory = 'bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
             schemata = 'Results Reports',
             widget = MultiSelectionWidget(
                 label = _("Default publication preference for Patients"),

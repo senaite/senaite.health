@@ -19,9 +19,11 @@ from bika.health.interfaces import IPatient
 from bika.health.permissions import *
 from bika.health.widgets import ReadonlyStringWidget
 from datetime import datetime
+from zope.component import getAdapters
 from zope.interface import implements
 from Products.Archetypes.references import HoldingReference
 from bika.health.widgets.patientmenstrualstatuswidget import PatientMenstrualStatusWidget
+from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 schema = Person.schema.copy() + Schema((
     StringField('PatientID',
@@ -402,7 +404,7 @@ schema = Person.schema.copy() + Schema((
                           "to the Patient automatically."))
     ),
     LinesField('PublicationPreferences',
-        vocabulary=PUBLICATION_PREFS,
+        vocabulary_factory='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
         schemata='Publication preference',
         widget=MultiSelectionWidget(
             label=_("Publication preference"),
@@ -771,7 +773,6 @@ class Patient(Person):
         Return all the multifile objects related with the patient
         """
         return self.objectValues('Multifile')
-
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 atapi.registerType(Patient, PROJECTNAME)
