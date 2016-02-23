@@ -74,7 +74,10 @@ function HealthBatchEditView() {
         if (refpatientuid == null) {
             // Getting the cookie with the patient's uid
             // -- readCookie is giving me ""uid""
-            var cpuid = readCookie('patient_uid').replace(/"/g,'');
+            var cookie = readCookie('patient_uid');
+            if (cookie != null){
+                var cpuid = cookie.replace(/"/g,'')
+            };
             // Without cpuid look for the referrer page url
             if (!cpuid && document.referrer.search('/patients/') >= 0) {
                 pid = document.referrer.split("patients")[1].split("/")[1];
