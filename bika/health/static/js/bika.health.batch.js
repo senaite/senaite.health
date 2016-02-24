@@ -174,6 +174,7 @@ function HealthBatchEditView() {
             $('#Patient').after("<span id='Patient_label'>" + $("#Patient").val() + "</span>&nbsp;&nbsp;");
            //$('#Client').after("<span id='Client_label'>" + $("#Client").val() + "</span>");
             $('#ClientPatientID').after("<span id='ClientPatientID_label'>" + $("#ClientPatientID").val() + "</span>");
+            $('#Patient_addbutton').hide();
 
         } else if (rcuid != null) {
             that.fillClient(rcuid);
