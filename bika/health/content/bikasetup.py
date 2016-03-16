@@ -106,6 +106,16 @@ class BikaSetupSchemaExtender(object):
                               "time.")
             )
         ),
+        ExtBooleanField('CaseDoctorIsMandatory',
+            schemata="Cases",
+            default=True,
+            widget=BooleanWidget(
+                label=_("Doctor field is mandatory in cases"),
+                description=_(
+                            "Should the Doctor field be mandatory while "
+                            "creating a case?")
+                            )
+                        ),
     ]
 
     def __init__(self, context):
