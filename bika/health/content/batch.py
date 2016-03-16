@@ -21,6 +21,11 @@ from plone.indexer.decorator import indexer
 from zope.component import adapts
 from zope.interface import implements
 from bika.health.widgets.casepatientconditionwidget import CasePatientConditionWidget
+try:
+    from zope.component.hooks import getSite
+except:
+    # Plone < 4.3
+    from zope.app.component.hooks import getSite
 
 class getCaseSyndromicClassification:
     implements(IVocabulary)
@@ -86,6 +91,7 @@ def getDoctorID(instance):
 def getDoctorUID(instance):
     item = instance.Schema()['Doctor'].get(instance)
     value = item and item.UID() or ''
+    return value
 
 @indexer(IBatch)
 def getDoctorTitle(instance):
@@ -118,6 +124,15 @@ def getClientPatientID(instance):
     return value
 
 
+def isCaseDoctorIsMandatory():
+    """
+    Returns whether the Doctor field is mandatory or not in cases object.
+    :return: boolean
+    """
+    plone = getSite()
+    return plone.bika_setup.CaseDoctorIsMandatory
+
+
 class BatchSchemaExtender(object):
     adapts(IBatch)
     implements(IOrderableSchemaExtender)
@@ -133,7 +148,7 @@ class BatchSchemaExtender(object):
         #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).Title() or None",
         # ),
         ExtReferenceField('Doctor',
-            required = 1,
+            required=1,
             multiValued=0,
             allowed_types = ('Doctor',),
             referenceClass = HoldingReference,
@@ -459,4 +474,5 @@ class BatchSchemaModifier(object):
         schema['ClientBatchID'].widget.label = _("Client Case ID")
         schema['BatchDate'].widget.visible = False
         schema['InheritedObjectsUI'].widget.visible = False
+        schema['Doctor'].required = isCaseDoctorIsMandatory()
         return schema
