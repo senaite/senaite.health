@@ -6,6 +6,7 @@ import logging
 logger = logging.getLogger('Bika Health')
 
 from bika.lims.validators import *
+from bika.health.validators import *
 from bika.health.config import *
 from bika.health.permissions import *
 
