@@ -1,5 +1,6 @@
 3.1.9 (unreleased)
 ------------------
+HEALTH-503: Validation of Date of birth 
 HEALTH-413: Dashboard not showing
 HEALTH-402: In Analysis Request Add form, contact doesn't get selected
 

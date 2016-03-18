@@ -71,6 +71,7 @@ schema = Person.schema.copy() + Schema((
     ),
     DateTimeField('BirthDate',
                   required=0,
+                  validators=('isDateFormat',),
                   widget=DateTimeWidget(
                       label=_('Birth date'),
                   ),
