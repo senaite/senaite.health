@@ -1,6 +1,5 @@
-'use strict';
 window.bika = window.bika || { lims: {} };
-window.bika['health']={};
+window.bika.health={};
 window.jarn.i18n.loadCatalog("bika.health");
 var _h = window.jarn.i18n.MessageFactory("bika.health");
 
@@ -60,10 +59,12 @@ window.bika.health.initialized = false;
  * dict to be load together.
  */
 window.bika.health.initialize = function() {
-    if (bika.lims.initialized == true) {
+    if (bika.lims.initialized === true) {
         window.bika.lims.controllers = $.extend(window.bika.lims.controllers, window.bika.health.controllers);
         // We need to force bika.lims.loader to load the bika.health controllers.
-        return window.bika.lims.initview();
+        var len = window.bika.lims.initview();
+        window.bika.health.initialized = true;
+        return len;
     }
     // We should wait after bika.lims has been initialized.
     setTimeout(function() {
@@ -76,7 +77,5 @@ $(document).ready(function(){
 
     // Initializes bika.health.
     var length = window.bika.health.initialize();
-    window.bika.health.initialized = true;
-
 });
 }(jQuery));
