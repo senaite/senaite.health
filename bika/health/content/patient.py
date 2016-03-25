@@ -92,9 +92,10 @@ schema = Person.schema.copy() + Schema((
     ),
     AddressField('CountryState',
                  widget=AddressWidget(
+                 searchable=True,
                  label=_("Country and state"),
                      showLegend=True,
-                     showDistrict=False,
+                     showDistrict=True,
                      showCopyFrom=False,
                      showCity=False,
                      showPostalCode=False,
@@ -685,6 +686,14 @@ class Patient(Person):
         return self.getField('CountryState').get(self) \
             if self.getField('CountryState').get(self) \
             else self.getPhysicalAddress()
+
+    def getState(self):
+        cs = self.getCountryState()
+        return cs.get("state", "")
+
+    def getDistrict(self):
+        cs = self.getCountryState()
+        return cs.get("district", "")
 
     def getGuarantorID(self):
         """

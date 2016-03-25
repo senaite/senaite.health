@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+import types
+
 from Products.ATContentTypes.content import schemata
 from Products.Archetypes import atapi
 from Products.CMFCore.utils import getToolByName
@@ -13,6 +16,18 @@ from plone.app.folder.folder import ATFolder, ATFolderSchema
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface.declarations import implements
 import json
+
+# Available Columns of the Patients View Table (see: `get_columns`)
+COLUMNS = ['getPatientID',
+           'getClientPatientID',
+           'Title',
+           'getGender',
+           'getAgeSplittedStr',
+           'getBirthDate',
+           'getState',
+           'getDistrict',
+           'getCitizenship',
+           'getPrimaryReferrer']
 
 
 class PatientsView(BikaListingView):
@@ -57,6 +72,14 @@ class PatientsView(BikaListingView):
                              'index': 'getBirthDate',
                              'toggle': True},
 
+            'getState': {'title': _('State'),
+                               'index': 'getState',
+                               'toggle': True},
+
+            'getDistrict': {'title': _('District'),
+                               'index': 'getDistrict',
+                               'toggle': True},
+
             'getCitizenship': {'title': _('Citizenship'),
                                'index': 'getCitizenship',
                                'toggle': True},
@@ -72,14 +95,20 @@ class PatientsView(BikaListingView):
              'title': _b('Active'),
              'contentFilter': {'inactive_state': 'active'},
              'transitions': [],
-             'columns': ['getPatientID', 'getClientPatientID',
-                         'Title', 'getGender', 'getAgeSplittedStr',
-                         'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']},
+             'columns': self.get_columns()},
         ]
 
     def __call__(self):
         self._initFormParams()
         return super(PatientsView, self).__call__()
+
+    def get_columns(self, sieve=[]):
+        """Get Table Columns and filter out keys listed in sieve
+        """
+        if type(sieve) not in (types.ListType, types.TupleType):
+            raise RuntimeError("Sieve must be a list type")
+        # filter out columns listed in sieve
+        return filter(lambda c: c not in sieve, COLUMNS)
 
     def _initFormParams(self):
         mtool = getToolByName(self.context, 'portal_membership')
@@ -101,21 +130,15 @@ class PatientsView(BikaListingView):
                  'title': _b('Dormant'),
                  'contentFilter': {'inactive_state': 'inactive'},
                  'transitions': [{'id':'activate'}, ],
-                 'columns': ['getPatientID', 'getClientPatientID',
-                             'Title', 'getGender', 'getAgeSplittedStr',
-                             'getBirthDate', 'getCitizenship', 'getPrimaryReferrer']})
+                 'columns': self.get_columns()})
             self.review_states.append(
                 {'id': 'all',
                  'title': _b('All'),
                  'contentFilter':{},
                  'transitions':[{'id':'empty'}, ],
-                 'columns': ['Title', 'getPatientID', 'getClientPatientID',
-                             'getGender', 'getAgeSplittedStr',
-                             'getBirthDate', 'getCitizenship',
-                             'getPrimaryReferrer']})
+                 'columns': self.get_columns()})
             stat = self.request.get("%s_review_state" % self.form_id, 'default')
             self.show_select_column = stat != 'all'
-
 
     def folderitems(self):
         # Obtain the member and member's role.
