@@ -691,6 +691,10 @@ class Patient(Person):
         cs = self.getCountryState()
         return cs.get("state", "")
 
+    def getProvince(self):
+        # Province == State
+        return self.getState()
+
     def getDistrict(self):
         cs = self.getCountryState()
         return cs.get("district", "")
