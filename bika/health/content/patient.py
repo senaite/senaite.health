@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from Products.ATContentTypes.content import schemata
 from AccessControl import ClassSecurityInfo
 from Products.ATContentTypes.utils import DT2dt
@@ -686,18 +688,6 @@ class Patient(Person):
         return self.getField('CountryState').get(self) \
             if self.getField('CountryState').get(self) \
             else self.getPhysicalAddress()
-
-    def getState(self):
-        cs = self.getCountryState()
-        return cs.get("state", "")
-
-    def getProvince(self):
-        # Province == State
-        return self.getState()
-
-    def getDistrict(self):
-        cs = self.getCountryState()
-        return cs.get("district", "")
 
     def getGuarantorID(self):
         """

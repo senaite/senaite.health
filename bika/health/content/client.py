@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
 from Products.Archetypes.public import *

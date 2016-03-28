@@ -15,15 +15,11 @@ class SamplesView(BaseView):
         self.columns['getPatientID'] = {'title': _('Patient ID'), 'toggle': True}
         self.columns['getClientPatientID'] = {'title': _("Client PID"), 'toggle': True}
         self.columns['getPatient'] = {'title': _('Patient'), 'toggle': True}
-        self.columns['getProvince'] = {'title': _('Province'), 'toggle': True}
-        self.columns['getDistrict'] = {'title': _('District'), 'toggle': True}
         self.columns['getDoctor'] = {'title': _('Doctor'), 'toggle': True}
         for rs in self.review_states:
             i = rs['columns'].index('getSampleID') + 1
             rs['columns'].insert(i, 'getClientPatientID')
             rs['columns'].insert(i, 'getPatientID')
-            rs['columns'].insert(i, 'getDistrict')
-            rs['columns'].insert(i, 'getProvince')
             rs['columns'].insert(i, 'getPatient')
             rs['columns'].insert(i, 'getDoctor');
 
@@ -41,15 +37,11 @@ class SamplesView(BaseView):
             del self.columns['getPatientID']
             del self.columns['getClientPatientID']
             del self.columns['getPatient']
-            del self.columns['getProvince']
-            del self.columns['getDistrict']
             del self.columns['getDoctor']
             for rs in self.review_states:
                 del rs['columns'][rs['columns'].index('getClientPatientID')]
                 del rs['columns'][rs['columns'].index('getPatientID')]
                 del rs['columns'][rs['columns'].index('getPatient')]
-                del rs['columns'][rs['columns'].index('getProvince')]
-                del rs['columns'][rs['columns'].index('getDistrict')]
                 del rs['columns'][rs['columns'].index('getDoctor')]
         else:
             for x in range(len(items)):
@@ -57,8 +49,6 @@ class SamplesView(BaseView):
                     items[x]['getClientPatientID'] = ''
                     items[x]['getPatientID'] = ''
                     items[x]['getPatient'] = ''
-                    items[x]['getProvince'] = ''
-                    items[x]['getDistrict'] = ''
                     items[x]['getDoctor'] = ''
                     continue
                 patient = self.getPatient(items[x]['obj'])
@@ -72,14 +62,10 @@ class SamplesView(BaseView):
                     items[x]['getPatient'] = patient.Title()
                     items[x]['replace']['getPatient'] = "<a href='%s/analysisrequests'>%s</a>" % \
                         (patient.absolute_url(), items[x]['getPatient'])
-                    items[x]['getProvince'] = patient.getProvince()
-                    items[x]['getDistrict'] = patient.getDistrict()
                 else:
                     items[x]['getClientPatientID'] = ''
                     items[x]['getPatientID'] = ''
                     items[x]['getPatient'] = ''
-                    items[x]['getProvince'] = ''
-                    items[x]['getDistrict'] = ''
 
                 sample = items[x]['obj']
                 ars = sample.getAnalysisRequests()

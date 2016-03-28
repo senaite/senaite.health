@@ -87,32 +87,6 @@ class AnalysisRequestSchemaExtender(object):
         ),
 
         ExtComputedField(
-            'Province',
-            expression="context.Schema()['Patient'].get(context).getState() if context.Schema()['Patient'].get(context) else None",
-            mode="r",
-            read_permission=hpermissions.ViewPatients,
-            write_permission=permissions.ModifyPortalContent,
-            widget=ComputedWidget(
-                visible={'view': 'visible',
-                         'header_table': 'visible',
-                         'secondary': 'disabled'},
-            ),
-        ),
-
-        ExtComputedField(
-            'District',
-            expression="context.Schema()['Patient'].get(context).getDistrict() if context.Schema()['Patient'].get(context) else None",
-            mode="r",
-            read_permission=hpermissions.ViewPatients,
-            write_permission=permissions.ModifyPortalContent,
-            widget=ComputedWidget(
-                visible={'view': 'visible',
-                         'header_table': 'visible',
-                         'secondary': 'disabled'},
-            ),
-        ),
-
-        ExtComputedField(
             'PatientID',
             expression="context.Schema()['Patient'].get(context).getPatientID() if context.Schema()['Patient'].get(context) else None",
             mode="r",
@@ -185,14 +159,10 @@ class AnalysisRequestSchemaExtender(object):
     def getOrder(self, schematas):
         default = schematas['default']
         default.remove('Patient')
-        default.remove('Province')
-        default.remove('District')
         default.remove('Doctor')
         default.remove('ClientPatientID')
         default.insert(default.index('Template'), 'ClientPatientID')
         default.insert(default.index('Template'), 'Patient')
-        default.insert(default.index('Template'), 'Province')
-        default.insert(default.index('Template'), 'District')
         default.insert(default.index('Template'), 'Doctor')
         schematas['default'] = default
         return schematas
