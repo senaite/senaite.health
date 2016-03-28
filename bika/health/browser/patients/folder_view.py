@@ -24,8 +24,6 @@ COLUMNS = ['getPatientID',
            'getGender',
            'getAgeSplittedStr',
            'getBirthDate',
-           'getState',
-           'getDistrict',
            'getCitizenship',
            'getPrimaryReferrer']
 
@@ -71,14 +69,6 @@ class PatientsView(BikaListingView):
             'getBirthDate': {'title': _('BirthDate'),
                              'index': 'getBirthDate',
                              'toggle': True},
-
-            'getState': {'title': _('State'),
-                               'index': 'getState',
-                               'toggle': True},
-
-            'getDistrict': {'title': _('District'),
-                               'index': 'getDistrict',
-                               'toggle': True},
 
             'getCitizenship': {'title': _('Citizenship'),
                                'index': 'getCitizenship',
