@@ -403,7 +403,7 @@ schema = Person.schema.copy() + Schema((
                           "to the Patient automatically."))
     ),
     LinesField('PublicationPreferences',
-        vocabulary=PUBLICATION_PREFS,
+        vocabulary='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
         schemata='Publication preference',
         widget=MultiSelectionWidget(
             label=_("Publication preference"),

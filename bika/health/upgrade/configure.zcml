@@ -29,4 +29,13 @@
         handler="bika.health.upgrade.to318.upgrade"
         sortkey="1"
         profile="bika.health:default"/>
+
+<genericsetup:upgradeStep
+        title="Bika Health 3.2.0"
+        description="Update to Bika Health 3.2 compatible with Bika LIMS 3.2"
+        source="318"
+        destination="320"
+        handler="bika.health.upgrade.to320.upgrade"
+        sortkey="1"
+        profile="bika.health:default"/>
 </configure>
