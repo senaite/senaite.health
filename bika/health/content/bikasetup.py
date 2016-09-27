@@ -69,7 +69,7 @@ class BikaSetupSchemaExtender(object):
                               "Patient's 'Publication preferences' tab."))
         ),
         ExtLinesField('PatientPublicationPreferences',
-            vocabulary_factory = 'bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
+            vocabulary='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
             schemata = 'Results Reports',
             widget = MultiSelectionWidget(
                 label = _("Default publication preference for Patients"),
