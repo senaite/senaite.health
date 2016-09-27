@@ -6,7 +6,6 @@ from bika.lims.interfaces import IClient
 from bika.health.widgets import *
 from plone.indexer.decorator import indexer
 from bika.health import bikaMessageFactory as _
-from bika.lims.config import PUBLICATION_PREFS
 from zope.component import adapts
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 
@@ -41,7 +40,7 @@ class ClientSchemaExtender(object):
                               "preferences' tab."))
         ),
         ExtLinesField('PatientPublicationPreferences',
-            vocabulary=PUBLICATION_PREFS,
+            vocabulary='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
             schemata='Results Reports',
             widget=MultiSelectionWidget(
                 label=_("Default publication preference for Patients"),

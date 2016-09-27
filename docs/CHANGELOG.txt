@@ -1,6 +1,7 @@
-3.1.9 (unreleased)
+3.2 (unreleased)
 ------------------
-HEALTH-503: Validation of Date of birth 
+Updated to work with BikaLIMS 3.2
+HEALTH-503: Validation of Date of birth
 HEALTH-413: Dashboard not showing
 HEALTH-402: In Analysis Request Add form, contact doesn't get selected
 
