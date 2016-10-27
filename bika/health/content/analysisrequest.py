@@ -118,7 +118,7 @@ class AnalysisRequestSchemaExtender(object):
         ExtStringField(
             'ClientPatientID',
             searchable=True,
-            required=0,
+            required=1,
             read_permission=hpermissions.ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
