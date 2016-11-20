@@ -11,8 +11,9 @@ from Products.CMFPlone.utils import safe_unicode
 from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
 from bika.lims.browser.fields import AddressField
+from bika.lims.browser.fields import DateTimeField as DateTimeField_bl
 from bika.lims.browser.widgets import AddressWidget
-from bika.lims.browser.widgets import DateTimeWidget
+from bika.lims.browser.widgets import DateTimeWidget as DateTimeWidget_bl
 from bika.lims.browser.widgets import RecordsWidget
 from bika.health.widgets import SplittedDateWidget
 from bika.health.config import *
@@ -73,12 +74,13 @@ schema = Person.schema.copy() + Schema((
                     width=3,
                 ),
     ),
-    DateTimeField('BirthDate',
-                  required=0,
-                  validators=('isDateFormat',),
-                  widget=DateTimeWidget(
-                      label=_('Birth date'),
-                  ),
+    DateTimeField_bl('BirthDate',
+        required=0,
+        validators=('isDateFormat',),
+        widget=DateTimeWidget_bl(
+          label=_('Birth date'),
+          datepicker_nofuture=1,
+        ),
     ),
     BooleanField('BirthDateEstimated',
                  default=False,
