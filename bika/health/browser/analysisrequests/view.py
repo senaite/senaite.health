@@ -1,6 +1,10 @@
 from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
+from bika.lims.browser.bika_listing import BikaListingFilterBar\
+    as BaseBikaListingFilterBar
 from bika.health import bikaMessageFactory as _
 from Products.CMFCore.utils import getToolByName
+from Products.Archetypes.public import DisplayList
+import json
 
 
 class AnalysisRequestsView(BaseView):
@@ -27,7 +31,7 @@ class AnalysisRequestsView(BaseView):
         if 'Manager' not in roles \
             and 'LabManager' not in roles \
             and 'LabClerk' not in roles:
-            # Remove patient fields. Must be done here because in __init__ 
+            # Remove patient fields. Must be done here because in __init__
             # method, member.getRoles() returns empty
             del self.columns['getPatientID']
             del self.columns['getClientPatientID']
@@ -63,3 +67,69 @@ class AnalysisRequestsView(BaseView):
 
     def filteritems(self, items):
         return items
+
+    def getFilterBar(self):
+        """
+        This function creates an instance of BikaListingFilterBar if the
+        class has not created one yet.
+        :return: a BikaListingFilterBar instance
+        """
+        self._advfilterbar = self._advfilterbar if self._advfilterbar else \
+            BikaListingFilterBar(context=self.context, request=self.request)
+        return self._advfilterbar.render()
+
+
+class BikaListingFilterBar(BaseBikaListingFilterBar):
+    """
+    This class defines a filter bar to make advanced queries in
+    BikaListingView. This filter shouldn't override the 'filter by state'
+    functionality
+    """
+
+    def filter_bar_builder(self):
+        """
+        The template is going to call this method to create the filter bar in
+        bika_listing_filter_bar.pt
+        If the method returns None, the filter bar will not be shown.
+        :return: a list of dictionaries as the filtering fields or None.
+        """
+        fields_dict = [{
+            'name': 'analysis_name',
+            'label': _('Analysis name'),
+            'type': 'select',
+            'voc': self._getAnalysesNamesVoc(),
+        }, {
+            'name': 'case',
+            'label': _('Cases'),
+            'type': 'autocomplete_text',
+            'voc': json.dumps(self._getCasesVoc()),
+        }, {
+            'name': 'date_received',
+            'label': _('Date received'),
+            'type': 'date_range',
+        }, {
+            'name': 'date_tested',
+            'label': _('Date tested'),
+            'type': 'date_range',
+        },
+        ]
+        return fields_dict
+
+    def _getAnalysesNamesVoc(self):
+        """
+        Returns a DisplayList object with analyses names.
+        """
+        l = self.context.bika_setup.bika_analysisservices.listFolderContents()
+        return DisplayList(
+            [(element.UID(), element.Title()) for element in l])
+
+    def _getCasesVoc(self):
+        """
+        Returns a list object with active cases ids.
+        """
+        catalog = getToolByName(self.context, "portal_catalog")
+        brains = catalog({
+            'portal_type': 'Batch',
+            'review_state': 'open',
+        })
+        return [brain.id for brain in brains]
