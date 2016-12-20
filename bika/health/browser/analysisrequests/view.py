@@ -5,6 +5,7 @@ from bika.health import bikaMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.public import DisplayList
 import json
+from datetime import datetime, date
 
 
 class AnalysisRequestsView(BaseView):
@@ -76,7 +77,7 @@ class AnalysisRequestsView(BaseView):
         """
         self._advfilterbar = self._advfilterbar if self._advfilterbar else \
             BikaListingFilterBar(context=self.context, request=self.request)
-        return self._advfilterbar.render()
+        return self._advfilterbar
 
 
 class BikaListingFilterBar(BaseBikaListingFilterBar):
@@ -133,3 +134,38 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
             'review_state': 'open',
         })
         return [brain.id for brain in brains]
+
+    def get_filter_bar_queryaddition(self):
+        """
+        This function gets the values from the filter bar inputs in order to
+        create a query accordingly.
+        Only returns the once that can be added to contentFilter dictionary.
+        in this case, the catalog is bika_catalog
+        In this case the keys with index representation are:
+        - date_received - getDateReceived
+        :return: a dictionary to be added to contentFilter.
+        """
+        filter_dict = self.get_filter_bar_dict()
+        date_0 = filter_dict.get('date_received_0') \
+            if filter_dict.get('date_received_0', '')\
+            else '1900-01-01'
+        date_1 = filter_dict.get('date_received_1')\
+            if filter_dict.get('date_received_1', '')\
+            else datetime.strftime(date.today(), "%Y-%m-%d")
+        date_range_query = {
+            'query':
+            (date_0 + ' 00:00', date_1 + ' 23:59'), 'range': 'min:max'}
+        return {'getDateReceived': date_range_query}
+
+    def check_item(self, key, value):
+        """
+        This functions receives a key-value items, and checks if it should be
+        displayed.
+        It is recomended to be used in isItemAllowed() method.
+        This function should be only used for those fields without
+        representation as an index in the catalog.
+        :key: a string with a field_name defined in filter_bar_builder().
+        :value: the values for the key.
+        :return: boolean.
+        """
+        return True
