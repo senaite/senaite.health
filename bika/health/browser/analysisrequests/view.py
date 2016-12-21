@@ -69,6 +69,16 @@ class AnalysisRequestsView(BaseView):
     def filteritems(self, items):
         return items
 
+    def isItemAllowed(self, obj):
+        """
+        Checks the BikaLIMS conditions and also checks filter bar conditions
+        @Obj: it is an analysis request object.
+        @return: boolean
+        """
+        return self.filter_bar_check_item(obj) and\
+            super(AnalysisRequestsView, self).isItemAllowed(obj)
+
+
     def getFilterBar(self):
         """
         This function creates an instance of BikaListingFilterBar if the
@@ -143,29 +153,61 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
         in this case, the catalog is bika_catalog
         In this case the keys with index representation are:
         - date_received - getDateReceived
+        - date_received - BatchUID
         :return: a dictionary to be added to contentFilter.
         """
+        query_dict = {}
         filter_dict = self.get_filter_bar_dict()
-        date_0 = filter_dict.get('date_received_0') \
-            if filter_dict.get('date_received_0', '')\
-            else '1900-01-01'
-        date_1 = filter_dict.get('date_received_1')\
-            if filter_dict.get('date_received_1', '')\
-            else datetime.strftime(date.today(), "%Y-%m-%d")
-        date_range_query = {
-            'query':
-            (date_0 + ' 00:00', date_1 + ' 23:59'), 'range': 'min:max'}
-        return {'getDateReceived': date_range_query}
+        # Date received filter
+        if filter_dict.get('date_received_0', '') or\
+                filter_dict.get('date_received_1', ''):
+            date_0 = filter_dict.get('date_received_0') \
+                if filter_dict.get('date_received_0', '')\
+                else '1900-01-01'
+            date_1 = filter_dict.get('date_received_1')\
+                if filter_dict.get('date_received_1', '')\
+                else datetime.strftime(date.today(), "%Y-%m-%d")
+            date_range_query = {
+                'query':
+                (date_0 + ' 00:00', date_1 + ' 23:59'), 'range': 'min:max'}
+            query_dict['getDateReceived'] = date_range_query
+        # Batch(case) filter
+        if filter_dict.get('case', ''):
+            # removing the empty and space values and gettin their UIDs
+            clean_list_ids = [
+                a.strip() for a in filter_dict.get('case', '').split(',')
+                if a.strip()]
+            # Now we have the case(batch) ids, lets get their UIDs
+            catalog = getToolByName(self, 'bika_catalog')
+            brains = catalog(
+                portal_type='Batch',
+                cancellation_state='active',
+                review_state='open',
+                id=clean_list_ids
+                )
+            query_dict['BatchUID'] = [a.UID for a in brains]
+        return query_dict
 
-    def check_item(self, key, value):
+    def filter_bar_check_item(self, item):
         """
         This functions receives a key-value items, and checks if it should be
         displayed.
         It is recomended to be used in isItemAllowed() method.
         This function should be only used for those fields without
         representation as an index in the catalog.
-        :key: a string with a field_name defined in filter_bar_builder().
-        :value: the values for the key.
+        :item: The item to check.
         :return: boolean.
         """
+        d = self.get_filter_bar_dict()
+        keys = d.keys()
+        final_decision = 'True'
         return True
+        #for key in keys:
+        #    import pdb; pdb.set_trace()
+        #    elif key == 'date_tested_0' and d.get(key, '') != '':
+        #        import pdb; pdb.set_trace()
+        #    elif key == 'date_tested_1' and d.get(key, '') != '':
+        #        import pdb; pdb.set_trace()
+        #    elif key == 'analysis_name' and d.get(key, '') != '':
+        #        import pdb; pdb.set_trace()
+        #return True
