@@ -118,11 +118,11 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
             'name': 'date_received',
             'label': _('Date received'),
             'type': 'date_range',
-        }, {
-            'name': 'date_tested',
-            'label': _('Date tested'),
-            'type': 'date_range',
-        },
+        }, #{
+        #    'name': 'date_tested',
+        #    'label': _('Date tested'),
+        #    'type': 'date_range',
+        #},
         ]
         return fields_dict
 
@@ -198,16 +198,18 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
         :item: The item to check.
         :return: boolean.
         """
-        d = self.get_filter_bar_dict()
-        keys = d.keys()
+        dbar = self.get_filter_bar_dict()
+        keys = dbar.keys()
         final_decision = 'True'
+        for key in keys:
+            #elif key == 'date_tested_0' and d.get(key, '') != '':
+            #    import pdb; pdb.set_trace()
+            #elif key == 'date_tested_1' and d.get(key, '') != '':
+            #    import pdb; pdb.set_trace()
+            if key == 'analysis_name' and dbar.get(key, '') != '':
+                uids = [
+                    analysis.getService().UID() for analysis in
+                    item.getAnalyses(full_objects=True)]
+                if dbar.get(key, '') not in uids:
+                    return False
         return True
-        #for key in keys:
-        #    import pdb; pdb.set_trace()
-        #    elif key == 'date_tested_0' and d.get(key, '') != '':
-        #        import pdb; pdb.set_trace()
-        #    elif key == 'date_tested_1' and d.get(key, '') != '':
-        #        import pdb; pdb.set_trace()
-        #    elif key == 'analysis_name' and d.get(key, '') != '':
-        #        import pdb; pdb.set_trace()
-        #return True
