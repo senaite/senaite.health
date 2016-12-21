@@ -146,6 +146,11 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
             'type': 'select',
             'voc': self._getSampleConditionsVoc(),
         }, {
+            'name': 'print_state',
+            'label': _('Print state'),
+            'type': 'select',
+            'voc': self._getPrintStatesVoc(),
+        }, {
             'name': 'sample_type',
             'label': _('Sample type'),
             'type': 'select',
@@ -170,6 +175,16 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
         l = self.context.bika_setup.bika_sampleconditions.listFolderContents()
         return DisplayList(
             [(element.UID(), element.Title()) for element in l])
+
+    def _getPrintStatesVoc(self):
+        """
+        Returns a DisplayList object with print states.
+        """
+        return DisplayList([
+            ('0', _('Never printed')),
+            ('1', _('Printed after last publish')),
+            ('2', _('Printed but republished afterwards')),
+            ])
 
     def _getSampleTypesVoc(self):
         """
@@ -253,5 +268,9 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
             if key == 'sample_condition' and dbar.get(key, '') != '':
                 if not item.getSampleCondition() or\
                         dbar.get(key, '') != item.getSampleCondition().UID():
+                    return False
+            if key == 'print_state' and dbar.get(key, '') != '':
+                status = [ar.getPrinted() for ar in item.getAnalysisRequests()]
+                if dbar.get(key, '') not in status:
                     return False
         return True

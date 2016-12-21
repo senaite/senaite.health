@@ -109,6 +109,11 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
             'type': 'select',
             'voc': self._getAnalysesNamesVoc(),
         }, {
+            'name': 'print_state',
+            'label': _('Print state'),
+            'type': 'select',
+            'voc': self._getPrintStatesVoc(),
+        }, {
             'name': 'case',
             'label': _('Cases'),
             'type': 'autocomplete_text',
@@ -132,6 +137,16 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
         l = self.context.bika_setup.bika_analysisservices.listFolderContents()
         return DisplayList(
             [(element.UID(), element.Title()) for element in l])
+
+    def _getPrintStatesVoc(self):
+        """
+        Returns a DisplayList object with print states.
+        """
+        return DisplayList([
+            ('0', _('Never printed')),
+            ('1', _('Printed after last publish')),
+            ('2', _('Printed but republished afterwards')),
+            ])
 
     def _getCasesVoc(self):
         """
@@ -210,5 +225,8 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
                     analysis.getService().UID() for analysis in
                     item.getAnalyses(full_objects=True)]
                 if dbar.get(key, '') not in uids:
+                    return False
+            if key == 'print_state' and dbar.get(key, '') != '':
+                if dbar.get(key, '') != item.getPrinted():
                     return False
         return True
