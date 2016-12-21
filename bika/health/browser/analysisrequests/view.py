@@ -78,7 +78,6 @@ class AnalysisRequestsView(BaseView):
         return self.filter_bar_check_item(obj) and\
             super(AnalysisRequestsView, self).isItemAllowed(obj)
 
-
     def getFilterBar(self):
         """
         This function creates an instance of BikaListingFilterBar if the
