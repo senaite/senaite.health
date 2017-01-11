@@ -6,6 +6,8 @@ from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
+from bika.lims.catalog import getCatalogDefinitions
+from bika.lims.catalog import setup_catalogs
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddAetiologicAgent
@@ -393,6 +395,8 @@ def setupHealthCatalogs(context):
     addColumn(bpc, 'review_state')
     addColumn(bpc, 'inactive_state')
 
+    # CATALOG_PATIENTS
+    setup_catalogs(context)
 
 def setupHealthTestContent(context):
     """Setup custom content"""

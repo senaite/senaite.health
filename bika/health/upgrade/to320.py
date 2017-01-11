@@ -8,6 +8,8 @@ from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from bika.health import logger
 from Products.CMFCore import permissions
+from bika.lims.catalog import setup_catalogs
+from bika.health.catalog import getCatalogDefinitions
 
 
 def upgrade(tool):
@@ -39,4 +41,7 @@ def upgrade(tool):
     """
     # wf = getToolByName(portal, 'portal_workflow')
     # wf.updateRoleMappings()
+
+    setup_catalogs(portal, getCatalogDefinitions())
+
     return True

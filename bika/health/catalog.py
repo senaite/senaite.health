@@ -4,6 +4,71 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.ZCatalog.ZCatalog import ZCatalog
+from bika.health.interfaces import IBikaHealthCatalogPatientListing
+
+
+# Using a variable to avoid plain strings in code
+CATALOG_PATIENT_LISTING = 'bikahealth_catalog_patient_listing'
+
+_catalogs_definition = {
+    # This catalog contains the metacolumns to list patients in bikalisting
+    CATALOG_PATIENT_LISTING: {
+        'types':   ['Patient', ],
+        'indexes': {
+            'UID': 'FieldIndex',
+            # For quick-searches (search-box at the top-right), not for
+            # embedded-code searches: the preferred way to get a Patient is
+            # by using its UID.
+            'getPatientID': 'FieldIndex',
+            # (Client is also called PrimaryReferrer)
+            'getPrimaryReferrerUID': 'FieldIndex',
+            # (for partial/advanced searches!)
+            'getFullname': 'FieldIndex',
+            # (values from PatientIdentifiers field)
+            'getPatientIdentifiers': 'KeywordIndex',
+        },
+        'columns': [
+            'Title',
+            'Path',  # (patient's absolute path)
+            'getClientPatientID',
+            'getPrimaryReferrerUID',
+            'getPrimaryReferrerTitle',
+            'getGender',
+            'getBirthDate',
+            'getAgeSplittedStr',  # (=AgeYMD)
+            'PatientIdentifiersStr',  # (PatientIdentifiers stringified)
+            'getMobilePhone',
+            'getCity',
+            'getDistrict',
+            'getPostalCode',
+            'getCountry',
+            'getNumberOfSamples',  # (all Samples)
+            'getNumberOfSamplesCancelled',  # (Cancelled Samples)
+            # (Samples with at least one AnalysisRequest <= verified)
+            'getNumberOfSamplesOngoing',
+            # (Samples with at least one AnalysisRequest >= published)
+            'getNumberOfSamplesPublished',
+            'getRatioOfSamplesOngoing',  # (a String like 'ongoing/samples')
+        ]
+    }
+}
+# Defines the extension for catalogs created in Bika LIMS
+_catalogs_extensions = {
+}
+
+
+def getCatalogDefinitions():
+    """
+    Returns a dictionary with catalog definitions
+    """
+    return _catalogs_definition
+
+
+def getCatalogExtensions():
+    """
+    Returns a dictionary with catalog extensions
+    """
+    return _catalogs_extensions
 
 
 def getCatalog(instance, field='UID'):
@@ -60,3 +125,38 @@ class BikaPatientCatalog(CatalogTool):
                                 apply_func = indexObject)
 
 InitializeClass(BikaPatientCatalog)
+
+
+class BikaHealthCatalogPatientListing(CatalogTool):
+    """
+    Catalog to list patients in BikaListing
+    """
+    implements(IBikaHealthCatalogPatients)
+    title = 'Bika Health Catalog Patients'
+    id = CATALOG_PATIENT_LISTING
+    portal_type = meta_type = 'BikaHealthCatalogPatientListing'
+    plone_tool = 1
+    security = ClassSecurityInfo()
+    _properties = (
+      {'id': 'title', 'type': 'string', 'mode': 'w'},)
+
+    def __init__(self):
+        ZCatalog.__init__(self, self.id)
+
+    security.declareProtected(ManagePortal, 'clearFindAndRebuild')
+
+    def clearFindAndRebuild(self):
+        """Empties catalog, then finds all contentish objects (i.e. objects
+           with an indexObject method), and reindexes them.
+           This may take a long time.
+        """
+        def indexObject(obj, path):
+            self.reindexObject(obj)
+        self.manage_catalogClear()
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        portal.ZopeFindAndApply(
+            portal,
+            obj_metatypes=_catalogs_definition[CATALOG_PATIENT_LISTING]['types'],
+            search_sub=True,
+            apply_func=indexObject)
+InitializeClass(BikaHealthCatalogPatientListing)

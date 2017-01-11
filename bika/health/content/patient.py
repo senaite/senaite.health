@@ -94,6 +94,11 @@ schema = Person.schema.copy() + Schema((
                      label=_('Age'),
                  ),
     ),
+    ComputedField(
+        'AgeSplittedStr',
+        expression="context.getAgeSplittedStr()",
+        widget=ComputedWidget(visible=False),
+    ),
     AddressField('CountryState',
                  widget=AddressWidget(
                  searchable=True,
@@ -127,6 +132,11 @@ schema = Person.schema.copy() + Schema((
                          },
                      },
                  ),
+    ),
+    ComputedField(
+        'PatientIdentifiersStr',
+        expression="context.getPatientIdentifiersStr()",
+        widget=ComputedWidget(visible=False),
     ),
     TextField('Remarks',
               searchable=True,
@@ -514,6 +524,41 @@ schema = Person.schema.copy() + Schema((
                      label=_('Consent to SMS'),
                  ),
     ),
+    ComputedField(
+        'NumberOfSamples',
+        expression="len(context.getSamples())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'NumberOfSamplesCancelled',
+        expression="len(context.getSamplesCancelled())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'getNumberOfSamplesOngoing',
+        expression="len(context.getSamplesOngoing())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'getNumberOfSamplesPublished',
+        expression="len(context.getSamplesPublished())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'getRatioOfSamplesOngoing',
+        expression="len(context.getNumberOfSamplesOngoing)/context.getNumberOfSamples",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -570,18 +615,66 @@ class Patient(Person):
     security.declarePublic('getSamples')
     def getSamples(self):
         """ get all samples taken from this Patient """
-        return [ar.getSample() for ar in self.getARs() if ar.getSample()]
+        l = []
+        for ar in self.getARs():
+            sample = ar.getObject().getSample()
+            if sample:
+                l.append(sample)
+        return l
+
+    def getSamplesCancelled(self):
+        """
+        Cancelled Samples
+        """
+        workflow = getToolByName(self.context, 'portal_workflow')
+        l = self.getSamples()
+        return [sample for samples in l if
+                workflow.getInfoFor(analysis, 'review_state') == 'cancelled']
+
+    def getSamplesPublished(self):
+        """
+        Published Samples
+        """
+        workflow = getToolByName(self.context, 'portal_workflow')
+        ars = self.getARs()
+        samples = []
+        samples_uids = []
+        for ar in ars:
+            if ar.review_state == 'published':
+                # Getting the object now
+                sample = ar.getObject().getSample()
+                if sample and sample.UID() not in samples_uids:
+                    samples.append(sample.UID())
+                    samples_uids.append(sample)
+        return samples
+
+    def getSamplesOngoing(self):
+        """
+        Ongoing on Samples
+        """
+        workflow = getToolByName(self.context, 'portal_workflow')
+        ars = self.getARs()
+        states = [
+            'verified', 'to_be_sampled', 'scheduled_sampling', 'sampled',
+            'to_be_preserved', 'sample_due', 'sample_prep', 'sample_received',
+            'to_be_verified', ]
+        samples = []
+        samples_uids = []
+        for ar in ars:
+            if ar.review_state in states:
+                # Getting the object now
+                sample = ar.getObject().getSample()
+                if sample and sample.UID() not in samples_uids:
+                    samples.append(sample.UID())
+                    samples_uids.append(sample)
+        return samples
 
     security.declarePublic('getARs')
     def getARs(self, analysis_state=None):
         bc = getToolByName(self, 'bika_catalog')
-        ars = bc(portal_type='AnalysisRequest')
-        outars = []
-        for ar in ars:
-            ar = ar.getObject()
-            pat = ar.Schema()['Patient'].get(ar) if ar else None
-            if pat and pat.UID() == self.UID():
-                outars.append(ar)
+        ars = bc(
+            portal_type='AnalysisRequest',
+            getPatientUID=self.UID())
         return outars
 
     def get_clients(self):
