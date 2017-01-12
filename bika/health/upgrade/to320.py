@@ -28,6 +28,7 @@ def upgrade(tool):
     http://stackoverflow.com/questions/7821498/is-there-a-good-reference-list-for-the-names-of-the-genericsetup-import-steps
     """
     setup = portal.portal_setup
+    setup.runImportStepFromProfile('profile-bika.health:default', 'toolset')
     # setup.runImportStepFromProfile('profile-bika.health:default', 'typeinfo')
     # setup.runImportStepFromProfile('profile-bika.health:default', 'jsregistry')
     # setup.runImportStepFromProfile('profile-bika.health:default', 'cssregistry')

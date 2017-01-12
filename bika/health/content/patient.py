@@ -539,21 +539,21 @@ schema = Person.schema.copy() + Schema((
         ),
     ),
     ComputedField(
-        'getNumberOfSamplesOngoing',
+        'NumberOfSamplesOngoing',
         expression="len(context.getSamplesOngoing())",
         widget=ComputedWidget(
             visible=False
         ),
     ),
     ComputedField(
-        'getNumberOfSamplesPublished',
+        'NumberOfSamplesPublished',
         expression="len(context.getSamplesPublished())",
         widget=ComputedWidget(
             visible=False
         ),
     ),
     ComputedField(
-        'getRatioOfSamplesOngoing',
+        'RatioOfSamplesOngoing',
         expression="len(context.getNumberOfSamplesOngoing)/context.getNumberOfSamples",
         widget=ComputedWidget(
             visible=False
@@ -675,7 +675,7 @@ class Patient(Person):
         ars = bc(
             portal_type='AnalysisRequest',
             getPatientUID=self.UID())
-        return outars
+        return ars
 
     def get_clients(self):
         ## Only show clients to which we have Manage AR rights.

@@ -4,6 +4,7 @@ from Products.CMFCore.permissions import ManagePortal
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.ZCatalog.ZCatalog import ZCatalog
+from zope.interface import implements
 from bika.health.interfaces import IBikaHealthCatalogPatientListing
 
 
@@ -36,7 +37,7 @@ _catalogs_definition = {
             'getGender',
             'getBirthDate',
             'getAgeSplittedStr',  # (=AgeYMD)
-            'PatientIdentifiersStr',  # (PatientIdentifiers stringified)
+            'getPatientIdentifiersStr',  # (PatientIdentifiers stringified)
             'getMobilePhone',
             'getCity',
             'getDistrict',
@@ -131,7 +132,7 @@ class BikaHealthCatalogPatientListing(CatalogTool):
     """
     Catalog to list patients in BikaListing
     """
-    implements(IBikaHealthCatalogPatients)
+    implements(IBikaHealthCatalogPatientListing)
     title = 'Bika Health Catalog Patients'
     id = CATALOG_PATIENT_LISTING
     portal_type = meta_type = 'BikaHealthCatalogPatientListing'
@@ -152,11 +153,15 @@ class BikaHealthCatalogPatientListing(CatalogTool):
         """
         def indexObject(obj, path):
             self.reindexObject(obj)
+        at = getToolByName(self, 'archetype_tool')
+        types = [k for k, v in at.catalog_map.items()
+                 if self.id in v]
         self.manage_catalogClear()
         portal = getToolByName(self, 'portal_url').getPortalObject()
+        import pdb; pdb.set_trace()
         portal.ZopeFindAndApply(
             portal,
-            obj_metatypes=_catalogs_definition[CATALOG_PATIENT_LISTING]['types'],
+            obj_metatypes=types,
             search_sub=True,
             apply_func=indexObject)
 InitializeClass(BikaHealthCatalogPatientListing)
