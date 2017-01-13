@@ -554,7 +554,7 @@ schema = Person.schema.copy() + Schema((
     ),
     ComputedField(
         'RatioOfSamplesOngoing',
-        expression="len(context.getNumberOfSamplesOngoing)/context.getNumberOfSamples",
+        expression="context.getNumberOfSamplesOngoingRatio()",
         widget=ComputedWidget(
             visible=False
         ),
@@ -626,7 +626,7 @@ class Patient(Person):
         """
         Cancelled Samples
         """
-        workflow = getToolByName(self.context, 'portal_workflow')
+        workflow = getToolByName(self, 'portal_workflow')
         l = self.getSamples()
         return [sample for samples in l if
                 workflow.getInfoFor(analysis, 'review_state') == 'cancelled']
@@ -635,7 +635,7 @@ class Patient(Person):
         """
         Published Samples
         """
-        workflow = getToolByName(self.context, 'portal_workflow')
+        workflow = getToolByName(self, 'portal_workflow')
         ars = self.getARs()
         samples = []
         samples_uids = []
@@ -652,7 +652,7 @@ class Patient(Person):
         """
         Ongoing on Samples
         """
-        workflow = getToolByName(self.context, 'portal_workflow')
+        workflow = getToolByName(self, 'portal_workflow')
         ars = self.getARs()
         states = [
             'verified', 'to_be_sampled', 'scheduled_sampling', 'sampled',
@@ -668,6 +668,15 @@ class Patient(Person):
                     samples.append(sample.UID())
                     samples_uids.append(sample)
         return samples
+
+    def getNumberOfSamplesOngoingRatio(self):
+        """
+        Returns the ratio between NumberOfSamplesOngoing/NumberOfSamples
+        """
+        result = 0
+        if self.getNumberOfSamples() > 0:
+            result = self.getNumberOfSamplesOngoing()/self.getNumberOfSamples()
+        return result
 
     security.declarePublic('getARs')
     def getARs(self, analysis_state=None):

@@ -29,8 +29,9 @@ _catalogs_definition = {
             'getPatientIdentifiers': 'KeywordIndex',
         },
         'columns': [
+            'UID',
             'Title',
-            'Path',  # (patient's absolute path)
+            'path',  # (patient's absolute path)
             'getClientPatientID',
             'getPrimaryReferrerUID',
             'getPrimaryReferrerTitle',
@@ -158,7 +159,6 @@ class BikaHealthCatalogPatientListing(CatalogTool):
                  if self.id in v]
         self.manage_catalogClear()
         portal = getToolByName(self, 'portal_url').getPortalObject()
-        import pdb; pdb.set_trace()
         portal.ZopeFindAndApply(
             portal,
             obj_metatypes=types,
