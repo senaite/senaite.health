@@ -16,6 +16,8 @@ _catalogs_definition = {
     CATALOG_PATIENT_LISTING: {
         'types':   ['Patient', ],
         'indexes': {
+            'created': 'DateIndex',
+            'sortable_title': 'FieldIndex',
             'UID': 'FieldIndex',
             # For quick-searches (search-box at the top-right), not for
             # embedded-code searches: the preferred way to get a Patient is
@@ -34,6 +36,7 @@ _catalogs_definition = {
             'path',  # (patient's absolute path)
             'getClientPatientID',
             'getPrimaryReferrerUID',
+            'getPrimaryReferrerURL',
             'getPrimaryReferrerTitle',
             'getGender',
             'getBirthDate',
@@ -44,6 +47,7 @@ _catalogs_definition = {
             'getDistrict',
             'getPostalCode',
             'getCountry',
+            'getPatientID',
             'getNumberOfSamples',  # (all Samples)
             'getNumberOfSamplesCancelled',  # (Cancelled Samples)
             # (Samples with at least one AnalysisRequest <= verified)

@@ -53,10 +53,17 @@ schema = Person.schema.copy() + Schema((
                   widget=ComputedWidget(
                   ),
     ),
-     ComputedField('PrimaryReferrerUID',
+    ComputedField('PrimaryReferrerUID',
                   expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).UID() or None",
                   widget=ComputedWidget(
                   ),
+    ),
+    ComputedField(
+        'PrimaryReferrerURL',
+        expression="context.getPrimaryReferrer().absolute_url() if context.getPrimaryReferrer() else ''",
+        widget=ComputedWidget(
+            visible=False
+        ),
     ),
     StringField('Gender',
                 vocabulary=GENDERS,
