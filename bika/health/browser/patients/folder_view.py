@@ -24,7 +24,6 @@ COLUMNS = ['getPatientID',
            'getGender',
            'getAgeSplittedStr',
            'getBirthDate',
-           'getCitizenship',
            'getPrimaryReferrer']
 
 
@@ -41,41 +40,29 @@ class PatientsView(BikaListingView):
         self.context_actions = {}
         self.title = self.context.translate(_("Patients"))
         self.icon = self.portal_url + "/++resource++bika.health.images/patient_big.png"
-        self.description = ""
         self.show_sort_column = False
         self.show_select_row = False
         self.show_select_column = False
-        self.pagesize = 25
 
         self.columns = {
 
             'Title': {'title': _('Patient'),
                       'index': 'sortable_title'},
 
-            'getPatientID': {'title': _('Patient ID'),
-                             'index': 'getPatientID'},
+            'getPatientID': {'title': _('Patient ID'), },
 
-            'getClientPatientID': {'title': _('Client PID'),
-                            'index': 'getClientPatientID'},
+            'getClientPatientID': {'title': _('Client PID'), },
 
             'getGender': {'title': _('Gender'),
-                          'index': 'getGender',
                           'toggle': True},
 
             'getAgeSplittedStr': {'title': _('Age'),
-                                  'index': 'getAgeSplittedStr',
                                   'toggle': True},
 
             'getBirthDate': {'title': _('BirthDate'),
-                             'index': 'getBirthDate',
                              'toggle': True},
 
-            'getCitizenship': {'title': _('Citizenship'),
-                               'index': 'getCitizenship',
-                               'toggle': True},
-
             'getPrimaryReferrer': {'title': _('Primary Referrer'),
-                                   'index': 'getPrimaryReferrerTitle',
                                    'toggle': True},
 
         }
@@ -141,6 +128,8 @@ class PatientsView(BikaListingView):
         if 'obj' not in item:
             return None
         item['getPatientID'] = obj.getPatientID
+        item['getGender'] = obj.getGender
+        item['getAgeSplittedStr'] = obj.getAgeSplittedStr
         item['getBirthDate'] = self.ulocalized_time(obj.getBirthDate)
         item['getClientPatientID'] = obj.getClientPatientID
         item['Title'] = obj.Title

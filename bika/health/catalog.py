@@ -18,6 +18,9 @@ _catalogs_definition = {
         'indexes': {
             'created': 'DateIndex',
             'sortable_title': 'FieldIndex',
+            'review_state': 'FieldIndex',
+            'inactive_state': 'FieldIndex',
+            'portal_type': 'FieldIndex',
             'UID': 'FieldIndex',
             # For quick-searches (search-box at the top-right), not for
             # embedded-code searches: the preferred way to get a Patient is
@@ -33,7 +36,10 @@ _catalogs_definition = {
         'columns': [
             'UID',
             'Title',
-            'path',  # (patient's absolute path)
+            'review_state',
+            'inactive_state',
+            'getObjectWorkflowStates',
+            'getPhysicalPath',  # (patient's absolute path)
             'getClientPatientID',
             'getPrimaryReferrerUID',
             'getPrimaryReferrerURL',
@@ -47,6 +53,7 @@ _catalogs_definition = {
             'getDistrict',
             'getPostalCode',
             'getCountry',
+            'getCitizenship',
             'getPatientID',
             'getNumberOfSamples',  # (all Samples)
             'getNumberOfSamplesCancelled',  # (Cancelled Samples)
