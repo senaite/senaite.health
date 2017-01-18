@@ -29,25 +29,29 @@ class ajaxGetPatientInfo(BrowserView):
         proxies = None
         if PatientUID:
             try:
-                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                bpc = getToolByName(
+                    self.context, 'bikahealth_catalog_patient_listing')
                 proxies = bpc(UID=PatientUID)
             except ParseError:
                 pass
         elif PatientID:
             try:
-                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                bpc = getToolByName(
+                    self.context, 'bikahealth_catalog_patient_listing')
                 proxies = bpc(id=PatientID)
             except ParseError:
                 pass
         elif ClientPatientID:
             try:
-                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                bpc = getToolByName(
+                    self.context, 'bikahealth_catalog_patient_listing')
                 proxies = bpc(getClientPatientID=ClientPatientID)
             except ParseError:
                 pass
         elif Fullname:
             try:
-                bpc = getToolByName(self.context, 'bika_patient_catalog')
+                bpc = getToolByName(
+                    self.context, 'bikahealth_catalog_patient_listing')
                 proxies = bpc(Title=Fullname,
                               sort_on='created',
                               sort_order='reverse')

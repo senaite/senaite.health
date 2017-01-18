@@ -6,6 +6,7 @@ from Products.Archetypes import atapi
 from Products.CMFCore.utils import getToolByName
 from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
+from bika.health.catalog import CATALOG_PATIENT_LISTING
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.utils import logged_in_client
 from bika.health.config import PROJECTNAME
@@ -33,7 +34,7 @@ class PatientsView(BikaListingView):
     def __init__(self, context, request):
         super(PatientsView, self).__init__(context, request)
 
-        self.catalog = 'bikahealth_catalog_patient_listing'
+        self.catalog = CATALOG_PATIENT_LISTING
 
         self.contentFilter = {'portal_type': 'Patient',
                               'sort_on': 'sortable_title'}

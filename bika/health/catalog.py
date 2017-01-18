@@ -16,6 +16,7 @@ _catalogs_definition = {
     CATALOG_PATIENT_LISTING: {
         'types':   ['Patient', ],
         'indexes': {
+            'id': 'FieldIndex',
             'created': 'DateIndex',
             'sortable_title': 'FieldIndex',
             'review_state': 'FieldIndex',
