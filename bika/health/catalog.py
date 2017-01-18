@@ -51,20 +51,17 @@ _catalogs_definition = {
             'getAgeSplittedStr',  # (=AgeYMD)
             'getPatientIdentifiersStr',  # (PatientIdentifiers stringified)
             'getMobilePhone',
-            'getCity',
-            'getDistrict',
-            'getPostalCode',
-            'getCountry',
-            'getCitizenship',
             'getPatientID',
-            'getPatientMenstrualStatus',
-            'getNumberOfSamples',  # (all Samples)
-            'getNumberOfSamplesCancelled',  # (Cancelled Samples)
-            # (Samples with at least one AnalysisRequest <= verified)
-            'getNumberOfSamplesOngoing',
-            # (Samples with at least one AnalysisRequest >= published)
-            'getNumberOfSamplesPublished',
-            'getRatioOfSamplesOngoing',  # (a String like 'ongoing/samples')
+            'getMenstrualStatus',  # Review its use in ajaxGetPatientInfo
+
+            # Columns with a function in Patient already in place below:
+            # 'getNumberOfSamples',  # (all Samples)
+            # 'getNumberOfSamplesCancelled',  # (Cancelled Samples)
+            # # (Samples with at least one AnalysisRequest <= verified)
+            # 'getNumberOfSamplesOngoing',
+            # # (Samples with at least one AnalysisRequest >= published)
+            # 'getNumberOfSamplesPublished',
+            # 'getRatioOfSamplesOngoing',  # (a String like 'ongoing/samples')
         ]
     }
 }
@@ -86,7 +83,7 @@ def getCatalogExtensions():
     """
     return _catalogs_extensions
 
-
+# TODO-catalog: Function to review its use. Good candidate to be removed
 def getCatalog(instance, field='UID'):
     """ Return the catalog which indexes objects of instance's type.
     If an object is indexed by more than one catalog, the first match
