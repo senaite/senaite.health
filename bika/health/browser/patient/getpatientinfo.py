@@ -60,18 +60,14 @@ class ajaxGetPatientInfo(BrowserView):
 
         if not proxies:
             return json.dumps(ret)
-
-        patient = proxies[0].getObject()
-        PR = patient.getPrimaryReferrer()
-        ret = {'PatientID': patient.getPatientID(),
-               'PatientUID': patient.UID(),
-               'ClientPatientID': patient.getClientPatientID(),
-               'ClientID': PR and PR.getClientID() or '',
-               'ClientUID': PR and PR.UID() or '',
-               'ClientTitle': PR and PR.Title() or '',
-               'ClientSysID' : PR and PR.id or '',
-               'PatientFullname': patient.Title(),
-               'PatientBirthDate': self.ulocalized_time(patient.getBirthDate()),
-               'PatientGender': patient.getGender(),
-               'PatientMenstrualStatus':patient.getMenstrualStatus()}
+        ret = {'PatientID': patient.getPatientID,
+               'PatientUID': patient.UID,
+               'ClientPatientID': patient.getClientPatientID,
+               'ClientUID': patient.getPrimaryReferrerID,
+               'ClientTitle': patient.getPrimaryReferrerTitle,
+               'ClientSysID': patient.getPrimaryReferrerID,
+               'PatientFullname': patient.Title,
+               'PatientBirthDate': self.ulocalized_time(patient.getBirthDate),
+               'PatientGender': patient.getGender,
+               'PatientMenstrualStatus': patient.getMenstrualStatus}
         return json.dumps(ret)

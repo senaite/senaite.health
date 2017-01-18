@@ -48,6 +48,11 @@ schema = Person.schema.copy() + Schema((
                        label=_('Client'),
                    ),
     ),
+    ComputedField('PrimaryReferrerID',
+                  expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).getId() or None",
+                  widget=ComputedWidget(
+                  ),
+    ),
     ComputedField('PrimaryReferrerTitle',
                   expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).Title() or None",
                   widget=ComputedWidget(

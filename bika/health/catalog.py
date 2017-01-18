@@ -57,6 +57,7 @@ _catalogs_definition = {
             'getCountry',
             'getCitizenship',
             'getPatientID',
+            'getPatientMenstrualStatus',
             'getNumberOfSamples',  # (all Samples)
             'getNumberOfSamplesCancelled',  # (Cancelled Samples)
             # (Samples with at least one AnalysisRequest <= verified)
