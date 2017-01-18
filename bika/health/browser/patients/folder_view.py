@@ -128,6 +128,8 @@ class PatientsView(BikaListingView):
         """
         if 'obj' not in item:
             return None
+        # TODO: Remember to use https://github.com/bikalabs/bika.lims/pull/1846/files#diff-40dfcc4bde98b3ea8f3d9f985776675aR51
+        # Note: attr and replace_url
         item['getPatientID'] = obj.getPatientID
         item['getGender'] = obj.getGender
         item['getAgeSplittedStr'] = obj.getAgeSplittedStr
