@@ -65,9 +65,16 @@ _catalogs_definition = {
         ]
     }
 }
+
+
 # Defines the extension for catalogs created in Bika LIMS
 _catalogs_extensions = {
-}
+        'types': ['AnalysisRequest', ],
+        'indexes': {
+        },
+        'columns': [
+        ]
+    }
 
 
 def getCatalogDefinitions():
