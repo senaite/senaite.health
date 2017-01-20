@@ -10,6 +10,7 @@ from bika.health import logger
 from Products.CMFCore import permissions
 from bika.lims.catalog import setup_catalogs
 from bika.health.catalog import getCatalogDefinitions
+from bika.health.catalog import getCatalogExtensions
 
 
 def upgrade(tool):
@@ -44,7 +45,8 @@ def upgrade(tool):
     # wf.updateRoleMappings()
 
     # Updateing health catalogs if there is any change in them
-    setup_catalogs(portal, getCatalogDefinitions())
+    setup_catalogs(
+        portal, getCatalogDefinitions(), catalog_extensions=getCatalogExtensions())
     # Deleting bika_patient_catalog
     if 'bika_patient_catalog' in portal.keys():
         logger.info('Deletting catalog bika_patient_catalog...')

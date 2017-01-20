@@ -71,6 +71,8 @@ _catalogs_definition = {
 _catalogs_extensions = {
         'types': ['AnalysisRequest', ],
         'indexes': {
+            'getDoctorUID': 'FieldIndex',
+            'getPatientUID': 'FieldIndex',
         },
         'columns': [
         ]
