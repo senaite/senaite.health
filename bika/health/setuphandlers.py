@@ -352,7 +352,7 @@ def setupHealthCatalogs(context):
     addColumn(bsc,'getGender')
 
     # CATALOG_PATIENTS
-    setup_catalogs(context, getCatalogDefinitions())
+    setup_catalogs(portal, getCatalogDefinitions())
 
 
 def setupHealthTestContent(context):
