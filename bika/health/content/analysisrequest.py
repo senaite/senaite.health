@@ -51,7 +51,7 @@ class AnalysisRequestSchemaExtender(object):
         ExtComputedField(
             'DoctorUID',
             # It looks like recursive, but we must pass through the Schema to obtain data. In this way we allow to LIMS obtain it.
-            expression="context.Schema()['Doctor'].get(context).UID() if context.Schema()['Doctor'].get(context) else None",
+            expression="context._getDoctorUID()",
             widget=ComputedWidget(
                 visible=False,
             ),
@@ -99,7 +99,7 @@ class AnalysisRequestSchemaExtender(object):
 
         ExtComputedField(
             'PatientUID',
-            expression="context.Schema()['Patient'].get(context).UID() if context.Schema()['Patient'].get(context) else None",
+            expression="here._getPatientUID()",
             widget=ComputedWidget(
                 visible=False,
             ),
@@ -184,3 +184,15 @@ class AnalysisRequestSchemaModifier(object):
     def fiddle(self, schema):
         schema['Batch'].widget.label = _("Case")
         return schema
+
+    def _getPatientUID(self):
+        """
+        Return the patient UID
+        """
+        return self.getPatient().UID() if self.getPatient() else None
+
+    def _getDoctorUID(self):
+        """
+        Return the patient UID
+        """
+        return self.getDoctor().UID() if self.getDoctor() else None

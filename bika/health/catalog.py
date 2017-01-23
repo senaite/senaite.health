@@ -6,6 +6,7 @@ from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.ZCatalog.ZCatalog import ZCatalog
 from zope.interface import implements
 from bika.health.interfaces import IBikaHealthCatalogPatientListing
+from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 
 
 # Using a variable to avoid plain strings in code
@@ -67,15 +68,17 @@ _catalogs_definition = {
 }
 
 
-# Defines the extension for catalogs created in Bika LIMS
+# Defines the extension for catalogs created in Bika LIMS.
+# Only add the items you would like to add!
 _catalogs_extensions = {
-        'types': ['AnalysisRequest', ],
-        'indexes': {
-            'getDoctorUID': 'FieldIndex',
-            'getPatientUID': 'FieldIndex',
-        },
-        'columns': [
-        ]
+    CATALOG_ANALYSIS_REQUEST_LISTING: {
+            'indexes': {
+                'getDoctorUID': 'FieldIndex',
+                'getPatientUID': 'FieldIndex',
+            },
+            'columns': [
+            ]
+        }
     }
 
 

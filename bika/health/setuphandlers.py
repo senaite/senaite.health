@@ -7,6 +7,7 @@ from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
 from bika.health.catalog import getCatalogDefinitions
+from bika.health.catalog import getCatalogExtensions
 from bika.lims.catalog import setup_catalogs
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
@@ -351,8 +352,10 @@ def setupHealthCatalogs(context):
     addIndex(bsc,'getGender', 'FieldIndex')
     addColumn(bsc,'getGender')
 
-    # CATALOG_PATIENTS
-    setup_catalogs(context, getCatalogDefinitions())
+    # CATALOG_PATIENTS and analysis requests new columns/indexes
+    setup_catalogs(
+        context, getCatalogDefinitions(),
+        catalog_extensions=getCatalogExtensions())
 
 
 def setupHealthTestContent(context):
