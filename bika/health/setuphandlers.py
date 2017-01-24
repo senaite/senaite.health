@@ -354,7 +354,7 @@ def setupHealthCatalogs(context):
 
     # CATALOG_PATIENTS and analysis requests new columns/indexes
     setup_catalogs(
-        context, getCatalogDefinitions(),
+        portal, getCatalogDefinitions(),
         catalog_extensions=getCatalogExtensions())
 
 
