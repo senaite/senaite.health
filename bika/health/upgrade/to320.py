@@ -44,7 +44,7 @@ def upgrade(tool):
     # wf = getToolByName(portal, 'portal_workflow')
     # wf.updateRoleMappings()
 
-    # Updateing health catalogs if there is any change in them
+    # Updating health catalogs if there is any change in them
     setup_catalogs(
         portal, getCatalogDefinitions(),
         catalog_extensions=getCatalogExtensions(), force_reindex=True)

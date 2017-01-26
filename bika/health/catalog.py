@@ -143,6 +143,7 @@ class BikaHealthCatalogPatientListing(CatalogTool):
         """
         def indexObject(obj, path):
             self.reindexObject(obj)
+        logger.info('Cleaning and rebuilding %s...' % self.id)
         at = getToolByName(self, 'archetype_tool')
         types = [k for k, v in at.catalog_map.items()
                  if self.id in v]
@@ -153,4 +154,5 @@ class BikaHealthCatalogPatientListing(CatalogTool):
             obj_metatypes=types,
             search_sub=True,
             apply_func=indexObject)
+        logger.info('%s cleaned and rebuilt' % self.id)
 InitializeClass(BikaHealthCatalogPatientListing)
