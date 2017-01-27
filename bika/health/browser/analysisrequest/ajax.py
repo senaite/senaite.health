@@ -4,6 +4,7 @@ from bika.lims.browser.analysisrequest.add import ajaxAnalysisRequestSubmit as B
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.lims.browser.analysisrequest.add import ajax_form_error
+from bika.health.catalog import CATALOG_PATIENT_LISTING
 from Products.CMFCore.utils import getToolByName
 import json
 
@@ -14,7 +15,7 @@ class AnalysisRequestSubmit(BaseClass):
 
         # Create new Anonymous Patients as needed
         uc = getToolByName(self.context, 'uid_catalog')
-        bpc = getToolByName(self.context, 'bika_patient_catalog')
+        cpt = getToolByName(self.context, CATALOG_PATIENT_LISTING)
         form = self.request.form
         formc = self.request.form.copy()
         state = json.loads(formc['state'])
@@ -28,7 +29,7 @@ class AnalysisRequestSubmit(BaseClass):
             elif patuid == 'anonymous':
                 clientpatientid = values.get('ClientPatientID', '')
                 # Check if has already been created
-                proxies = bpc(getClientPatientID=clientpatientid)
+                proxies = cpt(getClientPatientID=clientpatientid)
                 if proxies and len(proxies) > 0:
                     patient = proxies[0].getObject()
                 else:

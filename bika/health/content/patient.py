@@ -48,15 +48,27 @@ schema = Person.schema.copy() + Schema((
                        label=_('Client'),
                    ),
     ),
+    ComputedField('PrimaryReferrerID',
+                  expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).getId() or None",
+                  widget=ComputedWidget(
+                  ),
+    ),
     ComputedField('PrimaryReferrerTitle',
                   expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).Title() or None",
                   widget=ComputedWidget(
                   ),
     ),
-     ComputedField('PrimaryReferrerUID',
+    ComputedField('PrimaryReferrerUID',
                   expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).UID() or None",
                   widget=ComputedWidget(
                   ),
+    ),
+    ComputedField(
+        'PrimaryReferrerURL',
+        expression="context.getPrimaryReferrer().absolute_url() if context.getPrimaryReferrer() else ''",
+        widget=ComputedWidget(
+            visible=False
+        ),
     ),
     StringField('Gender',
                 vocabulary=GENDERS,
@@ -94,6 +106,11 @@ schema = Person.schema.copy() + Schema((
                      label=_('Age'),
                  ),
     ),
+    ComputedField(
+        'AgeSplittedStr',
+        expression="context.getAgeSplittedStr()",
+        widget=ComputedWidget(visible=False),
+    ),
     AddressField('CountryState',
                  widget=AddressWidget(
                  searchable=True,
@@ -127,6 +144,11 @@ schema = Person.schema.copy() + Schema((
                          },
                      },
                  ),
+    ),
+    ComputedField(
+        'PatientIdentifiersStr',
+        expression="context.getPatientIdentifiersStr()",
+        widget=ComputedWidget(visible=False),
     ),
     TextField('Remarks',
               searchable=True,
@@ -514,6 +536,41 @@ schema = Person.schema.copy() + Schema((
                      label=_('Consent to SMS'),
                  ),
     ),
+    ComputedField(
+        'NumberOfSamples',
+        expression="len(context.getSamples())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'NumberOfSamplesCancelled',
+        expression="len(context.getSamplesCancelled())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'NumberOfSamplesOngoing',
+        expression="len(context.getSamplesOngoing())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'NumberOfSamplesPublished',
+        expression="len(context.getSamplesPublished())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'RatioOfSamplesOngoing',
+        expression="context.getNumberOfSamplesOngoingRatio()",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
 ))
 
 schema['JobTitle'].widget.visible = False
@@ -570,19 +627,76 @@ class Patient(Person):
     security.declarePublic('getSamples')
     def getSamples(self):
         """ get all samples taken from this Patient """
-        return [ar.getSample() for ar in self.getARs() if ar.getSample()]
+        l = []
+        for ar in self.getARs():
+            sample = ar.getObject().getSample()
+            if sample:
+                l.append(sample)
+        return l
+
+    def getSamplesCancelled(self):
+        """
+        Cancelled Samples
+        """
+        workflow = getToolByName(self, 'portal_workflow')
+        l = self.getSamples()
+        return [sample for samples in l if
+                workflow.getInfoFor(analysis, 'review_state') == 'cancelled']
+
+    def getSamplesPublished(self):
+        """
+        Published Samples
+        """
+        workflow = getToolByName(self, 'portal_workflow')
+        ars = self.getARs()
+        samples = []
+        samples_uids = []
+        for ar in ars:
+            if ar.review_state == 'published':
+                # Getting the object now
+                sample = ar.getObject().getSample()
+                if sample and sample.UID() not in samples_uids:
+                    samples.append(sample.UID())
+                    samples_uids.append(sample)
+        return samples
+
+    def getSamplesOngoing(self):
+        """
+        Ongoing on Samples
+        """
+        workflow = getToolByName(self, 'portal_workflow')
+        ars = self.getARs()
+        states = [
+            'verified', 'to_be_sampled', 'scheduled_sampling', 'sampled',
+            'to_be_preserved', 'sample_due', 'sample_prep', 'sample_received',
+            'to_be_verified', ]
+        samples = []
+        samples_uids = []
+        for ar in ars:
+            if ar.review_state in states:
+                # Getting the object now
+                sample = ar.getObject().getSample()
+                if sample and sample.UID() not in samples_uids:
+                    samples.append(sample.UID())
+                    samples_uids.append(sample)
+        return samples
+
+    def getNumberOfSamplesOngoingRatio(self):
+        """
+        Returns the ratio between NumberOfSamplesOngoing/NumberOfSamples
+        """
+        result = 0
+        if self.getNumberOfSamples() > 0:
+            result = self.getNumberOfSamplesOngoing()/self.getNumberOfSamples()
+        return result
 
     security.declarePublic('getARs')
     def getARs(self, analysis_state=None):
         bc = getToolByName(self, 'bika_catalog')
-        ars = bc(portal_type='AnalysisRequest')
-        outars = []
-        for ar in ars:
-            ar = ar.getObject()
-            pat = ar.Schema()['Patient'].get(ar) if ar else None
-            if pat and pat.UID() == self.UID():
-                outars.append(ar)
-        return outars
+        ars = bc(
+            portal_type='AnalysisRequest',
+            getPatientUID=self.UID())
+        return ars
 
     def get_clients(self):
         ## Only show clients to which we have Manage AR rights.

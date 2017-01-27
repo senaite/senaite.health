@@ -23,7 +23,7 @@
                     tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
                     combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'id', 'align': 'left', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'ClientPatientID', 'align': 'left', 'label': 'Client PID', 'width': '20'}, {'columnName': 'Title', 'align': 'left', 'label': 'Fullname', 'width': '60'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['ClientPatientID'], 'sord': 'asc', 'discard_empty': ['ClientPatientID'], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'showOn': True, 'force_all': True})"
                    ui_item="ClientPatientID"
-                   catalog_name="bika_patient_catalog"
+                   catalog_name="bikahealth_catalog_patient_listing"
                    resetbutton="False"
                    maxlength="255"
                    searchicon="True"
@@ -53,7 +53,7 @@
                    tal:attributes="base_query python:view.get_json_format({'portal_type': ['Patient'], 'inactive_state': 'active'});
                     combogrid_options python:view.get_json_format({'colModel': [{'columnName': 'getPatientID', 'label': 'Patient ID', 'width': '20'}, {'columnName': 'Title', 'label': 'Full Name', 'width': '40'}, {'columnName': 'PatientIdentifiers', 'label': 'Additional Identifiers', 'width': '40'}, {'columnName': 'UID', 'hidden': True}], 'minLength': '0', 'search_fields': ['Title', 'getPatientID'], 'sord': 'asc', 'discard_empty': [], 'searchIcon': True, 'sidx': 'Title', 'url': 'referencewidget_search', 'resetButton': False, 'width': '550px', 'showOn': True, 'force_all': True});"
                    ui_item="Title"
-                   catalog_name="bika_patient_catalog"
+                   catalog_name="bikahealth_catalog_patient_listing"
                    resetbutton="False"
                    maxlength="255"
                    searchicon="True"
@@ -191,4 +191,3 @@
         </div>
     </div>
 </div>
-
