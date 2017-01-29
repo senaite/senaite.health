@@ -82,8 +82,8 @@ class AnalysisSpecificationPanicValidator:
         else:
             instance.REQUEST['validated'] = self.name
 
-        pmins = instance.REQUEST.get('minpanic', {})[0]
-        pmaxs = instance.REQUEST.get('maxpanic', {})[0]
+        pmins = instance.REQUEST.get('minpanic', [{}])[0]
+        pmaxs = instance.REQUEST.get('maxpanic', [{}])[0]
         uids = pmins.keys()
         for uid in uids:
             pmin = pmins.get(uid, '') == '' and '0' or pmins[uid]
