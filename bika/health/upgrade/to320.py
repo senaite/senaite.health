@@ -19,7 +19,7 @@ def upgrade(tool):
 
     qi = portal.portal_quickinstaller
     ufrom = qi.upgradeInfo('bika.health')['installedVersion']
-    logger.info("Upgrading Bika Health: %s -> %s" % (ufrom, '3.1.8'))
+    logger.info("Upgrading Bika Health: %s -> %s" % (ufrom, '3.2.0'))
 
     """Updated profile steps
     list of the generic setup import step names: portal.portal_setup.getSortedImportSteps() <---
