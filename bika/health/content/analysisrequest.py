@@ -87,6 +87,12 @@ class AnalysisRequestSchemaExtender(object):
                          'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
                 base_query={'inactive_state': 'active'},
+                colModel = [
+                    {'columnName': 'Title', 'width': '30', 'label': _(
+                        'Title'), 'align': 'left'},
+                    # UID is required in colModel
+                    {'columnName': 'UID', 'hidden': True},
+                ],
                 showOn=True,
                 add_button={
                     'visible': True,
