@@ -45,9 +45,9 @@ def upgrade(tool):
 
     # Updateing health catalogs if there is any change in them
     setup_catalogs(portal, getCatalogDefinitions())
-    # Deleting bika_patient_catalog
-    if 'bika_patient_catalog' in portal.keys():
-        logger.info('Deletting catalog bika_patient_catalog...')
-        portal.manage_delObjects(['bika_patient_catalog'])
-        logger.info('Catalog bika_patient_catalog has been deleted')
+    # TODO: Deleting bika_patient_catalog
+    # if 'bika_patient_catalog' in portal.keys():
+    #     logger.info('Deletting catalog bika_patient_catalog...')
+    #     portal.manage_delObjects(['bika_patient_catalog'])
+    #     logger.info('Catalog bika_patient_catalog has been deleted')
     return True
