@@ -52,19 +52,24 @@ class PatientsView(BikaListingView):
 
             'getPatientID': {'title': _('Patient ID'), },
 
-            'getClientPatientID': {'title': _('Client PID'), },
+            'getClientPatientID': {'title': _('Client PID'),
+                                   'sortable': False},
 
             'getGender': {'title': _('Gender'),
-                          'toggle': True},
+                          'toggle': True,
+                          'sortable': False},
 
             'getAgeSplittedStr': {'title': _('Age'),
-                                  'toggle': True},
+                                  'toggle': True,
+                                  'sortable': False},
 
             'getBirthDate': {'title': _('BirthDate'),
-                             'toggle': True},
+                             'toggle': True,
+                             'sortable': False},
 
             'getPrimaryReferrer': {'title': _('Primary Referrer'),
-                                   'toggle': True},
+                                   'toggle': True,
+                                   'sortable': False},
 
         }
 

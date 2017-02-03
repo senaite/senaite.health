@@ -5,6 +5,7 @@ from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
 from bika.lims.fields import *
+from bika.lims.interfaces import IBikaCatalog
 from bika.lims import bikaMessageFactory as _b
 from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.interfaces import IAnalysisRequest
@@ -16,6 +17,17 @@ from zope.component import adapts
 from zope.interface import implements
 from Products.CMFCore import permissions
 from bika.health import permissions as hpermissions
+from plone.indexer.decorator import indexer
+
+
+# Defining the indexes for this extension. Since this is an extension, no
+# getter is created so we need to create indexes in that way.
+@indexer(IAnalysisRequest, IBikaCatalog)
+def getPatientUID(instance):
+    field = instance.Schema().get('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.UID() or ''
+    return value
 
 
 class AnalysisRequestSchemaExtender(object):
@@ -75,6 +87,12 @@ class AnalysisRequestSchemaExtender(object):
                          'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
                 base_query={'inactive_state': 'active'},
+                colModel = [
+                    {'columnName': 'Title', 'width': '30', 'label': _(
+                        'Title'), 'align': 'left'},
+                    # UID is required in colModel
+                    {'columnName': 'UID', 'hidden': True},
+                ],
                 showOn=True,
                 add_button={
                     'visible': True,

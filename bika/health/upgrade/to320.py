@@ -20,7 +20,7 @@ def upgrade(tool):
 
     qi = portal.portal_quickinstaller
     ufrom = qi.upgradeInfo('bika.health')['installedVersion']
-    logger.info("Upgrading Bika Health: %s -> %s" % (ufrom, '3.1.8'))
+    logger.info("Upgrading Bika Health: %s -> %s" % (ufrom, '3.2.0'))
 
     """Updated profile steps
     list of the generic setup import step names: portal.portal_setup.getSortedImportSteps() <---
@@ -48,9 +48,9 @@ def upgrade(tool):
     setup_catalogs(
         portal, getCatalogDefinitions(),
         catalog_extensions=getCatalogExtensions(), force_reindex=True)
-    # Deleting bika_patient_catalog
-    if 'bika_patient_catalog' in portal.keys():
-        logger.info('Deletting catalog bika_patient_catalog...')
-        portal.manage_delObjects(['bika_patient_catalog'])
-        logger.info('Catalog bika_patient_catalog has been deleted')
+    # TODO: Deleting bika_patient_catalog
+    # if 'bika_patient_catalog' in portal.keys():
+    #     logger.info('Deletting catalog bika_patient_catalog...')
+    #     portal.manage_delObjects(['bika_patient_catalog'])
+    #     logger.info('Catalog bika_patient_catalog has been deleted')
     return True
