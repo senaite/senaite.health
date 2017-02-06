@@ -6,6 +6,7 @@ from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
 from bika.lims.fields import *
 from bika.lims.interfaces import IBikaCatalog
+from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
 from bika.lims import bikaMessageFactory as _b
 from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.interfaces import IAnalysisRequest
@@ -22,9 +23,26 @@ from plone.indexer.decorator import indexer
 
 # Defining the indexes for this extension. Since this is an extension, no
 # getter is created so we need to create indexes in that way.
+# TODO-catalog: delete this index
 @indexer(IAnalysisRequest, IBikaCatalog)
 def getPatientUID(instance):
     field = instance.Schema().get('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.UID() or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getPatientUID(instance):
+    field = instance.Schema().get('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.UID() or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getDoctorUID(instance):
+    field = instance.Schema().get('Doctor', '')
     item = field.get(instance) if field else None
     value = item and item.UID() or ''
     return value

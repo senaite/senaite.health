@@ -2,7 +2,7 @@ from Products.Archetypes.config import REFERENCE_CATALOG
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
-from bika.lims import logger
+from bika.health import logger
 from bika.lims.browser.analysisrequest import \
     AnalysisRequestWorkflowAction as _AnalysisRequestWorkflowAction
 from bika.lims.utils import encode_header

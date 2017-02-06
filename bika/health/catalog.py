@@ -8,6 +8,7 @@ from zope.interface import implements
 # from bika.lims import deprecated
 from bika.health.interfaces import IBikaHealthCatalogPatientListing
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
+from bika.health import logger
 
 
 # Using a variable to avoid plain strings in code
@@ -183,15 +184,23 @@ class BikaHealthCatalogPatientListing(CatalogTool):
         def indexObject(obj, path):
             self.reindexObject(obj)
         logger.info('Cleaning and rebuilding %s...' % self.id)
-        at = getToolByName(self, 'archetype_tool')
-        types = [k for k, v in at.catalog_map.items()
-                 if self.id in v]
-        self.manage_catalogClear()
-        portal = getToolByName(self, 'portal_url').getPortalObject()
-        portal.ZopeFindAndApply(
-            portal,
-            obj_metatypes=types,
-            search_sub=True,
-            apply_func=indexObject)
+        try:
+            at = getToolByName(self, 'archetype_tool')
+            types = [k for k, v in at.catalog_map.items()
+                     if self.id in v]
+            self.manage_catalogClear()
+            portal = getToolByName(self, 'portal_url').getPortalObject()
+            portal.ZopeFindAndApply(
+                portal,
+                obj_metatypes=types,
+                search_sub=True,
+                apply_func=indexObject)
+        except:
+            logger.error(traceback.format_exc())
+            e = sys.exc_info()
+            logger.error(
+                "Unable to clean and rebuild %s due to: %s" % (self.id, e))
         logger.info('%s cleaned and rebuilt' % self.id)
+
+
 InitializeClass(BikaHealthCatalogPatientListing)

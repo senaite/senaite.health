@@ -4,7 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddEthnicity, ViewEthnicities
-from bika.lims import logger
+from bika.health import logger
 
 
 def upgrade(tool):
