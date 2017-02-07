@@ -24,7 +24,8 @@ class AnalysisRequestsView(BaseView):
             rs['columns'].insert(i, 'getPatient')
 
     def folderitems(self, full_objects=False):
-        items = super(AnalysisRequestsView, self).folderitems(full_objects)
+        items = super(AnalysisRequestsView, self).folderitems(
+            full_objects, classic=False)
         items = self.filteritems(items)
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
@@ -75,8 +76,7 @@ class AnalysisRequestsView(BaseView):
         @Obj: it is an analysis request object.
         @return: boolean
         """
-        return self.filter_bar_check_item(obj) and\
-            super(AnalysisRequestsView, self).isItemAllowed(obj)
+        return self.filter_bar_check_item(obj)
 
     def getFilterBar(self):
         """
