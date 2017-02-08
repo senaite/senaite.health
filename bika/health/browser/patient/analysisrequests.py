@@ -20,6 +20,7 @@ class AnalysisRequestsView(AnalysisRequestsView):
 
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)
+        # Filter by patient
         self.contentFilter['getPatientUID'] = self.context.UID()
         self.show_all = True
         self.columns['BatchID']['title'] = _('Case ID')

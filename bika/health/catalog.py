@@ -80,6 +80,7 @@ _catalogs_extensions = {
                 'getPatientUID': 'FieldIndex',
             },
             'columns': [
+                'getDoctorUID',
                 'getPatientUID',
             ]
         }
