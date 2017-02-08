@@ -5,77 +5,69 @@ from bika.health import bikaMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 from Products.Archetypes.public import DisplayList
 import json
+from bika.health.catalog import CATALOG_PATIENT_LISTING
 from datetime import datetime, date
 
 
 class AnalysisRequestsView(BaseView):
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)
+        self.patient_catalog = None
         self.columns['BatchID']['title'] = _('Case ID')
 
-        # Add Client Patient fields
-        self.columns['getPatientID'] = {'title': _('Patient ID'), 'toggle': True}
-        self.columns['getClientPatientID'] = {'title': _("Client PID"), 'toggle': True}
-        self.columns['getPatient'] = {'title': _('Patient'), 'toggle': True}
-        for rs in self.review_states:
-            i = rs['columns'].index('BatchID') + 1
-            rs['columns'].insert(i, 'getClientPatientID')
-            rs['columns'].insert(i, 'getPatientID')
-            rs['columns'].insert(i, 'getPatient')
-
     def folderitems(self, full_objects=False):
-        items = super(AnalysisRequestsView, self).folderitems(
-            full_objects, classic=False)
-        items = self.filteritems(items)
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
+        # We will use this list for each element
         roles = member.getRoles()
-        if 'Manager' not in roles \
-            and 'LabManager' not in roles \
-            and 'LabClerk' not in roles:
-            # Remove patient fields. Must be done here because in __init__
-            # method, member.getRoles() returns empty
-            del self.columns['getPatientID']
-            del self.columns['getClientPatientID']
-            del self.columns['getPatient']
+        if 'Manager' in roles \
+            or 'LabManager' in roles \
+                or 'LabClerk' in roles:
+            # Add Client Patient fields
+            self.columns['getPatientID'] = {
+                'title': _('Patient ID'),
+                'toggle': True}
+            self.columns['getClientPatientID'] = {
+                'title': _("Client PID"),
+                'toggle': True}
+            self.columns['getPatient'] = {
+                'title': _('Patient'),
+                'toggle': True}
             for rs in self.review_states:
-                del rs['columns'][rs['columns'].index('getClientPatientID')]
-                del rs['columns'][rs['columns'].index('getPatientID')]
-                del rs['columns'][rs['columns'].index('getPatient')]
-        else:
-            for x in range(len(items)):
-                if 'obj' not in items[x]:
-                    items[x]['getClientPatientID'] = ''
-                    items[x]['getPatientID'] = ''
-                    items[x]['getPatient'] = ''
-                    continue
-                obj = items[x]['obj']
-                patient = obj.Schema()['Patient'].get(obj)
-                if patient:
-                    items[x]['getPatientID'] = patient.getPatientID()
-                    items[x]['replace']['getPatientID'] = "<a href='%s'>%s</a>" % \
-                        (patient.absolute_url(), items[x]['getPatientID'])
-                    items[x]['getClientPatientID'] = patient.getClientPatientID()
-                    items[x]['replace']['getClientPatientID'] = "<a href='%s'>%s</a>" % \
-                        (patient.absolute_url(), items[x]['getClientPatientID'])
-                    items[x]['getPatient'] = patient.Title()
-                    items[x]['replace']['getPatient'] = "<a href='%s'>%s</a>" % \
-                        (patient.absolute_url(), items[x]['getPatient'])
-                else:
-                    items[x]['getClientPatientID'] = ''
-                    items[x]['getPatientID'] = ''
-                    items[x]['getPatient'] = ''
-        return items
+                i = rs['columns'].index('BatchID') + 1
+                rs['columns'].insert(i, 'getClientPatientID')
+                rs['columns'].insert(i, 'getPatientID')
+                rs['columns'].insert(i, 'getPatient')
+        # Setting ip the patient catalog to be used in folderitem()
+        self.patient_catalog = getToolByName(
+            self.context, CATALOG_PATIENT_LISTING)
+        return super(AnalysisRequestsView, self).folderitems(
+            full_objects=False, classic=False)
 
-    def filteritems(self, items):
-        return items
+    def folderitem(self, obj, item, index):
+        item = super(AnalysisRequestsView, self)\
+            .folderitem(obj, item, index)
+        patient = self.patient_catalog(UID=obj.getPatientUID)
+        if patient:
+            item['getPatientID'] = patient[0].getId
+            item['replace']['getPatientID'] = "<a href='%s'>%s</a>" % \
+                (patient[0].getURL(), patient[0].getId)
+            item['getClientPatientID'] = patient[0].getClientPatientID
+            item['replace']['getClientPatientID'] = "<a href='%s'>%s</a>" % \
+                (patient[0].getURL(), patient[0].getClientPatientID)
+            item['getPatient'] = patient[0].Title
+            item['replace']['getPatient'] = "<a href='%s'>%s</a>" % \
+                (patient[0].getURL(), patient[0].Title)
+        return item
 
     def isItemAllowed(self, obj):
         """
         Checks the BikaLIMS conditions and also checks filter bar conditions
-        @Obj: it is an analysis request object.
+        @Obj: it is an analysis request brain.
         @return: boolean
         """
+        if not super(AnalysisRequestsView, self).isItemAllowed(obj):
+            return False
         return self.filter_bar_check_item(obj)
 
     def getFilterBar(self):
@@ -209,24 +201,26 @@ class BikaListingFilterBar(BaseBikaListingFilterBar):
         It is recomended to be used in isItemAllowed() method.
         This function should be only used for those fields without
         representation as an index in the catalog.
-        :item: The item to check.
+        :item: The item to check. This is a brain
         :return: boolean.
         """
         dbar = self.get_filter_bar_dict()
         keys = dbar.keys()
         final_decision = 'True'
+        item_obj = None
         for key in keys:
             #elif key == 'date_tested_0' and d.get(key, '') != '':
             #    import pdb; pdb.set_trace()
             #elif key == 'date_tested_1' and d.get(key, '') != '':
             #    import pdb; pdb.set_trace()
             if key == 'analysis_name' and dbar.get(key, '') != '':
+                item_obj = item.getObject() if not item_obj else item_obj
                 uids = [
                     analysis.getService().UID() for analysis in
-                    item.getAnalyses(full_objects=True)]
+                    item_obj.getAnalyses(full_objects=True)]
                 if dbar.get(key, '') not in uids:
                     return False
             if key == 'print_state' and dbar.get(key, '') != '':
-                if dbar.get(key, '') != item.getPrinted():
+                if dbar.get(key, '') != item.getPrinted:
                     return False
         return True

@@ -40,6 +40,7 @@ _catalogs_definition = {
         },
         'columns': [
             'UID',
+            'getId',
             'Title',
             'review_state',
             'inactive_state',
@@ -79,6 +80,7 @@ _catalogs_extensions = {
                 'getPatientUID': 'FieldIndex',
             },
             'columns': [
+                'getPatientUID',
             ]
         }
     }
