@@ -1,6 +1,7 @@
 from Products.ZCTextIndex.ParseTree import ParseError
 from bika.lims.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
+from bika.health.catalog import CATALOG_PATIENT_LISTING
 import plone
 import json
 
@@ -13,7 +14,7 @@ class ajaxGetPatientInfo(BrowserView):
         Fullname = self.request.get('Fullname', '')
         PatientUID = self.request.get('PatientUID', '')
         ClientPatientID = self.request.get('ClientPatientID', '')
-        PatientID = self.request.get('PatientID','')
+        PatientID = self.request.get('PatientID', '')
         ret = {'PatientID': '',
                'PatientUID': '',
                'ClientPatientID': '',
@@ -23,14 +24,14 @@ class ajaxGetPatientInfo(BrowserView):
                'ClientSysID': '',
                'PatientFullname': '',
                'PatientBirthDate': '',
-               'PatientGender':'dk',
-               'PatientMenstrualStatus':''}
+               'PatientGender': 'dk',
+               'PatientMenstrualStatus': ''}
 
         proxies = None
         if PatientUID:
             try:
                 bpc = getToolByName(
-                    self.context, 'bikahealth_catalog_patient_listing')
+                    self.context, CATALOG_PATIENT_LISTING)
                 proxies = bpc(UID=PatientUID)
             except ParseError:
                 pass
@@ -44,14 +45,14 @@ class ajaxGetPatientInfo(BrowserView):
         elif ClientPatientID:
             try:
                 bpc = getToolByName(
-                    self.context, 'bikahealth_catalog_patient_listing')
+                    self.context, CATALOG_PATIENT_LISTING)
                 proxies = bpc(getClientPatientID=ClientPatientID)
             except ParseError:
                 pass
         elif Fullname:
             try:
                 bpc = getToolByName(
-                    self.context, 'bikahealth_catalog_patient_listing')
+                    self.context, CATALOG_PATIENT_LISTING)
                 proxies = bpc(Title=Fullname,
                               sort_on='created',
                               sort_order='reverse')
@@ -60,6 +61,7 @@ class ajaxGetPatientInfo(BrowserView):
 
         if not proxies:
             return json.dumps(ret)
+        patient = proxies[0]
         ret = {'PatientID': patient.getPatientID,
                'PatientUID': patient.UID,
                'ClientPatientID': patient.getClientPatientID,
