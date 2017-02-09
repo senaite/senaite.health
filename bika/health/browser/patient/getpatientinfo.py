@@ -60,6 +60,8 @@ class ajaxGetPatientInfo(BrowserView):
 
         if not proxies:
             return json.dumps(ret)
+
+        patient = proxies[0]
         ret = {'PatientID': patient.getPatientID,
                'PatientUID': patient.UID,
                'ClientPatientID': patient.getClientPatientID,
