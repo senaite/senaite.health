@@ -48,6 +48,7 @@ _catalogs_definition = {
             'getPhysicalPath',  # (patient's absolute path)
             'getClientPatientID',
             'getPrimaryReferrerUID',
+            'getPrimaryReferrerID',
             'getPrimaryReferrerURL',
             'getPrimaryReferrerTitle',
             'getGender',
