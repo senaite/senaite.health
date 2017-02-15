@@ -8,6 +8,9 @@ from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from bika.health import logger
 from Products.CMFCore import permissions
+from bika.lims.catalog import setup_catalogs
+from bika.health.catalog import getCatalogDefinitions
+from bika.health.catalog import getCatalogExtensions
 
 
 def upgrade(tool):
@@ -17,7 +20,7 @@ def upgrade(tool):
 
     qi = portal.portal_quickinstaller
     ufrom = qi.upgradeInfo('bika.health')['installedVersion']
-    logger.info("Upgrading Bika Health: %s -> %s" % (ufrom, '3.1.8'))
+    logger.info("Upgrading Bika Health: %s -> %s" % (ufrom, '3.2.0'))
 
     """Updated profile steps
     list of the generic setup import step names: portal.portal_setup.getSortedImportSteps() <---
@@ -26,6 +29,7 @@ def upgrade(tool):
     http://stackoverflow.com/questions/7821498/is-there-a-good-reference-list-for-the-names-of-the-genericsetup-import-steps
     """
     setup = portal.portal_setup
+    setup.runImportStepFromProfile('profile-bika.health:default', 'toolset')
     # setup.runImportStepFromProfile('profile-bika.health:default', 'typeinfo')
     # setup.runImportStepFromProfile('profile-bika.health:default', 'jsregistry')
     # setup.runImportStepFromProfile('profile-bika.health:default', 'cssregistry')
@@ -39,4 +43,14 @@ def upgrade(tool):
     """
     # wf = getToolByName(portal, 'portal_workflow')
     # wf.updateRoleMappings()
+
+    # Updating health catalogs if there is any change in them
+    setup_catalogs(
+        portal, getCatalogDefinitions(),
+        catalog_extensions=getCatalogExtensions())
+    # TODO: Deleting bika_patient_catalog
+    # if 'bika_patient_catalog' in portal.keys():
+    #     logger.info('Deletting catalog bika_patient_catalog...')
+    #     portal.manage_delObjects(['bika_patient_catalog'])
+    #     logger.info('Catalog bika_patient_catalog has been deleted')
     return True

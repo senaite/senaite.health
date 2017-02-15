@@ -38,7 +38,7 @@ class PatientFieldsWidgetVisibility(object):
         if fieldName not in header_table_fields and fieldName not in readonly_fields:
             return state
 
-        #from bika.lims import logger
+        #from bika.health import logger
         #oldstate = state
         if has_perm:
            if mode == 'header_table' and fieldName in header_table_fields:

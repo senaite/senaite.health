@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
 from Products.Archetypes.public import *
@@ -6,8 +7,9 @@ from bika.lims.interfaces import IClient
 from bika.health.widgets import *
 from plone.indexer.decorator import indexer
 from bika.health import bikaMessageFactory as _
-from zope.component import adapts
+from zope.component import adapts, getAdapters
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 @indexer(IClient)
 def getClientID(instance):

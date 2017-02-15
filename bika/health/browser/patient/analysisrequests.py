@@ -20,7 +20,8 @@ class AnalysisRequestsView(AnalysisRequestsView):
 
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)
-        #self.contentFilter['getPatientUID'] = self.context.UID()
+        # Filter by patient
+        self.contentFilter['getPatientUID'] = self.context.UID()
         self.show_all = True
         self.columns['BatchID']['title'] = _('Case ID')
 
@@ -45,20 +46,3 @@ class AnalysisRequestsView(AnalysisRequestsView):
                     addPortalMessage(self.context.translate(msg))
 
         return super(AnalysisRequestsView, self).__call__()
-
-    def folderitems(self, full_objects=False):
-        #HACK pending to solve by using getPatientUID directly in __init__
-        #https://github.com/bikalabs/Bika-LIMS/issues/678
-        outitems = []
-        items = super(AnalysisRequestsView, self).folderitems(full_objects)
-        patientuid = self.context.UID()
-        for item in items:
-            try:
-                if 'obj' in item \
-                    and item.get('obj'):
-                    ar = item.get('obj')
-                    if ar.Schema().getField('Patient').get(ar).UID() == patientuid:
-                        outitems.append(item)
-            except:
-                pass
-        return outitems

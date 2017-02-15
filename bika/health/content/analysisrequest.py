@@ -5,6 +5,8 @@ from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
 from bika.health import bikaMessageFactory as _
 from bika.lims.fields import *
+from bika.lims.interfaces import IBikaCatalog
+from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
 from bika.lims import bikaMessageFactory as _b
 from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.interfaces import IAnalysisRequest
@@ -16,6 +18,34 @@ from zope.component import adapts
 from zope.interface import implements
 from Products.CMFCore import permissions
 from bika.health import permissions as hpermissions
+from plone.indexer.decorator import indexer
+
+
+# Defining the indexes for this extension. Since this is an extension, no
+# getter is created so we need to create indexes in that way.
+# TODO-catalog: delete this index
+@indexer(IAnalysisRequest, IBikaCatalog)
+def getPatientUID(instance):
+    field = instance.Schema().get('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.UID() or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getPatientUID(instance):
+    field = instance.Schema().get('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.UID() or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getDoctorUID(instance):
+    field = instance.Schema().get('Doctor', '')
+    item = field.get(instance) if field else None
+    value = item and item.UID() or ''
+    return value
 
 
 class AnalysisRequestSchemaExtender(object):
@@ -51,7 +81,7 @@ class AnalysisRequestSchemaExtender(object):
         ExtComputedField(
             'DoctorUID',
             # It looks like recursive, but we must pass through the Schema to obtain data. In this way we allow to LIMS obtain it.
-            expression="context.Schema()['Doctor'].get(context).UID() if context.Schema()['Doctor'].get(context) else None",
+            expression="context._getDoctorUID()",
             widget=ComputedWidget(
                 visible=False,
             ),
@@ -73,8 +103,14 @@ class AnalysisRequestSchemaExtender(object):
                          'view': 'visible',
                          'add': 'edit',
                          'secondary': 'disabled'},
-                catalog_name='bika_patient_catalog',
+                catalog_name='bikahealth_catalog_patient_listing',
                 base_query={'inactive_state': 'active'},
+                colModel = [
+                    {'columnName': 'Title', 'width': '30', 'label': _(
+                        'Title'), 'align': 'left'},
+                    # UID is required in colModel
+                    {'columnName': 'UID', 'hidden': True},
+                ],
                 showOn=True,
                 add_button={
                     'visible': True,
@@ -99,7 +135,7 @@ class AnalysisRequestSchemaExtender(object):
 
         ExtComputedField(
             'PatientUID',
-            expression="context.Schema()['Patient'].get(context).UID() if context.Schema()['Patient'].get(context) else None",
+            expression="here._getPatientUID()",
             widget=ComputedWidget(
                 visible=False,
             ),
@@ -118,7 +154,7 @@ class AnalysisRequestSchemaExtender(object):
         ExtStringField(
             'ClientPatientID',
             searchable=True,
-            required=0,
+            required=1,
             read_permission=hpermissions.ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
@@ -129,7 +165,7 @@ class AnalysisRequestSchemaExtender(object):
                                     'width': '20',
                                     'label': _('Patient ID'),
                                     'align':'left'},
-                    {'columnName': 'ClientPatientID',
+                    {'columnName': 'getClientPatientID',
                                     'width': '20',
                                     'label': _('Client PID'),
                                     'align':'left'},
@@ -149,7 +185,7 @@ class AnalysisRequestSchemaExtender(object):
                          'view': 'visible',
                          'add': 'edit',
                          },
-                catalog_name='bika_patient_catalog',
+                catalog_name='bikahealth_catalog_patient_listing',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
             ),
@@ -184,3 +220,15 @@ class AnalysisRequestSchemaModifier(object):
     def fiddle(self, schema):
         schema['Batch'].widget.label = _("Case")
         return schema
+
+    def _getPatientUID(self):
+        """
+        Return the patient UID
+        """
+        return self.getPatient().UID() if self.getPatient() else None
+
+    def _getDoctorUID(self):
+        """
+        Return the patient UID
+        """
+        return self.getDoctor().UID() if self.getDoctor() else None

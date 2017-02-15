@@ -6,12 +6,12 @@ class AnalysisRequestsView(BaseView):
         super(AnalysisRequestsView, self).__init__(context, request)
         self.contentFilter['DoctorUID'] = self.context.UID()
 
-    def filteritems(self, items):
-        outitems = []
-        for x in range(len(items)):
-            if 'obj' in items[x]:
-                ar = items[x]['obj']
-                doctor = ar.Schema()['Doctor'].get(ar) if 'Doctor' in ar.Schema() else None
-                if (doctor and doctor.UID() == self.context.UID()):
-                    outitems.append(items[x])
-        return outitems
+    def isItemAllowed(self, obj):
+        """
+        Checks the BikaLIMS conditions and also checks filter bar conditions
+        @Obj: it is an analysis request brain.
+        @return: boolean
+        """
+        if not super(AnalysisRequestsView, self).isItemAllowed(obj):
+            return False
+        return self.context.UID() == obj.getDoctorUID

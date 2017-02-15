@@ -24,7 +24,7 @@ class ajaxGetPatients(BrowserView):
         nr_rows = self.request['rows']
         sord = self.request['sord']
         sidx = self.request['sidx']
-        clientid = 'clientid' in self.request and self.request['clientid'] or ''
+        clientid = 'clientuid' in self.request and self.request['clientuid'] or ''
 
         rows = []
 
@@ -36,35 +36,31 @@ class ajaxGetPatients(BrowserView):
         # aq = MatchRegexp('Title', "%s" % searchTerm) | \
         #      MatchRegexp('Description', "%s" % searchTerm) | \
         #      MatchRegexp('getPatientID', "%s" % searchTerm)
-        # brains = bika_patient_catalog.evalAdvancedQuery(aq)
+        # brains = bikahealth_catalog_patient_listing.evalAdvancedQuery(aq)
 
-        bpc = getToolByName(self.context, 'bika_patient_catalog')
+        bpc = getToolByName(self.context, 'bikahealth_catalog_patient_listing')
         proxies = bpc(portal_type='Patient', inactive_state='active')
         for patient in proxies:
-            patient = patient.getObject()
             addidfound = False
-            addids = patient.getPatientIdentifiers()
+            addids = patient.getPatientIdentifiersStr
 
-            for addid in addids:
-                if addid['Identifier'].lower().find(searchTerm) > -1:
-                    addidfound = True
-                    break
+            if addids.lower().find(searchTerm) > -1:
+                addidfound = True
+                break
 
-            if patient.Title().lower().find(searchTerm) > -1 \
-                or patient.getPatientID().lower().find(searchTerm) > -1 \
+            if patient.Title.lower().find(searchTerm) > -1 \
+                or patient.getPatientID.lower().find(searchTerm) > -1 \
                 or addidfound:
-                if clientid == '' or clientid == patient.getPrimaryReferrer().id:
-                    rows.append({'Title': patient.Title() or '',
-                                 'PatientID': patient.getPatientID(),
-                                 'ClientPatientID': patient.getClientPatientID(),
-                                 'ClientTitle': patient.getPrimaryReferrer().Title(),
-                                 'ClientID': patient.getPrimaryReferrer().getClientID(),
-                                 'ClientSysID': patient.getPrimaryReferrer().id,
-                                 'PatientUID': patient.UID(),
-                                 'AdditionalIdentifiers': patient.getPatientIdentifiersStrHtml(),
-                                 'PatientBirthDate': self.ulocalized_time(patient.getBirthDate(), long_format=0),
-                                 'PatientGender': patient.getGender(),
-                                 'MenstrualStatus':patient.getMenstrualStatus()})
+                if clientid == '' or clientid == patient.getPrimaryReferrerUID:
+                    rows.append({'Title': patient.Title or '',
+                                 'PatientID': patient.getPatientID,
+                                 'ClientPatientID': patient.getClientPatientID,
+                                 'ClientTitle': patient.getPrimaryReferrerTitle,
+                                 'PatientUID': patient.UID,
+                                 'AdditionalIdentifiers': patient.getPatientIdentifiersStr,
+                                 'PatientBirthDate': self.ulocalized_time(patient.getBirthDate, long_format=0),
+                                 'PatientGender': patient.getGender,
+                                 })
 
         rows = sorted(rows, cmp=lambda x, y: cmp(x.lower(), y.lower()), key=itemgetter(sidx and sidx or 'Title'))
         if sord == 'desc':

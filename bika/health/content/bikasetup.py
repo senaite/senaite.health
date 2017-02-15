@@ -4,8 +4,9 @@ from archetypes.schemaextender.interfaces import ISchemaExtender,\
 from bika.lims.fields import *
 from bika.health import bikaMessageFactory as _
 from bika.lims.interfaces import IBikaSetup
-from zope.component import adapts
+from zope.component import adapts, getAdapters
 from zope.interface import implements
+from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 
 class BikaSetupSchemaExtender(object):
