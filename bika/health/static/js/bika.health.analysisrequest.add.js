@@ -36,7 +36,8 @@ function HealthAnalysisRequestAddView() {
                 if (colposition == undefined){
                     // we are on the specific health template
                     colposition = 0}
-                loadPatient($(this).val(), colposition);
+                uid = $("#" + this.id + "_uid").val();
+                loadPatient(uid, colposition);
                 checkClientContacts();
             });
 
@@ -92,7 +93,7 @@ function HealthAnalysisRequestAddView() {
                 type: 'POST',
                 data: {
                     '_authenticator': $('input[name="_authenticator"]').val(),
-                    'ClientPatientID': id
+                    'PatientUID': id
                 },
                 dataType: "json",
                 success: function (data, textStatus, $XHR) {
