@@ -80,9 +80,9 @@ function HealthAnalysisRequestAddView() {
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
     /**
-     * Searches a patient using the Client Patient ID. If found, fill the Patient's input
-     * fields from the same AR add column. If no patient found, set the values to
-     * Anonymous.
+     * Searches a patient using the Patient UID from Client Patient Input.
+     * If found, fill the Patient's input fields from the same AR add column.
+     *  If no patient found, set the values to Anonymous.
      * @param id Client Patient ID
      * @param colposition AR add column position
      */
