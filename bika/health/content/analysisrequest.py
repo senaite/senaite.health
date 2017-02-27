@@ -175,7 +175,7 @@ class AnalysisRequestSchemaExtender(object):
                                     'align': 'left'},
                     {'columnName': 'UID', 'hidden': True},
                 ],
-                ui_item='ClientPatientID',
+                ui_item='getClientPatientID',
                 search_query='',
                 discard_empty=('ClientPatientID',),
                 search_fields=('ClientPatientID',),
