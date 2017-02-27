@@ -83,7 +83,7 @@ function HealthAnalysisRequestAddView() {
      * Searches a patient using the Patient UID from Client Patient Input.
      * If found, fill the Patient's input fields from the same AR add column.
      *  If no patient found, set the values to Anonymous.
-     * @param id Client Patient ID
+     * @param id Patient UID
      * @param colposition AR add column position
      */
     function loadPatient(id, colposition) {
