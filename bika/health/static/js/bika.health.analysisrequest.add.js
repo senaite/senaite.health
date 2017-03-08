@@ -36,7 +36,8 @@ function HealthAnalysisRequestAddView() {
                 if (colposition == undefined){
                     // we are on the specific health template
                     colposition = 0}
-                loadPatient($(this).val(), colposition);
+                uid = $("#" + this.id + "_uid").val();
+                loadPatient(uid, colposition);
                 checkClientContacts();
             });
 
@@ -79,10 +80,10 @@ function HealthAnalysisRequestAddView() {
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
     /**
-     * Searches a patient using the Client Patient ID. If found, fill the Patient's input
-     * fields from the same AR add column. If no patient found, set the values to
-     * Anonymous.
-     * @param id Client Patient ID
+     * Searches a patient using the Patient UID from Client Patient Input.
+     * If found, fill the Patient's input fields from the same AR add column.
+     *  If no patient found, set the values to Anonymous.
+     * @param id Patient UID
      * @param colposition AR add column position
      */
     function loadPatient(id, colposition) {
@@ -92,7 +93,7 @@ function HealthAnalysisRequestAddView() {
                 type: 'POST',
                 data: {
                     '_authenticator': $('input[name="_authenticator"]').val(),
-                    'ClientPatientID': id
+                    'PatientUID': id
                 },
                 dataType: "json",
                 success: function (data, textStatus, $XHR) {

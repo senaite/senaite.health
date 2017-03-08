@@ -4,7 +4,7 @@ from Products.CMFCore.utils import getToolByName
 
 
 class FrontPageView(BrowserView):
-    template = ViewPageTemplateFile("bika-nmrl-frontpage.pt")
+    template = ViewPageTemplateFile("bika-frontpage.pt")
 
     def __call__(self):
         todashboard = False
