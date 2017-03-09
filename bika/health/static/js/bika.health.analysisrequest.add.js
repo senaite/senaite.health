@@ -12,6 +12,7 @@ function HealthAnalysisRequestAddView() {
         datafilled = false;
         frombatch = window.location.href.search('/batches/') >= 0;
         frompatient = document.referrer.search('/patients/') >= 0;
+        fromars = window.location.href.search('/analysisrequests/') >=0;
 
         if (frombatch) {
             // The current AR add View comes from a batch. Automatically fill
@@ -25,6 +26,15 @@ function HealthAnalysisRequestAddView() {
             // as readonly.
             pid = document.referrer.split("/patients/")[1].split("/")[0];
             datafilled = fillDataFromPatient(pid);
+        } else if(fromars){
+          $('input[id^="Client-"]').bind("selected paste blur change", function () {
+              colposition = get_arnum(this);
+              if (colposition == undefined){
+                  // we are on the specific health template
+                  colposition = 0}
+              resetPatientData(colposition)
+              filterComboSearches();
+          });
         }
 
         if (!datafilled) {
@@ -110,6 +120,13 @@ function HealthAnalysisRequestAddView() {
                             .attr('uid', 'anonymous');
                         $("#Patient-" + colposition + "_uid").val('anonymous');
                     }
+                    if (data['ClientUID'] != '') {
+                        $("#Client-" + colposition)
+                            .val(data['ClientTitle'])
+                            .attr('uid', data['ClientUID'])
+                            .combogrid("option", "disabled", false);
+                        $("#Client-" + colposition + "_uid").val(data['ClientUID']);
+                    }
                 }
             });
         } else {
@@ -144,6 +161,11 @@ function HealthAnalysisRequestAddView() {
                     $("#ClientPatientID-" + colposition).val(data['ClientPatientID']);
                     $("#ClientPatientID-" + colposition).attr('uid', uid);
                     $("#ClientPatientID-" + colposition + "_uid").val(uid);
+                    $("#Client-" + colposition)
+                        .val(data['ClientTitle'])
+                        .attr('uid', data['ClientUID'])
+                        .combogrid("option", "disabled", false);
+                    $("#Client-" + colposition + "_uid").val(data['ClientUID']);
                 }
             });
         } else {
