@@ -40,6 +40,9 @@ _catalogs_definition = {
             'getFullname': 'FieldIndex',
             # (values from PatientIdentifiers field)
             'getPatientIdentifiers': 'KeywordIndex',
+            # allowedRolesAndUsers is obligatory if we are going to run
+            # advancedqueries in this catalog.
+            'allowedRolesAndUsers': 'KeywordIndex',
         },
         'columns': [
             'UID',
