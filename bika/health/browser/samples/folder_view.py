@@ -12,10 +12,22 @@ class SamplesView(BaseView):
         super(SamplesView, self).__init__(context, request)
 
         # Add Patient fields
-        self.columns['getPatientID'] = {'title': _('Patient ID'), 'toggle': True}
-        self.columns['getClientPatientID'] = {'title': _("Client PID"), 'toggle': True}
-        self.columns['getPatient'] = {'title': _('Patient'), 'toggle': True}
-        self.columns['getDoctor'] = {'title': _('Doctor'), 'toggle': True}
+        self.columns['getPatientID'] = {
+            'title': _('Patient ID'),
+            'sortable': False,
+            'toggle': True}
+        self.columns['getClientPatientID'] = {
+            'title': _("Client PID"),
+            'sortable': False,
+            'toggle': True}
+        self.columns['getPatient'] = {
+            'title': _('Patient'),
+            'sortable': False,
+            'toggle': True}
+        self.columns['getDoctor'] = {
+            'title': _('Doctor'),
+            'sortable': False, 
+            'toggle': True}
         for rs in self.review_states:
             i = rs['columns'].index('getSampleID') + 1
             rs['columns'].insert(i, 'getClientPatientID')
