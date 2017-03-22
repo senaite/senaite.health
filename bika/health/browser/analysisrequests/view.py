@@ -24,6 +24,7 @@ class AnalysisRequestsView(BaseView):
                 'toggle': True}
             self.columns['getClientPatientID'] = {
                 'title': _("Client PID"),
+                'sortable': False,
                 'toggle': True}
             self.columns['getPatient'] = {
                 'title': _('Patient'),
