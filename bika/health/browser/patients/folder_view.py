@@ -47,29 +47,36 @@ class PatientsView(BikaListingView):
 
         self.columns = {
 
-            'Title': {'title': _('Patient'),
-                      'index': 'sortable_title'},
+            'Title': {
+                'title': _('Patient'),
+                'index': 'Title'},
 
-            'getPatientID': {'title': _('Patient ID'), },
+            'getPatientID': {
+                'title': _('Patient ID'), },
 
-            'getClientPatientID': {'title': _('Client PID'),
-                                   'sortable': False},
+            'getClientPatientID': {
+                'title': _('Client PID'),
+                'sortable': False},
 
-            'getGender': {'title': _('Gender'),
-                          'toggle': True,
-                          'sortable': False},
+            'getGender': {
+                'title': _('Gender'),
+                'toggle': True,
+                'sortable': False},
 
-            'getAgeSplittedStr': {'title': _('Age'),
-                                  'toggle': True,
-                                  'sortable': False},
+            'getAgeSplittedStr': {
+                'title': _('Age'),
+                'toggle': True,
+                'sortable': False},
 
-            'getBirthDate': {'title': _('BirthDate'),
-                             'toggle': True,
-                             'sortable': False},
+            'getBirthDate': {
+                'title': _('BirthDate'),
+                'toggle': True,
+                'sortable': False},
 
-            'getPrimaryReferrer': {'title': _('Primary Referrer'),
-                                   'toggle': True,
-                                   'sortable': False},
+            'getPrimaryReferrer': {
+                'title': _('Primary Referrer'),
+                'toggle': True,
+                'sortable': False},
 
         }
 
