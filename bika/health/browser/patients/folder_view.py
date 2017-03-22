@@ -37,7 +37,8 @@ class PatientsView(BikaListingView):
         self.catalog = CATALOG_PATIENT_LISTING
 
         self.contentFilter = {'portal_type': 'Patient',
-                              'sort_on': 'sortable_title'}
+                              'sort_on': 'getPatientID',
+                              'sort_order': 'reverse'}
         self.context_actions = {}
         self.title = self.context.translate(_("Patients"))
         self.icon = self.portal_url + "/++resource++bika.health.images/patient_big.png"
