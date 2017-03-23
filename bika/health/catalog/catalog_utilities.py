@@ -2,6 +2,7 @@ from Products.CMFCore.utils import getToolByName
 from bika.health.catalog.analysisrequest_catalog import\
     analysisrequest_catalog_definition
 from bika.health.catalog.patient_catalog import patient_catalog_definition
+from bika.lims import deprecated
 
 
 def getCatalogDefinitions():
@@ -19,6 +20,7 @@ def getCatalogExtensions():
 
 
 # TODO-catalog: Function to review its use. Good candidate to be removed
+@deprecated('Flagged in 17.03')
 def getCatalog(instance, field='UID'):
     """ Return the catalog which indexes objects of instance's type.
     If an object is indexed by more than one catalog, the first match

@@ -15,6 +15,9 @@ from Products.ZCatalog.ZCatalog import ZCatalog
 # Bika Health imports
 from bika.health import logger
 from bika.health.interfaces import IBikaHealthCatalogPatientListing
+from bika.lims import deprecated
+from bika.lims.catalog.bika_catalog_tool import BikaCatalogTool
+
 
 # Using a variable to avoid plain strings in code
 CATALOG_PATIENT_LISTING = 'bikahealth_catalog_patient_listing'
@@ -45,6 +48,7 @@ patient_catalog_definition = {
             'getFullname': 'FieldIndex',
             # (values from PatientIdentifiers field)
             'getPatientIdentifiers': 'KeywordIndex',
+            'allowedRolesAndUsers': 'KeywordIndex',
         },
         'columns': [
             'UID',
@@ -66,6 +70,7 @@ patient_catalog_definition = {
             'getMobilePhone',
             'getPatientID',
             'getMenstrualStatus',  # Review its use in ajaxGetPatientInfo
+            'allowedRolesAndUsers',
 
             # Columns with a function in Patient already in place below:
             # 'getNumberOfSamples',  # (all Samples)
@@ -80,59 +85,24 @@ patient_catalog_definition = {
 }
 
 
-class BikaHealthCatalogPatientListing(CatalogTool):
+class BikaHealthCatalogPatientListing(BikaCatalogTool):
     """
     Catalog to list patients in BikaListing
     """
     implements(IBikaHealthCatalogPatientListing)
-    title = 'Bika Health Catalog Patients'
-    id = CATALOG_PATIENT_LISTING
-    portal_type = meta_type = 'BikaHealthCatalogPatientListing'
-    plone_tool = 1
-    security = ClassSecurityInfo()
-    _properties = (
-      {'id': 'title', 'type': 'string', 'mode': 'w'},)
 
     def __init__(self):
-        ZCatalog.__init__(self, self.id)
-
-    security.declareProtected(ManagePortal, 'clearFindAndRebuild')
-
-    def clearFindAndRebuild(self):
-        """Empties catalog, then finds all contentish objects (i.e. objects
-           with an indexObject method), and reindexes them.
-           This may take a long time.
-        """
-        def indexObject(obj, path):
-            self.reindexObject(obj)
-        logger.info('Cleaning and rebuilding %s...' % self.id)
-        try:
-            at = getToolByName(self, 'archetype_tool')
-            types = [k for k, v in at.catalog_map.items()
-                     if self.id in v]
-            self.manage_catalogClear()
-            portal = getToolByName(self, 'portal_url').getPortalObject()
-            portal.ZopeFindAndApply(
-                portal,
-                obj_metatypes=types,
-                search_sub=True,
-                apply_func=indexObject)
-        except:
-            logger.error(traceback.format_exc())
-            e = sys.exc_info()
-            logger.error(
-                "Unable to clean and rebuild %s due to: %s" % (self.id, e))
-        logger.info('%s cleaned and rebuilt' % self.id)
+        BikaCatalogTool.__init__(
+            self, CATALOG_PATIENT_LISTING,
+            'Bika Health Catalog Patients',
+            'BikaHealthCatalogPatientListing')
 
 
 InitializeClass(BikaHealthCatalogPatientListing)
 
 
 # TODO: Remove BikaPatientCatalog
-# @deprecated(comment="bika.health.catalog.BikaPatientCatalog "
-#                     "is deprecated and will be removed "
-#                     "in Bika Health 3.3. Please, use "
-#                     "BikaHealthCatalogPatientListing intead")
+@deprecated('Flagged in 17.03')
 class BikaPatientCatalog(CatalogTool):
 
     """ Catalog for patients
