@@ -14,6 +14,7 @@ analysisrequest_catalog_definition = {
                 'getPatientUID': 'FieldIndex',
                 # To sort columns
                 'getPatient': 'FieldIndex',
+                'getPatientID': 'FieldIndex',
             },
             'columns': [
                 'getDoctorUID',

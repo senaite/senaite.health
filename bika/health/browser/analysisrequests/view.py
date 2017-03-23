@@ -9,26 +9,29 @@ class AnalysisRequestsView(BaseView):
         super(AnalysisRequestsView, self).__init__(context, request)
         self.patient_catalog = None
         self.columns['BatchID']['title'] = _('Case ID')
+        # Add Client Patient fields
+        self.columns['getPatientID'] = {
+            'title': _('Patient ID'), }
+        self.columns['getClientPatientID'] = {
+            'title': _("Client PID"),
+            'sortable': False, }
+        self.columns['getPatient'] = {
+            'title': _('Patient'), }
 
     def folderitems(self, full_objects=False):
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
         # We will use this list for each element
         roles = member.getRoles()
-        if 'Manager' in roles \
-            or 'LabManager' in roles \
-                or 'LabClerk' in roles:
-            # Add Client Patient fields
-            self.columns['getPatientID'] = {
-                'title': _('Patient ID'),
-                'toggle': True}
-            self.columns['getClientPatientID'] = {
-                'title': _("Client PID"),
-                'sortable': False,
-                'toggle': True}
-            self.columns['getPatient'] = {
-                'title': _('Patient'),
-                'toggle': True}
+        # delete roles user doesn't have permissions
+        if 'Manager' not in roles \
+            and 'LabManager' not in roles \
+                and 'LabClerk' not in roles:
+            del self.columns['getPatientID']
+            del self.columns['getClientPatientID']
+            del self.columns['getPatient']
+        # Otherwise show the columns in the list
+        else:
             for rs in self.review_states:
                 i = rs['columns'].index('BatchID') + 1
                 rs['columns'].insert(i, 'getClientPatientID')
