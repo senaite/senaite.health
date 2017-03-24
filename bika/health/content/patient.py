@@ -65,7 +65,7 @@ schema = Person.schema.copy() + Schema((
     ),
     ComputedField(
         'PrimaryReferrerURL',
-        expression="context.getPrimaryReferrer().absolute_url() if context.getPrimaryReferrer() else ''",
+        expression="context.getPrimaryReferrer().absolute_url_path() if context.getPrimaryReferrer() else ''",
         widget=ComputedWidget(
             visible=False
         ),
