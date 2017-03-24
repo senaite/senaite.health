@@ -26,7 +26,7 @@ from plone.indexer.decorator import indexer
 # TODO-catalog: delete this index
 @indexer(IAnalysisRequest, IBikaCatalog)
 def getPatientUID(instance):
-    field = instance.Schema().get('Patient', '')
+    field = instance.getField('Patient', '')
     item = field.get(instance) if field else None
     value = item and item.UID() or ''
     return value
@@ -34,7 +34,7 @@ def getPatientUID(instance):
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientUID(instance):
-    field = instance.Schema().get('Patient', '')
+    field = instance.getField('Patient', '')
     item = field.get(instance) if field else None
     value = item and item.UID() or ''
     return value
@@ -42,9 +42,27 @@ def getPatientUID(instance):
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorUID(instance):
-    field = instance.Schema().get('Doctor', '')
+    field = instance.getField('Doctor', '')
     item = field.get(instance) if field else None
     value = item and item.UID() or ''
+    return value
+
+
+# We use this index to sort columns and filter lists
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getPatient(instance):
+    field = instance.getField('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.Title() or ''
+    return value
+
+
+# We use this index to sort columns and filter lists
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getPatientID(instance):
+    field = instance.getField('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.getId() or ''
     return value
 
 

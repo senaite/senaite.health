@@ -33,7 +33,7 @@ patient_catalog_definition = {
             # Necessary to avoid reindexing whole catalog when we need to
             # reindex only one object. ExtendedPathIndex also could be used.
             'path': 'PathIndex',
-            'sortable_title': 'FieldIndex',
+            'Title': 'FieldIndex',
             'review_state': 'FieldIndex',
             'inactive_state': 'FieldIndex',
             'portal_type': 'FieldIndex',
