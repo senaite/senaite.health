@@ -6,9 +6,12 @@ from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
-from bika.health.catalog import getCatalogDefinitions
-from bika.health.catalog import getCatalogExtensions
 from bika.lims.catalog import setup_catalogs
+from bika.lims.catalog\
+    import getCatalogDefinitions as getCatalogDefinitionsLIMS
+from bika.health.catalog\
+    import getCatalogDefinitions as getCatalogDefinitionsHealth
+from bika.health.catalog import getCatalogExtensions
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddAetiologicAgent
@@ -352,10 +355,11 @@ def setupHealthCatalogs(context):
     addIndex(bsc,'getGender', 'FieldIndex')
     addColumn(bsc,'getGender')
 
-    # CATALOG_PATIENTS and analysis requests new columns/indexes
+    catalog_definitions_lims_health = getCatalogDefinitionsLIMS()
+    catalog_definitions_lims_health.update(getCatalogDefinitionsHealth())
+    # Updating health catalogs if there is any change in them
     setup_catalogs(
-        portal=portal,
-        catalogs_definition=getCatalogDefinitions(),
+        portal, catalog_definitions_lims_health,
         catalogs_extension=getCatalogExtensions())
 
 
