@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <tool-setup>
- <required tool_id="bika_patient_catalog" class="bika.health.catalog.BikaPatientCatalog"/>
+ <!--required tool_id="bika_patient_catalog" class="bika.health.catalog.BikaPatientCatalog"/-->
  <required tool_id="bikahealth_catalog_patient_listing" class="bika.health.catalog.BikaHealthCatalogPatientListing"/>
 </tool-setup>
