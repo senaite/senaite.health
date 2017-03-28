@@ -53,6 +53,7 @@ patient_catalog_definition = {
         'columns': [
             'UID',
             'getId',
+            'portal_type',
             'Title',
             'review_state',
             'inactive_state',
