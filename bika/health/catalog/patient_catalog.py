@@ -98,7 +98,6 @@ InitializeClass(BikaHealthCatalogPatientListing)
 
 
 # TODO: Remove BikaPatientCatalog
-@deprecated('Flagged in 17.03')
 class BikaPatientCatalog(CatalogTool):
 
     """ Catalog for patients
