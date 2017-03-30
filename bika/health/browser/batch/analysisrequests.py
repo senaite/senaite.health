@@ -10,7 +10,4 @@ class BatchAnalysisRequestsView(BaseBatchARView, HealthAnalysisRequestView):
 
     def __init__(self, context, request):
         super(BatchAnalysisRequestsView, self).__init__(context, request)
-        # Remove Case ID column
-        del self.columns['BatchID']
-        for rs in self.review_states:
-            del rs['columns'][rs['columns'].index('BatchID')]
+        self.columns['BatchID']['toggle'] = False
