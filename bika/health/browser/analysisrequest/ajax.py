@@ -6,6 +6,7 @@ from bika.lims.idserver import renameAfterCreation
 from bika.lims.browser.analysisrequest.add import ajax_form_error
 from bika.health.catalog import CATALOG_PATIENT_LISTING
 from Products.CMFCore.utils import getToolByName
+from bika.health import logger
 import json
 
 
@@ -18,7 +19,13 @@ class AnalysisRequestSubmit(BaseClass):
         cpt = getToolByName(self.context, CATALOG_PATIENT_LISTING)
         form = self.request.form
         formc = self.request.form.copy()
-        state = json.loads(formc['state'])
+        state = json.loads(formc.get('state'))
+        if state is None:
+            logger.error(
+                'No state element in the AnalysisRequestSubmit request')
+            # Bika LIMS ajaxAnalysisRequestSubmit deals with state
+            # bad formatting
+            return BaseClass.__call__(self)
         for key in state.keys():
             values = state[key].copy()
             patuid = values.get('Patient', '')
