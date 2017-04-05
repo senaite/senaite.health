@@ -41,7 +41,7 @@ class AnalysisSpecificationWidget(BaseWidget):
     security = ClassSecurityInfo()
 
     security.declarePublic('process_form')
-    def process_form(self, instance, field, form, 
+    def process_form(self, instance, field, form,
                      empty_marker=None, emptyReturnsMarker=False):
         values = BaseWidget.process_form(self, instance, field, form,
                                          empty_marker, emptyReturnsMarker)
@@ -81,9 +81,12 @@ class AnalysisSpecificationPanicValidator:
             return True
         else:
             instance.REQUEST['validated'] = self.name
-
-        pmins = instance.REQUEST.get('minpanic', {})[0]
-        pmaxs = instance.REQUEST.get('maxpanic', {})[0]
+        pmins = instance.REQUEST.get('minpanic', {})
+        if len(pmins) > 0:
+            pmins = pmins[0]
+        pmaxs = instance.REQUEST.get('maxpanic', {})
+        if len(pmaxs) > 0:
+            pmaxs = pmaxs[0]
         uids = pmins.keys()
         for uid in uids:
             pmin = pmins.get(uid, '') == '' and '0' or pmins[uid]
