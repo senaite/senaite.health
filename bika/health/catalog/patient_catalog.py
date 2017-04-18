@@ -17,71 +17,66 @@ from bika.health import logger
 from bika.health.interfaces import IBikaHealthCatalogPatientListing
 from bika.lims import deprecated
 from bika.lims.catalog.bika_catalog_tool import BikaCatalogTool
+from bika.lims.catalog.catalog_basic_template import BASE_CATALOG_INDEXES
+from bika.lims.catalog.catalog_basic_template import BASE_CATALOG_COLUMNS
 
 
 # Using a variable to avoid plain strings in code
 CATALOG_PATIENT_LISTING = 'bikahealth_catalog_patient_listing'
+# Defining the indexes for this catalog
+_indexes_dict = {
+    'inactive_state': 'FieldIndex',
+    # For quick-searches (search-box at the top-right), not for
+    # embedded-code searches: the preferred way to get a Patient is
+    # by using its UID.
+    'getPatientID': 'FieldIndex',
+    # (Client is also called PrimaryReferrer)
+    'getPrimaryReferrerUID': 'FieldIndex',
+    # (for partial/advanced searches!)
+    'getFullname': 'FieldIndex',
+    # (values from PatientIdentifiers field)
+    'getPatientIdentifiers': 'KeywordIndex',
+}
+# Defining the columns for this catalog
+_columns_list = [
+    'inactive_state',
+    'getPhysicalPath',  # (patient's absolute path)
+    'getClientPatientID',
+    'getPrimaryReferrerUID',
+    'getPrimaryReferrerID',
+    'getPrimaryReferrerURL',
+    'getPrimaryReferrerTitle',
+    'getGender',
+    'getBirthDate',
+    'getAgeSplittedStr',  # (=AgeYMD)
+    'getPatientIdentifiersStr',  # (PatientIdentifiers stringified)
+    'getMobilePhone',
+    'getPatientID',
+    'getMenstrualStatus',  # Review its use in ajaxGetPatientInfo
+    # Columns with a function in Patient already in place below:
+    # 'getNumberOfSamples',  # (all Samples)
+    # 'getNumberOfSamplesCancelled',  # (Cancelled Samples)
+    # # (Samples with at least one AnalysisRequest <= verified)
+    # 'getNumberOfSamplesOngoing',
+    # # (Samples with at least one AnalysisRequest >= published)
+    # 'getNumberOfSamplesPublished',
+    # 'getRatioOfSamplesOngoing',  # (a String like 'ongoing/samples')
+]
+# Adding basic indexes
+_base_indexes_copy = BASE_CATALOG_INDEXES.copy()
+_indexes_dict.update(_base_indexes_copy)
+# Adding basic columns
+_base_columns_copy = BASE_CATALOG_COLUMNS[:]
+_columns_list += _base_columns_copy
+# Defining the types for this catalog
+_types_list = ['Patient', ]
 
 patient_catalog_definition = {
     # This catalog contains the metacolumns to list patients in bikalisting
     CATALOG_PATIENT_LISTING: {
-        'types':   ['Patient', ],
-        'indexes': {
-            # Minimum indexes for bika_listing
-            'id': 'FieldIndex',
-            'created': 'DateIndex',
-            # Necessary to avoid reindexing whole catalog when we need to
-            # reindex only one object. ExtendedPathIndex also could be used.
-            'path': 'PathIndex',
-            'Title': 'FieldIndex',
-            'review_state': 'FieldIndex',
-            'inactive_state': 'FieldIndex',
-            'portal_type': 'FieldIndex',
-            'UID': 'FieldIndex',
-            # For quick-searches (search-box at the top-right), not for
-            # embedded-code searches: the preferred way to get a Patient is
-            # by using its UID.
-            'getPatientID': 'FieldIndex',
-            # (Client is also called PrimaryReferrer)
-            'getPrimaryReferrerUID': 'FieldIndex',
-            # (for partial/advanced searches!)
-            'getFullname': 'FieldIndex',
-            # (values from PatientIdentifiers field)
-            'getPatientIdentifiers': 'KeywordIndex',
-            'allowedRolesAndUsers': 'KeywordIndex',
-        },
-        'columns': [
-            'UID',
-            'getId',
-            'meta_type',
-            'Title',
-            'review_state',
-            'inactive_state',
-            'getObjectWorkflowStates',
-            'getPhysicalPath',  # (patient's absolute path)
-            'getClientPatientID',
-            'getPrimaryReferrerUID',
-            'getPrimaryReferrerID',
-            'getPrimaryReferrerURL',
-            'getPrimaryReferrerTitle',
-            'getGender',
-            'getBirthDate',
-            'getAgeSplittedStr',  # (=AgeYMD)
-            'getPatientIdentifiersStr',  # (PatientIdentifiers stringified)
-            'getMobilePhone',
-            'getPatientID',
-            'getMenstrualStatus',  # Review its use in ajaxGetPatientInfo
-            'allowedRolesAndUsers',
-
-            # Columns with a function in Patient already in place below:
-            # 'getNumberOfSamples',  # (all Samples)
-            # 'getNumberOfSamplesCancelled',  # (Cancelled Samples)
-            # # (Samples with at least one AnalysisRequest <= verified)
-            # 'getNumberOfSamplesOngoing',
-            # # (Samples with at least one AnalysisRequest >= published)
-            # 'getNumberOfSamplesPublished',
-            # 'getRatioOfSamplesOngoing',  # (a String like 'ongoing/samples')
-        ]
+        'types': _types_list,
+        'indexes': _indexes_dict,
+        'columns': _columns_list,
     }
 }
 
