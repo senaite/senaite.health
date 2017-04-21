@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.2'
+version = '3.2.0'
 
 setup(name='bika.health',
       version=version,
@@ -33,7 +33,7 @@ setup(name='bika.health',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'bika.lims==3.2.1',
+          'bika.lims==3.2.0',
           'archetypes.schemaextender',
           'collective.wtf',
       ],

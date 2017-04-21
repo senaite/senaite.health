@@ -7,6 +7,8 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from bika.health import logger
+from bika.lims.upgrade import upgradestep
+from bika.lims.upgrade.utils import UpgradeUtils
 from Products.CMFCore import permissions
 from bika.lims.catalog import setup_catalogs
 from bika.lims.catalog\
@@ -15,15 +17,23 @@ from bika.health.catalog\
     import getCatalogDefinitions as getCatalogDefinitionsHealth
 from bika.health.catalog import getCatalogExtensions
 
+product = 'bika.health'
+version = '3.2.0'
 
+
+@upgradestep(product, version)
 def upgrade(tool):
-    """Upgrade step required for Bika Health 3.2.0
-    """
     portal = aq_parent(aq_inner(tool))
+    ut = UpgradeUtils(portal)
+    ufrom = ut.getInstalledVersion(product)
+    if ut.isOlderVersion(product, version):
+        logger.info("Skipping upgrade of {0}: {1} > {2}".format(
+                    product, ufrom, version))
+        # The currently installed version is more recent than the target
+        # version of this upgradestep
+        return True
 
-    qi = portal.portal_quickinstaller
-    ufrom = qi.upgradeInfo('bika.health')['installedVersion']
-    logger.info("Upgrading Bika Health: %s -> %s" % (ufrom, '3.2.0'))
+    logger.info("Upgrading {0}: {1} -> {2}".format(product, ufrom, version))
 
     """Updated profile steps
     list of the generic setup import step names: portal.portal_setup.getSortedImportSteps() <---
@@ -57,4 +67,6 @@ def upgrade(tool):
     #     logger.info('Deletting catalog bika_patient_catalog...')
     #     portal.manage_delObjects(['bika_patient_catalog'])
     #     logger.info('Catalog bika_patient_catalog has been deleted')
+
+    logger.info("{0} upgraded to version {1}".format(product, version))
     return True
