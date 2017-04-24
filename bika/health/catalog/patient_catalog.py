@@ -36,6 +36,7 @@ _indexes_dict = {
     'getFullname': 'FieldIndex',
     # (values from PatientIdentifiers field)
     'getPatientIdentifiers': 'KeywordIndex',
+    'SearchableText': 'ZCTextIndex'
 }
 # Defining the columns for this catalog
 _columns_list = [
