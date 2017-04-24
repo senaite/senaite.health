@@ -42,7 +42,6 @@ from bika.lims.permissions import AddSamplePartition
 from bika.lims.permissions import ManageAnalysisRequests
 from bika.lims.permissions import ManageClients
 from bika.lims.permissions import CancelAndReinstate
-from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
 
 
 class Empty:
