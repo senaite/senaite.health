@@ -42,6 +42,7 @@ from bika.lims.permissions import AddSamplePartition
 from bika.lims.permissions import ManageAnalysisRequests
 from bika.lims.permissions import ManageClients
 from bika.lims.permissions import CancelAndReinstate
+from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
 
 
 class Empty:
@@ -297,6 +298,19 @@ def setupHealthCatalogs(context):
     zc_extras = Empty()
     zc_extras.index_type = 'Okapi BM25 Rank'
     zc_extras.lexicon_id = 'Lexicon'
+
+    # Patient Listing Catalog
+    plc = getToolByName(portal, CATALOG_PATIENT_LISTING, None)
+    if plc is None:
+        logger.warning('Could not find the patient listing catalog tool.')
+        return
+    try:
+        plc.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon',
+                                                               'Lexicon', elem)
+    except:
+        logger.warning('Could not add ZCTextIndex to '+CATALOG_PATIENT_LISTING)
+        pass
+    addIndex(plc, 'SearchableText', 'ZCTextIndex', zc_extras)
 
     # bika_catalog
     bc = getToolByName(portal, 'bika_catalog', None)

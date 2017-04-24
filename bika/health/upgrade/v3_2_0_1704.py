@@ -61,6 +61,8 @@ def addSearchableTextIndex(portal, catalog):
         logger.warning('Could not find the catalog tool.' + catalog)
         return
 
+    if 'SearchableText' in cat.indexes():
+        return
     try:
         cat.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon',
                                                                'Lexicon', elem)
