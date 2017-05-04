@@ -39,8 +39,8 @@
 
 <genericsetup:upgradeStep
         title="Upgrade to Bika Health 3.2.0.1704"
-        source="318"
-        destination="3.2.0"
+        source="3.2.0"
+        destination="3.2.0.1704"
         handler="bika.health.upgrade.v3_2_0_1704.upgrade"
         profile="bika.health:default"/>
 
