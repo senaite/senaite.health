@@ -17,6 +17,7 @@ class BatchFolderContentsView(BaseView):
             'Client': {'title': _('Client')},
             'OnsetDate': {'title': _('Onset Date')},
             'state_title': {'title': _('State'), 'sortable': False},
+            'created': {'title': _('Created'), },
          }
         self.review_states = [  # leave these titles and ids alone
             {'id':'default',
@@ -107,7 +108,6 @@ class BatchFolderContentsView(BaseView):
                 del rs['columns'][rs['columns'].index('getClientPatientID')]
                 del rs['columns'][rs['columns'].index('Patient')]
                 del rs['columns'][rs['columns'].index('getPatientID')]
-
         for x in range(len(items)):
             if 'obj' not in items[x]:
                 continue
