@@ -92,10 +92,11 @@ def get_historicresults(patient):
         row = rows.get(sampletype.UID()) if sampletype.UID() in rows.keys() else {'object': sampletype, 'analyses':{}}
         anrow = row.get('analyses')
         service = analysis.getService()
-        asdict = anrow.get(service.UID()) if service.UID() in anrow.keys() else {'object': service,
-                                                                                 'title': service.Title(),
-                                                                                 'keyword': service.getKeyword(),
-                                                                                 'units': service.getUnit()}
+        service_uid = analysis.getServiceUID()
+        asdict = anrow.get(service_uid, {'object': analysis,
+                                         'title': analysis.Title(),
+                                         'keyword': analysis.getKeyword(),
+                                         'units': analysis.getUnit()})
         date = analysis.getResultCaptureDate() or analysis.created()
         date = ulocalized_time(date, 1, None, patient, 'bika')
         # If more than one analysis of the same type has been

@@ -57,7 +57,7 @@ class EmailPopupView(BrowserView):
                     continue
                 panic_alerts = ResultOutOfRange(analysis)()
                 if panic_alerts:
-                    serviceTitle = analysis.getServiceTitle()
+                    serviceTitle = analysis.Title()
                     result = analysis.getResult()
                     strans.append("- {0}, {1}: {2}".format(
                         serviceTitle, translate(_("Result")), result))

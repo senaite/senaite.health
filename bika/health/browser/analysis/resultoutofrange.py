@@ -47,7 +47,7 @@ class ResultOutOfRange(object):
         if specs is None:
             return {}
 
-        keyword = analysis.getService().getKeyword()
+        keyword = analysis.getKeyword()
         spec = specs.getResultsRangeDict()
         if keyword in spec:
             try:
