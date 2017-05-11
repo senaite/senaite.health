@@ -15,7 +15,9 @@ class HistoricResultsView(BrowserView):
     template = ViewPageTemplateFile("historicresults.pt")
 
     def __init__(self, context, request):
-        super(HistoricResultsView, self).__init__(context, request)
+        BrowserView.__init__(self, context, request)
+        self.context = context
+        self.request = request
         self._rows = None
         self._dates = None
         path = "/++resource++bika.health.images"
@@ -62,7 +64,7 @@ class HistoricResultsView(BrowserView):
 
 def get_historicresults(patient):
     if not patient:
-        return ([], {})
+        return [], {}
 
     rows = {}
     dates = []
@@ -71,15 +73,15 @@ def get_historicresults(patient):
 
     # Retrieve the AR IDs for the current patient
     bc = getToolByName(patient, 'bika_catalog')
-    ars = [ar.id for ar \
-           in bc(portal_type='AnalysisRequest', review_state=states) \
-           if 'Patient' in ar.getObject().Schema() \
-           and ar.getObject().Schema().getField('Patient').get(ar.getObject()) \
+    ars = [ar.id for ar
+           in bc(portal_type='AnalysisRequest', review_state=states)
+           if 'Patient' in ar.getObject().Schema()
+           and ar.getObject().Schema().getField('Patient').get(ar.getObject())
            and ar.getObject().Schema().getField('Patient').get(ar.getObject()).UID() == uid]
 
     # Retrieve all the analyses, sorted by ResultCaptureDate DESC
     bc = getToolByName(patient, 'bika_analysis_catalog')
-    analyses = [an.getObject() for an \
+    analyses = [an.getObject() for an
                 in bc(portal_type='Analysis',
                       getRequestID=ars,
                       sort_on='getResultCaptureDate',
@@ -89,9 +91,9 @@ def get_historicresults(patient):
     for analysis in analyses:
         ar = analysis.aq_parent
         sampletype = ar.getSampleType()
-        row = rows.get(sampletype.UID()) if sampletype.UID() in rows.keys() else {'object': sampletype, 'analyses':{}}
+        row = rows.get(sampletype.UID()) if sampletype.UID() in rows.keys() \
+            else {'object': sampletype, 'analyses': {}}
         anrow = row.get('analyses')
-        service = analysis.getService()
         service_uid = analysis.getServiceUID()
         asdict = anrow.get(service_uid, {'object': analysis,
                                          'title': analysis.Title(),
@@ -122,30 +124,38 @@ def get_historicresults(patient):
                     elif specs.get('max', ''):
                         specs['rangecomment'] = '< %s' % specs.get('max')
 
-                    if specs.get('error', '0') != '0' and specs.get('rangecomment', ''):
-                        specs['rangecomment'] = ('%s (%s' % \
-                            (specs.get('rangecomment'),
-                             specs.get('error'))) + '%)'
+                    if specs.get('error', '0') != '0' \
+                            and specs.get('rangecomment', ''):
+                        specs['rangecomment'] = ('%s (%s' %
+                                                 (specs.get('rangecomment'),
+                                                  specs.get('error'))) + '%)'
                 asdict['specs'] = specs
 
             if date not in dates:
                 dates.append(date)
-        anrow[service.UID()] = asdict
+        anrow[service_uid] = asdict
         row['analyses'] = anrow
         rows[sampletype.UID()] = row
     dates.sort(reverse=False)
 
-    return (dates, rows)
+    return dates, rows
 
 
 class historicResultsJSON(BrowserView):
     """ Returns a JSON array datatable in a tabular format.
     """
+
+    def __init__(self, context, request):
+        BrowserView.__init__(self, context, request)
+        self.context = context
+        self.request = request
+
     def __call__(self):
         dates, data = get_historicresults(self.context)
         datatable = []
         for andate in dates:
-            datarow = {'date': ulocalized_time(andate, 1, None, self.context, 'bika')}
+            datarow = {'date': ulocalized_time(
+                andate, 1, None, self.context, 'bika')}
             for row in data.itervalues():
                 for anrow in row['analyses'].itervalues():
                     serie = anrow['title']
