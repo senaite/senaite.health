@@ -57,10 +57,9 @@ class EmailPopupView(BrowserView):
                     continue
                 panic_alerts = ResultOutOfRange(analysis)()
                 if panic_alerts:
-                    serviceTitle = analysis.Title()
                     result = analysis.getResult()
                     strans.append("- {0}, {1}: {2}".format(
-                        serviceTitle, translate(_("Result")), result))
+                        analysis.Title(), translate(_("Result")), result))
             stran = "\n".join(strans)
 
             laboratory = self.context.bika_setup.laboratory
