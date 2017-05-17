@@ -3,7 +3,6 @@ from Products.CMFCore.utils import getToolByName
 from bika.lims import bikaMessageFactory as _
 from bika.lims.interfaces import IAnalysis
 from bika.lims.interfaces import IFieldIcons
-from bika.lims.permissions import *
 from zope.interface import implements
 from zope.component import adapts
 
@@ -40,10 +39,8 @@ class ResultOutOfRange(object):
         except ValueError:
             return {}
         # No specs available, assume in range
-        specs = hasattr(analysis, 'getAnalysisSpecs') \
-                and analysis.getAnalysisSpecs(specification) or None
-        spec_min = None
-        spec_max = None
+        specs = analysis.getAnalysisSpecs(specification) \
+            if hasattr(analysis, 'getAnalysisSpecs') else None
         if specs is None:
             return {}
 
@@ -52,17 +49,15 @@ class ResultOutOfRange(object):
         if keyword in spec:
             try:
                 spec_min = float(spec[keyword]['minpanic'])
-            except:
+            except (ValueError, TypeError):
                 spec_min = None
-                pass
 
             try:
                 spec_max = float(spec[keyword]['maxpanic'])
-            except:
+            except (ValueError, TypeError):
                 spec_max = None
-                pass
 
-            if (not spec_min and not spec_max):
+            if not (spec_min or spec_max):
                 # No min and max values defined
                 outofrange, acceptable, o_spec = False, None, None
 
