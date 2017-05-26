@@ -27,13 +27,13 @@ def upgrade(tool):
         return True
 
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ufrom, version))
-    migareteFileFields(portal)
+    migrateFileFields(portal)
 
     logger.info("{0} upgraded to version {1}".format(product, version))
     return True
 
 
-def migareteFileFields(portal):
+def migrateFileFields(portal):
     """
     This function walks over all attachment types and migrates their FileField
     fields.
