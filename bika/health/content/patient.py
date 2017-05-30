@@ -504,7 +504,7 @@ schema = Person.schema.copy() + Schema((
             label=_("Guarantor's First Name"),
         ),
     ),
-    StringField('GuarantorPostalAddress',
+    AddressField('GuarantorPostalAddress',
         searchable=1,
         schemata = 'Insurance',
         required=0,
