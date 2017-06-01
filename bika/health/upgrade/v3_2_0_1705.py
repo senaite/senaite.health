@@ -2,12 +2,16 @@
 #
 # Copyright 2011-2017 by its authors.
 # Some rights reserved. See LICENSE.txt, AUTHORS.txt.
-
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 
+from Products.CMFCore.utils import getToolByName
 from bika.health import logger
-from bika.health.catalog import getCatalogDefinitions, getCatalogExtensions
+from bika.health.catalog \
+    import getCatalogDefinitions as getCatalogDefinitionsHealth, \
+    getCatalogExtensions
+from bika.lims.catalog \
+    import getCatalogDefinitions as getCatalogDefinitionsLIMS
 from bika.lims.catalog import setup_catalogs
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
@@ -30,14 +34,21 @@ def upgrade(tool):
         return True
 
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ufrom, version))
-
     migrateFileFields(portal)
 
+    setup = portal.portal_setup
+    setup.runImportStepFromProfile('profile-bika.lims:default', 'toolset')
+
+    # Adding colums and indexes if needed
+    pc = getToolByName(portal, 'portal_catalog')
     # Updating lims catalogs if there is any change in them
     logger.info("Updating catalogs if needed...")
-    catalog_definitions = getCatalogDefinitions()
-    setup_catalogs(portal, catalog_definitions,
-                   catalogs_extension=getCatalogExtensions())
+    catalog_definitions_lims_health = getCatalogDefinitionsLIMS()
+    catalog_definitions_lims_health.update(getCatalogDefinitionsHealth())
+    # Updating health catalogs if there is any change in them
+    setup_catalogs(
+        portal, catalog_definitions_lims_health,
+        catalogs_extension=getCatalogExtensions())
     logger.info("Catalogs updated")
 
     logger.info("{0} upgraded to version {1}".format(product, version))
@@ -45,8 +56,8 @@ def upgrade(tool):
 
 
 def migrateFileFields(portal):
-    """This function walks over all attachment types and migrates their 
-    FileField
+    """
+    This function walks over all attachment types and migrates their FileField
     fields.
     """
     portal_types = [
@@ -63,6 +74,3 @@ def migrateFileFields(portal):
         logger.info(
             "Finished migration of FileField fields from {}."
                 .format(portal_type))
-
-    logger.info("{0} upgraded to version {1}".format(product, version))
-    return True
