@@ -70,6 +70,9 @@ class AnalysisRequestSchemaExtender(object):
     adapts(IAnalysisRequest)
     implements(IOrderableSchemaExtender)
 
+    def __init__(self, context):
+        self.context = context
+
     fields = [
         ExtReferenceField(
             'Doctor',
@@ -220,9 +223,6 @@ class AnalysisRequestSchemaExtender(object):
         default.insert(default.index('Template'), 'Doctor')
         schematas['default'] = default
         return schematas
-
-    def __init__(self, context):
-        self.context = context
 
     def getFields(self):
         return self.fields

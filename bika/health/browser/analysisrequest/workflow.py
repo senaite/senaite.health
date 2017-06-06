@@ -75,7 +75,7 @@ class AnalysisRequestWorkflowAction(_AnalysisRequestWorkflowAction):
                         for alert in alertlist:
                             ars[analysis.aq_parent.Title()] = 1
                             strans.append("- {0}, {1}: {2}".format(
-                                          analysis.getService().Title(),
+                                          analysis.Title(),
                                           translate(_("Result")),
                                           analysis.getResult()))
                     ars = ", ".join(ars.keys())

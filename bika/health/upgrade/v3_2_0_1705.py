@@ -34,6 +34,19 @@ def upgrade(tool):
         return True
 
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ufrom, version))
+
+    setup = portal.portal_setup
+    setup.runImportStepFromProfile('profile-bika.lims:default', 'toolset')
+
+    # Updating lims catalogs if there is any change in them
+    logger.info("Updating catalogs if needed...")
+    catalog_definitions_lims_health = getCatalogDefinitionsLIMS()
+    catalog_definitions_lims_health.update(getCatalogDefinitionsHealth())
+    setup_catalogs(portal, catalog_definitions_lims_health,
+                   catalogs_extension=getCatalogExtensions())
+    logger.info("Catalogs updated")
+
+    # After catalogs are updated, migrate file fileds to blobs.
     migrateFileFields(portal)
 
     setup = portal.portal_setup

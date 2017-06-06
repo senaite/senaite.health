@@ -74,7 +74,7 @@ class WorkflowAction(BaseClass):
                         analysis = uc(analysis_uid).getObject()
                         for alert in alertlist:
                             strans.append("- {0}, {1}: {2}".format(
-                                          analysis.getService().Title(),
+                                          analysis.Title(),
                                           translate(_("Result")),
                                           analysis.getResult()))
                     stran = "<br/>".join(strans)
