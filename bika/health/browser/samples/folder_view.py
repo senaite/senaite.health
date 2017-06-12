@@ -26,7 +26,7 @@ class SamplesView(BaseView):
             'toggle': True}
         self.columns['getDoctor'] = {
             'title': _('Doctor'),
-            'sortable': False, 
+            'sortable': False,
             'toggle': True}
         for rs in self.review_states:
             i = rs['columns'].index('getSampleID') + 1
@@ -99,16 +99,19 @@ class SamplesView(BaseView):
         # invalidated/retracted
         wf = getToolByName(self.context, 'portal_workflow')
         rawars = sample.getAnalysisRequests()
+        target_ar = None
         ars = [ar for ar in rawars \
                if (wf.getInfoFor(ar, 'review_state') != 'invalid')]
         if (len(ars) == 0 and len(rawars) > 0):
             # All ars are invalid. Retrieve the info from the last one
-            ar = rawars[len(rawars) - 1]
+            target_ar = rawars[len(rawars) - 1]
         elif (len(ars) > 1):
             # There's more than one valid AR
             # That couldn't happen never. Anyway, retrieve the last one
-            ar = ars[len(ars) - 1]
+            target_ar = ars[len(ars) - 1]
         elif (len(ars) == 1):
             # One ar matches
-            ar = ars[0]
-        return ar.Schema()['Patient'].get(ar) if ar else None
+            target_ar = ars[0]
+        if target_ar:
+            return target_ar.Schema()['Patient'].get(target_ar)
+        return None
