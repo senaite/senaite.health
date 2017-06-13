@@ -148,7 +148,6 @@ class PatientsView(BikaListingView):
         item['getAgeSplittedStr'] = obj.getAgeSplittedStr
         item['getBirthDate'] = self.ulocalized_time(obj.getBirthDate)
         item['getClientPatientID'] = obj.getClientPatientID
-        item['Title'] = obj.Title
         item['replace']['getPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
             (item['url'], item['getPatientID'])
         item['replace']['getClientPatientID'] = "<a href='%s'>%s</a>" % \
