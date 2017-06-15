@@ -10,7 +10,7 @@ class ManageResultsView(BaseView):
     def __call__(self):
         workflow = getToolByName(self.context, 'portal_workflow')
         # If there's analyses that exceed panic levels, show an alert message
-        analyses = self.context.getAnalyses()
+        analyses = self._getAnalyses()
         for obj in analyses:
             obj = obj.getObject() if hasattr(obj, 'getObject') else obj
             astate = workflow.getInfoFor(obj, 'review_state')
