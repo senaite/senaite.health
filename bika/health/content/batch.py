@@ -26,6 +26,7 @@ try:
 except:
     # Plone < 4.3
     from zope.app.component.hooks import getSite
+from Products.CMFCore.interfaces import ISiteRoot
 
 class getCaseSyndromicClassification:
     implements(IVocabulary)
@@ -122,15 +123,6 @@ def getClientPatientID(instance):
     item = instance.Schema()['Patient'].get(instance)
     value = item and item.getClientPatientID() or ''
     return value
-
-
-def isCaseDoctorIsMandatory():
-    """
-    Returns whether the Doctor field is mandatory or not in cases object.
-    :return: boolean
-    """
-    plone = getSite()
-    return plone.bika_setup.CaseDoctorIsMandatory
 
 
 class BatchSchemaExtender(object):
@@ -474,5 +466,33 @@ class BatchSchemaModifier(object):
         schema['ClientBatchID'].widget.label = _("Client Case ID")
         schema['BatchDate'].widget.visible = False
         schema['InheritedObjectsUI'].widget.visible = False
-        schema['Doctor'].required = isCaseDoctorIsMandatory()
+        schema['Doctor'].required = self.isCaseDoctorIsMandatory()
         return schema
+
+    def isCaseDoctorIsMandatory(self):
+        """
+        Returns whether the Doctor field is mandatory or not in cases object.
+        :return: boolean
+        """
+        if hasattr(self.context, 'bika_setup'):
+            return self.context.bika_setup.CaseDoctorIsMandatory
+
+        # If this object is being created right now, then it doesn't have bika_setup, get bika_setup from site root.
+        plone = getSite()
+        if not plone:
+            plone = get_site_from_context(self.context)
+        return plone.bika_setup.CaseDoctorIsMandatory
+
+
+def get_site_from_context(context):
+    """
+    Sometimes getSite() method can return None, in that case we can find site root in parents of an object.
+    :param context: context to go through parents of, until we reach the site root
+    :return: site root
+    """
+    if not ISiteRoot.providedBy(context):
+        return context
+    else:
+        for item in context.aq_chain:
+            if ISiteRoot.providedBy(item):
+                return item
