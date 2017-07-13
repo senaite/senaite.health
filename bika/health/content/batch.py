@@ -5,6 +5,7 @@ from Products.Archetypes.interfaces import IVocabulary
 from Products.Archetypes.public import *
 from Products.Archetypes.public import BooleanWidget
 from Products.Archetypes.references import HoldingReference
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from bika.lims.browser.widgets import RecordsWidget
 from archetypes.schemaextender.interfaces import ISchemaExtender
@@ -26,7 +27,6 @@ try:
 except:
     # Plone < 4.3
     from zope.app.component.hooks import getSite
-from Products.CMFCore.interfaces import ISiteRoot
 
 class getCaseSyndromicClassification:
     implements(IVocabulary)
