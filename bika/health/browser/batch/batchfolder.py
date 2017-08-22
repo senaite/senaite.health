@@ -9,12 +9,12 @@ class BatchFolderContentsView(BaseView):
         super(BatchFolderContentsView, self).__init__(context, request)
         self.title = self.context.translate(_("Cases"))
         self.columns = {
-            'BatchID': {'title': _('Case ID')},
+            'BatchID': {'title': _('Case ID'), 'index': 'getId'},
             'getPatientID': {'title': _('Patient ID'), 'toggle': True},
             'getClientPatientID': {'title': _('Client PID'), 'toggle': True},
-            'Patient': {'title': _('Patient')},
-            'Doctor': {'title': _('Doctor')},
-            'Client': {'title': _('Client')},
+            'Patient': {'title': _('Patient'), 'index': 'getPatientTitle'},
+            'Doctor': {'title': _('Doctor'), 'index': 'getDoctorTitle'},
+            'Client': {'title': _('Client'), 'index': 'getClientTitle'},
             'OnsetDate': {'title': _('Onset Date')},
             'state_title': {'title': _('State'), 'sortable': False},
             'created': {'title': _('Created'), },
