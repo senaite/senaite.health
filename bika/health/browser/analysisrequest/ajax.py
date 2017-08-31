@@ -1,31 +1,33 @@
 from bika.health import bikaMessageFactory as _
 from bika.lims.utils import t
-from bika.lims.browser.analysisrequest.add import ajaxAnalysisRequestSubmit as BaseClass
+from bika.lims.browser.analysisrequest.add import AnalysisRequestSubmit as BaseClass
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.lims.browser.analysisrequest.add import ajax_form_error
 from bika.health.catalog import CATALOG_PATIENT_LISTING
 from Products.CMFCore.utils import getToolByName
 from bika.health import logger
+from collective.taskqueue import taskqueue
+from collective.taskqueue.interfaces import ITaskQueue
+from zope.component import queryUtility
+import transaction
 import json
 
 
 class AnalysisRequestSubmit(BaseClass):
 
-    def __call__(self):
-
+    def validate_form(self):
         # Create new Anonymous Patients as needed
         uc = getToolByName(self.context, 'uid_catalog')
         cpt = getToolByName(self.context, CATALOG_PATIENT_LISTING)
         form = self.request.form
         formc = self.request.form.copy()
         state = json.loads(formc.get('state'))
-        if state is None:
-            logger.error(
-                'No state element in the AnalysisRequestSubmit request')
-            # Bika LIMS ajaxAnalysisRequestSubmit deals with state
-            # bad formatting
-            return BaseClass.__call__(self)
+        if not state:
+            # BaseClass deals with state
+            BaseClass.validate_form(self)
+            return
+
         for key in state.keys():
             values = state[key].copy()
             patuid = values.get('Patient', '')
@@ -59,4 +61,21 @@ class AnalysisRequestSubmit(BaseClass):
                 state[key] = values
         formc['state'] = json.JSONEncoder().encode(state)
         self.request.form = formc
-        return BaseClass.__call__(self)
+        BaseClass.validate_form(self)
+
+
+class AsyncAnalysisRequestSubmit(AnalysisRequestSubmit):
+
+    def process_form(self):
+        # Only load asynchronously if queue ar-create is available
+        task_queue = queryUtility(ITaskQueue, name='ar-create')
+        if task_queue:
+            # ar-create queue registered, create asynchronously
+            path = self.request.PATH_INFO
+            path = path.replace('_submit_async', '_submit')
+            taskqueue.add(path, method='POST', queue='ar-create')
+            transaction.commit()
+            return json.dumps({'success': 'With taskqueue'})
+        else:
+            # ar-create queue not registered. Proceed synchronously
+            return AnalysisRequestSubmit.process_form(self)
