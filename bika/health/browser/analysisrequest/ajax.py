@@ -67,15 +67,26 @@ class AnalysisRequestSubmit(BaseClass):
 class AsyncAnalysisRequestSubmit(AnalysisRequestSubmit):
 
     def process_form(self):
+
+        num_analyses = 0
+        uids_arr = [ar.get('Analyses', []) for ar in self.valid_states.values()]
+        for arr in uids_arr:
+            num_analyses += len(arr)
+
+        if num_analyses < 50:
+            # Do not process Asynchronously
+            return AnalysisRequestSubmit.process_form(self)
+
         # Only load asynchronously if queue ar-create is available
         task_queue = queryUtility(ITaskQueue, name='ar-create')
-        if task_queue:
+        if task_queue is None:
+            # ar-create queue not registered, create synchronously
+            return AnalysisRequestSubmit.process_form(self)
+        else:
             # ar-create queue registered, create asynchronously
             path = self.request.PATH_INFO
             path = path.replace('_submit_async', '_submit')
-            taskqueue.add(path, method='POST', queue='ar-create')
-            transaction.commit()
+            task_queue.add(path, method='POST')
+            msg = _('One job added to the Analysis Request creation queue')
+            self.context.plone_utils.addPortalMessage(msg, 'info')
             return json.dumps({'success': 'With taskqueue'})
-        else:
-            # ar-create queue not registered. Proceed synchronously
-            return AnalysisRequestSubmit.process_form(self)
