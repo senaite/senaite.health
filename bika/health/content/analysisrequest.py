@@ -17,7 +17,7 @@ from Products.ATContentTypes.interface import IATDocument
 from zope.component import adapts
 from zope.interface import implements
 from Products.CMFCore import permissions
-from bika.health import permissions as hpermissions
+from bika.health.permissions import ViewPatients
 from plone.indexer.decorator import indexer
 
 
@@ -114,7 +114,7 @@ class AnalysisRequestSchemaExtender(object):
             allowed_types = ('Patient',),
             referenceClass = HoldingReference,
             relationship = 'AnalysisRequestPatient',
-            read_permission=hpermissions.ViewPatients,
+            read_permission=ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
                 label=_('Patient'),
@@ -147,7 +147,7 @@ class AnalysisRequestSchemaExtender(object):
             'PatientID',
             expression="context.Schema()['Patient'].get(context).getPatientID() if context.Schema()['Patient'].get(context) else None",
             mode="r",
-            read_permission=hpermissions.ViewPatients,
+            read_permission=ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ComputedWidget(
                 visible=True,
@@ -176,7 +176,7 @@ class AnalysisRequestSchemaExtender(object):
             'ClientPatientID',
             searchable=True,
             required=1,
-            read_permission=hpermissions.ViewPatients,
+            read_permission=ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
                 label=_("Client Patient ID"),
