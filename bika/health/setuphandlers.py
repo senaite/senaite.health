@@ -230,7 +230,7 @@ def setupHealthPermissions(context):
 
     # /patients
     mp = portal.patients.manage_permission
-    mp(AddPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
+    mp(AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
     mp(EditPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
     mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector', 'Client'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
@@ -240,7 +240,7 @@ def setupHealthPermissions(context):
     mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
-    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     portal.patients.reindexObject()
 
     # /doctors
