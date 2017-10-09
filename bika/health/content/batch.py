@@ -79,7 +79,11 @@ def getPatientUID(instance):
 
 @indexer(IBatch)
 def getPatientTitle(instance):
-    item = instance.Schema()['Patient'].get(instance)
+    return PatientTitleGetter(instance)
+
+
+def PatientTitleGetter(obj):
+    item = obj.Schema()['Patient'].get(obj)
     value = item and item.Title() or ''
     return value
 
@@ -122,6 +126,7 @@ def getClientTitle(instance):
 @indexer(IBatch)
 def getClientPatientID(instance):
     return ClientPatientIDGetter(instance)
+
 
 def ClientPatientIDGetter(obj):
     item = obj.Schema()['Patient'].get(obj)
@@ -503,7 +508,8 @@ def get_site_from_context(context):
 
 class BatchSearchableText(object):
     """
-
+    This class is used as an adapter in order to obtain field or methods
+    results as string values for SearchableText index in batches (cases).
     """
     implements(IBatchSearchableText)
 
@@ -515,8 +521,10 @@ class BatchSearchableText(object):
 
     def get_plain_text_fields(self):
         """
-        This function returns the field names to be used in searchable text.
-        :return: A tuple of strings as field names.
+        This function returns field or methods results to be used in
+        searchable text.
+        :return: A list of strings as searchable text options.
         """
         client_patient_id = ClientPatientIDGetter(self.context)
-        return [client_patient_id]
+        client_patient_name = PatientTitleGetter(self.context)
+        return [client_patient_id, client_patient_name]
