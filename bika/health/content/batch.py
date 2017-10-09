@@ -22,6 +22,7 @@ from plone.indexer.decorator import indexer
 from zope.component import adapts
 from zope.interface import implements
 from bika.health.widgets.casepatientconditionwidget import CasePatientConditionWidget
+from bika.lims.interfaces import IBatchSearchableText
 try:
     from zope.component.hooks import getSite
 except:
@@ -120,7 +121,10 @@ def getClientTitle(instance):
 
 @indexer(IBatch)
 def getClientPatientID(instance):
-    item = instance.Schema()['Patient'].get(instance)
+    return ClientPatientIDGetter(instance)
+
+def ClientPatientIDGetter(obj):
+    item = obj.Schema()['Patient'].get(obj)
     value = item and item.getClientPatientID() or ''
     return value
 
@@ -367,7 +371,6 @@ class BatchSchemaExtender(object):
         ),
         ExtStringField(
             'ClientPatientID',
-            searchable=True,
             required=0,
             widget=ReferenceWidget(
                 label=_b("Client Patient ID"),
@@ -496,3 +499,24 @@ def get_site_from_context(context):
         for item in context.aq_chain:
             if ISiteRoot.providedBy(item):
                 return item
+
+
+class BatchSearchableText(object):
+    """
+
+    """
+    implements(IBatchSearchableText)
+
+    def __init__(self, context):
+        # Each adapter takes the object itself as the construction
+        # parameter and possibly provides other parameters for the
+        # interface adaption
+        self.context = context
+
+    def get_plain_text_fields(self):
+        """
+        This function returns the field names to be used in searchable text.
+        :return: A tuple of strings as field names.
+        """
+        client_patient_id = ClientPatientIDGetter(self.context)
+        return [client_patient_id]
