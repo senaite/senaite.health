@@ -5,6 +5,7 @@ from Products.ATContentTypes.content import schemata
 from Products.Archetypes import atapi
 from Products.CMFCore.utils import getToolByName
 from bika.lims import bikaMessageFactory as _b
+from bika.lims.interfaces import IClient
 from bika.health import bikaMessageFactory as _
 from bika.health.catalog import CATALOG_PATIENT_LISTING
 from bika.lims.browser.bika_listing import BikaListingView
@@ -104,7 +105,20 @@ class PatientsView(BikaListingView):
     def _initFormParams(self):
         mtool = getToolByName(self.context, 'portal_membership')
         addPortalMessage = self.context.plone_utils.addPortalMessage
-        if mtool.checkPermission(AddPatient, self.context):
+        can_add_patients = mtool.checkPermission(AddPatient, self.context)
+
+        if not can_add_patients and IClient.providedBy(self.context):
+            # The user logged in is a Contact from this Client?
+            # Tip: when a client contact is created, bika.lims assigns that
+            # contact as the owner of the client, so he/she can access to the
+            # Client he/she is owner of but not to the rest of Clients.
+            # See bika.lims.browser.contact._link_user(userid)
+            client = self.context
+            owners = client.users_with_local_role('Owner')
+            member = mtool.getAuthenticatedMember()
+            can_add_patients = member.id in owners
+
+        if can_add_patients:
             clients = self.context.clients.objectIds()
             if clients:
                 self.context_actions[_b('Add')] = {
@@ -114,6 +128,7 @@ class PatientsView(BikaListingView):
             else:
                 msg = _("Cannot create patients without any system clients configured.")
                 addPortalMessage(self.context.translate(msg))
+
         if mtool.checkPermission(ViewPatients, self.context):
             self.review_states[0]['transitions'].append({'id':'deactivate'})
             self.review_states.append(
