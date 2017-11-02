@@ -27,6 +27,13 @@
     <adapter factory=".batch.getClientUID" name="getClientUID" />
     <adapter factory=".batch.getClientTitle" name="getClientTitle" />
 
+    <adapter
+      factory=".batch.BatchSearchableText"
+      provides="bika.lims.interfaces.IBatchSearchableText"
+      for="bika.lims.interfaces.IBatch"
+      name="HealthBatchSearchableText"
+    />
+
     <adapter factory=".client.getClientID" name="getClientID" />
 
     <adapter factory=".analysis.AnalysisSchemaExtender" />

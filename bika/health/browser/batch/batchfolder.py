@@ -84,8 +84,6 @@ class BatchFolderContentsView(BaseView):
         ]
 
     def folderitems(self):
-        self.filter_indexes = None
-
         items = BaseView.folderitems(self)
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
