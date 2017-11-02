@@ -909,7 +909,7 @@ class Patient(Person):
         # plain text fields we index from ourself,
         # a list of accessor methods of the class
         plain_text_fields = ("Title", "getFullname", "getId",
-                             "getPrimaryReferrerID", "getPrimaryReferrerTitle")
+                             "getPrimaryReferrerID", "getPrimaryReferrerTitle", "getClientPatientID")
 
         def read(accessor):
             """

@@ -11,6 +11,7 @@ from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
 from plone.api.portal import get_tool
 from Products.CMFCore.permissions import ModifyPortalContent
+from bika.health.catalog import CATALOG_PATIENT_LISTING
 
 product = 'bika.health'
 version = '3.2.0.1710'
@@ -46,6 +47,13 @@ def upgrade(tool):
     for patient in portal.patients:
         if IPatient.providedBy(patient):
             workflow.updateRoleMappingsFor(patient)
+
+    # Reindex patient catalog and bika catalog
+    logger.info("Reindexing {0}, {1}".format(CATALOG_PATIENT_LISTING, 'bika_catalog'))
+    ut.reindexcatalog[CATALOG_PATIENT_LISTING] = 'SearchableText'
+    ut.reindexcatalog['bika_catalog'] = 'SearchableText'
+    ut.refreshCatalogs()
+    logger.info("Catalogs updated")
 
     logger.info("{0} upgraded to version {1}".format(product, version))
     return True
