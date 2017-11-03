@@ -37,7 +37,10 @@ function HealthAnalysisRequestAddView() {
           });
         }
 
-        if (!datafilled) {
+        // Filter ComboSearches is important here even patient is not found
+        // because we are under patient's client folder.
+        // Do not let other clients have ARs in this context!!!
+        if (!datafilled || frompatient) {
             // The current AR Add View doesn't come from a batch nor patient or
             // data autofilling failed. Handle event firing when Patient or
             // ClientPatientID fields change.
