@@ -211,7 +211,8 @@ function HealthAnalysisRequestAddView() {
                             $("#Doctor-" + col).attr('uid', data.DoctorUID);
                             $("#Doctor-" + col + "_uid").val(data.DoctorUID);
 
-                            $("#ClientPatientID-" + col + "_uid").val(data.ClientPatientID);
+                            $("#ClientPatientID-" + col).val(data.ClientPatientID);
+                            $("#ClientPatientID-" + col + "_uid").val(data.PatientUID);
 
                             // Hide the previous fields and replace them by labels
                             $("#Client-" + col).hide();
