@@ -38,8 +38,7 @@ class AnalysisRequestsView(AnalysisRequestsView):
                             wf.getInfoFor(c, 'inactive_state', '') == 'active']
                 if contacts:
                     self.context_actions[self.context.translate(_('Add'))] = {
-                        'url': PR.absolute_url() + "/portal_factory/"
-                        "AnalysisRequest/Request new analyses/ar_add",
+                        'url': PR.absolute_url() + "/ar_add",
                         'icon': '++resource++bika.lims.images/add.png'}
                 else:
                     msg = _("Client contact required before request may be submitted")
