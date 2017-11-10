@@ -9,6 +9,10 @@ class IBikaHealth(Interface):
     your Plone site only when the add-on installer has been run.
     """
 
+class IBikaHealthCatalogPatientListing(Interface):
+   """
+   """
+
 class IPatient(Interface):
     """Patient"""
 

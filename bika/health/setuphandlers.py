@@ -6,6 +6,12 @@ from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFEditions.Permissions import ApplyVersionControl
 from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
+from bika.lims.catalog import setup_catalogs
+from bika.lims.catalog\
+    import getCatalogDefinitions as getCatalogDefinitionsLIMS
+from bika.health.catalog\
+    import getCatalogDefinitions as getCatalogDefinitionsHealth
+from bika.health.catalog import getCatalogExtensions
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddAetiologicAgent
@@ -224,7 +230,7 @@ def setupHealthPermissions(context):
 
     # /patients
     mp = portal.patients.manage_permission
-    mp(AddPatient, ['Manager', 'LabManager', 'LabClerk'], 1)
+    mp(AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
     mp(EditPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
     mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector', 'Client'], 1)
     mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
@@ -234,7 +240,7 @@ def setupHealthPermissions(context):
     mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
-    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
+    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
     portal.patients.reindexObject()
 
     # /doctors
@@ -349,49 +355,12 @@ def setupHealthCatalogs(context):
     addIndex(bsc,'getGender', 'FieldIndex')
     addColumn(bsc,'getGender')
 
-    # bika_patient_catalog
-    bpc = getToolByName(portal, 'bika_patient_catalog', None)
-    if bpc == None:
-        logger.warning('Could not find the bika_patient_catalog tool.')
-        return
-    bpc.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Lexicon', elem)
-    at = getToolByName(portal, 'archetype_tool')
-    at.setCatalogsByType('Patient', ['bika_patient_catalog'])
-    addIndex(bpc, 'path', 'ExtendedPathIndex', ('getPhysicalPath'))
-    addIndex(bpc, 'allowedRolesAndUsers', 'KeywordIndex')
-    addIndex(bpc, 'UID', 'FieldIndex')
-    addIndex(bpc, 'Title', 'ZCTextIndex', zc_extras)
-    addIndex(bpc, 'Description', 'ZCTextIndex', zc_extras)
-    addIndex(bpc, 'id', 'FieldIndex')
-    addIndex(bpc, 'getId', 'FieldIndex')
-    addIndex(bpc, 'Type', 'FieldIndex')
-    addIndex(bpc, 'portal_type', 'FieldIndex')
-    addIndex(bpc, 'created', 'DateIndex')
-    addIndex(bpc, 'Creator', 'FieldIndex')
-    addIndex(bpc, 'getObjPositionInParent', 'GopipIndex')
-    addIndex(bpc, 'sortable_title', 'FieldIndex')
-    addIndex(bpc, 'review_state', 'FieldIndex')
-    addIndex(bpc, 'getPatientID', 'FieldIndex')
-    addIndex(bpc, 'getClientPatientID', 'FieldIndex')
-    addIndex(bpc, 'getPrimaryReferrerUID', 'FieldIndex')
-    addIndex(bpc, 'getGender', 'FieldIndex')
-    addIndex(bpc, 'getAgeSplittedStr', 'FieldIndex')
-    addIndex(bpc, 'getPrimaryReferrerTitle', 'FieldIndex')
-    addIndex(bpc, 'getCitizenship', 'FieldIndex')
-    addIndex(bpc, 'getBirthDate', 'DateIndex')
-    addIndex(bpc, 'inactive_state', 'FieldIndex')
-    addColumn(bpc, 'id')
-    addColumn(bpc, 'UID')
-    addColumn(bpc, 'Title')
-    addColumn(bpc, 'Type')
-    addColumn(bpc, 'portal_type')
-    addColumn(bpc, 'sortable_title')
-    addColumn(bpc, 'Description')
-    addColumn(bpc, 'getPatientID')
-    addColumn(bpc, 'getClientPatientID')
-    addColumn(bpc, 'getPrimaryReferrerUID')
-    addColumn(bpc, 'review_state')
-    addColumn(bpc, 'inactive_state')
+    catalog_definitions_lims_health = getCatalogDefinitionsLIMS()
+    catalog_definitions_lims_health.update(getCatalogDefinitionsHealth())
+    # Updating health catalogs if there is any change in them
+    setup_catalogs(
+        portal, catalog_definitions_lims_health,
+        catalogs_extension=getCatalogExtensions())
 
 
 def setupHealthTestContent(context):

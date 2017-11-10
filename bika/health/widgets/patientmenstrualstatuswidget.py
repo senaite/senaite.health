@@ -33,7 +33,7 @@ class PatientMenstrualStatusWidget(ATRecordsWidget):
         gender = 'dk'
         patientid = self.aq_parent.getPatientID()
         if patientid:
-            bpc = getToolByName(self, 'bika_patient_catalog')
+            bpc = getToolByName(self, 'bikahealth_catalog_patient_listing')
             patient = bpc(portal_type='Patient', id=patientid)
             gender = len(patient) > 0 \
                         and patient[0].getObject().getGender() or 'dk'

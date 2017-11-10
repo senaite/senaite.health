@@ -11,6 +11,10 @@
 
     <adapter factory=".analysisrequest.AnalysisRequestSchemaExtender" />
     <adapter factory=".analysisrequest.AnalysisRequestSchemaModifier" />
+    <adapter factory=".analysisrequest.getPatientUID" name="getPatientUID" />
+    <adapter factory=".analysisrequest.getPatient" name="getPatient" />
+    <adapter factory=".analysisrequest.getPatientID" name="getPatientID" />
+    <adapter factory=".analysisrequest.getDoctorUID" name="getDoctorUID" />
 
     <adapter factory=".batch.BatchSchemaExtender" />
     <adapter factory=".batch.BatchSchemaModifier" />
@@ -23,6 +27,13 @@
     <adapter factory=".batch.getClientID" name="getClientID" />
     <adapter factory=".batch.getClientUID" name="getClientUID" />
     <adapter factory=".batch.getClientTitle" name="getClientTitle" />
+
+    <adapter
+      factory=".batch.BatchSearchableText"
+      provides="bika.lims.interfaces.IBatchSearchableText"
+      for="bika.lims.interfaces.IBatch"
+      name="HealthBatchSearchableText"
+    />
 
     <adapter factory=".client.getClientID" name="getClientID" />
 

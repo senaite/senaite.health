@@ -4,7 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import permissions
 from bika.health.permissions import ViewPatients, EditPatient, ViewAnalysisRequests, ViewSamples, ViewBatches
 from bika.health.permissions import AddInsuranceCompany, ViewInsuranceCompanies
-from bika.lims import logger
+from bika.health import logger
 
 def upgrade(tool):
     """ Health-191: Giving patient view permissions to referrer institutions contacts

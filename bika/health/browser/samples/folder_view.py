@@ -12,16 +12,28 @@ class SamplesView(BaseView):
         super(SamplesView, self).__init__(context, request)
 
         # Add Patient fields
-        self.columns['getPatientID'] = {'title': _('Patient ID'), 'toggle': True}
-        self.columns['getClientPatientID'] = {'title': _("Client PID"), 'toggle': True}
-        self.columns['getPatient'] = {'title': _('Patient'), 'toggle': True}
-        self.columns['getDoctor'] = {'title': _('Doctor'), 'toggle': True}
+        self.columns['getPatientID'] = {
+            'title': _('Patient ID'),
+            'sortable': False,
+            'toggle': True}
+        self.columns['getClientPatientID'] = {
+            'title': _("Client PID"),
+            'sortable': False,
+            'toggle': True}
+        self.columns['getPatient'] = {
+            'title': _('Patient'),
+            'sortable': False,
+            'toggle': True}
+        self.columns['getDoctor'] = {
+            'title': _('Doctor'),
+            'sortable': False,
+            'toggle': True}
         for rs in self.review_states:
             i = rs['columns'].index('getSampleID') + 1
             rs['columns'].insert(i, 'getClientPatientID')
             rs['columns'].insert(i, 'getPatientID')
             rs['columns'].insert(i, 'getPatient')
-            rs['columns'].insert(i, 'getDoctor');
+            rs['columns'].insert(i, 'getDoctor')
 
     def folderitems(self, full_objects=False):
         items = super(SamplesView, self).folderitems(full_objects)
@@ -87,16 +99,19 @@ class SamplesView(BaseView):
         # invalidated/retracted
         wf = getToolByName(self.context, 'portal_workflow')
         rawars = sample.getAnalysisRequests()
+        target_ar = None
         ars = [ar for ar in rawars \
                if (wf.getInfoFor(ar, 'review_state') != 'invalid')]
         if (len(ars) == 0 and len(rawars) > 0):
             # All ars are invalid. Retrieve the info from the last one
-            ar = rawars[len(rawars) - 1]
+            target_ar = rawars[len(rawars) - 1]
         elif (len(ars) > 1):
             # There's more than one valid AR
             # That couldn't happen never. Anyway, retrieve the last one
-            ar = ars[len(ars) - 1]
+            target_ar = ars[len(ars) - 1]
         elif (len(ars) == 1):
             # One ar matches
-            ar = ars[0]
-        return ar.Schema()['Patient'].get(ar) if ar else None
+            target_ar = ars[0]
+        if target_ar:
+            return target_ar.Schema()['Patient'].get(target_ar)
+        return None

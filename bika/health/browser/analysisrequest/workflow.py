@@ -2,7 +2,7 @@ from Products.Archetypes.config import REFERENCE_CATALOG
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
-from bika.lims import logger
+from bika.health import logger
 from bika.lims.browser.analysisrequest import \
     AnalysisRequestWorkflowAction as _AnalysisRequestWorkflowAction
 from bika.lims.utils import encode_header
@@ -75,7 +75,7 @@ class AnalysisRequestWorkflowAction(_AnalysisRequestWorkflowAction):
                         for alert in alertlist:
                             ars[analysis.aq_parent.Title()] = 1
                             strans.append("- {0}, {1}: {2}".format(
-                                          analysis.getService().Title(),
+                                          analysis.Title(),
                                           translate(_("Result")),
                                           analysis.getResult()))
                     ars = ", ".join(ars.keys())

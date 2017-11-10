@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from Products.ATContentTypes.content import schemata
 from AccessControl import ClassSecurityInfo
 from Products.ATContentTypes.utils import DT2dt
@@ -9,8 +11,9 @@ from Products.CMFPlone.utils import safe_unicode
 from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
 from bika.lims.browser.fields import AddressField
+from bika.lims.browser.fields import DateTimeField as DateTimeField_bl
 from bika.lims.browser.widgets import AddressWidget
-from bika.lims.browser.widgets import DateTimeWidget
+from bika.lims.browser.widgets import DateTimeWidget as DateTimeWidget_bl
 from bika.lims.browser.widgets import RecordsWidget
 from bika.health.widgets import SplittedDateWidget
 from bika.health.config import *
@@ -19,9 +22,11 @@ from bika.health.interfaces import IPatient
 from bika.health.permissions import *
 from bika.health.widgets import ReadonlyStringWidget
 from datetime import datetime
+from zope.component import getAdapters
 from zope.interface import implements
 from Products.Archetypes.references import HoldingReference
 from bika.health.widgets.patientmenstrualstatuswidget import PatientMenstrualStatusWidget
+from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 schema = Person.schema.copy() + Schema((
     StringField('PatientID',
@@ -43,15 +48,27 @@ schema = Person.schema.copy() + Schema((
                        label=_('Client'),
                    ),
     ),
+    ComputedField('PrimaryReferrerID',
+                  expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).getId() or None",
+                  widget=ComputedWidget(
+                  ),
+    ),
     ComputedField('PrimaryReferrerTitle',
                   expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).Title() or None",
                   widget=ComputedWidget(
                   ),
     ),
-     ComputedField('PrimaryReferrerUID',
+    ComputedField('PrimaryReferrerUID',
                   expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).UID() or None",
                   widget=ComputedWidget(
                   ),
+    ),
+    ComputedField(
+        'PrimaryReferrerURL',
+        expression="context.getPrimaryReferrer().absolute_url_path() if context.getPrimaryReferrer() else ''",
+        widget=ComputedWidget(
+            visible=False
+        ),
     ),
     StringField('Gender',
                 vocabulary=GENDERS,
@@ -69,12 +86,13 @@ schema = Person.schema.copy() + Schema((
                     width=3,
                 ),
     ),
-    DateTimeField('BirthDate',
-                  required=0,
-                  validators=('isDateFormat',),
-                  widget=DateTimeWidget(
-                      label=_('Birth date'),
-                  ),
+    DateTimeField_bl('BirthDate',
+        required=0,
+        validators=('isDateFormat',),
+        widget=DateTimeWidget_bl(
+          label=_('Birth date'),
+          datepicker_nofuture=1,
+        ),
     ),
     BooleanField('BirthDateEstimated',
                  default=False,
@@ -88,11 +106,17 @@ schema = Person.schema.copy() + Schema((
                      label=_('Age'),
                  ),
     ),
+    ComputedField(
+        'AgeSplittedStr',
+        expression="context.getAgeSplittedStr()",
+        widget=ComputedWidget(visible=False),
+    ),
     AddressField('CountryState',
                  widget=AddressWidget(
+                 searchable=True,
                  label=_("Country and state"),
                      showLegend=True,
-                     showDistrict=False,
+                     showDistrict=True,
                      showCopyFrom=False,
                      showCity=False,
                      showPostalCode=False,
@@ -120,6 +144,11 @@ schema = Person.schema.copy() + Schema((
                          },
                      },
                  ),
+    ),
+    ComputedField(
+        'PatientIdentifiersStr',
+        expression="context.getPatientIdentifiersStr()",
+        widget=ComputedWidget(visible=False),
     ),
     TextField('Remarks',
               searchable=True,
@@ -374,7 +403,7 @@ schema = Person.schema.copy() + Schema((
     ),
     StringField('ClientPatientID',
             searchable=1,
-            required=0,
+            required=1,
             widget=StringWidget(
                 label=_('Client Patient ID'),
             ),
@@ -403,7 +432,7 @@ schema = Person.schema.copy() + Schema((
                           "to the Patient automatically."))
     ),
     LinesField('PublicationPreferences',
-        vocabulary=PUBLICATION_PREFS,
+        vocabulary='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
         schemata='Publication preference',
         widget=MultiSelectionWidget(
             label=_("Publication preference"),
@@ -475,7 +504,7 @@ schema = Person.schema.copy() + Schema((
             label=_("Guarantor's First Name"),
         ),
     ),
-    StringField('GuarantorPostalAddress',
+    AddressField('GuarantorPostalAddress',
         searchable=1,
         schemata = 'Insurance',
         required=0,
@@ -506,6 +535,41 @@ schema = Person.schema.copy() + Schema((
                  widget=BooleanWidget(
                      label=_('Consent to SMS'),
                  ),
+    ),
+    ComputedField(
+        'NumberOfSamples',
+        expression="len(context.getSamples())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'NumberOfSamplesCancelled',
+        expression="len(context.getSamplesCancelled())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'NumberOfSamplesOngoing',
+        expression="len(context.getSamplesOngoing())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'NumberOfSamplesPublished',
+        expression="len(context.getSamplesPublished())",
+        widget=ComputedWidget(
+            visible=False
+        ),
+    ),
+    ComputedField(
+        'RatioOfSamplesOngoing',
+        expression="context.getNumberOfSamplesOngoingRatio()",
+        widget=ComputedWidget(
+            visible=False
+        ),
     ),
 ))
 
@@ -563,19 +627,76 @@ class Patient(Person):
     security.declarePublic('getSamples')
     def getSamples(self):
         """ get all samples taken from this Patient """
-        return [ar.getSample() for ar in self.getARs() if ar.getSample()]
+        l = []
+        for ar in self.getARs():
+            sample = ar.getObject().getSample()
+            if sample:
+                l.append(sample)
+        return l
+
+    def getSamplesCancelled(self):
+        """
+        Cancelled Samples
+        """
+        workflow = getToolByName(self, 'portal_workflow')
+        l = self.getSamples()
+        return [sample for samples in l if
+                workflow.getInfoFor(analysis, 'review_state') == 'cancelled']
+
+    def getSamplesPublished(self):
+        """
+        Published Samples
+        """
+        workflow = getToolByName(self, 'portal_workflow')
+        ars = self.getARs()
+        samples = []
+        samples_uids = []
+        for ar in ars:
+            if ar.review_state == 'published':
+                # Getting the object now
+                sample = ar.getObject().getSample()
+                if sample and sample.UID() not in samples_uids:
+                    samples.append(sample.UID())
+                    samples_uids.append(sample)
+        return samples
+
+    def getSamplesOngoing(self):
+        """
+        Ongoing on Samples
+        """
+        workflow = getToolByName(self, 'portal_workflow')
+        ars = self.getARs()
+        states = [
+            'verified', 'to_be_sampled', 'scheduled_sampling', 'sampled',
+            'to_be_preserved', 'sample_due', 'sample_prep', 'sample_received',
+            'to_be_verified', ]
+        samples = []
+        samples_uids = []
+        for ar in ars:
+            if ar.review_state in states:
+                # Getting the object now
+                sample = ar.getObject().getSample()
+                if sample and sample.UID() not in samples_uids:
+                    samples.append(sample.UID())
+                    samples_uids.append(sample)
+        return samples
+
+    def getNumberOfSamplesOngoingRatio(self):
+        """
+        Returns the ratio between NumberOfSamplesOngoing/NumberOfSamples
+        """
+        result = 0
+        if self.getNumberOfSamples() > 0:
+            result = self.getNumberOfSamplesOngoing()/self.getNumberOfSamples()
+        return result
 
     security.declarePublic('getARs')
     def getARs(self, analysis_state=None):
         bc = getToolByName(self, 'bika_catalog')
-        ars = bc(portal_type='AnalysisRequest')
-        outars = []
-        for ar in ars:
-            ar = ar.getObject()
-            pat = ar.Schema()['Patient'].get(ar) if ar else None
-            if pat and pat.UID() == self.UID():
-                outars.append(ar)
-        return outars
+        ars = bc(
+            portal_type='AnalysisRequest',
+            getPatientUID=self.UID())
+        return ars
 
     def get_clients(self):
         ## Only show clients to which we have Manage AR rights.
@@ -607,16 +728,16 @@ class Patient(Person):
     def getPatientIdentifiersStr(self):
         ids = self.getPatientIdentifiers()
         idsstr = ''
-        for id in ids:
-            idsstr += idsstr == '' and id['Identifier'] or (', ' + id['Identifier'])
+        for idx in ids:
+            idsstr += idsstr == '' and idx.get('Identifier', '') or (', ' + idx.get('Identifier', ''))
         return idsstr
         #return self.getSendersPatientID()+" "+self.getSendersCaseID()+" "+self.getSendersSpecimenID()
 
     def getPatientIdentifiersStrHtml(self):
         ids = self.getPatientIdentifiers()
         idsstr = '<table cellpadding="0" cellspacing="0" border="0" class="patientsidentifiers" style="text-align:left;width: 100%;"><tr><td>'
-        for id in ids:
-            idsstr += "<tr><td>" + id['IdentifierType'] + ':</td><td>' + id['Identifier'] + "</td></tr>"
+        for idx in ids:
+            idsstr += "<tr><td>" + idx['IdentifierType'] + ':</td><td>' + idx['Identifier'] + "</td></tr>"
         return "</table>" + idsstr
 
     def getAgeSplitted(self):
@@ -772,6 +893,69 @@ class Patient(Person):
         Return all the multifile objects related with the patient
         """
         return self.objectValues('Multifile')
+
+    def SearchableText(self):
+        """
+        Override searchable text logic based on the requirements.
+
+        This method constructs a text blob which contains all full-text
+        searchable text for this content item.
+        https://docs.plone.org/develop/plone/searching_and_indexing/indexing.html#full-text-searching
+        """
+
+        # Speed up string concatenation ops by using a buffer
+        entries = []
+
+        # plain text fields we index from ourself,
+        # a list of accessor methods of the class
+        plain_text_fields = ("Title", "getFullname", "getId",
+                             "getPrimaryReferrerID", "getPrimaryReferrerTitle", "getClientPatientID")
+
+        def read(accessor):
+            """
+            Call a class accessor method to give a value for certain Archetypes
+            field.
+            """
+            try:
+                value = accessor()
+            except:
+                value = ""
+
+            if value is None:
+                value = ""
+
+            return value
+
+        # Concatenate plain text fields as they are
+        for f in plain_text_fields:
+            accessor = getattr(self, f)
+            value = read(accessor)
+            entries.append(value)
+
+        # Adding HTML Fields to SearchableText can be uncommented if necessary
+        # transforms = getToolByName(self, 'portal_transforms')
+        #
+        # # Run HTML valued fields through text/plain conversion
+        # for f in html_fields:
+        #     accessor = getattr(self, f)
+        #     value = read(accessor)
+        #
+        #     if value != "":
+        #         stream = transforms.convertTo('text/plain', value, mimetype='text/html')
+        #         value = stream.getData()
+        #
+        #     entries.append(value)
+
+        # Plone accessor methods assume utf-8
+        def convertToUTF8(text):
+            if type(text) == unicode:
+                return text.encode("utf-8")
+            return text
+
+        entries = [convertToUTF8(entry) for entry in entries]
+
+        # Concatenate all strings to one text blob
+        return " ".join(entries)
 
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)

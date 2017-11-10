@@ -5,6 +5,7 @@ from Products.Archetypes.interfaces import IVocabulary
 from Products.Archetypes.public import *
 from Products.Archetypes.public import BooleanWidget
 from Products.Archetypes.references import HoldingReference
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
 from bika.lims.browser.widgets import RecordsWidget
 from archetypes.schemaextender.interfaces import ISchemaExtender
@@ -21,6 +22,7 @@ from plone.indexer.decorator import indexer
 from zope.component import adapts
 from zope.interface import implements
 from bika.health.widgets.casepatientconditionwidget import CasePatientConditionWidget
+from bika.lims.interfaces import IBatchSearchableText
 try:
     from zope.component.hooks import getSite
 except:
@@ -77,7 +79,11 @@ def getPatientUID(instance):
 
 @indexer(IBatch)
 def getPatientTitle(instance):
-    item = instance.Schema()['Patient'].get(instance)
+    return PatientTitleGetter(instance)
+
+
+def PatientTitleGetter(obj):
+    item = obj.Schema()['Patient'].get(obj)
     value = item and item.Title() or ''
     return value
 
@@ -119,18 +125,13 @@ def getClientTitle(instance):
 
 @indexer(IBatch)
 def getClientPatientID(instance):
-    item = instance.Schema()['Patient'].get(instance)
+    return ClientPatientIDGetter(instance)
+
+
+def ClientPatientIDGetter(obj):
+    item = obj.Schema()['Patient'].get(obj)
     value = item and item.getClientPatientID() or ''
     return value
-
-
-def isCaseDoctorIsMandatory():
-    """
-    Returns whether the Doctor field is mandatory or not in cases object.
-    :return: boolean
-    """
-    plone = getSite()
-    return plone.bika_setup.CaseDoctorIsMandatory
 
 
 class BatchSchemaExtender(object):
@@ -202,11 +203,11 @@ class BatchSchemaExtender(object):
                 render_own_label=False,
                 visible={'edit': 'visible', 'view': 'visible'},
                 base_query={'inactive_state': 'active'},
-                catalog_name='bika_patient_catalog',
+                catalog_name='bikahealth_catalog_patient_listing',
                 showOn=True,
                 colModel = [{'columnName':'getPatientID','width':'20','label':_('Patient ID')},
                             {'columnName':'Title','width':'40','label':_('Full Name')},
-                            {'columnName':'PatientIdentifiers', 'width':'40','label':_('Additional Identifiers')}],
+                            {'columnName':'getPatientIdentifiersStr', 'width':'40','label':_('Additional Identifiers')}],
                 add_button={
                     'visible': True,
                     'url': 'patients/portal_factory/Patient/new/edit',
@@ -375,7 +376,6 @@ class BatchSchemaExtender(object):
         ),
         ExtStringField(
             'ClientPatientID',
-            searchable=True,
             required=0,
             widget=ReferenceWidget(
                 label=_b("Client Patient ID"),
@@ -385,7 +385,7 @@ class BatchSchemaExtender(object):
                                     'width': '20',
                                     'label': _('Patient ID'),
                                     'align':'left'},
-                    {'columnName': 'ClientPatientID',
+                    {'columnName': 'getClientPatientID',
                                     'width': '20',
                                     'label': _('Client PID'),
                                     'align':'left'},
@@ -404,7 +404,7 @@ class BatchSchemaExtender(object):
                 visible={'edit': 'visible',
                          'view': 'visible',
                          'add': 'visible'},
-                catalog_name='bika_patient_catalog',
+                catalog_name='bikahealth_catalog_patient_listing',
                 base_query={'inactive_state': 'active'},
                 showOn=True,
             ),
@@ -474,5 +474,57 @@ class BatchSchemaModifier(object):
         schema['ClientBatchID'].widget.label = _("Client Case ID")
         schema['BatchDate'].widget.visible = False
         schema['InheritedObjectsUI'].widget.visible = False
-        schema['Doctor'].required = isCaseDoctorIsMandatory()
+        schema['Doctor'].required = self.isCaseDoctorIsMandatory()
         return schema
+
+    def isCaseDoctorIsMandatory(self):
+        """
+        Returns whether the Doctor field is mandatory or not in cases object.
+        :return: boolean
+        """
+        if hasattr(self.context, 'bika_setup'):
+            return self.context.bika_setup.CaseDoctorIsMandatory
+
+        # If this object is being created right now, then it doesn't have bika_setup, get bika_setup from site root.
+        plone = getSite()
+        if not plone:
+            plone = get_site_from_context(self.context)
+        return plone.bika_setup.CaseDoctorIsMandatory
+
+
+def get_site_from_context(context):
+    """
+    Sometimes getSite() method can return None, in that case we can find site root in parents of an object.
+    :param context: context to go through parents of, until we reach the site root
+    :return: site root
+    """
+    if not ISiteRoot.providedBy(context):
+        return context
+    else:
+        for item in context.aq_chain:
+            if ISiteRoot.providedBy(item):
+                return item
+
+
+class BatchSearchableText(object):
+    """
+    This class is used as an adapter in order to obtain field or methods
+    results as string values for SearchableText index in batches (cases).
+    """
+    implements(IBatchSearchableText)
+
+    def __init__(self, context):
+        # Each adapter takes the object itself as the construction
+        # parameter and possibly provides other parameters for the
+        # interface adaption
+        self.context = context
+
+    def get_plain_text_fields(self):
+        """
+        This function returns field or methods results to be used in
+        searchable text.
+        :return: A list of strings as searchable text options.
+        """
+        client_patient_id = ClientPatientIDGetter(self.context)
+        client_patient_name = PatientTitleGetter(self.context)
+        return [client_patient_id, client_patient_name]

@@ -12,6 +12,7 @@ function HealthAnalysisRequestAddView() {
         datafilled = false;
         frombatch = window.location.href.search('/batches/') >= 0;
         frompatient = document.referrer.search('/patients/') >= 0;
+        fromars = window.location.href.search('/analysisrequests/') >=0;
 
         if (frombatch) {
             // The current AR add View comes from a batch. Automatically fill
@@ -25,9 +26,21 @@ function HealthAnalysisRequestAddView() {
             // as readonly.
             pid = document.referrer.split("/patients/")[1].split("/")[0];
             datafilled = fillDataFromPatient(pid);
+        } else if(fromars){
+          $('input[id^="Client-"]').bind("selected paste blur change", function () {
+              colposition = get_arnum(this);
+              if (colposition == undefined){
+                  // we are on the specific health template
+                  colposition = 0}
+              resetPatientData(colposition)
+              filterComboSearches();
+          });
         }
 
-        if (!datafilled) {
+        // Filter ComboSearches is important here even patient is not found
+        // because we are under patient's client folder.
+        // Do not let other clients have ARs in this context!!!
+        if (!datafilled || frompatient) {
             // The current AR Add View doesn't come from a batch nor patient or
             // data autofilling failed. Handle event firing when Patient or
             // ClientPatientID fields change.
@@ -36,7 +49,8 @@ function HealthAnalysisRequestAddView() {
                 if (colposition == undefined){
                     // we are on the specific health template
                     colposition = 0}
-                loadPatient($(this).val(), colposition);
+                uid = $("#" + this.id + "_uid").val();
+                loadPatient(uid, colposition);
                 checkClientContacts();
             });
 
@@ -79,10 +93,10 @@ function HealthAnalysisRequestAddView() {
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
     /**
-     * Searches a patient using the Client Patient ID. If found, fill the Patient's input
-     * fields from the same AR add column. If no patient found, set the values to
-     * Anonymous.
-     * @param id Client Patient ID
+     * Searches a patient using the Patient UID from Client Patient Input.
+     * If found, fill the Patient's input fields from the same AR add column.
+     *  If no patient found, set the values to Anonymous.
+     * @param id Patient UID
      * @param colposition AR add column position
      */
     function loadPatient(id, colposition) {
@@ -92,7 +106,7 @@ function HealthAnalysisRequestAddView() {
                 type: 'POST',
                 data: {
                     '_authenticator': $('input[name="_authenticator"]').val(),
-                    'ClientPatientID': id
+                    'PatientUID': id
                 },
                 dataType: "json",
                 success: function (data, textStatus, $XHR) {
@@ -108,6 +122,13 @@ function HealthAnalysisRequestAddView() {
                             .val(_('Anonymous'))
                             .attr('uid', 'anonymous');
                         $("#Patient-" + colposition + "_uid").val('anonymous');
+                    }
+                    if (data['ClientUID'] != '') {
+                        $("#Client-" + colposition)
+                            .val(data['ClientTitle'])
+                            .attr('uid', data['ClientUID'])
+                            .combogrid("option", "disabled", false);
+                        $("#Client-" + colposition + "_uid").val(data['ClientUID']);
                     }
                 }
             });
@@ -143,6 +164,11 @@ function HealthAnalysisRequestAddView() {
                     $("#ClientPatientID-" + colposition).val(data['ClientPatientID']);
                     $("#ClientPatientID-" + colposition).attr('uid', uid);
                     $("#ClientPatientID-" + colposition + "_uid").val(uid);
+                    $("#Client-" + colposition)
+                        .val(data['ClientTitle'])
+                        .attr('uid', data['ClientUID'])
+                        .combogrid("option", "disabled", false);
+                    $("#Client-" + colposition + "_uid").val(data['ClientUID']);
                 }
             });
         } else {
@@ -186,6 +212,7 @@ function HealthAnalysisRequestAddView() {
                             $("#Doctor-" + col + "_uid").val(data.DoctorUID);
 
                             $("#ClientPatientID-" + col).val(data.ClientPatientID);
+                            $("#ClientPatientID-" + col + "_uid").val(data.PatientUID);
 
                             // Hide the previous fields and replace them by labels
                             $("#Client-" + col).hide();
@@ -246,7 +273,7 @@ function HealthAnalysisRequestAddView() {
         // Only allow the selection of batches, patients, contacts and CPIDs
         // from the current client
         for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
-            clientuid = $($("tr[fieldname='Client'] td[arnum='" + col + "'] input")[0]).attr("uid");
+            clientuid = $($("tr[fieldname='Client'] td[arnum='" + col + "'] input")[1]).attr("value");
 
             // Batch searches
             element = $("#Batch-" + col);
@@ -454,7 +481,40 @@ function HealthAnalysisRequestAddView() {
      * with the new filter key/value.
      * Delegates the action to window.bika.lims.AnalysisRequestAddByCol.filter_combogrid
      */
-    function filter_combogrid(element, filterkey, filtervalue){
-        window.bika.lims.AnalysisRequestAddByCol.filter_combogrid(element,filterkey,filtervalue,'base_query');
+    function filter_combogrid(element, filterkey, filtervalue, querytype) {
+        /* Apply or modify a query filter for a reference widget.
+         *
+         *  This will set the options, then re-create the combogrid widget
+         *  with the new filter key/value.
+         *
+         *  querytype can be 'base_query' or 'search_query'.
+         */
+        if (!$(element).is(':visible')) {
+            return
+        }
+        if (!querytype) {
+            querytype = 'base_query'
+        }
+        var query = $.parseJSON($(element).attr(querytype))
+        query[filterkey] = filtervalue
+        $(element).attr(querytype, $.toJSON(query))
+        var options = $.parseJSON($(element).attr("combogrid_options"))
+        options.url = window.location.href.split("/ar_add")[0] + "/" + options.url
+        options.url = options.url + "?_authenticator=" + $("input[name='_authenticator']").val()
+        options.url = options.url + "&catalog_name=" + $(element).attr("catalog_name")
+        if (querytype == 'base_query') {
+            options.url = options.url + "&base_query=" + $.toJSON(query)
+            options.url = options.url + "&search_query=" + $(element).attr("search_query")
+        }
+        else {
+            options.url = options.url + "&base_query=" + encodeURIComponent($(element).attr("base_query"))
+            options.url = options.url + "&search_query=" + encodeURIComponent($.toJSON(query))
+        }
+        options.url = options.url + "&colModel=" + $.toJSON($.parseJSON($(element).attr("combogrid_options")).colModel)
+        options.url = options.url + "&search_fields=" + $.toJSON($.parseJSON($(element).attr("combogrid_options"))['search_fields'])
+        options.url = options.url + "&discard_empty=" + $.toJSON($.parseJSON($(element).attr("combogrid_options"))['discard_empty'])
+        options.force_all = "false"
+        $(element).combogrid(options)
+        $(element).attr("search_query", "{}")
     }
 }

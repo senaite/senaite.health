@@ -2,7 +2,7 @@ from Products.Archetypes.config import REFERENCE_CATALOG
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from bika.health import bikaMessageFactory as _
-from bika.lims import logger
+from bika.health import logger
 from bika.lims.browser.worksheet.workflow import \
     WorksheetWorkflowAction as BaseClass
 from bika.lims.utils import encode_header
@@ -74,7 +74,7 @@ class WorkflowAction(BaseClass):
                         analysis = uc(analysis_uid).getObject()
                         for alert in alertlist:
                             strans.append("- {0}, {1}: {2}".format(
-                                          analysis.getService().Title(),
+                                          analysis.Title(),
                                           translate(_("Result")),
                                           analysis.getResult()))
                     stran = "<br/>".join(strans)

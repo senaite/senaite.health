@@ -86,18 +86,19 @@ class BatchPublishView(BrowserView):
             datepublished = ar.getDatePublished()
             datalines = []
             for analysis in ar.getAnalyses(full_objects=True):
-                service = analysis.getService()
-                method = service.getMethod()
+                method = analysis.getMethod()
                 sample = ar.getSample()
                 result = analysis.getResult()
                 try:
-                    precision = service.getPrecision() and service.getPrecision() or "2"
+                    precision = analysis.getPrecision()
+                    if not precision:
+                        precision = "2"
                     result = float(result)
                     formatted_result = str("%." + precision + "f") % result
-                except:
+                except (TypeError, ValueError):
                     precision = "2"
                     formatted_result = result
-                datalines.append({_b("Analysis Service"): analysis.getService().Title(),
+                datalines.append({_b("Analysis Service"): analysis.Title(),
                                   _b("Method"): method and method.Title() or "",
                                   _b("Result"): formatted_result,
                                   _b("Analyst"): self.user_fullname(analysis.getAnalyst()),

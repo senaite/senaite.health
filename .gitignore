@@ -1,6 +1,9 @@
 *~
 *.pyc
 *.mo
+*.orig
+*.log
+*MANIFEST*
 *egg-info*
 build/*
 dist/*

@@ -182,7 +182,7 @@ function HealthStandardAnalysisRequestAddView() {
         $.ajaxSetup({async:false});
         // Get patient data
         window.bika.lims.jsonapi_read({
-            catalog_name:'bika_patient_catalog',
+            catalog_name:'bikahealth_catalog_patient_listing',
             id:pid
         }, function(data){
             setPatientData(data.objects[0]['UID']);
@@ -283,7 +283,7 @@ function HealthStandardAnalysisRequestAddView() {
         }
         $.ajaxSetup({async:false});
         window.bika.lims.jsonapi_read({
-            catalog_name: 'bika_patient_catalog',
+            catalog_name: 'bikahealth_catalog_patient_listing',
             UID: patientuid
         },function(dataobj){
             if (dataobj.objects.length > 0) {
@@ -335,7 +335,7 @@ function HealthStandardAnalysisRequestAddView() {
         else {
             $.ajaxSetup({async: false});
             window.bika.lims.jsonapi_read({
-                catalog_name: 'bika_patient_catalog',
+                catalog_name: 'bikahealth_catalog_patient_listing',
                 UID: patientuid
             }, function (data) {
                 if (data.objects[0]['InsuranceCompany_uid'] != '') {
@@ -581,7 +581,7 @@ function HealthStandardAnalysisRequestAddView() {
             success: function(data){
                 // Getting the case's uid
                 window.bika.lims.jsonapi_read({
-                    catalog_name: 'bika_patient_catalog',
+                    catalog_name: 'bikahealth_catalog_patient_listing',
                     content_type: 'Patient',
                     id: data['obj_id']
                 }, function (dataobj) {
@@ -615,7 +615,7 @@ function HealthStandardAnalysisRequestAddView() {
         var request_data = {
             obj_path: '/Plone/batches',
             obj_type: 'Batch',
-            Patient: "catalog_name:bika_patient_catalog|portal_type:Patient|UID:" + patientuid,
+            Patient: "catalog_name:bikahealth_catalog_patient_listing|portal_type:Patient|UID:" + patientuid,
             Doctor:"portal_type:Doctor|UID:" + doctoruid,
             Client:"portal_type:Client|UID:" + clientuid
         };
