@@ -1,12 +1,63 @@
-3.2 (unreleased)
-------------------
+Changelog
+=========
+
+3.2.0.1711 (2017-11-10)
+-----------------------
+
+**Added**
+
+#30 Allow Client contacts to create patients
+#28 Asynchronous creation of Analysis Requests
+#18 Wildcards on searching in Patients lists
+#13 Added 'meta_type' column in Patient catalog
+#7 New Analysis Request Add form outsiode the client and patient
+
+**Changed**
+
+#27 Remove health's bika_analysis_workflow.csv and use bika.lims' one instead
+#21 Replacement of FileField by BlobField
+#20 SearchableText index moved to the base dictionary in LIMS
+#15 Base catalog template definition for indexes and metadata
+#9 Worksheet performance improvements
+#6 Added specific catalog for Analysis object types
+#4 Migration of filter bar definition for ARs and samples, from health to lims
+#2 Added specific catalog for Analysis Request object types
+
+**Fixed**
+
+#32 Can't search using Client Patient ID in patient listing
+#31 Can't search using Client Patient ID in batches listing
+#29 AttributeError: 'module' object has no attribute 'ViewPatients'
+#26 CatalogError: unknown sort_on index (Patient)
+#25 AttributeError on publish: 'NoneType' object has no attribute 'bika_setup'
+#24 CatalogError in Patients folder view: unknown sort_on index (Title)
+#23 UnboundLocalError in Samples view: local variable 'ar' referenced before assignment
+#22 Worksheets not displaying analyses
+#19 Batch View. CatalogError: Unknown sort_on index (BatchID)
+#17 Unable to create specifications with min/max panic levels
+#16 ValueError while saving a clinical case: 'BatchID' is not in list
+#14 Analysis Request Submit (AJAX call). KeyError: 'state'
+#12 CatalogError: Unknown sort_on index (created) in view.get_sections() from dashboard
+#11 Error on install: unexpected keyword argument 'catalog_extensions'
+#11 Error on install: Can't pickle BikaPatientCatalog
+#10 Sort on Patient not working in lists (Analysis Requests, Samples and Patients)
+#3 Bug during getPatientInfo from AR add view
+
+
+3.2.0.1503-e5a0358 (2016-03-18)
+-------------------------------
 Updated to work with BikaLIMS 3.2
 HEALTH-503: Validation of Date of birth
+HEALTH-497: Hide Doctor field on EID Case Form
+HEALTH-357: UI. Post Patient Create landing page
+HEALTH-361: VL Cases
 HEALTH-413: Dashboard not showing
 HEALTH-402: In Analysis Request Add form, contact doesn't get selected
 
+
 3.1.8 (2015-11-03)
 ------------------
+
 HEALTH-301: Use newer version of Health flow diagram in next release
 HEALTH-281: Error in Bika Setup › Insurance Companies > Invoices
 HEALTH-305: Having invoices
@@ -18,8 +69,10 @@ HEALTH-271: Analysis request invoice view broken
 HEALTH-266: View error on invoice from analysis request
 HEALTH-258: Add "File attachment" on Patient
 
+
 3.1.7 (2015-06-09)
 ------------------
+
 HEALTH-282: Error loading Add Analysis request
 HEALTH-245: Set-up data load. Patient ID conversion, alternatives
 HEALTH-227: Converting Patient IDs before import
@@ -27,8 +80,10 @@ HEALTH-228: Load Setup data bugs
 HEALTH-140: AR Create per path lab standard form
 HEALTH-251: Add guarantor details in insurance companies
 
+
 3.1.6 (2015-02-27)
 ------------------
+
 HEALTH-223: When you are adding a doctor through an overlay (add doctor button in cases), the address widgets don't work properly.
 HEALTH-215: Correct Navigation tree order
 HEALTH-191: Client Contact permissions
@@ -72,7 +127,7 @@ HEALTH-152: Upgrade the test data worksheet
 
 
 3.1.2.1 (2014-08-05)
-------------------
+--------------------
 
 HEALTH-144: Set up data: Identifier Types NameError: global name '_id' is not defined
 HEALTH-143: Can not create site
@@ -107,7 +162,7 @@ Hyperlinks to Analysis Requests in Patient's Historic Results
 
 
 3.1 Naringenin (2014-06-04)
-------------------
+---------------------------
 
 - Inherits all features from Bika LIMS release/3.1
 - Customisations towards CLIA compliance
@@ -122,7 +177,7 @@ Hyperlinks to Analysis Requests in Patient's Historic Results
 - Stream-lined anonymous Patient workflow
 
 
-0.1 - 2012-12-31
-------------------
+0.1 (2012-12-31)
+----------------
 
 - Create separate product from the Bika-LIMS/health branch.
