@@ -10,7 +10,7 @@ Changelog
 #28 Asynchronous creation of Analysis Requests
 #18 Wildcards on searching in Patients lists
 #13 Added 'meta_type' column in Patient catalog
-#7 New Analysis Request Add form outsiode the client and patient
+#7 New Analysis Request Add form outside client and patient
 
 **Changed**
 
