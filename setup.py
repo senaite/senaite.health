@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '3.2.0.1711'
+version = '1.0.0'
 
 setup(name='bika.health',
       version=version,

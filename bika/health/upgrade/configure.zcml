@@ -4,65 +4,17 @@
     i18n_domain="bika">
 
 <genericsetup:upgradeStep
-        title="Bika Health 3.1.6"
-        description=""
-        source="3006"
-        destination="316"
-        handler="bika.health.upgrade.to316.upgrade"
-        sortkey="1"
+        title="Upgrade to Bika Health Evo 1.0.0"
+        source="3.2.0.1710"
+        destination="1.0.0"
+        handler="bika.health.upgrade.v01_00_000.upgrade"
         profile="bika.health:default"/>
 
 <genericsetup:upgradeStep
-        title="Bika Health 3.1.7"
-        description=""
-        source="316"
-        destination="317"
-        handler="bika.health.upgrade.to317.upgrade"
-        sortkey="1"
-        profile="bika.health:default"/>
-
-<genericsetup:upgradeStep
-        title="Bika Health 3.1.8"
-        description=""
-        source="317"
-        destination="318"
-        handler="bika.health.upgrade.to318.upgrade"
-        sortkey="1"
-        profile="bika.health:default"/>
-
-<genericsetup:upgradeStep
-        title="Upgrade to Bika Health 3.2.0"
-        source="318"
-        destination="3.2.0"
-        handler="bika.health.upgrade.v3_2_0.upgrade"
-        profile="bika.health:default"/>
-
-<genericsetup:upgradeStep
-        title="Upgrade to Bika Health 3.2.0.1704"
-        source="3.2.0"
-        destination="3.2.0.1704"
-        handler="bika.health.upgrade.v3_2_0_1704.upgrade"
-        profile="bika.health:default"/>
-
-<genericsetup:upgradeStep
-        title="Upgrade to Bika Health 3.2.0.1705"
-        source="3.2.0.1704"
-        destination="3.2.0.1705"
-        handler="bika.health.upgrade.v3_2_0_1705.upgrade"
-        profile="bika.health:default"/>
-
-<genericsetup:upgradeStep
-        title="Upgrade to Bika Health 3.2.0.1706"
-        source="3.2.0.1705"
-        destination="3.2.0.1706"
-        handler="bika.health.upgrade.v3_2_0_1706.upgrade"
-        profile="bika.health:default"/>
-
-<genericsetup:upgradeStep
-        title="Upgrade to Bika Health 3.2.0.1710"
-        source="3.2.0.1706"
-        destination="3.2.0.1710"
-        handler="bika.health.upgrade.v3_2_0_1710.upgrade"
+        title="Upgrade to Bika Health Evo 1.0.0"
+        source="3.2.0.1711"
+        destination="1.0.0"
+        handler="bika.health.upgrade.v01_00_000.upgrade"
         profile="bika.health:default"/>
 
 </configure>
