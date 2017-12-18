@@ -12,10 +12,7 @@ from email.mime.text import MIMEText
 
 class AnalysisRequestView(AnalysisRequestViewView):
 
-    def __call__(self):
-
-        super(AnalysisRequestView, self).__call__()
-
+    def after_call(self):
         if "email_popup_submit" in self.request:
             self.sendAlertEmail()
 
@@ -24,8 +21,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
                         'indicate an imminent life-threatening condition.')
             self.addMessage(message, 'warning')
 
-        self.renderMessages()
-        return self.template()
+        return True
 
     def isPanicAlertAutopopupEnabled(self):
         if "email_popup_submit" in self.request:
