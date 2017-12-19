@@ -14,7 +14,7 @@ class AnalysisRequestView(AnalysisRequestViewView):
 
     def __call__(self):
 
-        super(AnalysisRequestView, self).__call__()
+        result = super(AnalysisRequestView, self).__call__()
 
         if "email_popup_submit" in self.request:
             self.sendAlertEmail()
@@ -23,7 +23,8 @@ class AnalysisRequestView(AnalysisRequestViewView):
             message = _('Some results exceeded the panic levels that may '
                         'indicate an imminent life-threatening condition.')
             self.addMessage(message, 'warning')
-
+        if result is None:
+            return
         self.renderMessages()
         return self.template()
 
