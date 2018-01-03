@@ -1,18 +1,16 @@
 This software, henceforth "Bika Health Evo", is a derivative work of Bika
-Health, a Plone extension that adds health care functionality to Bika LIMS, a
-web-based Laboratory Information Management System (LIMS):
-https://github.com/bikalims/bika.health
+Health, a Plone extension that adds health care functionality to Senaite
+core, a web-based Laboratory Information Management System (LIMS):
+https://github.com/senaite/senaite.core
 
-As such, Bika Health Evo is licensed under the GNU Affero General Public
-License v3.0.
+As such, Bika Health Evo is licensed under the GNU General Public License v2.0.
 
 The files contained in these directories are part of "Bika Health Evo".
-Copyright (C) 2017 Naralabs <info@naralabs.com>
+Copyright (C) 2018 Naralabs <info@naralabs.com>
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.
+Free Software Foundation.
 
 This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
