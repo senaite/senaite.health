@@ -1,13 +1,23 @@
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:zcml="http://namespaces.zope.org/browser"
-           xmlns:fss="http://namespaces.zope.org/browser"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="bika">
 
+    <!-- TODO: TO BE REMOVED
+    It is only used to prevent an ugly Traceback when the instance hasn't been
+    yet upgraded to 1.1.0.-->
     <browser:page
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
         name="bika-frontpage"
-        class="bika.health.browser.bika-frontpage.FrontPageView"
+        class="bika.health.browser.senaitefrontpage.FrontPageView"
+        permission="zope2.View"
+        layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="senaite-frontpage"
+        class="bika.health.browser.senaitefrontpage.FrontPageView"
         permission="zope2.View"
         layer="bika.lims.interfaces.IBikaLIMS"
     />
@@ -15,8 +25,8 @@
     <browser:menuItem
         for="Products.CMFCore.interfaces.ISiteRoot"
         menu="plone_displayviews"
-        title="Bika Health front-page"
-        action="bika-frontpage"
-        description="Bika Health front-page"
+        title="SENAITE Health front-page"
+        action="senaite-frontpage"
+        description="SENAITE Health front-page"
     />
 </configure>
