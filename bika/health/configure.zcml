@@ -39,4 +39,14 @@
     name="logo.png"
   />
 
+  <browser:resource
+      file="skins/bika_health/senaite-health-logo.png"
+      name="senaite-core-logo.png"
+  />
+
+  <browser:resource
+      file="skins/bika_health/senaite-health-hexagon-logo.png"
+      name="senaite-hexagon-logo.png"
+  />
+
 </configure>

@@ -3,6 +3,24 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="bika">
 
+    <configure package="Products.CMFPlone.browser">
+        <!--
+        We have to use z3c.unconfigure to override the overridden
+        plone-addsite configuration in CMFPlone/browser/override.zcml
+        because we want to make a bika's custom installation page
+        -->
+        <include package="z3c.unconfigure" file="meta.zcml" />
+        <unconfigure>
+            <browser:page
+                for="OFS.interfaces.IApplication"
+                name="plone-overview"
+                class=".admin.Overview"
+                permission="zope.Public"
+                template="templates/plone-overview.pt"
+            />
+        </unconfigure>
+    </configure>
+
     <!-- TODO: TO BE REMOVED
     It is only used to prevent an ugly Traceback when the instance hasn't been
     yet upgraded to 1.1.0.-->
@@ -28,5 +46,13 @@
         title="SENAITE Health front-page"
         action="senaite-frontpage"
         description="SENAITE Health front-page"
+    />
+
+    <browser:page
+        for="OFS.interfaces.IApplication"
+        name="plone-overview"
+        class="Products.CMFPlone.browser.admin.Overview"
+        permission="zope.Public"
+        template="plone-overview.pt"
     />
 </configure>
