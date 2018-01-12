@@ -17,6 +17,14 @@ OUTFILE = SRC + '/CONTRIBUTORS.rst'
 # User names or emails to be replaced. If the value is None, the committer will
 # not be listed in the list of contributors
 REPLACEMENTS = {
+    'Campbell':                  'Campbell McKellar-Basset',
+    'Espurna':                   'Pau Soliva',
+    'GitHub':                    None, # Ommit GitHub commits
+    'Nihadness':                 'Nihad Mammadli',
+    'Soliva':                    'Pau Soliva',
+    'Jordi Puiggené Valls':      'Jordi Puiggené',
+    'jordi.puiggene@gmail.com':  'jpuiggene@naralabs.com',
+    'zylinx':                    'Alexander Karlsson',
 }
 
 
