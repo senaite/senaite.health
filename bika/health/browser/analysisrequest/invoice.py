@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from email.utils import formataddr
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims.utils import encode_header

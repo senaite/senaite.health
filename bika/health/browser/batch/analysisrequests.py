@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from bika.lims.browser.batch.analysisrequests import AnalysisRequestsView as BaseBatchARView
 from bika.health.browser.analysisrequests.view import AnalysisRequestsView as \
     HealthAnalysisRequestView

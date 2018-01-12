@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from Products.Archetypes import atapi
 from bika.lims.config import PROJECTNAME as BIKALIMS_PROJECTNAME
 from bika.lims.content.analysis import Analysis as BaseAnalysis

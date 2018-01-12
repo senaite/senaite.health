@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
