@@ -1,4 +1,9 @@
-# Testing layer to provide some of the features of PloneTestCase
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
 from bika.lims.exportimport.load_setup_data import LoadSetupData
 from plone.app.testing import FunctionalTesting

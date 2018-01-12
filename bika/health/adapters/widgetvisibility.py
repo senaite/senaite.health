@@ -1,4 +1,10 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from Products.CMFCore.WorkflowCore import WorkflowException
 from bika.lims.utils import getHiddenAttributesForClass
 from types import DictType

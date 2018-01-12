@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from bika.health import bikaMessageFactory as _
 from bika.lims import bikaMessageFactory as _b
 from bika.lims.browser import BrowserView

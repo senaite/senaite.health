@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from Products.CMFCore.utils import getToolByName
 from bika.lims.browser.client import ClientBatchesView as BaseClientBatchesView
 from bika.health.browser.batch.batchfolder import BatchFolderContentsView as HealthBatchesView
