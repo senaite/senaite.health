@@ -28,6 +28,9 @@ SENAITE.HEALTH is an extension for `SENAITE.CORE <https://github.com/senaite/sen
 an Open Source LIMS for enterprise environments, especially focused to behave
 with high speed, excellent performance and good stability.
 
+This software is a derivative work of BikaHealth_ software and comes with the same user 
+interface.
+
 
 Installation
 ============
@@ -149,3 +152,9 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
+
+
+
+.. Links
+
+.. _BIKAHEALTH: https://github.com/bikalims/bika.health
