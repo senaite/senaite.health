@@ -141,8 +141,7 @@ SENAITE.HEALTH
 Copyright (C) 2018 Senaite Foundation
 
 This software, henceforth "SENAITE.HEALTH", an add-on for
-`Plone software <https://plone.org/>`_, is a derivative work of
-`Bika Health <https://github.com/bikalims/bika.health>`_.
+`Plone software <https://plone.org/>`_, is a derivative work of BikaHealth_.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the `GNU General Public License version 2 <./LICENSE>`_
