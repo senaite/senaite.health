@@ -10,8 +10,9 @@ import types
 from Products.ATContentTypes.content import schemata
 from Products.Archetypes import atapi
 from Products.CMFCore.utils import getToolByName
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.interfaces import IClient
+from bika.lims import bikaMessageFactory as _b, api
+from bika.lims.content.contact import Contact
+from bika.lims.interfaces import IClient, ILabContact
 from bika.health import bikaMessageFactory as _
 from bika.health.catalog import CATALOG_PATIENT_LISTING
 from bika.lims.browser.bika_listing import BikaListingView
@@ -98,7 +99,38 @@ class PatientsView(BikaListingView):
 
     def __call__(self):
         self._initFormParams()
+        # Filter by client if necessary
+        self._apply_filter_by_client()
         return super(PatientsView, self).__call__()
+
+    def _apply_filter_by_client(self):
+        # If the current context is a Client, filter Patients by Client UID
+        if IClient.providedBy(self.context):
+            client_uid = api.get_uid(self.context)
+            self.contentFilter['getPrimaryReferrerUID'] = client_uid
+            return
+
+        # If the current user is a Client contact, filter the Patients in
+        # accordance. For the rest of users (LabContacts), the visibility of
+        # the patients depend on their permissions
+        user = api.get_current_user()
+        roles = user.getRoles()
+        if 'Client' not in roles:
+            return
+
+        # Are we sure this a ClientContact?
+        # May happen that this is a Plone member, w/o having a ClientContact
+        # assigned or having a LabContact assigned... weird
+        contact = api.get_user_contact(user)
+        if not contact or ILabContact.providedBy(contact):
+            return
+
+        # Is the parent from the Contact a Client?
+        client = api.get_parent(contact)
+        if not client or not IClient.providedBy(client):
+            return
+        client_uid = api.get_uid(client)
+        self.contentFilter['getPrimaryReferrerUID'] = client_uid
 
     def get_columns(self, sieve=[]):
         """Get Table Columns and filter out keys listed in sieve
@@ -175,36 +207,12 @@ class PatientsView(BikaListingView):
             (item['url'], item['getClientPatientID'])
         item['replace']['Title'] = "<a href='%s/analysisrequests'>%s</a>" % \
             (item['url'], item['Title'])
-        # Obtain the member and member's role.
-        pm = getToolByName(self.context, "portal_membership")
-        member = pm.getAuthenticatedMember()
-        roles = member.getRoles()
-        if 'Client' not in roles:
-            # All the patients don't belong to the same client.
-            prTitle = obj.getPrimaryReferrerTitle
-            prURL = obj.getPrimaryReferrerURL
-            item['getPrimaryReferrerTitle'] = prTitle
-            item['replace']['getPrimaryReferrer'] = \
-                "<a href='%s/analysisrequests'>%s</a>" % \
-                (prURL, prTitle)
+        prTitle = obj.getPrimaryReferrerTitle
+        prURL = obj.getPrimaryReferrerURL
+        item['getPrimaryReferrerTitle'] = prTitle
+        item['replace']['getPrimaryReferrer'] = \
+            "<a href='%s/analysisrequests'>%s</a>" % (prURL, prTitle)
         return item
 
     def folderitems(self):
-        # Obtain the member and member's role.
-        pm = getToolByName(self.context, "portal_membership")
-        member = pm.getAuthenticatedMember()
-        roles = member.getRoles()
-        # Limit results to those patients that "belong" to the member's client
-        if 'Client' in roles:
-            # It obtains the referrer institution which the current AuthenticatedMember belong.
-            client = logged_in_client(self.context, member)
-            self.contentFilter['getPrimaryReferrerUID'] = client.UID()
-            # hide PrimaryReferrer column
-            new_states = []
-            for x in self.review_states:
-                if 'getPrimaryReferrer' in x['columns']:
-                    x['columns'].remove("getPrimaryReferrer")
-                new_states.append(x)
-            self.review_states = new_states
-        items = BikaListingView.folderitems(self, classic=False)
-        return items
+        return BikaListingView.folderitems(self, classic=False)
