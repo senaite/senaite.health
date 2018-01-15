@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
 from Products.ATContentTypes.content import schemata
 from AccessControl import ClassSecurityInfo
@@ -432,7 +437,7 @@ schema = Person.schema.copy() + Schema((
                           "to the Patient automatically."))
     ),
     LinesField('PublicationPreferences',
-        vocabulary='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
+        vocabulary_factory='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
         schemata='Publication preference',
         widget=MultiSelectionWidget(
             label=_("Publication preference"),

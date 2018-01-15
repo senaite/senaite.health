@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from Products.CMFCore.utils import getToolByName
 from bika.health import bikaMessageFactory as _
 from bika.health.browser.analysis.resultoutofrange import ResultOutOfRange

@@ -1,9 +1,10 @@
-# This file is part of Bika Health
+# -*- coding: utf-8 -*-
 #
-# Copyright 2011-2016 by it's authors.
-# Some rights reserved. See LICENSE.txt, AUTHORS.txt.
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-# Catalog IDs static constant
 from .patient_catalog import CATALOG_PATIENT_LISTING
 # Catalog classes
 from .patient_catalog import BikaPatientCatalog

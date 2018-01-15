@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 """All permissions are defined here.
 They are also defined in permissions.zcml.
 The two files must be kept in sync.

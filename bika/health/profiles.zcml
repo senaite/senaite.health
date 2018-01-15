@@ -5,9 +5,9 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="Bika Health"
+      title="SENAITE Health"
       directory="profiles/default"
-      description='Extension profile for the Bika LIMS Health branch'
+      description='Health Care extension for SENAITE Core'
       provides="Products.GenericSetup.interfaces.EXTENSION"/>
 
   <genericsetup:importStep

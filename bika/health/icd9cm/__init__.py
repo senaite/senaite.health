@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 """ICD9-CM code list
 AB: 001 to 139: Infectious disease/Infection: Bacterial disease, Virus disease, Parasitic disease, Mycosis, Zoonosis
 CD: 140 to 239: Cancer, Tumor, Myeloid hematologic, Lymphoid immune

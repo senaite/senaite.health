@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from Products.Archetypes.Widget import BooleanWidget
 from Products.Archetypes.Widget import MultiSelectionWidget
 from Products.Archetypes.Widget import StringWidget
@@ -72,7 +79,8 @@ class BikaSetupSchemaExtender(object):
                               "Patient's 'Publication preferences' tab."))
         ),
         ExtLinesField('PatientPublicationPreferences',
-            vocabulary='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
+            vocabulary_factory='bika.lims.vocabularies'
+                        '.CustomPubPrefVocabularyFactory',
             schemata = 'Results Reports',
             widget = MultiSelectionWidget(
                 label = _("Default publication preference for Patients"),

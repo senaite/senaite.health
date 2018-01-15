@@ -1,4 +1,10 @@
-# import this to create messages in the bika domain.
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2018 by it's authors.
+# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from zope.i18nmessageid import MessageFactory
 bikaMessageFactory = MessageFactory('bika.health')
 

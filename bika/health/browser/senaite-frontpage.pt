@@ -1,0 +1,97 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="bika">
+
+<metal:content-title fill-slot="content-title">
+  <tal:swich-dashboard
+    define="anonymous python: view.is_anonymous_user();
+            dashboard python: view.is_dashboard_enabled();
+            show_link python: not anonymous and dashboard;">
+    <!--
+    Display the direct link to Dashboard if the user is not anonymous and the
+    dashboard view is enabled in Setup -->
+    <a href=""
+       style="float:right"
+       i18n:translate=""
+       tal:condition="show_link">
+      Switch to dashboard
+    </a>
+  </tal:swich-dashboard>
+
+  <h1 class="documentFirstHeading" i18n:translate="">
+    <!--
+    Show the current version of Senaite Health, but give priority to upgrade
+    value over the value for the version stored, QuickInstall does not talk
+    very well with ZMI's upgrade tool -->
+    <img tal:attributes="src view/icon"/> Welcome to SENAITE Health&nbsp;
+    <tal:version
+      define="version python: view.versions.get('senaite.health', '');
+              upgrade python: view.upgrades.get('senaite.health', '');
+              version python: upgrade and upgrade or version">
+      <span tal:replace="version"/>
+    </tal:version>
+  </h1>
+</metal:content-title>
+
+<metal:content-description fill-slot="content-description">
+</metal:content-description>
+
+<metal:content-core fill-slot="content-core">
+  <div class="container">
+    <h2>
+      SENAITE Health, the evolution of Bika Health
+    </h2>
+    <p>SENAITE Health is an Open Source Laboratory Information System (LIS)
+      suitable
+      for Health Care Laboratories, focused on patient and clinical cases. Is
+      especially
+      focused to behave with high speed, excellent performance and good
+      stability.</p>
+  </div>
+  <div class="container">
+    <div col-md-12>
+      <h2>
+        What does SENAITE mean?
+      </h2>
+      <p>
+        <a href="http://senaite.com" rel="nofollow">SENAITE</a> is a beautiful
+        trigonal, oil-green to greenish
+        black <a href="https://www.mindat.org/min-3617.html" rel="nofollow">crystal</a>,
+        with almost the hardness
+        of a diamond. Although the crystal is described with a complex formula,
+        it still
+        has clear and straight shapes. Therefore, it reflects nicely the
+        complexity of
+        the LIMS, while providing a modern, intuitive and friendly <a
+        href="https://en.wikipedia.org/wiki/User_interface_design"
+        rel="nofollow">UI</a>/
+        <a href="https://en.wikipedia.org/wiki/User_experience" rel="nofollow">UX</a>.
+      </p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="col-md-12">
+      <div class="features-list row">
+        <div class="col-md-6 cell width-1:2 position-0">
+          <h1>Features</h1>
+          <ul>
+            <li>Clean User Interface</li>
+            <li>Rich UI components</li>
+            <li>Integrated JSON API</li>
+          </ul>
+        </div>
+        <div class="col-md-6 cell width-1:2 position-1:2">
+          <h1>Specifications</h1>
+          <ul>
+            <li>Evolved Bika Health</li>
+            <li>Built on Plone CMS</li>
+            <li>Fully Open Source</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</metal:content-core>
+
+</html>
