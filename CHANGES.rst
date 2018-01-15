@@ -16,7 +16,7 @@ Changelog
 
 **Fixed**
 
-- #38 Traceback on Patients when current user has Client role but is LabContact
+- #39 Traceback on Patients when current user has Client role but is LabContact
 - #36 Using parameter "vocabulary" wasn't working in bika_setup
 - #35 Analysis Request View error when the page redirects the user
 
