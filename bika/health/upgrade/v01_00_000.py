@@ -33,7 +33,8 @@ def upgrade(tool):
     #    return True
 
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
-
+    setup = portal.portal_setup
+    setup.runImportStepFromProfile('profile-bika.health:default', 'jsregistry')
     # Do nothing, we just only want the profile version to be 1.0.0
     logger.info("{0} upgraded to version {1}".format(product, version))
     return True

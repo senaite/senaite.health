@@ -18,7 +18,8 @@ from zope.interface import implements
 from bika.health import bikaMessageFactory as _
 from bika.health.permissions import ViewPatients
 from bika.lims.browser.widgets import ReferenceWidget
-from bika.lims.fields import *
+from bika.lims.fields import ExtStringField
+from bika.lims.fields import ExtReferenceField
 from bika.lims.interfaces import ISample
 
 
@@ -30,6 +31,46 @@ class SampleSchemaExtender(object):
         self.context = context
 
     fields = [
+        ExtStringField(
+            'ClientPatientID',
+            searchable=True,
+            required=1,
+            read_permission=ViewPatients,
+            write_permission=permissions.ModifyPortalContent,
+            widget=ReferenceWidget(
+                label=_("Client Patient ID"),
+                size=20,
+                colModel=[
+                    {'columnName': 'id',
+                     'width': '20',
+                     'label': _('Patient ID'),
+                     'align': 'left'},
+                    {'columnName': 'getClientPatientID',
+                     'width': '20',
+                     'label': _('Client PID'),
+                     'align': 'left'},
+                    {'columnName': 'Title',
+                     'width': '60',
+                     'label': _('Fullname'),
+                     'align': 'left'},
+                    {'columnName': 'UID', 'hidden': True},
+                ],
+                ui_item='getClientPatientID',
+                search_query='',
+                discard_empty=('ClientPatientID',),
+                search_fields=('ClientPatientID',),
+                portal_types=('Patient',),
+                render_own_label=True,
+                visible={'edit': 'visible',
+                         'view': 'visible',
+                         'add': 'edit',
+                         },
+                catalog_name='bikahealth_catalog_patient_listing',
+                base_query={'inactive_state': 'active'},
+                showOn=True,
+            ),
+        ),
+
         ExtReferenceField(
             'Patient',
             required=1,

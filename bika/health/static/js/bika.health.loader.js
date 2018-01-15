@@ -31,6 +31,9 @@ window.bika.health.controllers =  {
     ".template-ar_add #analysisrequest_add_form":
         ['HealthAnalysisRequestAddView'],
 
+    ".template-sample_add #sample_add_form":
+        ['HealthSampleAddView'],
+
     ".template-ar_add #health-standard-ar-add-form":
         ['HealthStandardAnalysisRequestAddView'],
 

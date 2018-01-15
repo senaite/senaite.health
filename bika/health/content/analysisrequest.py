@@ -182,8 +182,9 @@ class AnalysisRequestSchemaExtender(object):
             ),
         ),
 
-        ExtStringField(
+        ExtProxyField(
             'ClientPatientID',
+            proxy="context.getSample()",
             searchable=True,
             required=1,
             read_permission=ViewPatients,
