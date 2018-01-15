@@ -1,12 +1,15 @@
 from Products.Archetypes.Widget import BooleanWidget
-from archetypes.schemaextender.interfaces import ISchemaExtender,\
-    IOrderableSchemaExtender
-from bika.lims.fields import *
-from bika.health import bikaMessageFactory as _
-from bika.lims.interfaces import IBikaSetup
-from zope.component import adapts, getAdapters
+from Products.Archetypes.Widget import MultiSelectionWidget
+from Products.Archetypes.Widget import StringWidget
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from zope.component import adapts
 from zope.interface import implements
-from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
+
+from bika.health import bikaMessageFactory as _
+from bika.lims.fields import ExtBooleanField
+from bika.lims.fields import ExtLinesField
+from bika.lims.fields import ExtStringField
+from bika.lims.interfaces import IBikaSetup
 
 
 class BikaSetupSchemaExtender(object):

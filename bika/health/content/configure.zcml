@@ -42,4 +42,7 @@
     <adapter factory=".bikasetup.BikaSetupSchemaExtender" />
     <adapter factory=".client.ClientSchemaExtender" />
 
+    <adapter factory=".sample.SampleSchemaExtender" />
+    <adapter factory=".sample.SampleSchemaModifier" />
+
 </configure>
