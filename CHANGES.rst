@@ -1,6 +1,28 @@
 Changelog
 =========
 
+1.1.0 (unreleased)
+------------------
+
+**Added**
+
+
+**Removed**
+
+
+**Changed**
+
+- #33 #37 bika.lims to senaite.core distribution
+
+**Fixed**
+
+- #36 Using parameter "vocabulary" wasn't working in bika_setup
+- #35 Analysis Request View error when the page redirects the user
+
+**Security**
+
+
+
 1.0.0 (2017-11-10)
 ------------------
 
