@@ -16,10 +16,11 @@ from zope.component import adapts
 from zope.interface import implements
 
 from bika.health import bikaMessageFactory as _
+from bika.health.catalog import CATALOG_PATIENT_LISTING
 from bika.health.permissions import ViewPatients
 from bika.lims.browser.widgets import ReferenceWidget
-from bika.lims.fields import ExtStringField
 from bika.lims.fields import ExtReferenceField
+from bika.lims.fields import ExtStringField
 from bika.lims.interfaces import ISample
 
 
@@ -61,11 +62,56 @@ class SampleSchemaExtender(object):
                 search_fields=('ClientPatientID',),
                 portal_types=('Patient',),
                 render_own_label=True,
-                visible={'edit': 'visible',
-                         'view': 'visible',
-                         'add': 'edit',
-                         },
-                catalog_name='bikahealth_catalog_patient_listing',
+                visible={
+                    'edit': 'visible',
+                    'view': 'visible',
+                    'add': 'edit',
+                    'header_table': 'visible',
+                    'sample_registered': {
+                        'view': 'visible',
+                        'edit': 'invisible',
+                        'add': 'edit'},
+                    'to_be_sampled': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'scheduled_sampling': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sampled': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'to_be_preserved': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sample_due': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sample_prep': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sample_received': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'attachment_due': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'to_be_verified': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'verified': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'published': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'invalid': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'rejected': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                },
+                catalog_name=CATALOG_PATIENT_LISTING,
                 base_query={'inactive_state': 'active'},
                 showOn=True,
             ),
@@ -83,11 +129,56 @@ class SampleSchemaExtender(object):
                 label=_('Patient'),
                 size=20,
                 render_own_label=True,
-                visible={'edit': 'visible',
-                         'view': 'visible',
-                         'add': 'edit',
-                         'secondary': 'disabled'},
-                catalog_name='bikahealth_catalog_patient_listing',
+                visible={
+                    'edit': 'visible',
+                    'view': 'visible',
+                    'add': 'edit',
+                    'header_table': 'visible',
+                    'sample_registered': {
+                        'view': 'visible',
+                        'edit': 'invisible',
+                        'add': 'edit'},
+                    'to_be_sampled': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'scheduled_sampling': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sampled': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'to_be_preserved': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sample_due': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sample_prep': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'sample_received': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'attachment_due': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'to_be_verified': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'verified': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'published': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'invalid': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                    'rejected': {
+                        'view': 'visible',
+                        'edit': 'invisible'},
+                },
+                catalog_name=CATALOG_PATIENT_LISTING,
                 base_query={'inactive_state': 'active'},
                 colModel=[
                     {'columnName': 'Title', 'width': '30', 'label': _(
@@ -100,7 +191,7 @@ class SampleSchemaExtender(object):
                     'visible': True,
                     'url': 'patients/portal_factory/Patient/new/edit',
                     'return_fields': ['Firstname', 'Surname'],
-                    'js_controllers': ['#patient-base-edit',],
+                    'js_controllers': ['#patient-base-edit', ],
                     'overlay_handler': 'HealthPatientOverlayHandler',
                 }
             ),
