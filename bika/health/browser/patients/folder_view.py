@@ -25,7 +25,7 @@ COLUMNS = ['getPatientID',
            'getGender',
            'getAgeSplittedStr',
            'getBirthDate',
-           'getPrimaryReferrer']
+           'getPrimaryReferrerTitle']
 
 
 class PatientsView(BikaListingView):
@@ -48,16 +48,19 @@ class PatientsView(BikaListingView):
         self.show_select_column = False
 
         self.columns = {
-
             'Title': {
                 'title': _('Patient'),
-                'index': 'Title'},
+                'index': 'Title',
+                'replace_url': 'getURL'},
 
             'getPatientID': {
-                'title': _('Patient ID'), },
+                'title': _('Patient ID'),
+                'index': 'getPatientID',
+                'replace_url': 'getURL'},
 
             'getClientPatientID': {
                 'title': _('Client PID'),
+                'replace_url': 'getURL',
                 'sortable': False},
 
             'getGender': {
@@ -75,11 +78,11 @@ class PatientsView(BikaListingView):
                 'toggle': True,
                 'sortable': False},
 
-            'getPrimaryReferrer': {
+            'getPrimaryReferrerTitle': {
                 'title': _('Primary Referrer'),
+                'replace_url': 'getPrimaryReferrerURL',
                 'toggle': True,
                 'sortable': False},
-
         }
 
         self.review_states = [
@@ -128,7 +131,7 @@ class PatientsView(BikaListingView):
     def get_columns(self, sieve=None):
         """Get Table Columns and filter out keys listed in sieve
         """
-        if not sieve:
+        if sieve is None:
             sieve = list()
         if type(sieve) not in (types.ListType, types.TupleType):
             raise RuntimeError("Sieve must be a list type")
@@ -188,27 +191,7 @@ class PatientsView(BikaListingView):
                 the template
             :index: current index of the item
         """
-        if 'obj' not in item:
-            return None
-
-        item['getPatientID'] = obj.getPatientID
-        item['getGender'] = obj.getGender
-        item['getAgeSplittedStr'] = obj.getAgeSplittedStr
         item['getBirthDate'] = self.ulocalized_time(obj.getBirthDate)
-        item['getClientPatientID'] = obj.getClientPatientID
-        item['replace'][
-            'getPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                              (item['url'], item['getPatientID'])
-        item['replace']['getClientPatientID'] = "<a href='%s'>%s</a>" % \
-                                                (item['url'],
-                                                 item['getClientPatientID'])
-        item['replace']['Title'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                                   (item['url'], item['Title'])
-        prTitle = obj.getPrimaryReferrerTitle
-        prURL = obj.getPrimaryReferrerURL
-        item['getPrimaryReferrerTitle'] = prTitle
-        item['replace']['getPrimaryReferrer'] = \
-            "<a href='%s/analysisrequests'>%s</a>" % (prURL, prTitle)
         return item
 
     def folderitems(self):

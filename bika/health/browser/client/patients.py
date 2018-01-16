@@ -25,11 +25,11 @@ class ClientPatientsView(PatientsView):
     def folderitems(self):
         folderitems = super(ClientPatientsView, self).folderitems()
 
-        # hide PrimaryReferrer column
+        # hide PrimaryReferrerTitle column
         new_states = []
         for x in self.review_states:
-            if 'getPrimaryReferrer' in x['columns']:
-                x['columns'].remove("getPrimaryReferrer")
+            if 'getPrimaryReferrerTitle' in x['columns']:
+                x['columns'].remove("getPrimaryReferrerTitle")
             new_states.append(x)
         self.review_states = new_states
 
