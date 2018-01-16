@@ -155,10 +155,13 @@ class PatientsView(BikaListingView):
             can_add_patients = member.id in owners
 
         if can_add_patients:
+            # TODO Performance tweak. Is this really needed?
             clients = self.context.clients.objectIds()
             if clients:
+                add_patient_url = '{}/patients/createObject?type_name=Patient'\
+                                  .format(self.portal_url)
                 self.context_actions[_b('Add')] = {
-                    'url': 'createObject?type_name=Patient',
+                    'url': add_patient_url,
                     'icon': '++resource++bika.lims.images/add.png'
                 }
             else:
