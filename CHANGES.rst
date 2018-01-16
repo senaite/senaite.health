@@ -13,6 +13,7 @@ Changelog
 **Changed**
 
 - #33 #37 bika.lims to senaite.core distribution
+- #39 Improved performance for Patient listings
 
 **Fixed**
 
