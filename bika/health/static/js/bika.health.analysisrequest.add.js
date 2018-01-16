@@ -366,7 +366,7 @@ function HealthAnalysisRequestAddView() {
                 dataType: "json",
                 async: true,
                 success: function (data, textStatus, $XHR) {
-                    if (data['PatientID'] != '') {
+                    if (data.PatientID != '' && data.PatientID != undefined) {
                         fillPatientData(col, data);
                     } else {
                         resetPatientData(col);
