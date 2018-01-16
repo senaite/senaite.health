@@ -90,11 +90,11 @@ def update_ar_proxyfields(portal):
 
         processed += 1
         # log each 250 objects and transaction.commit each 1000
-        if processed % 1 == 0:
+        if processed % 250 == 0:
             logger.info(
                 'Progress: {}/{} AnalysisRequest (Samples) have been updated.'
                 .format(processed, total))
-        if processed % 1 == 0:
+        if processed % 1000 == 0:
             transaction.commit()
             logger.info('{0} changes commit.'.format(processed))
 
