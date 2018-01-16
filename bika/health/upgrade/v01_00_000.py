@@ -62,6 +62,7 @@ def update_ar_proxyfields(portal):
         "proxies")
     all_ok = True
     ar_catalog = get_tool(CATALOG_ANALYSIS_REQUEST_LISTING, context=portal)
+    ref_catalog = get_tool('reference_catalog', context=portal)
     all_ars = ar_catalog()
     processed = 0
     total = len(all_ars)
@@ -71,7 +72,8 @@ def update_ar_proxyfields(portal):
     for ar_brain in all_ars:
         # getting object
         ar_obj = get_object(ar_brain)
-        clientpatientid_it_work = clientpatientid_from_ar_to_sample(ar_obj)
+        clientpatientid_it_work =\
+            clientpatientid_from_ar_to_sample(ar_obj, ref_catalog)
 
         # Updating ClientPatientID field
         if not clientpatientid_it_work:
@@ -81,7 +83,7 @@ def update_ar_proxyfields(portal):
             all_ok = False
 
         # Updating Patient field
-        patient_it_work = patient_from_ar_to_sample(ar_obj)
+        patient_it_work = patient_from_ar_to_sample(ar_obj, ref_catalog)
         if not patient_it_work:
             logger.warn(
                 "Patient Field for Analysis Request '{}' could not "
@@ -103,7 +105,7 @@ def update_ar_proxyfields(portal):
     return all_ok
 
 
-def clientpatientid_from_ar_to_sample(ar_obj):
+def clientpatientid_from_ar_to_sample(ar_obj, ref_catalog):
     """
     ClientPatientID has become a proxy field of Sample in AnalysisRequest
     objects. This function migrates ClientPatientID values from the
@@ -112,15 +114,23 @@ def clientpatientid_from_ar_to_sample(ar_obj):
     :param ar_obj: AnalysisRequest ATContentType
     :return: True if everything OK, False otherwise.
     """
-    # Getting the value directly from schema
-    schema = get_schema(ar_obj)
-    value = schema.getField('ClientPatientID').get(ar_obj)
+    # Getting relation object
+    ref_obj = ref_catalog(
+        sourceUID=ar_obj.UID(),
+        relationship='AnalysisRequestPatient'
+    )
+    if len(ref_obj) == 0:
+        logger.warn('No reference object found.')
+        return False
+    patient_uid = ref_obj[0].targetUID
+
     # Setting it, proxy field will do the rest
-    schema.getField('ClientPatientID').set(ar_obj, value)
+    schema = get_schema(ar_obj)
+    schema.getField('ClientPatientID').set(ar_obj, patient_uid)
     return True
 
 
-def patient_from_ar_to_sample(ar_obj):
+def patient_from_ar_to_sample(ar_obj, ref_catalog):
     """
     Patient field has become a proxy field of Sample in AnalysisRequest
     objects. This function migrates ClientPatientID values from the
@@ -129,9 +139,17 @@ def patient_from_ar_to_sample(ar_obj):
     :param ar_obj: AnalysisRequest ATContentType
     :return: True if everything OK, False otherwise.
     """
-    # Getting the value directly from schema
-    schema = get_schema(ar_obj)
-    value = schema.getField('Patient').get(ar_obj)
+    # Getting relation object
+    ref_obj = ref_catalog(
+        sourceUID=ar_obj.UID(),
+        relationship='AnalysisRequestPatient'
+    )
+    if len(ref_obj) == 0:
+        logger.warn('No reference object found.')
+        return False
+    patient_uid = ref_obj[0].targetUID
+
     # Setting it, proxy field will do the rest
-    schema.getField('Patient').set(ar_obj, value)
+    schema = get_schema(ar_obj)
+    schema.getField('Patient').set(ar_obj, patient_uid)
     return True
