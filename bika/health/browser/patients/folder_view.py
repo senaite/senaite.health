@@ -7,23 +7,16 @@
 
 import types
 
-from Products.ATContentTypes.content import schemata
-from Products.Archetypes import atapi
 from Products.CMFCore.utils import getToolByName
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.interfaces import IClient
 from bika.health import bikaMessageFactory as _
 from bika.health.catalog import CATALOG_PATIENT_LISTING
-from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims.utils import logged_in_client
-from bika.health.config import PROJECTNAME
-from bika.health.interfaces import IPatients
 from bika.health.permissions import *
+from bika.lims import bikaMessageFactory as _b, api
+from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.interfaces import IClient, ILabContact
 from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.folder.folder import ATFolder, ATFolderSchema
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface.declarations import implements
-import json
 
 # Available Columns of the Patients View Table (see: `get_columns`)
 COLUMNS = ['getPatientID',
@@ -32,7 +25,7 @@ COLUMNS = ['getPatientID',
            'getGender',
            'getAgeSplittedStr',
            'getBirthDate',
-           'getPrimaryReferrer']
+           'getPrimaryReferrerTitle']
 
 
 class PatientsView(BikaListingView):
@@ -48,22 +41,26 @@ class PatientsView(BikaListingView):
                               'sort_order': 'reverse'}
         self.context_actions = {}
         self.title = self.context.translate(_("Patients"))
-        self.icon = self.portal_url + "/++resource++bika.health.images/patient_big.png"
+        self.icon = '{}/++resource++bika.health.images/patient_big.png'.format(
+            self.portal_url)
         self.show_sort_column = False
         self.show_select_row = False
         self.show_select_column = False
 
         self.columns = {
-
             'Title': {
                 'title': _('Patient'),
-                'index': 'Title'},
+                'index': 'Title',
+                'replace_url': 'getURL'},
 
             'getPatientID': {
-                'title': _('Patient ID'), },
+                'title': _('Patient ID'),
+                'index': 'getPatientID',
+                'replace_url': 'getURL'},
 
             'getClientPatientID': {
                 'title': _('Client PID'),
+                'replace_url': 'getURL',
                 'sortable': False},
 
             'getGender': {
@@ -81,11 +78,11 @@ class PatientsView(BikaListingView):
                 'toggle': True,
                 'sortable': False},
 
-            'getPrimaryReferrer': {
+            'getPrimaryReferrerTitle': {
                 'title': _('Primary Referrer'),
+                'replace_url': 'getPrimaryReferrerURL',
                 'toggle': True,
                 'sortable': False},
-
         }
 
         self.review_states = [
@@ -98,11 +95,44 @@ class PatientsView(BikaListingView):
 
     def __call__(self):
         self._initFormParams()
+        # Filter by client if necessary
+        self._apply_filter_by_client()
         return super(PatientsView, self).__call__()
 
-    def get_columns(self, sieve=[]):
+    def _apply_filter_by_client(self):
+        # If the current context is a Client, filter Patients by Client UID
+        if IClient.providedBy(self.context):
+            client_uid = api.get_uid(self.context)
+            self.contentFilter['getPrimaryReferrerUID'] = client_uid
+            return
+
+        # If the current user is a Client contact, filter the Patients in
+        # accordance. For the rest of users (LabContacts), the visibility of
+        # the patients depend on their permissions
+        user = api.get_current_user()
+        roles = user.getRoles()
+        if 'Client' not in roles:
+            return
+
+        # Are we sure this a ClientContact?
+        # May happen that this is a Plone member, w/o having a ClientContact
+        # assigned or having a LabContact assigned... weird
+        contact = api.get_user_contact(user)
+        if not contact or ILabContact.providedBy(contact):
+            return
+
+        # Is the parent from the Contact a Client?
+        client = api.get_parent(contact)
+        if not client or not IClient.providedBy(client):
+            return
+        client_uid = api.get_uid(client)
+        self.contentFilter['getPrimaryReferrerUID'] = client_uid
+
+    def get_columns(self, sieve=None):
         """Get Table Columns and filter out keys listed in sieve
         """
+        if sieve is None:
+            sieve = list()
         if type(sieve) not in (types.ListType, types.TupleType):
             raise RuntimeError("Sieve must be a list type")
         # filter out columns listed in sieve
@@ -125,29 +155,33 @@ class PatientsView(BikaListingView):
             can_add_patients = member.id in owners
 
         if can_add_patients:
+            # TODO Performance tweak. Is this really needed?
             clients = self.context.clients.objectIds()
             if clients:
+                add_patient_url = '{}/patients/createObject?type_name=Patient'\
+                                  .format(self.portal_url)
                 self.context_actions[_b('Add')] = {
-                    'url': 'createObject?type_name=Patient',
+                    'url': add_patient_url,
                     'icon': '++resource++bika.lims.images/add.png'
                 }
             else:
-                msg = _("Cannot create patients without any system clients configured.")
+                msg = _("Cannot create patients without any system clients "
+                        "configured.")
                 addPortalMessage(self.context.translate(msg))
 
         if mtool.checkPermission(ViewPatients, self.context):
-            self.review_states[0]['transitions'].append({'id':'deactivate'})
+            self.review_states[0]['transitions'].append({'id': 'deactivate'})
             self.review_states.append(
                 {'id': 'inactive',
                  'title': _b('Dormant'),
                  'contentFilter': {'inactive_state': 'inactive'},
-                 'transitions': [{'id':'activate'}, ],
+                 'transitions': [{'id': 'activate'}, ],
                  'columns': self.get_columns()})
             self.review_states.append(
                 {'id': 'all',
                  'title': _b('All'),
-                 'contentFilter':{},
-                 'transitions':[{'id':'empty'}, ],
+                 'contentFilter': {},
+                 'transitions': [{'id': 'empty'}, ],
                  'columns': self.get_columns()})
             stat = self.request.get("%s_review_state" % self.form_id, 'default')
             self.show_select_column = stat != 'all'
@@ -160,51 +194,8 @@ class PatientsView(BikaListingView):
                 the template
             :index: current index of the item
         """
-        if 'obj' not in item:
-            return None
-        # TODO: Remember to use https://github.com/bikalabs/bika.lims/pull/1846/files#diff-40dfcc4bde98b3ea8f3d9f985776675aR51
-        # Note: attr and replace_url
-        item['getPatientID'] = obj.getPatientID
-        item['getGender'] = obj.getGender
-        item['getAgeSplittedStr'] = obj.getAgeSplittedStr
         item['getBirthDate'] = self.ulocalized_time(obj.getBirthDate)
-        item['getClientPatientID'] = obj.getClientPatientID
-        item['replace']['getPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
-            (item['url'], item['getPatientID'])
-        item['replace']['getClientPatientID'] = "<a href='%s'>%s</a>" % \
-            (item['url'], item['getClientPatientID'])
-        item['replace']['Title'] = "<a href='%s/analysisrequests'>%s</a>" % \
-            (item['url'], item['Title'])
-        # Obtain the member and member's role.
-        pm = getToolByName(self.context, "portal_membership")
-        member = pm.getAuthenticatedMember()
-        roles = member.getRoles()
-        if 'Client' not in roles:
-            # All the patients don't belong to the same client.
-            prTitle = obj.getPrimaryReferrerTitle
-            prURL = obj.getPrimaryReferrerURL
-            item['getPrimaryReferrerTitle'] = prTitle
-            item['replace']['getPrimaryReferrer'] = \
-                "<a href='%s/analysisrequests'>%s</a>" % \
-                (prURL, prTitle)
         return item
 
     def folderitems(self):
-        # Obtain the member and member's role.
-        pm = getToolByName(self.context, "portal_membership")
-        member = pm.getAuthenticatedMember()
-        roles = member.getRoles()
-        # Limit results to those patients that "belong" to the member's client
-        if 'Client' in roles:
-            # It obtains the referrer institution which the current AuthenticatedMember belong.
-            client = logged_in_client(self.context, member)
-            self.contentFilter['getPrimaryReferrerUID'] = client.UID()
-            # hide PrimaryReferrer column
-            new_states = []
-            for x in self.review_states:
-                if 'getPrimaryReferrer' in x['columns']:
-                    x['columns'].remove("getPrimaryReferrer")
-                new_states.append(x)
-            self.review_states = new_states
-        items = BikaListingView.folderitems(self, classic=False)
-        return items
+        return BikaListingView.folderitems(self, classic=False)

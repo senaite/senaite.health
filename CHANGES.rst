@@ -1,6 +1,30 @@
 Changelog
 =========
 
+1.1.0 (unreleased)
+------------------
+
+**Added**
+
+
+**Removed**
+
+
+**Changed**
+
+- #33 #37 bika.lims to senaite.core distribution
+- #39 Improved performance for Patient listings
+
+**Fixed**
+
+- #39 Traceback on Patients when current user has Client role but is LabContact
+- #36 Using parameter "vocabulary" wasn't working in bika_setup
+- #35 Analysis Request View error when the page redirects the user
+
+**Security**
+
+
+
 1.0.0 (2017-11-10)
 ------------------
 
