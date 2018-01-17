@@ -192,7 +192,7 @@ function HealthSampleAddView() {
     function filterComboSearches() {
         // Only allow the selection of patients, and CPIDs
         // from the current client
-        for (var col = 0; col < parseInt($("#sample_count").val()); col++) {
+        for (var col = 0; col < parseInt($("#obj_count").val()); col++) {
             clientuid = $($("tr[fieldname='Client'] td[samplenum='" + col + "'] input")[1]).attr("value");
 
             // Patient searches

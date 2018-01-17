@@ -197,7 +197,10 @@ function HealthAnalysisRequestAddView() {
                 success: function (data, textStatus, $XHR) {
                     if (data.PatientUID !== '') {
                         $(".dynamic-field-label").remove();
-                        for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
+                        for (
+                            var col = 0;
+                            col < parseInt($("#obj_count").val());
+                            col++) {
                             $("#Client-" + col).val(data.ClientTitle);
                             $("#Client-" + col).attr('uid', data.ClientUID);
                             $("#Client-" + col).attr('cid', data.ClientSysID);
@@ -272,7 +275,7 @@ function HealthAnalysisRequestAddView() {
     function filterComboSearches() {
         // Only allow the selection of batches, patients, contacts and CPIDs
         // from the current client
-        for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
+        for (var col = 0; col < parseInt($("#obj_count").val()); col++) {
             clientuid = $($("tr[fieldname='Client'] td[arnum='" + col + "'] input")[1]).attr("value");
 
             // Batch searches
@@ -315,7 +318,7 @@ function HealthAnalysisRequestAddView() {
         // Populate an array of cids first in order to avoid excessive request
         // calls via ajax. Must of the cases will have the same client for all
         // columns.
-        for (var col = 0; col < parseInt($("#ar_count").val()); col++) {
+        for (var col = 0; col < parseInt($("#obj_count").val()); col++) {
             cid = $("#Client-" + col).attr('cid');
             if (cid != null && cid != '' && $.inArray(cid, cids) < 0) {
                 cids.push(cid);
