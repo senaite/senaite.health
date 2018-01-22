@@ -72,12 +72,18 @@ function HealthAnalysisRequestAddView() {
                 colposition = get_arnum(this);
                 if (colposition == undefined){
                     // we are on the specific health template
-                    colposition = 0}
+                    colposition = 0;}
                 uid = $("#" + this.id + "_uid").val();
                 loadPatientFromSample(uid, colposition);
                 checkClientContacts();
             });
-
+            var field_val;
+            $.each($('input[id^="Sample-"]'), function( index, value ) {
+                field_val = $("#" + this.id + "_uid").val();
+                if (field_val != '' && field_val != undefined){
+                    $(this).trigger('selected');
+                }
+            });
             // The Batch, Patient and PatientCID combos must only show the
             // records from the current client
             filterComboSearches();
@@ -110,7 +116,7 @@ function HealthAnalysisRequestAddView() {
                 },
                 dataType: "json",
                 success: function (data, textStatus, $XHR) {
-                    if (data['PatientUID'] != '') {
+                    if (data.PatientID != '' && data.PatientID != undefined) {
                         $("#Patient-" + colposition)
                             .val(data['PatientFullname'])
                             .attr('uid', data['PatientUID'])
@@ -366,7 +372,7 @@ function HealthAnalysisRequestAddView() {
                 dataType: "json",
                 async: false,
                 success: function (data, textStatus, $XHR) {
-                    if (data['PatientID'] != '') {
+                    if (data.PatientID != '' && data.PatientID != undefined) {
                         fillPatientData(col, data);
                     } else {
                         resetPatientData(col);
@@ -406,12 +412,12 @@ function HealthAnalysisRequestAddView() {
         $("#Patient-" + col).val('');
         $("#Patient-" + col).attr('uid', '');
         $("#Patient-" + col + "_uid").val('');
-        $("#Patient-" + col).combogrid("option", "disabled", false);
+//        $("#Patient-" + col).combogrid("option", "disabled", false);
 
         $("#ClientPatientID-" + col).val('');
         $("#ClientPatientID-" + col).attr('uid', '');
         $("#ClientPatientID-" + col + "_uid").val('');
-        $("#ClientPatientID-" + col).combogrid("option", "disabled", false);
+//        $("#ClientPatientID-" + col).combogrid("option", "disabled", false);
 
         frombatch = window.location.href.search('/batches/') >= 0;
         frompatient = document.referrer.search('/patients/') >= 0;

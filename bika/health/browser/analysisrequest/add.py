@@ -8,8 +8,10 @@
 from bika.lims.browser.analysisrequest.add import AnalysisRequestAddView as AnalysisRequestAddViewLIMS
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 import json
+from bika.lims.interfaces import IGetDefaultFieldValueARAddHook
 from Products.CMFCore.utils import getToolByName
 from bika.lims.browser.widgets import AddressWidget
+from zope.interface import implements
 
 
 class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
@@ -89,3 +91,26 @@ class AnalysisRequestAddView(AnalysisRequestAddViewLIMS):
                        inactive_state='active',
                        getCategoryUID=categoryuid)
         return services
+
+
+class GetDefaultFieldPatient(object):
+    """
+
+    """
+    implements(IGetDefaultFieldValueARAddHook)
+
+    def __init__(self, request):
+        self.request = request
+
+    def __call__(self, context):
+        if context is None:
+            return None
+        if context.portal_type == "Sample":
+            # TODO: Samples should be related to patients
+            # A sample is assigned to a patient
+            ars = context.getAnalysisRequests()
+            for ar in ars:
+                patient = ar.getField('Patient').get(ar)
+                if patient is not None:
+                    return patient
+        return None

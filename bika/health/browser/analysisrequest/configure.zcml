@@ -20,4 +20,13 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
+    <!-- Hooks to set default values to AR Add fields -->
+    <!-- Patient field -->
+    <adapter
+      factory="bika.health.browser.analysisrequest.add.GetDefaultFieldPatient"
+      for="*"
+      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+      name="Patient_default_value_hook"
+    />
+
 </configure>
