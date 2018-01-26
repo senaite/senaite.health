@@ -29,7 +29,6 @@ setup(
     install_requires=[
         'senaite.core',
         'archetypes.schemaextender',
-        'collective.wtf',
     ],
     entry_points="""
         # -*- Entry points: -*-
