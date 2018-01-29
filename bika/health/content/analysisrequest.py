@@ -7,24 +7,24 @@
 
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
-from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
-from archetypes.schemaextender.interfaces import ISchemaExtender
-from archetypes.schemaextender.interfaces import ISchemaModifier
-from bika.health import bikaMessageFactory as _
-from bika.lims.fields import *
-from bika.lims.interfaces import IBikaCatalog
-from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.browser.widgets import ReferenceWidget
-from bika.lims.interfaces import IAnalysisRequest
-from bika.lims.vocabularies import CatalogVocabulary
 from Products.Archetypes.references import HoldingReference
-from Products.ATContentTypes.interface import IATDocument
+from Products.CMFCore import permissions
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from archetypes.schemaextender.interfaces import ISchemaModifier
+from plone.indexer.decorator import indexer
 from zope.component import adapts
 from zope.interface import implements
-from Products.CMFCore import permissions
+
+from bika.health import bikaMessageFactory as _
 from bika.health.permissions import ViewPatients
-from plone.indexer.decorator import indexer
+from bika.lims.browser.widgets import ReferenceWidget
+from bika.lims.fields import BooleanField
+from bika.lims.fields import BooleanWidget
+from bika.lims.fields import ExtReferenceField
+from bika.lims.fields import ExtStringField
+from bika.lims.interfaces import IAnalysisRequest
+from bika.lims.interfaces import IBikaCatalog
+from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
 
 
 # Defining the indexes for this extension. Since this is an extension, no
