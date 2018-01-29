@@ -128,7 +128,7 @@ def setupHealthVarious(context):
     setup.runImportStepFromProfile('profile-plone.app.jquerytools:default', 'jsregistry')
 
     # Load bika.lims js always before bika.health ones.
-    setup.runImportStepFromProfile('profile-bika.lims:default', 'jsregistry')
+    setup.runImportStepFromProfile('profile-senaite.core:default', 'jsregistry')
 
     # Add patient action for client portal_type programmatically
     client = portal.portal_types.getTypeInfo("Client")
