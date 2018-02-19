@@ -18,6 +18,11 @@
                 permission="zope.Public"
                 template="templates/plone-overview.pt"
             />
+            <browser:menu
+                id="plone_contentmenu_workflow"
+                title="The workflow actions menu"
+                class="bika.lims.browser.contentmenu.WorkflowMenu"
+            />
         </unconfigure>
     </configure>
 

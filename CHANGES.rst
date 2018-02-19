@@ -15,6 +15,7 @@ Changelog
 
 **Fixed**
 
+- #45 ConfigurationConflictError in "The workflow actions menu"
 
 **Security**
 
