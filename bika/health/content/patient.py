@@ -883,7 +883,7 @@ class Patient(Person):
         Return the url pointing to the analysis requests page of the patient
         :return: patient's analysis request url
         """
-        return "/".join(self.absolute_url(), 'analysisrequests')
+        return "/".join([self.absolute_url(), 'analysisrequests'])
 
     # TODO This function will will be removed on v319
     def getEthnicity(self):
