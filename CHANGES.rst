@@ -12,6 +12,7 @@ Changelog
 
 **Changed**
 
+- #48 After saving a newly created Patient the user is redirected to the Patient's Analysis Requests view instead of the Patient's edit view.
 
 **Fixed**
 
