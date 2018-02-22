@@ -7,6 +7,7 @@
 
 from bika.health import logger
 from bika.health.config import PROJECTNAME as product
+from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
 
@@ -27,7 +28,8 @@ def upgrade(tool):
 
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
 
-    # -------- ADD YOUR STUFF HERE --------
+    ut.addColumn(CATALOG_PATIENT_LISTING, 'getPatientAnalysisRequestsURL')
+    ut.refreshCatalogs()
 
     logger.info("{0} upgraded to version {1}".format(product, version))
 
