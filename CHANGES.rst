@@ -16,6 +16,7 @@ Changelog
 **Fixed**
 
 - #45 ConfigurationConflictError in "The workflow actions menu"
+- #49 Default publication preference for Patients in Clients vocabulary error
 
 **Security**
 
