@@ -55,6 +55,7 @@ _columns_list = [
     'getMobilePhone',
     'getPatientID',
     'getMenstrualStatus',  # Review its use in ajaxGetPatientInfo
+    'getPatientAnalysisRequestsURL'
     # Columns with a function in Patient already in place below:
     # 'getNumberOfSamples',  # (all Samples)
     # 'getNumberOfSamplesCancelled',  # (Cancelled Samples)
