@@ -51,16 +51,16 @@ class PatientsView(BikaListingView):
             'Title': {
                 'title': _('Patient'),
                 'index': 'Title',
-                'replace_url': 'getURL'},
+                'replace_url': 'getPatientAnalysisRequestsURL'},
 
             'getPatientID': {
                 'title': _('Patient ID'),
                 'index': 'getPatientID',
-                'replace_url': 'getURL'},
+                'replace_url': 'getPatientAnalysisRequestsURL'},
 
             'getClientPatientID': {
                 'title': _('Client PID'),
-                'replace_url': 'getURL',
+                'replace_url': 'getPatientAnalysisRequestsURL',
                 'sortable': False},
 
             'getGender': {
