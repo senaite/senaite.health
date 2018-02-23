@@ -48,7 +48,7 @@ class ClientSchemaExtender(object):
                               "preferences' tab."))
         ),
         ExtLinesField('PatientPublicationPreferences',
-            vocabulary='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
+            vocabulary_factory='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
             schemata='Results Reports',
             widget=MultiSelectionWidget(
                 label=_("Default publication preference for Patients"),
