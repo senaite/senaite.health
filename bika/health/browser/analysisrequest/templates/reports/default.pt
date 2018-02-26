@@ -290,7 +290,7 @@
         </tr>
         <tr>
             <td class="label" i18n:translate="">Sample Collected</td>
-            <td tal:content="python:view.ulocalized_time(ar_obj.getSamplingDate(), long_format=0)"></td>
+            <td tal:content="python:view.ulocalized_time(ar_obj.getDateSampled(), long_format=0)"></td>
         </tr>
         <tr>
             <td class="label" i18n:translate="">Sample Received</td>
