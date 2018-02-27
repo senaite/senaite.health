@@ -299,8 +299,8 @@
         </tr>
         <tr>
             <td class="label" i18n:translate="">Date Reported</td>
-            <td tal:content="python:view.ulocalized_time(ar_obj.getDatePublished(), long_format=1)or \
-                                    view.ulocalized_time(DateTime(), long_format=1)></td>
+            <td tal:content="python:view.ulocalized_time(ar_obj.getDatePublished(), long_format=1) or \
+                                    view.ulocalized_time(DateTime(), long_format=1)"></td>
         </tr>
     </table>
 </div>
