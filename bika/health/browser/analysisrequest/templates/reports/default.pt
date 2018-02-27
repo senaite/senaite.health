@@ -21,7 +21,8 @@
                         ar_obj          python:analysisrequest['obj'];
                         patient         python:view.get_patient(ar_obj);
                         batch_obj       python:ar_obj.getBatch();
-                        sample_obj      python:ar_obj.getSample();">
+                        sample_obj      python:ar_obj.getSample();
+                        DateTime        python:modules['DateTime'].DateTime">
 
 <!--
     Page Header
@@ -298,7 +299,8 @@
         </tr>
         <tr>
             <td class="label" i18n:translate="">Date Reported</td>
-            <td tal:content="python:view.ulocalized_time(ar_obj.getDatePublished(), long_format=1)"></td>
+            <td tal:content="python:view.ulocalized_time(ar_obj.getDatePublished(), long_format=1)or \
+                                    view.ulocalized_time(DateTime(), long_format=1)></td>
         </tr>
     </table>
 </div>
