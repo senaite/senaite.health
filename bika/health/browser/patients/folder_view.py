@@ -14,6 +14,7 @@ from bika.health.permissions import *
 from bika.lims import bikaMessageFactory as _b, api
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.interfaces import IClient, ILabContact
+from bika.lims.utils import get_link
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface.declarations import implements
@@ -195,7 +196,32 @@ class PatientsView(BikaListingView):
             :index: current index of the item
         """
         item['getBirthDate'] = self.ulocalized_time(obj.getBirthDate)
+        # make the columns patient title, patient ID and client patient ID
+        # redirect to the Analysis Requests of the patient
+        columns_to_redirect = ['Title', 'getPatientID', 'getClientPatientID']
+        for column in columns_to_redirect:
+            item = self._redirect_column_to_patients_ar(column, item, obj)
         return item
 
     def folderitems(self):
         return BikaListingView.folderitems(self, classic=False)
+
+    def _redirect_column_to_patients_ar(self, column_name, item, obj):
+        """ Given the name of a column shown in the view make the column
+        value for each patient redirect to the Analysis Requests of the
+        patient.
+
+        :param column_name: Name of the column that has to redirect to ARs
+        :param obj: obj from where to extract the column data. The instance of
+        the class to be foldered
+        :param item: dictionary containing the properties of the object to be used by
+        the template
+        :return: dictionary containing the properties of the object to be used by
+        the template updated with the redirect info
+        """
+        # We want to avoid showing the link on columns that have no value and this
+        # is why we check if the attribute exists and has a value
+        if hasattr(obj, column_name) and getattr(obj, column_name):
+            patient_ar_url = "/".join([obj.getURL(), 'analysisrequests'])
+            item['replace'][column_name] = get_link(patient_ar_url, getattr(obj, column_name))
+        return item
