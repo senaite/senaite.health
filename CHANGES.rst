@@ -12,6 +12,7 @@ Changelog
 
 **Changed**
 
+- #47 Patient's Analysis Requests view is displayed when clicking on Patient (instead of Patient's edit view)
 
 **Fixed**
 
