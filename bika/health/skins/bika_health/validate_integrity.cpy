@@ -25,7 +25,9 @@ else:
     stat = 'created'
 
     # redirect to Patient's ARs view when saving a newly created patient
-    patient_redirection = '/'.join(['/patients', context.getPatientID(), 'analysisrequests'])
+    patient_redirection = ''
+    if context.portal_type == 'Patient':
+        patient_redirection = '/'.join(['/patients', context.getPatientID(), 'analysisrequests'])
 
     # Redirection after saving edition forms
     redirects = {'AetiologicAgent' : '/bika_setup/bika_aetiologicagents',
