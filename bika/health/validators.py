@@ -38,3 +38,26 @@ class Date_Format_Validator:
         return True
 
 validation.register(Date_Format_Validator())
+
+
+class UniqueClientPatientIDValidator:
+    """
+    Checks if the client patient ID is unique. It does
+    so only if the checkbox 'Client Patient ID must be
+    unique' is selected . This checkbox can be found in
+    Bika Setup under Id server tab
+    """
+
+    implements(IValidator)
+    name = "unique_client_patient_ID_validator"
+
+    def __call__(self, value, *args, **kwargs):
+        # first check if the unique client patient id
+        # option is selected
+
+        # if not, return always true
+
+        # else perform the validation
+        return False
+
+validation.register(Date_Format_Validator())
