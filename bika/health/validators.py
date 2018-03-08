@@ -13,6 +13,8 @@ from zope.interface import implements
 from Products.validation import validation
 from Products.validation.interfaces.IValidator import IValidator
 from datetime import datetime
+from senaite import api
+from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
 
 
 class Date_Format_Validator:
@@ -52,12 +54,21 @@ class UniqueClientPatientIDValidator:
     name = "unique_client_patient_ID_validator"
 
     def __call__(self, value, *args, **kwargs):
-        # first check if the unique client patient id
-        # option is selected
-
-        # if not, return always true
-
-        # else perform the validation
-        return False
+        # avoid the catalog query if the option is not selected
+        if not api.get_bika_setup().ClientPatientIDUnique:
+            return True
+        else:
+            patient_catalog = api.get_tool(CATALOG_PATIENT_LISTING)
+            patients = patient_catalog(getClientPatientID=value)
+            if patients:
+                instance = kwargs['instance']
+                trans = getToolByName(instance, 'translation_service').translate
+                msg = _(
+                    "Validation failed: '${value}' is not unique",
+                    mapping={
+                        'value': safe_unicode(value)
+                    })
+                return to_utf8(trans(msg))
+            return True
 
 validation.register(UniqueClientPatientIDValidator())
