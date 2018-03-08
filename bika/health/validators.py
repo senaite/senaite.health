@@ -60,4 +60,4 @@ class UniqueClientPatientIDValidator:
         # else perform the validation
         return False
 
-validation.register(Date_Format_Validator())
+validation.register(UniqueClientPatientIDValidator())
