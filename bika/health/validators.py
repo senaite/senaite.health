@@ -60,6 +60,8 @@ class UniqueClientPatientIDValidator:
         else:
             patient_catalog = api.get_tool(CATALOG_PATIENT_LISTING)
             patients = patient_catalog(getClientPatientID=value)
+            # If the search by Client Patient ID (value) returns
+            # one or more values then it is not unique
             if patients:
                 instance = kwargs['instance']
                 trans = getToolByName(instance, 'translation_service').translate
