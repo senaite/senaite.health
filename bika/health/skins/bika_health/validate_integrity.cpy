@@ -24,6 +24,11 @@ else:
     message = _(u'Changes saved.')
     stat = 'created'
 
+    # redirect to Patient's ARs view when saving a newly created patient
+    patient_redirection = ''
+    if context.portal_type == 'Patient':
+        patient_redirection = '/'.join(['/patients', context.getPatientID(), 'analysisrequests'])
+
     # Redirection after saving edition forms
     redirects = {'AetiologicAgent' : '/bika_setup/bika_aetiologicagents',
                  'BatchLabel' : '/bika_setup/bika_batchlabels',
@@ -39,7 +44,8 @@ else:
                  'InsuranceCompany':  '/bika_setup/bika_insurancecompanies',
                  'EpidemiologicalYear': '/bika_setup/bika_epidemiologicalyears',
                  'IdentifierType': '/bika_setup/bika_identifiertypes',
-                 'Symptom': '/bika_setup/bika_symptoms'}
+                 'Symptom': '/bika_setup/bika_symptoms',
+                 'Patient': patient_redirection}
 
     if context.portal_type in redirects:
         redirect = 'redirect_to:string:${portal_url}' + redirects[context.portal_type]
