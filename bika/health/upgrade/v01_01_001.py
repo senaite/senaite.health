@@ -28,7 +28,6 @@ def upgrade(tool):
 
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
 
-    # Required to make filtering by department in worksheets work
     ut.addIndex(CATALOG_PATIENT_LISTING, 'getClientPatientID', 'FieldIndex')
     ut.refreshCatalogs()
 
