@@ -57,20 +57,20 @@ class UniqueClientPatientIDValidator:
         # avoid the catalog query if the option is not selected
         if not api.get_bika_setup().ClientPatientIDUnique:
             return True
-        else:
-            patient_catalog = api.get_tool(CATALOG_PATIENT_LISTING)
-            patients = patient_catalog(getClientPatientID=value)
-            # If the search by Client Patient ID (value) returns
-            # one or more values then Client Patient ID is not unique
-            if patients:
-                instance = kwargs['instance']
-                trans = getToolByName(instance, 'translation_service').translate
-                msg = _(
-                    "Validation failed: '${value}' is not unique",
-                    mapping={
-                        'value': safe_unicode(value)
-                    })
-                return to_utf8(trans(msg))
-            return True
+
+        patient_catalog = api.get_tool(CATALOG_PATIENT_LISTING)
+        patients = patient_catalog(getClientPatientID=value)
+        # If the search by Client Patient ID (value) returns
+        # one or more values then Client Patient ID is not unique
+        if patients:
+            instance = kwargs['instance']
+            trans = getToolByName(instance, 'translation_service').translate
+            msg = _(
+                "Validation failed: '${value}' is not unique",
+                mapping={
+                    'value': safe_unicode(value)
+                })
+            return to_utf8(trans(msg))
+        return True
 
 validation.register(UniqueClientPatientIDValidator())
