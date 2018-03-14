@@ -57,9 +57,8 @@ class UniqueClientPatientIDValidator:
         # avoid the catalog query if the option is not selected
         if not api.get_bika_setup().ClientPatientIDUnique:
             return True
-
-        patient_catalog = api.get_tool(CATALOG_PATIENT_LISTING)
-        patients = patient_catalog(getClientPatientID=value)
+        query = dict(getClientPatientID=value)
+        patients = api.search(query, CATALOG_PATIENT_LISTING)
         # If the search by Client Patient ID (value) returns
         # one or more values then Client Patient ID is not unique
         if patients:
