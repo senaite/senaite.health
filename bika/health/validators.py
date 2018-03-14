@@ -61,15 +61,15 @@ class UniqueClientPatientIDValidator:
         patients = api.search(query, CATALOG_PATIENT_LISTING)
         # If the search by Client Patient ID (value) returns
         # one or more values then Client Patient ID is not unique
-        if patients:
-            instance = kwargs['instance']
-            trans = getToolByName(instance, 'translation_service').translate
-            msg = _(
-                "Validation failed: '${value}' is not unique",
-                mapping={
-                    'value': safe_unicode(value)
-                })
-            return to_utf8(trans(msg))
-        return True
+        if not patients:
+            return True
+        instance = kwargs['instance']
+        trans = getToolByName(instance, 'translation_service').translate
+        msg = _(
+            "Validation failed: '${value}' is not unique",
+            mapping={
+                'value': safe_unicode(value)
+            })
+        return to_utf8(trans(msg))
 
 validation.register(UniqueClientPatientIDValidator())
