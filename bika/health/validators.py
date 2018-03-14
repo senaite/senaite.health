@@ -39,6 +39,7 @@ class Date_Format_Validator:
             return to_utf8(trans(msg))
         return True
 
+
 validation.register(Date_Format_Validator())
 
 
@@ -71,5 +72,6 @@ class UniqueClientPatientIDValidator:
                 'value': safe_unicode(value)
             })
         return to_utf8(trans(msg))
+
 
 validation.register(UniqueClientPatientIDValidator())
