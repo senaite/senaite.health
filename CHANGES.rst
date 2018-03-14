@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #56 Option for making Client Patient IDs unique
 
 **Removed**
 

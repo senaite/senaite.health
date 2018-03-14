@@ -408,6 +408,7 @@ schema = Person.schema.copy() + Schema((
     ),
     StringField('ClientPatientID',
             searchable=1,
+            validators=('unique_client_patient_ID_validator',),
             required=1,
             widget=StringWidget(
                 label=_('Client Patient ID'),

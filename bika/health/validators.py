@@ -13,6 +13,8 @@ from zope.interface import implements
 from Products.validation import validation
 from Products.validation.interfaces.IValidator import IValidator
 from datetime import datetime
+from senaite import api
+from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
 
 
 class Date_Format_Validator:
@@ -37,4 +39,39 @@ class Date_Format_Validator:
             return to_utf8(trans(msg))
         return True
 
+
 validation.register(Date_Format_Validator())
+
+
+class UniqueClientPatientIDValidator:
+    """
+    Checks if the client patient ID is unique. It does
+    so only if the checkbox 'Client Patient ID must be
+    unique' is selected . This checkbox can be found in
+    Bika Setup under Id server tab
+    """
+
+    implements(IValidator)
+    name = "unique_client_patient_ID_validator"
+
+    def __call__(self, value, *args, **kwargs):
+        # avoid the catalog query if the option is not selected
+        if not api.get_bika_setup().ClientPatientIDUnique:
+            return True
+        query = dict(getClientPatientID=value)
+        patients = api.search(query, CATALOG_PATIENT_LISTING)
+        # If the search by Client Patient ID (value) returns
+        # one or more values then Client Patient ID is not unique
+        if not patients:
+            return True
+        instance = kwargs['instance']
+        trans = getToolByName(instance, 'translation_service').translate
+        msg = _(
+            "Validation failed: '${value}' is not unique",
+            mapping={
+                'value': safe_unicode(value)
+            })
+        return to_utf8(trans(msg))
+
+
+validation.register(UniqueClientPatientIDValidator())

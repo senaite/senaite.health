@@ -124,6 +124,15 @@ class BikaSetupSchemaExtender(object):
                             "creating a case?")
                             )
                         ),
+        ExtBooleanField('ClientPatientIDUnique',
+                        schemata="ID Server",
+                        default=False,
+                        widget=BooleanWidget(
+                            label=_("Client Patient ID must be unique"),
+                            description=_("If selected, Client Patient IDs will be forced "
+                                          "to be unique")
+                        )
+                        ),
     ]
 
     def __init__(self, context):
