@@ -67,7 +67,7 @@ class UniqueClientPatientIDValidator:
             return True
         # If there is only one patient with this Client Patient ID
         # and it is the patient being edited then it also valid
-        elif len(patients) == 1 and patients[0].getObject() == instance:
+        elif len(patients) == 1 and patients[0].UID == instance.UID():
             return True
         trans = getToolByName(instance, 'translation_service').translate
         msg = _(
