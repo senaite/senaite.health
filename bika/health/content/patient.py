@@ -833,12 +833,12 @@ class Patient(Person):
 
     def getSamples(self):
         """ get all samples taken from this Patient """
-        l = []
+        samples = []
         for ar in self.getARs():
             sample = ar.getObject().getSample()
             if sample:
-                l.append(sample)
-        return l
+                samples.append(sample)
+        return samples
 
     def getSamplesCancelled(self):
         """
