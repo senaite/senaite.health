@@ -60,11 +60,15 @@ class UniqueClientPatientIDValidator:
             return True
         query = dict(getClientPatientID=value)
         patients = api.search(query, CATALOG_PATIENT_LISTING)
-        # If the search by Client Patient ID (value) returns
-        # one or more values then Client Patient ID is not unique
+        instance = kwargs.get('instance')
+        # If there are no patients with this Client Patient ID
+        # then it is valid
         if not patients:
             return True
-        instance = kwargs['instance']
+        # If there is only one patient with this Client Patient ID
+        # and it is the patient being edited then it also valid
+        if len(patients) == 1 and api.get_uid(patients[0]) == api.get_uid(instance):
+            return True
         trans = getToolByName(instance, 'translation_service').translate
         msg = _(
             "Validation failed: '${value}' is not unique",
