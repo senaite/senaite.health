@@ -38,10 +38,10 @@ class AnalysisRequestsView(BaseView):
         if 'Manager' not in roles \
             and 'LabManager' not in roles \
                 and 'LabClerk' not in roles:
-            del self.columns['getPatientID']
-            del self.columns['getClientPatientID']
-            del self.columns['getPatient']
-            del self.columns['getDoctor']
+            self.remove_column('getPatientID')
+            self.remove_column('getClientPatientID')
+            self.remove_column('getPatient')
+            self.remove_column('getDoctor')
         # Otherwise show the columns in the list
         else:
             for rs in self.review_states:
