@@ -10,13 +10,13 @@ from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
 from bika.health import bikaMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 from bika.health.catalog import CATALOG_PATIENT_LISTING
+from bika.lims.utils import get_link
 from plone.memoize import view as viewcache
 
 
 class AnalysisRequestsView(BaseView):
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)
-        self.patient_catalog = None
         self.columns['BatchID']['title'] = _('Case ID')
         # Add Client Patient fields
         self.columns['getPatientID'] = {
@@ -49,9 +49,6 @@ class AnalysisRequestsView(BaseView):
                 rs['columns'].insert(i, 'getPatientID')
                 rs['columns'].insert(i, 'getPatient')
                 rs['columns'].insert(i, 'getDoctor')
-        # Setting ip the patient catalog to be used in folderitem()
-        self.patient_catalog = getToolByName(
-            self.context, CATALOG_PATIENT_LISTING)
         return super(AnalysisRequestsView, self).folderitems(
             full_objects=False, classic=False)
 
@@ -68,15 +65,14 @@ class AnalysisRequestsView(BaseView):
             .folderitem(obj, item, index)
         patient = self.get_patient_brain(obj.getPatientUID)
         if patient:
+            cpid = patient.getClientPatientID
+            url = '%s/analysisrequests' % api.get_url(patient)
             item['getPatientID'] = patient.getId
-            item['replace']['getPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                (patient.getURL(), patient.getId)
             item['getClientPatientID'] = patient.getClientPatientID
-            item['replace']['getClientPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                (patient.getURL(), patient.getClientPatientID)
-            item['getPatient'] = patient[0].Title
-            item['replace']['getPatient'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                (patient.getURL(), patient.Title)
+            item['getPatient'] = patient.Title
+            item['replace']['getPatientID'] = get_link(url, patient.getId)
+            item['replace']['getClientPatientID'] = get_link(url, cpid)
+            item['replace']['getPatient'] = get_link(url, patient.Title)
         doctor_uid = obj.getDoctorUID
         if doctor_uid:
             doctor = api.get_object_by_uid(doctor_uid)
