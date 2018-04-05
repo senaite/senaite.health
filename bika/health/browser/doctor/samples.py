@@ -5,25 +5,23 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from bika.health.browser.samples.folder_view import SamplesView
-from Products.CMFCore.utils import getToolByName
+from bika.lims import api
+from bika.health.browser.samples.folder_view import SamplesView as BaseView
+from bika.lims.catalog.analysisrequest_catalog import \
+    CATALOG_ANALYSIS_REQUEST_LISTING
 
 
-class SamplesView(SamplesView):
+class SamplesView(BaseView):
 
-    def __init__(self, context, request):
-        super(SamplesView, self).__init__(context, request)
-        self.contentFilter['Doctor'] = self.context.UID()
+    def __call__(self):
+        self.remove_column('getDoctor')
+        self.contentFilter['UID'] = self.get_sample_uids()
+        return super(SamplesView, self).__call__()
 
-    def contentsMethod(self, contentFilter):
-        tool = getToolByName(self.context, self.catalog)
-        state = [x for x in self.review_states if x['id'] == self.review_state['id']][0]
-        for k, v in state['contentFilter'].items():
-            self.contentFilter[k] = v
-        tool_samples = tool(contentFilter)
-        samples = {}
-        for sample in (p.getObject() for p in tool_samples):
-            for ar in sample.getAnalysisRequests():
-                if ar['Doctor'] == self.context.UID():
-                    samples[sample.getId()] = sample
-        return samples.values()
+    def get_sample_uids(self):
+        """Returns the sample UIDs for which the current Doctor has at least
+        one Analysis Request assigned."""
+        query = dict(getDoctorUID=api.get_uid(self.context))
+        ars = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
+        uids = map(lambda brain: brain.getSampleUID, ars) or list()
+        return list(set(uids))
