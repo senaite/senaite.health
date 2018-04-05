@@ -41,6 +41,7 @@ class AnalysisRequestsView(BaseView):
             del self.columns['getPatientID']
             del self.columns['getClientPatientID']
             del self.columns['getPatient']
+            del self.columns['getDoctor']
         # Otherwise show the columns in the list
         else:
             for rs in self.review_states:
