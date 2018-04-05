@@ -17,6 +17,7 @@ Changelog
 
 **Fixed**
 
+- #64 Samples not filtered in Doctor's samples view
 - #45 ConfigurationConflictError in "The workflow actions menu"
 - #49 Default publication preference for Patients in Clients vocabulary error
 
