@@ -53,17 +53,19 @@ class AnalysisRequestsView(BaseView):
             full_objects=False, classic=False)
 
     @viewcache.memoize
-    def get_patient_brain(self, patient_uid):
-        query = dict(UID=patient_uid)
-        patient = api.search(query, CATALOG_PATIENT_LISTING)
-        if patient and len(patient) == 1:
-            return patient[0]
+    def get_brain(self, uid, catalog):
+        if not api.is_uid(uid):
+            return None
+        query = dict(UID=uid)
+        brains = api.search(query, catalog)
+        if brains and len(brains) == 1:
+            return brains[0]
         return None
 
     def folderitem(self, obj, item, index):
         item = super(AnalysisRequestsView, self)\
             .folderitem(obj, item, index)
-        patient = self.get_patient_brain(obj.getPatientUID)
+        patient = self.get_brain(obj.getPatientUID, CATALOG_PATIENT_LISTING)
         if patient:
             cpid = patient.getClientPatientID
             url = '%s/analysisrequests' % api.get_url(patient)
@@ -73,12 +75,10 @@ class AnalysisRequestsView(BaseView):
             item['replace']['getPatientID'] = get_link(url, patient.getId)
             item['replace']['getClientPatientID'] = get_link(url, cpid)
             item['replace']['getPatient'] = get_link(url, patient.Title)
-        doctor_uid = obj.getDoctorUID
-        if doctor_uid:
-            doctor = api.get_object_by_uid(doctor_uid)
-            if doctor:
-                item['getDoctor'] = doctor.Title()
-                item['replace']['getDoctor'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                                                (api.get_url(doctor),
-                                                 doctor.Title())
+
+        doctor = self.get_brain(obj.getDoctorUID, "portal_catalog")
+        if doctor:
+            url = '%s/analysisrequests' % api.get_url(doctor)
+            item['getDoctor'] = doctor.Title
+            item['replace']['getDoctor'] = get_link(url, doctor.Title)
         return item
