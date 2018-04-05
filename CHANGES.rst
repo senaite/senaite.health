@@ -7,6 +7,7 @@ Changelog
 **Added**
 
 - #56 Option for making Client Patient IDs unique
+- #63 Display Doctor column in Analysis Requests listings
 
 **Removed**
 
