@@ -19,6 +19,9 @@ class SamplesView(BaseView):
         return super(SamplesView, self).__call__()
 
     def get_sample_uids(self):
+        """Returns the sample UIDs for which the current Doctor has at least
+        one Analysis Request assigned."""
         query = dict(getDoctorUID=api.get_uid(self.context))
         ars = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
-        return map(lambda brain: brain.getSampleUID, ars) or list()
+        uids = map(lambda brain: brain.getSampleUID, ars) or list()
+        return list(set(uids))
