@@ -10,6 +10,7 @@ from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
 from bika.health import bikaMessageFactory as _
 from Products.CMFCore.utils import getToolByName
 from bika.health.catalog import CATALOG_PATIENT_LISTING
+from plone.memoize import view as viewcache
 
 
 class AnalysisRequestsView(BaseView):
@@ -54,20 +55,28 @@ class AnalysisRequestsView(BaseView):
         return super(AnalysisRequestsView, self).folderitems(
             full_objects=False, classic=False)
 
+    @viewcache.memoize
+    def get_patient_brain(self, patient_uid):
+        query = dict(UID=patient_uid)
+        patient = api.search(query, CATALOG_PATIENT_LISTING)
+        if patient and len(patient) == 1:
+            return patient[0]
+        return None
+
     def folderitem(self, obj, item, index):
         item = super(AnalysisRequestsView, self)\
             .folderitem(obj, item, index)
-        patient = self.patient_catalog(UID=obj.getPatientUID)
+        patient = self.get_patient_brain(obj.getPatientUID)
         if patient:
-            item['getPatientID'] = patient[0].getId
+            item['getPatientID'] = patient.getId
             item['replace']['getPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                (patient[0].getURL(), patient[0].getId)
-            item['getClientPatientID'] = patient[0].getClientPatientID
+                (patient.getURL(), patient.getId)
+            item['getClientPatientID'] = patient.getClientPatientID
             item['replace']['getClientPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                (patient[0].getURL(), patient[0].getClientPatientID)
+                (patient.getURL(), patient.getClientPatientID)
             item['getPatient'] = patient[0].Title
             item['replace']['getPatient'] = "<a href='%s/analysisrequests'>%s</a>" % \
-                (patient[0].getURL(), patient[0].Title)
+                (patient.getURL(), patient.Title)
         doctor_uid = obj.getDoctorUID
         if doctor_uid:
             doctor = api.get_object_by_uid(doctor_uid)
