@@ -60,13 +60,13 @@ class AnalysisRequestsView(BaseView):
         patient = self.patient_catalog(UID=obj.getPatientUID)
         if patient:
             item['getPatientID'] = patient[0].getId
-            item['replace']['getPatientID'] = "<a href='%s'>%s</a>" % \
+            item['replace']['getPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
                 (patient[0].getURL(), patient[0].getId)
             item['getClientPatientID'] = patient[0].getClientPatientID
-            item['replace']['getClientPatientID'] = "<a href='%s'>%s</a>" % \
+            item['replace']['getClientPatientID'] = "<a href='%s/analysisrequests'>%s</a>" % \
                 (patient[0].getURL(), patient[0].getClientPatientID)
             item['getPatient'] = patient[0].Title
-            item['replace']['getPatient'] = "<a href='%s'>%s</a>" % \
+            item['replace']['getPatient'] = "<a href='%s/analysisrequests'>%s</a>" % \
                 (patient[0].getURL(), patient[0].Title)
         doctor_uid = obj.getDoctorUID
         if doctor_uid:
