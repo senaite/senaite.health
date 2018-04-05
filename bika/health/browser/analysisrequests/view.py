@@ -5,6 +5,7 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
+from bika.lims import api
 from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
 from bika.health import bikaMessageFactory as _
 from Products.CMFCore.utils import getToolByName
@@ -24,6 +25,8 @@ class AnalysisRequestsView(BaseView):
             'sortable': False, }
         self.columns['getPatient'] = {
             'title': _('Patient'), }
+        self.columns['getDoctor'] = {
+            'title': _('Doctor'), }
 
     def folderitems(self, full_objects=False):
         pm = getToolByName(self.context, "portal_membership")
@@ -44,6 +47,7 @@ class AnalysisRequestsView(BaseView):
                 rs['columns'].insert(i, 'getClientPatientID')
                 rs['columns'].insert(i, 'getPatientID')
                 rs['columns'].insert(i, 'getPatient')
+                rs['columns'].insert(i, 'getDoctor')
         # Setting ip the patient catalog to be used in folderitem()
         self.patient_catalog = getToolByName(
             self.context, CATALOG_PATIENT_LISTING)
@@ -64,4 +68,12 @@ class AnalysisRequestsView(BaseView):
             item['getPatient'] = patient[0].Title
             item['replace']['getPatient'] = "<a href='%s'>%s</a>" % \
                 (patient[0].getURL(), patient[0].Title)
+        doctor_uid = obj.getDoctorUID
+        if doctor_uid:
+            doctor = api.get_object_by_uid(doctor_uid)
+            if doctor:
+                item['getDoctor'] = doctor.Title()
+                item['replace']['getDoctor'] = "<a href='%s/analysisrequests'>%s</a>" % \
+                                                (api.get_url(doctor),
+                                                 doctor.Title())
         return item
