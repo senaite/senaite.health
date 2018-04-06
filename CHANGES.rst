@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.1 (unreleased)
+1.1.1 (2018-04-07)
 ------------------
 
 **Added**
@@ -9,21 +9,18 @@ Changelog
 - #56 Option for making Client Patient IDs unique
 - #63 Display Doctor column in Analysis Requests listings
 
-**Removed**
-
-
 **Changed**
 
-- #48 After saving a newly created Patient the user is redirected to the Patient's Analysis Requests view instead of the Patient's edit view.
+- #48 After Patient creation, redirect to Patient's Analysis Requests view
 
 **Fixed**
 
 - #64 Samples not filtered in Doctor's samples view
+- #52 Date Reported is missing in reports
+- #52 Date Collected is missing in reports
 - #45 ConfigurationConflictError in "The workflow actions menu"
 - #49 Default publication preference for Patients in Clients vocabulary error
-
-**Security**
-
+- #44 Traceback on "copy to new" Analysis Request
 
 
 1.1.0 (2018-01-26)
