@@ -25,8 +25,7 @@ import collective.js.jqueryui
 import plone.app.iterate
 
 
-class BikaTestLayer(PloneSandboxLayer):
-
+class BaseLayer(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
@@ -47,6 +46,16 @@ class BikaTestLayer(PloneSandboxLayer):
         z2.installProduct(app, 'bika.health')
 
     def setUpPloneSite(self, portal):
+        # Install into Plone site using portal_setup
+        applyProfile(portal, 'bika.lims:default')
+        applyProfile(portal, 'bika.health:default')
+
+
+class DataLayer(BaseLayer):
+    """Layer including Demo Data
+    """
+
+    def setup_data_load(self, portal, request):
         login(portal.aq_parent, SITE_OWNER_NAME)
 
         wf = getToolByName(portal, 'portal_workflow')
@@ -57,10 +66,6 @@ class BikaTestLayer(PloneSandboxLayer):
         portal.getTypeInfo().manage_changeProperties(
             view_methods=['folder_listing'],
             default_view='folder_listing')
-
-        applyProfile(portal, 'bika.lims:default')
-        applyProfile(portal, 'bika.health:default')
-
         # Add some test users
         for role in ('LabManager',
                      'LabClerk',
@@ -97,24 +102,26 @@ class BikaTestLayer(PloneSandboxLayer):
                     portal.clients.manage_setLocalRoles(username, ['Owner', ])
 
         # load test data
-        self.request = makerequest(portal.aq_parent).REQUEST
-        self.request.form['setupexisting'] = 1
-        self.request.form['existing'] = "bika.health:test"
-        lsd = LoadSetupData(portal, self.request)
+        request = makerequest(portal.aq_parent).REQUEST
+        request.form['setupexisting'] = 1
+        request.form['existing'] = "bika.health:test"
+        lsd = LoadSetupData(portal, request)
         lsd()
 
         logout()
 
-BIKA_HEALTH_FIXTURE = BikaTestLayer()
+    def setUpPloneSite(self, portal):
+        super(DataLayer, self).setUpPloneSite(portal)
 
-HEALTH_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(BIKA_HEALTH_FIXTURE,),
-    name="HealthTestingLayer:Integration")
+        # Install Demo Data
+        self.setup_data_load(portal, portal.REQUEST)
 
-HEALTH_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(BIKA_HEALTH_FIXTURE,),
-    name="HealthTestingLayer:Functional")
 
-BIKA_ROBOT_TESTING = FunctionalTesting(
-    bases=(BIKA_HEALTH_FIXTURE, z2.ZSERVER_FIXTURE),
-    name="HealthTestingLayer:Robot")
+BASE_LAYER_FIXTURE = BaseLayer()
+
+BASE_TESTING = FunctionalTesting(
+    bases=(BASE_LAYER_FIXTURE,), name="SENAITE.HEALTH:BaseTesting")
+
+DATA_LAYER_FIXTURE = DataLayer()
+DATA_TESTING = FunctionalTesting(
+    bases=(DATA_LAYER_FIXTURE,), name="SENAITE.HEALTH:DataTesting")
