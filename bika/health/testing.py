@@ -6,21 +6,17 @@
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
 from bika.lims.exportimport.load_setup_data import LoadSetupData
-from plone.app.testing import FunctionalTesting
-from plone.app.testing import IntegrationTesting
-from plone.app.testing import login
-from plone.app.testing import logout
-from plone.app.testing import PLONE_FIXTURE
-from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import applyProfile
+from plone.app.testing import (PLONE_FIXTURE, SITE_OWNER_NAME,
+                               FunctionalTesting, PloneSandboxLayer, login,
+                               logout)
 from plone.testing import z2
+
+
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setuphandlers import setupPortalContent
 from Testing.makerequest import makerequest
 
 import Products.ATExtensions
-import Products.PloneTestCase.setup
 import collective.js.jqueryui
 import plone.app.iterate
 
@@ -47,8 +43,14 @@ class BaseLayer(PloneSandboxLayer):
 
     def setUpPloneSite(self, portal):
         # Install into Plone site using portal_setup
-        applyProfile(portal, 'bika.lims:default')
-        applyProfile(portal, 'bika.health:default')
+        self.applyProfile(portal, 'bika.lims:default')
+        self.applyProfile(portal, 'bika.health:default')
+
+    def tearDownZope(self, app):
+        # Uninstall product
+        z2.uninstallProduct(app, 'bika.lims')
+        z2.uninstallProduct(app, 'bika.health')
+        z2.uninstallProduct(app, 'Products.PythonScripts')
 
 
 class DataLayer(BaseLayer):
@@ -118,7 +120,6 @@ class DataLayer(BaseLayer):
 
 
 BASE_LAYER_FIXTURE = BaseLayer()
-
 BASE_TESTING = FunctionalTesting(
     bases=(BASE_LAYER_FIXTURE,), name="SENAITE.HEALTH:BaseTesting")
 
