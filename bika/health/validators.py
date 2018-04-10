@@ -13,7 +13,7 @@ from zope.interface import implements
 from Products.validation import validation
 from Products.validation.interfaces.IValidator import IValidator
 from datetime import datetime
-from senaite import api
+from bika.lims import api
 from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
 
 
