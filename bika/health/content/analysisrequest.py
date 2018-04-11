@@ -7,25 +7,24 @@
 
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
-from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
-from archetypes.schemaextender.interfaces import ISchemaExtender
-from archetypes.schemaextender.interfaces import ISchemaModifier
-from bika.health import bikaMessageFactory as _
-from bika.lims.fields import *
-from bika.lims.interfaces import IBikaCatalog
-from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.browser.widgets import ReferenceWidget
-from bika.lims.interfaces import IAnalysisRequest
-from bika.lims.vocabularies import CatalogVocabulary
-from Products.Archetypes.public import ComputedWidget
 from Products.Archetypes.references import HoldingReference
-from Products.ATContentTypes.interface import IATDocument
+from Products.CMFCore import permissions
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from archetypes.schemaextender.interfaces import ISchemaModifier
+from plone.indexer.decorator import indexer
 from zope.component import adapts
 from zope.interface import implements
-from Products.CMFCore import permissions
+
+from bika.health import bikaMessageFactory as _
 from bika.health.permissions import ViewPatients
-from plone.indexer.decorator import indexer
+from bika.lims.browser.widgets import ReferenceWidget
+from bika.lims.fields import BooleanField
+from bika.lims.fields import BooleanWidget
+from bika.lims.fields import ExtReferenceField
+from bika.lims.fields import ExtStringField
+from bika.lims.interfaces import IAnalysisRequest
+from bika.lims.interfaces import IBikaCatalog
+from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
 
 
 # Defining the indexes for this extension. Since this is an extension, no
@@ -106,15 +105,6 @@ class AnalysisRequestSchemaExtender(object):
             ),
         ),
 
-        ExtComputedField(
-            'DoctorUID',
-            # It looks like recursive, but we must pass through the Schema to obtain data. In this way we allow to LIMS obtain it.
-            expression="context._getDoctorUID()",
-            widget=ComputedWidget(
-                visible=False,
-            ),
-        ),
-
         ExtReferenceField(
             'Patient',
             required=1,
@@ -147,25 +137,6 @@ class AnalysisRequestSchemaExtender(object):
                     'js_controllers': ['#patient-base-edit',],
                     'overlay_handler': 'HealthPatientOverlayHandler',
                 }
-            ),
-        ),
-
-        ExtComputedField(
-            'PatientID',
-            expression="context.Schema()['Patient'].get(context).getPatientID() if context.Schema()['Patient'].get(context) else None",
-            mode="r",
-            read_permission=ViewPatients,
-            write_permission=permissions.ModifyPortalContent,
-            widget=ComputedWidget(
-                visible=True,
-            ),
-        ),
-
-        ExtComputedField(
-            'PatientUID',
-            expression="here._getPatientUID()",
-            widget=ComputedWidget(
-                visible=False,
             ),
         ),
 
@@ -245,15 +216,3 @@ class AnalysisRequestSchemaModifier(object):
     def fiddle(self, schema):
         schema['Batch'].widget.label = _("Case")
         return schema
-
-    def _getPatientUID(self):
-        """
-        Return the patient UID
-        """
-        return self.getPatient().UID() if self.getPatient() else None
-
-    def _getDoctorUID(self):
-        """
-        Return the patient UID
-        """
-        return self.getDoctor().UID() if self.getDoctor() else None

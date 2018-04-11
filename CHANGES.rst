@@ -1,27 +1,44 @@
 Changelog
 =========
 
-1.1.1 (unreleased)
+1.1.2 (unreleased)
+------------------
+
+**Added**
+
+
+**Changed**
+
+
+**Removed**
+
+
+**Fixed**
+
+
+**Security**
+
+
+1.1.1 (2018-04-07)
 ------------------
 
 **Added**
 
 - #56 Option for making Client Patient IDs unique
-
-**Removed**
-
+- #63 Display Doctor column in Analysis Requests listings
 
 **Changed**
 
-- #48 After saving a newly created Patient the user is redirected to the Patient's Analysis Requests view instead of the Patient's edit view.
+- #48 After Patient creation, redirect to Patient's Analysis Requests view
 
 **Fixed**
 
+- #64 Samples not filtered in Doctor's samples view
+- #52 Date Reported is missing in reports
+- #52 Date Collected is missing in reports
 - #45 ConfigurationConflictError in "The workflow actions menu"
 - #49 Default publication preference for Patients in Clients vocabulary error
-
-**Security**
-
+- #44 Traceback on "copy to new" Analysis Request
 
 
 1.1.0 (2018-01-26)
@@ -37,6 +54,7 @@ Changelog
 - #39 Traceback on Patients when current user has Client role but is LabContact
 - #36 Using parameter "vocabulary" wasn't working in bika_setup
 - #35 Analysis Request View error when the page redirects the user
+- #44 Traceback on "copy to new" Analysis Request
 
 
 1.0.0 (2017-11-10)

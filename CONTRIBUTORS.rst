@@ -9,9 +9,9 @@ contributions descending.
 - Jordi Puiggené, jpuiggene@naralabs.com
 - Pau Soliva, psoliva@naralabs.com
 - Campbell McKellar-Basset, campbell@bikalabs.com
+- Juan Gallostra, jgallostra@naralabs.com
 - Nihad Mammadli, 1992.nihad@gmail.com
 - Ramon Bartl, rb@ridingbytes.com
-- Juan Gallostra, jgallostra@naralabs.com
 - Alexander Karlsson, ak.zylinx@gmail.com
 
 
