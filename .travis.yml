@@ -15,7 +15,6 @@ addons:
     - libexpat1-dev
     - gnuplot
     - libgdk-pixbuf2.0-0
-    - robotsuite
     # needed libs for chromedriver
     # - libnss3-dev
     # - libgconf-2-4
@@ -38,6 +37,7 @@ before_install:
   - python bootstrap.py
   # - bin/pip install --upgrade pip setuptools zc.buildout
 install:
+  - pip install robotsuite
   - bin/buildout -n -t 3 -c travis.cfg
 script:
   - bin/test -m bika.health
