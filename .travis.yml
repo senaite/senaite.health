@@ -15,6 +15,7 @@ addons:
     - libexpat1-dev
     - gnuplot
     - libgdk-pixbuf2.0-0
+    - robotsuite
     # needed libs for chromedriver
     # - libnss3-dev
     # - libgconf-2-4
