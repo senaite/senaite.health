@@ -37,7 +37,6 @@ before_install:
   - python bootstrap.py
   # - bin/pip install --upgrade pip setuptools zc.buildout
 install:
-  - pip install robotsuite
   - bin/buildout -n -t 3 -c travis.cfg
 script:
   - bin/test -m bika.health

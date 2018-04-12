@@ -34,6 +34,7 @@ setup(
         'test': [
             'unittest2',
             'plone.app.testing',
+            'robotsuite',
         ]
     },
     entry_points="""
