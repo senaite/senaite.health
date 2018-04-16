@@ -1,0 +1,8 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="bika">
+  <unconfigure>
+      <adapter name="listing_searchable_text" factory=".analysisrequest.listing_searchable_text" />
+  </unconfigure>
+  <adapter name="listing_searchable_text" factory=".analysisrequest.listing_searchable_text"/>
+</configure>
