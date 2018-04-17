@@ -84,8 +84,12 @@ def listing_searchable_text(instance):
             logger.error("{} has no attribute called '{}' ".format(
                             repr(instance), field_name))
             continue
+
+        if not value:
+            continue
         if isinstance(value, list):
             value = " ".join(value)
+
         entries.append(value)
 
     # Getters of senaite.health extension fields are not created. That's why
