@@ -20,14 +20,21 @@ class AnalysisRequestsView(BaseView):
         self.columns['BatchID']['title'] = _('Case ID')
         # Add Client Patient fields
         self.columns['getPatientID'] = {
-            'title': _('Patient ID'), }
+            'title': _('Patient ID'),
+            'index': _('getPatientId'),
+        }
         self.columns['getClientPatientID'] = {
             'title': _("Client PID"),
-            'sortable': False, }
+            'sortable': False,
+        }
         self.columns['getPatient'] = {
-            'title': _('Patient'), }
+            'title': _('Patient'),
+            'index': _('getPatientTitle'),
+        }
         self.columns['getDoctor'] = {
-            'title': _('Doctor'), }
+            'title': _('Doctor'),
+            'index': _('getDoctorTitle'),
+        }
 
     def folderitems(self, full_objects=False):
         pm = getToolByName(self.context, "portal_membership")
@@ -66,20 +73,16 @@ class AnalysisRequestsView(BaseView):
     def folderitem(self, obj, item, index):
         item = super(AnalysisRequestsView, self)\
             .folderitem(obj, item, index)
-        patient = self.get_brain(obj.getPatientUID, CATALOG_PATIENT_LISTING)
-        if patient:
-            cpid = patient.getClientPatientID
-            url = '%s/analysisrequests' % api.get_url(patient)
-            item['getPatientID'] = patient.getId
-            item['getClientPatientID'] = patient.getClientPatientID
-            item['getPatient'] = patient.Title
-            item['replace']['getPatientID'] = get_link(url, patient.getId)
-            item['replace']['getClientPatientID'] = get_link(url, cpid)
-            item['replace']['getPatient'] = get_link(url, patient.Title)
 
-        doctor = self.get_brain(obj.getDoctorUID, "portal_catalog")
-        if doctor:
-            url = '%s/analysisrequests' % api.get_url(doctor)
-            item['getDoctor'] = doctor.Title
-            item['replace']['getDoctor'] = get_link(url, doctor.Title)
+        item['getPatientID'] = obj.getPatientId
+        item['getPatient'] = obj.getPatientTitle
+        item['getClientPatientID'] = obj.getClientPatientID
+        url = '{}/analysisrequests'.format(obj.getPatientURL)
+        item['replace']['getPatient'] = get_link(url, obj.getPatientTitle)
+        item['replace']['getPatientID'] = get_link(url, obj.getPatientId)
+        item['replace']['getClientPatientID'] = get_link(url, obj.getClientPatientID)
+
+        item['getDoctor'] = obj.getDoctorTitle
+        url = '{}/analysisrequests'.format(obj.getDoctorTitle)
+        item['replace']['getDoctor'] = get_link(url, obj.getDoctorTitle)
         return item
