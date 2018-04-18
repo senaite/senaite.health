@@ -74,12 +74,12 @@ class AnalysisRequestsView(BaseView):
         item = super(AnalysisRequestsView, self)\
             .folderitem(obj, item, index)
 
-        item['getPatientID'] = obj.getPatientId
+        item['getPatientID'] = obj.getPatientID
         item['getPatient'] = obj.getPatientTitle
         item['getClientPatientID'] = obj.getClientPatientID
         url = '{}/analysisrequests'.format(obj.getPatientURL)
         item['replace']['getPatient'] = get_link(url, obj.getPatientTitle)
-        item['replace']['getPatientID'] = get_link(url, obj.getPatientId)
+        item['replace']['getPatientID'] = get_link(url, obj.getPatientID)
         item['replace']['getClientPatientID'] = get_link(url, obj.getClientPatientID)
 
         item['getDoctor'] = obj.getDoctorTitle
