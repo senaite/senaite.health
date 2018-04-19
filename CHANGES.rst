@@ -15,6 +15,7 @@ Changelog
 
 **Fixed**
 
+- #69 Add proper license to repository
 
 **Security**
 
