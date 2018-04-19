@@ -19,8 +19,14 @@ analysisrequest_catalog_definition = {
                 'getPatientID': 'FieldIndex',
             },
             'columns': [
+                'getClientPatientID',
+                'getDoctorTitle',
                 'getDoctorUID',
+                'getDoctorURL',
+                'getPatientID',
+                'getPatientTitle',
                 'getPatientUID',
+                'getPatientURL',
             ]
         }
     }

@@ -7,6 +7,7 @@
 
 from bika.lims import api
 from bika.lims import logger
+from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.interfaces import IAnalysisRequest
 from plone.indexer import indexer
 from bika.lims.interfaces import IBikaCatalog
@@ -32,24 +33,15 @@ def getPatientUID(instance):
     return value
 
 
-@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
-def getDoctorUID(instance):
-    field = instance.getField('Doctor', '')
-    item = field.get(instance) if field else None
-    value = item and item.UID() or ''
-    return value
-
-
 # We use this index to sort columns and filter lists
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
-def getPatient(instance):
+def getPatientTitle(instance):
     field = instance.getField('Patient', '')
     item = field.get(instance) if field else None
     value = item and item.Title() or ''
     return value
 
 
-# We use this index to sort columns and filter lists
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientID(instance):
     field = instance.getField('Patient', '')
@@ -58,51 +50,80 @@ def getPatientID(instance):
     return value
 
 
-@indexer(IAnalysisRequest)
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getPatientURL(instance):
+    field = instance.getField('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and api.get_url(item) or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getClientPatientID(instance):
+    field = instance.getField('Patient', '')
+    item = field.get(instance) if field else None
+    value = item and item.getClientPatientID() or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getDoctorUID(instance):
+    field = instance.getField('Doctor', '')
+    item = field.get(instance) if field else None
+    value = item and item.UID() or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getDoctorTitle(instance):
+    field = instance.getField('Doctor', '')
+    item = field.get(instance) if field else None
+    value = item and item.Title() or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
+def getDoctorURL(instance):
+    field = instance.getField('Doctor', '')
+    item = field.get(instance) if field else None
+    value = item and api.get_url(item) or ''
+    return value
+
+
+@indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def listing_searchable_text(instance):
-    """ Indexes values of desired fields for searches in listing view. All the
-    field names added to 'plain_text_fields' will be available to search by
-    wildcards.
-    Please choose the searchable fields carefully and add only fields that
-    can be useful to search by. For example, there is no need to add 'SampleId'
-    since 'getId' of AR already contains that value. Nor 'ClientTitle' because
-    AR's are/can be filtered by client in Clients' 'AR Listing View'
-    :return: values of the fields defined as a string
+    """ Retrieves all the values of metadata columns in the catalog for
+    wildcard searches
+    :return: all metadata values joined in a string
     """
     entries = []
-    plain_text_fields = ('getId', 'getContactFullName', 'getSampleTypeTitle',
-                         'getSamplePointTitle', 'getCreatorFullName',
-                         'getProfilesTitle', 'getStorageLocationTitle',
-                         'getClientOrderNumber', 'getClientReference',
-                         'getClientSampleID', 'getTemplateTitle', )
-
-    # Concatenate plain text fields as they are
-    for field_name in plain_text_fields:
+    catalog = api.get_tool(CATALOG_ANALYSIS_REQUEST_LISTING)
+    columns = catalog.schema()
+    failed_columns = []
+    for column in columns:
         try:
-            value = api.safe_getattr(instance, field_name)
+            value = api.safe_getattr(instance, column)
         except:
-            logger.error("{} has no attribute called '{}' ".format(
-                            repr(instance), field_name))
+            failed_columns.append(column)
             continue
-
         if not value:
             continue
-        if isinstance(value, list):
-            value = " ".join(value)
-
-        entries.append(value)
+        parsed = api.to_searchable_text_metadata(value)
+        entries.append(parsed)
 
     # Getters of senaite.health extension fields are not created. That's why
     # we are adding them manually
-    patient_field = instance.getField('Patient', '')
-    patient = patient_field.get(instance) if patient_field else None
-    if patient:
-        entries.extend((patient.getId(), patient.Title()))
-
-    doctor_field = instance.getField('Doctor', '')
-    doctor = doctor_field.get(instance) if doctor_field else None
-    if doctor:
-        entries.extend((doctor.getId(), doctor.Title()))
+    for failed_column in failed_columns:
+        getter = globals().get(failed_column, None)
+        if not getter:
+            logger.error("{} has no attribute called '{}' ".format(
+                            repr(instance), failed_column))
+            continue
+        value = getter(instance)()
+        if not value:
+            continue
+        parsed = api.to_searchable_text_metadata(value)
+        entries.append(parsed)
 
     # Concatenate all strings to one text blob
     return " ".join(entries)
