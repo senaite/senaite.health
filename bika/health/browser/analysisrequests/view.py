@@ -83,6 +83,7 @@ class AnalysisRequestsView(BaseView):
         item['replace']['getClientPatientID'] = get_link(url, obj.getClientPatientID)
 
         item['getDoctor'] = obj.getDoctorTitle
-        url = '{}/analysisrequests'.format(obj.getDoctorTitle)
-        item['replace']['getDoctor'] = get_link(url, obj.getDoctorTitle)
+        if obj.getDoctorURL:
+            url = '{}/analysisrequests'.format(obj.getDoctorURL)
+            item['replace']['getDoctor'] = get_link(url, obj.getDoctorTitle)
         return item
