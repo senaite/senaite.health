@@ -19,46 +19,46 @@ from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
 # getter is created so we need to create indexes in that way.
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientUID(instance):
-    return get_attr_from_field(instance, 'Patient', 'UID')
+    return get_attr_from_field(instance, 'Patient', 'UID', '')
 
 
 # We use this index to sort columns and filter lists
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientTitle(instance):
-    return get_attr_from_field(instance, 'Patient', 'Title')
+    return get_attr_from_field(instance, 'Patient', 'Title', '')
 
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientID(instance):
-    return get_attr_from_field(instance, 'Patient', 'Id')
+    return get_attr_from_field(instance, 'Patient', 'getId', '')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientURL(instance):
-    item = get_obj_from_field(instance, 'Patient')
-    return api.get_url(item) or ''
+    item = get_obj_from_field(instance, 'Patient', None)
+    return item and api.get_url(item) or ''
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getClientPatientID(instance):
-    return get_attr_from_field(instance, 'Patient', 'ClientPatientID')
+    return get_attr_from_field(instance, 'Patient', 'ClientPatientID', '')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorUID(instance):
-    return get_attr_from_field(instance, 'Doctor', 'UID')
+    return get_attr_from_field(instance, 'Doctor', 'UID', '')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorTitle(instance):
-    return get_attr_from_field(instance, 'Doctor', 'Title')
+    return get_attr_from_field(instance, 'Doctor', 'Title', '')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorURL(instance):
-    item = get_obj_from_field(instance, 'Doctor')
-    return api.get_url(item) or ''
+    item = get_obj_from_field(instance, 'Doctor', None)
+    return item and api.get_url(item) or ''
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)

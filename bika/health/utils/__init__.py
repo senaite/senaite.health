@@ -29,4 +29,4 @@ def get_attr_from_field(instance, fieldname, attrname, default=None):
     item = get_obj_from_field(instance, fieldname, None)
     if not item:
         return default
-    return api.safe_getattr(instance, attr=attrname, default=default)
+    return api.safe_getattr(item, attr=attrname, default=default)
