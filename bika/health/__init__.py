@@ -18,7 +18,7 @@ from bika.health.permissions import *
 
 from AccessControl import ModuleSecurityInfo, allow_module
 from Products.Archetypes.atapi import process_types, listTypes
-from Products.CMFCore import utils
+from Products.CMFCore import utils as plone_utils
 from Products.CMFCore.DirectoryView import registerDirectory
 from Products.CMFCore.utils import ContentInit, ToolInit, getToolByName
 from Products.CMFPlone import PloneMessageFactory
@@ -83,7 +83,7 @@ def initialize(context):
     for atype, constructor in allTypes:
         kind = "%s: Add %s" % (config.PROJECTNAME, atype.portal_type)
         perm = ADD_CONTENT_PERMISSIONS.get(atype.portal_type, ADD_CONTENT_PERMISSION)
-        utils.ContentInit(kind,
+        plone_utils.ContentInit(kind,
                           content_types      = (atype,),
                           permission         = perm,
                           extra_constructors = (constructor,),
