@@ -9,6 +9,7 @@ Changelog
 
 **Changed**
 
+- #70 Index and Metadata optimizations for AR Listing View
 
 **Removed**
 
