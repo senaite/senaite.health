@@ -29,11 +29,16 @@ def upgrade(tool):
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
 
     # -------- ADD YOUR STUFF HERE --------
+    ut.delIndexAndColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatient')
+    ut.delIndexAndColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctor')
+
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientID')
-    ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientTitle')
+    ut.addIndexAndColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientTitle',
+                         'FieldIndex')
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientURL')
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getClientPatientID')
-    ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorTitle')
+    ut.addIndexAndColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorTitle',
+                         'FieldIndex')
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorURL')
     ut.refreshCatalogs()
     logger.info("{0} upgraded to version {1}".format(product, version))

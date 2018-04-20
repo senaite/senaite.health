@@ -21,19 +21,16 @@ class AnalysisRequestsView(BaseView):
         # Add Client Patient fields
         self.columns['getPatientID'] = {
             'title': _('Patient ID'),
-            'index': _('getPatientId'),
         }
         self.columns['getClientPatientID'] = {
             'title': _("Client PID"),
             'sortable': False,
         }
-        self.columns['getPatient'] = {
+        self.columns['getPatientTitle'] = {
             'title': _('Patient'),
-            'index': _('getPatientTitle'),
         }
-        self.columns['getDoctor'] = {
+        self.columns['getDoctorTitle'] = {
             'title': _('Doctor'),
-            'index': _('getDoctorTitle'),
         }
 
     def folderitems(self, full_objects=False):
@@ -47,16 +44,16 @@ class AnalysisRequestsView(BaseView):
                 and 'LabClerk' not in roles:
             self.remove_column('getPatientID')
             self.remove_column('getClientPatientID')
-            self.remove_column('getPatient')
-            self.remove_column('getDoctor')
+            self.remove_column('getPatientTitle')
+            self.remove_column('getDoctorTitle')
         # Otherwise show the columns in the list
         else:
             for rs in self.review_states:
                 i = rs['columns'].index('BatchID') + 1
                 rs['columns'].insert(i, 'getClientPatientID')
                 rs['columns'].insert(i, 'getPatientID')
-                rs['columns'].insert(i, 'getPatient')
-                rs['columns'].insert(i, 'getDoctor')
+                rs['columns'].insert(i, 'getPatientTitle')
+                rs['columns'].insert(i, 'getDoctorTitle')
         return super(AnalysisRequestsView, self).folderitems(
             full_objects=False, classic=False)
 
@@ -75,15 +72,15 @@ class AnalysisRequestsView(BaseView):
             .folderitem(obj, item, index)
 
         item['getPatientID'] = obj.getPatientID
-        item['getPatient'] = obj.getPatientTitle
+        item['getPatientTitle'] = obj.getPatientTitle
         item['getClientPatientID'] = obj.getClientPatientID
         url = '{}/analysisrequests'.format(obj.getPatientURL)
-        item['replace']['getPatient'] = get_link(url, obj.getPatientTitle)
+        item['replace']['getPatientTitle'] = get_link(url, obj.getPatientTitle)
         item['replace']['getPatientID'] = get_link(url, obj.getPatientID)
         item['replace']['getClientPatientID'] = get_link(url, obj.getClientPatientID)
 
-        item['getDoctor'] = obj.getDoctorTitle
+        item['getDoctorTitle'] = obj.getDoctorTitle
         if obj.getDoctorURL:
             url = '{}/analysisrequests'.format(obj.getDoctorURL)
-            item['replace']['getDoctor'] = get_link(url, obj.getDoctorTitle)
+            item['replace']['getDoctorTitle'] = get_link(url, obj.getDoctorTitle)
         return item

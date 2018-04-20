@@ -5,89 +5,60 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
+from plone.indexer import indexer
+
+from bika.health.utils import get_obj_from_field, get_attr_from_field
 from bika.lims import api
 from bika.lims import logger
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.interfaces import IAnalysisRequest
-from plone.indexer import indexer
-from bika.lims.interfaces import IBikaCatalog
 from bika.lims.interfaces import IBikaCatalogAnalysisRequestListing
 
 
 # Defining the indexes for this extension. Since this is an extension, no
 # getter is created so we need to create indexes in that way.
-# TODO-catalog: delete this index
-@indexer(IAnalysisRequest, IBikaCatalog)
-def getPatientUID(instance):
-    field = instance.getField('Patient', '')
-    item = field.get(instance) if field else None
-    value = item and item.UID() or ''
-    return value
-
-
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientUID(instance):
-    field = instance.getField('Patient', '')
-    item = field.get(instance) if field else None
-    value = item and item.UID() or ''
-    return value
+    return get_attr_from_field(instance, 'Patient', 'UID')
 
 
 # We use this index to sort columns and filter lists
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientTitle(instance):
-    field = instance.getField('Patient', '')
-    item = field.get(instance) if field else None
-    value = item and item.Title() or ''
-    return value
+    return get_attr_from_field(instance, 'Patient', 'Title')
+
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientID(instance):
-    field = instance.getField('Patient', '')
-    item = field.get(instance) if field else None
-    value = item and item.getId() or ''
-    return value
+    return get_attr_from_field(instance, 'Patient', 'Id')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientURL(instance):
-    field = instance.getField('Patient', '')
-    item = field.get(instance) if field else None
-    value = item and api.get_url(item) or ''
-    return value
+    item = get_obj_from_field(instance, 'Patient')
+    return api.get_url(item) or ''
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getClientPatientID(instance):
-    field = instance.getField('Patient', '')
-    item = field.get(instance) if field else None
-    value = item and item.getClientPatientID() or ''
-    return value
+    return get_attr_from_field(instance, 'Patient', 'ClientPatientID')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorUID(instance):
-    field = instance.getField('Doctor', '')
-    item = field.get(instance) if field else None
-    value = item and item.UID() or ''
-    return value
+    return get_attr_from_field(instance, 'Doctor', 'UID')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorTitle(instance):
-    field = instance.getField('Doctor', '')
-    item = field.get(instance) if field else None
-    value = item and item.Title() or ''
-    return value
+    return get_attr_from_field(instance, 'Doctor', 'Title')
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorURL(instance):
-    field = instance.getField('Doctor', '')
-    item = field.get(instance) if field else None
-    value = item and api.get_url(item) or ''
-    return value
+    item = get_obj_from_field(instance, 'Doctor')
+    return api.get_url(item) or ''
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
