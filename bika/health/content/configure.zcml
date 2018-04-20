@@ -11,10 +11,6 @@
 
     <adapter factory=".analysisrequest.AnalysisRequestSchemaExtender" />
     <adapter factory=".analysisrequest.AnalysisRequestSchemaModifier" />
-    <adapter factory=".analysisrequest.getPatientUID" name="getPatientUID" />
-    <adapter factory=".analysisrequest.getPatient" name="getPatient" />
-    <adapter factory=".analysisrequest.getPatientID" name="getPatientID" />
-    <adapter factory=".analysisrequest.getDoctorUID" name="getDoctorUID" />
 
     <adapter factory=".batch.BatchSchemaExtender" />
     <adapter factory=".batch.BatchSchemaModifier" />
