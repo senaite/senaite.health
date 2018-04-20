@@ -15,6 +15,7 @@ Changelog
 
 **Fixed**
 
+- #71 Slow Reference Widgets in 'Add Case' View
 
 **Security**
 
