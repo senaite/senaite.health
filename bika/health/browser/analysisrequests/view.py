@@ -20,14 +20,18 @@ class AnalysisRequestsView(BaseView):
         self.columns['BatchID']['title'] = _('Case ID')
         # Add Client Patient fields
         self.columns['getPatientID'] = {
-            'title': _('Patient ID'), }
+            'title': _('Patient ID'),
+        }
         self.columns['getClientPatientID'] = {
             'title': _("Client PID"),
-            'sortable': False, }
-        self.columns['getPatient'] = {
-            'title': _('Patient'), }
-        self.columns['getDoctor'] = {
-            'title': _('Doctor'), }
+            'sortable': False,
+        }
+        self.columns['getPatientTitle'] = {
+            'title': _('Patient'),
+        }
+        self.columns['getDoctorTitle'] = {
+            'title': _('Doctor'),
+        }
 
     def folderitems(self, full_objects=False):
         pm = getToolByName(self.context, "portal_membership")
@@ -40,16 +44,16 @@ class AnalysisRequestsView(BaseView):
                 and 'LabClerk' not in roles:
             self.remove_column('getPatientID')
             self.remove_column('getClientPatientID')
-            self.remove_column('getPatient')
-            self.remove_column('getDoctor')
+            self.remove_column('getPatientTitle')
+            self.remove_column('getDoctorTitle')
         # Otherwise show the columns in the list
         else:
             for rs in self.review_states:
                 i = rs['columns'].index('BatchID') + 1
                 rs['columns'].insert(i, 'getClientPatientID')
                 rs['columns'].insert(i, 'getPatientID')
-                rs['columns'].insert(i, 'getPatient')
-                rs['columns'].insert(i, 'getDoctor')
+                rs['columns'].insert(i, 'getPatientTitle')
+                rs['columns'].insert(i, 'getDoctorTitle')
         return super(AnalysisRequestsView, self).folderitems(
             full_objects=False, classic=False)
 
@@ -66,20 +70,17 @@ class AnalysisRequestsView(BaseView):
     def folderitem(self, obj, item, index):
         item = super(AnalysisRequestsView, self)\
             .folderitem(obj, item, index)
-        patient = self.get_brain(obj.getPatientUID, CATALOG_PATIENT_LISTING)
-        if patient:
-            cpid = patient.getClientPatientID
-            url = '%s/analysisrequests' % api.get_url(patient)
-            item['getPatientID'] = patient.getId
-            item['getClientPatientID'] = patient.getClientPatientID
-            item['getPatient'] = patient.Title
-            item['replace']['getPatientID'] = get_link(url, patient.getId)
-            item['replace']['getClientPatientID'] = get_link(url, cpid)
-            item['replace']['getPatient'] = get_link(url, patient.Title)
 
-        doctor = self.get_brain(obj.getDoctorUID, "portal_catalog")
-        if doctor:
-            url = '%s/analysisrequests' % api.get_url(doctor)
-            item['getDoctor'] = doctor.Title
-            item['replace']['getDoctor'] = get_link(url, doctor.Title)
+        item['getPatientID'] = obj.getPatientID
+        item['getPatientTitle'] = obj.getPatientTitle
+        item['getClientPatientID'] = obj.getClientPatientID
+        url = '{}/analysisrequests'.format(obj.getPatientURL)
+        item['replace']['getPatientTitle'] = get_link(url, obj.getPatientTitle)
+        item['replace']['getPatientID'] = get_link(url, obj.getPatientID)
+        item['replace']['getClientPatientID'] = get_link(url, obj.getClientPatientID)
+
+        item['getDoctorTitle'] = obj.getDoctorTitle
+        if obj.getDoctorURL:
+            url = '{}/analysisrequests'.format(obj.getDoctorURL)
+            item['replace']['getDoctorTitle'] = get_link(url, obj.getDoctorTitle)
         return item

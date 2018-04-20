@@ -24,7 +24,7 @@
   <include package=".ajax"/>
   <include package=".static"/>
   <include package=".setupdata"/>
-
+  <include package=".catalog.indexers" />
   <include file="profiles.zcml" />
 
   <cmf:registerDirectory name="skins" directory="skins" recursive="True" />

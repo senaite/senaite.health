@@ -14,13 +14,21 @@ analysisrequest_catalog_definition = {
             'indexes': {
                 'getDoctorUID': 'FieldIndex',
                 'getPatientUID': 'FieldIndex',
-                # To sort columns
-                'getPatient': 'FieldIndex',
+
+                # Indexes to sort in listing view
+                'getDoctorTitle': 'FieldIndex',
+                'getPatientTitle': 'FieldIndex',
                 'getPatientID': 'FieldIndex',
             },
             'columns': [
+                'getClientPatientID',
+                'getDoctorTitle',
                 'getDoctorUID',
+                'getDoctorURL',
+                'getPatientID',
+                'getPatientTitle',
                 'getPatientUID',
+                'getPatientURL',
             ]
         }
     }

@@ -1,0 +1,18 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="bika">
+
+    <unconfigure>
+        <adapter name="listing_searchable_text" factory=".analysisrequest.listing_searchable_text" />
+    </unconfigure>
+    <adapter name="listing_searchable_text" factory=".analysisrequest.listing_searchable_text"/>
+    <adapter factory=".analysisrequest.getPatientID" name="getPatientID" />
+    <adapter factory=".analysisrequest.getPatientTitle" name="getPatientTitle" />
+    <adapter factory=".analysisrequest.getPatientUID" name="getPatientUID" />
+    <adapter factory=".analysisrequest.getPatientURL" name="getPatientURL" />
+    <adapter factory=".analysisrequest.getClientPatientID" name="getClientPatientID" />
+
+    <adapter factory=".analysisrequest.getDoctorUID" name="getDoctorUID" />
+    <adapter factory=".analysisrequest.getDoctorTitle" name="getDoctorTitle" />
+    <adapter factory=".analysisrequest.getDoctorURL" name="getDoctorURL" />
+</configure>
