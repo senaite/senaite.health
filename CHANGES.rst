@@ -17,6 +17,7 @@ Changelog
 **Fixed**
 
 - #71 Slow Reference Widgets in 'Add Case' View
+- #73 Slow Reference Widgets in 'Add AR' View
 - #69 Add proper license to repository
 
 **Security**

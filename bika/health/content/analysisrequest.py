@@ -74,6 +74,7 @@ class AnalysisRequestSchemaExtender(object):
                          'add': 'edit',
                          'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
+                search_fields=('SearchableText',),
                 base_query={'inactive_state': 'active'},
                 colModel = [
                     {'columnName': 'Title', 'width': '30', 'label': _(
@@ -129,7 +130,7 @@ class AnalysisRequestSchemaExtender(object):
                 ui_item='getClientPatientID',
                 search_query='',
                 discard_empty=('ClientPatientID',),
-                search_fields=('ClientPatientID',),
+                search_fields=('getClientPatientID',),
                 portal_types=('Patient',),
                 render_own_label=True,
                 visible={'edit': 'visible',
