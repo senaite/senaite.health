@@ -6,6 +6,7 @@
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
 from bika.health import logger
+from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
 from bika.health.config import PROJECTNAME as product
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
@@ -40,6 +41,7 @@ def upgrade(tool):
     ut.addIndexAndColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorTitle',
                          'FieldIndex')
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorURL')
+    ut.addIndex(CATALOG_PATIENT_LISTING, 'listing_searchable_text', 'TextIndexNG3')
     ut.refreshCatalogs()
     logger.info("{0} upgraded to version {1}".format(product, version))
 
