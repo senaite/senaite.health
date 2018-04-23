@@ -15,4 +15,7 @@
     <adapter factory=".analysisrequest.getDoctorUID" name="getDoctorUID" />
     <adapter factory=".analysisrequest.getDoctorTitle" name="getDoctorTitle" />
     <adapter factory=".analysisrequest.getDoctorURL" name="getDoctorURL" />
+
+    <adapter name="listing_searchable_text" factory=".patient.listing_searchable_text"/>
+
 </configure>

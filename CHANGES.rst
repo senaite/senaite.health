@@ -16,6 +16,7 @@ Changelog
 
 **Fixed**
 
+- #72 Slow searches in patients list
 - #71 Slow Reference Widgets in 'Add Case' View
 - #69 Add proper license to repository
 
