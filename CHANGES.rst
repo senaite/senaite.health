@@ -16,6 +16,7 @@ Changelog
 
 **Fixed**
 
+- #75 Patient & Doctor URL values in AR Listing Catalog contain 'host' info.
 - #72 Slow searches in patients list
 - #71 Slow Reference Widgets in 'Add Case' View
 - #73 Slow Reference Widgets in 'Add AR' View
