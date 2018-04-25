@@ -72,12 +72,9 @@ def listing_searchable_text(instance):
     columns = catalog.schema()
     failed_columns = []
     for column in columns:
-        try:
-            value = api.safe_getattr(instance, column)
-        except:
+        value = api.safe_getattr(instance, column, None)
+        if value is None:
             failed_columns.append(column)
-            continue
-        if not value:
             continue
         parsed = api.to_searchable_text_metadata(value)
         entries.append(parsed)
@@ -87,12 +84,8 @@ def listing_searchable_text(instance):
     for failed_column in failed_columns:
         getter = globals().get(failed_column, None)
         if not getter:
-            logger.error("{} has no attribute called '{}' ".format(
-                            repr(instance), failed_column))
             continue
         value = getter(instance)()
-        if not value:
-            continue
         parsed = api.to_searchable_text_metadata(value)
         entries.append(parsed)
 
