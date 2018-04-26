@@ -13,6 +13,7 @@ Changelog
 
 **Removed**
 
+- #77 Remove Dry Matter references
 
 **Fixed**
 
