@@ -105,16 +105,6 @@
         <input type="hidden" id="copy_to_new_specs" name="copy_to_new_specs" value="{}"
                 tal:attributes="value view/copy_to_new_specs"/>
 
-        <!-- The system configured 'Dry Matter Service' -->
-        <tal:i define="dms python:context.bika_setup.getDryMatterService()">
-            <input type="hidden" id="getDryMatterService" name="getDryMatterService"
-                    tal:condition="nocall:dms"
-                    tal:attributes="
-                            poc python: dms.getPointOfCapture();
-                            cat python: dms.getCategoryUID();
-                            value python: dms.UID()"/>
-        </tal:i>
-
         <input type="hidden"
                id="PhysicalPath"
                 tal:attributes="here python:'/'.join(context.getPhysicalPath()[:-3])"/>
