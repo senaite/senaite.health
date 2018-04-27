@@ -21,8 +21,12 @@ def listing_searchable_text(instance):
     columns = catalog.schema()
 
     for column in columns:
-        value = api.safe_getattr(instance, column, None)
-        parsed = api.to_searchable_text_metadata(value)
+        brain_value = None
+        brains = catalog({"UID": api.get_uid(instance)})
+        if brains:
+            brain_value = api.safe_getattr(brains[0], column, None)
+        instance_value = api.safe_getattr(instance, column, None)
+        parsed = api.to_searchable_text_metadata(brain_value or instance_value)
         entries.append(parsed)
 
     # Concatenate all strings to one text blob
