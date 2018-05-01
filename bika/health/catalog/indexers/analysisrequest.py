@@ -37,7 +37,7 @@ def getPatientID(instance):
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getPatientURL(instance):
     item = get_obj_from_field(instance, 'Patient', None)
-    return item and api.get_url(item) or ''
+    return item and item.absolute_url_path() or ''
 
 
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
@@ -58,5 +58,5 @@ def getDoctorTitle(instance):
 @indexer(IAnalysisRequest, IBikaCatalogAnalysisRequestListing)
 def getDoctorURL(instance):
     item = get_obj_from_field(instance, 'Doctor', None)
-    return item and api.get_url(item) or ''
+    return item and item.absolute_url_path() or ''
 

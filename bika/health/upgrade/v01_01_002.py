@@ -36,10 +36,16 @@ def upgrade(tool):
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientID')
     ut.addIndexAndColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientTitle',
                          'FieldIndex')
+
+    # In case if upgrade was already run after PR #72 got accepted
+    ut.delColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientURL')
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getPatientURL')
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getClientPatientID')
     ut.addIndexAndColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorTitle',
                          'FieldIndex')
+
+    # In case if upgrade was already run after PR #72 got accepted
+    ut.delColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorURL')
     ut.addColumn(CATALOG_ANALYSIS_REQUEST_LISTING, 'getDoctorURL')
     ut.addIndex(CATALOG_PATIENT_LISTING, 'listing_searchable_text', 'TextIndexNG3')
     ut.refreshCatalogs()
