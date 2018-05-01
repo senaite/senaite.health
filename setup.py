@@ -30,6 +30,12 @@ setup(
         'senaite.core',
         'archetypes.schemaextender',
     ],
+    extras_require={
+        'test': [
+            'unittest2',
+            'plone.app.testing',
+        ]
+    },
     entry_points="""
         # -*- Entry points: -*-
         [z3c.autoinclude.plugin]
