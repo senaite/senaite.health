@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #74 Delay and minLength=2 in Patient's reference widgets
 
 **Changed**
 
