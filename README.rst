@@ -8,6 +8,9 @@
 .. image:: https://img.shields.io/pypi/v/senaite.health.svg?style=flat-square
     :target: https://pypi.python.org/pypi/senaite.health
 
+.. image:: https://travis-ci.org/senaite/senaite.health.svg?branch=master
+    :target: https://travis-ci.org/senaite/senaite.health
+
 .. image:: https://img.shields.io/scrutinizer/g/senaite/senaite.health/master.svg?style=flat-square
     :target: https://scrutinizer-ci.com/g/senaite/senaite.health/
     
