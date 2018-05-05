@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.2 (unreleased)
+1.1.2 (2018-05-05)
 ------------------
 
 **Added**
@@ -23,8 +23,6 @@ Changelog
 - #71 Slow Reference Widgets in 'Add Case' View
 - #73 Slow Reference Widgets in 'Add AR' View
 - #69 Add proper license to repository
-
-**Security**
 
 
 1.1.1 (2018-04-07)
