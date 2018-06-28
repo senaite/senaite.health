@@ -15,6 +15,7 @@ Changelog
 
 **Fixed**
 
+- #81 Traceback when importing diseases with setupdata.xlsx
 
 **Security**
 
