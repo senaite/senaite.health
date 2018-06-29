@@ -378,13 +378,15 @@ def post_install(portal_setup):
 
     :param portal_setup: SetupTool
     """
-    logger.info("SENAITE Health install handler [BEGIN]")
+    logger.info("SENAITE Health post-install handler [BEGIN]")
 
-    # Ensure health's skin layer(s) gets priority over core's
+    # When installing senaite health together with core, health's skins are not
+    # set before core's, even if after-before is set in profiles/skins.xml
+    # Ensure health's skin layer(s) always gets priority over core's
     profile = 'profile-{0}:default'.format(product)
     portal_setup.runImportStepFromProfile(profile, "skins")
 
-    logger.info("SENAITE Health install handler [DONE]")
+    logger.info("SENAITE Health post-install handler [DONE]")
 
 
 def setupHealthTestContent(context):
