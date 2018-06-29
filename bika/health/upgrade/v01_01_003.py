@@ -28,6 +28,9 @@ def upgrade(tool):
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
 
     # -------- ADD YOUR STUFF HERE --------
+    # Ensure health's skins have always priority over core's
+    setup = portal.portal_setup
+    setup.runImportStepFromProfile(profile, "skins")
 
     logger.info("{0} upgraded to version {1}".format(product, version))
 
