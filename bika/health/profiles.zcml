@@ -8,6 +8,7 @@
       title="SENAITE Health"
       directory="profiles/default"
       description='Health Care extension for SENAITE Core'
+      post_handler="bika.health.setuphandlers.post_install"
       provides="Products.GenericSetup.interfaces.EXTENSION"/>
 
   <genericsetup:importStep

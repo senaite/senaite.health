@@ -11,7 +11,7 @@
           directory="bika.health:skins/bika_health"/>
 
   <skin-path name="*">
-    <layer name="bika_health" insert-before="custom"/>
+    <layer name="bika_health" insert-before="bika"/>
   </skin-path>
 
 </object>
