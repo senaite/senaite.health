@@ -229,7 +229,7 @@ class Case_Statuses(WorksheetImporter):
 class Diseases(WorksheetImporter):
 
     def Import(self):
-        folder = self.context.bika_setup.bika_symptoms
+        folder = self.context.bika_setup.bika_diseases
         rows = self.get_rows(3)
         for row in rows:
             _id = folder.invokeFactory('Disease', id=tmpID())
