@@ -19,6 +19,7 @@ from bika.lims.catalog\
 from bika.health.catalog\
     import getCatalogDefinitions as getCatalogDefinitionsHealth
 from bika.health.catalog import getCatalogExtensions
+from bika.health.config import PROJECTNAME as product
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddAetiologicAgent
@@ -368,6 +369,22 @@ def setupHealthCatalogs(context):
     setup_catalogs(
         portal, catalog_definitions_lims_health,
         catalogs_extension=getCatalogExtensions())
+
+
+def post_install(portal_setup):
+    """Runs after the last import step of the *default* profile
+
+    This handler is registered as a *post_handler* in the generic setup profile
+
+    :param portal_setup: SetupTool
+    """
+    logger.info("SENAITE Health install handler [BEGIN]")
+
+    # Ensure health's skin layer(s) gets priority over core's
+    profile = 'profile-{0}:default'.format(product)
+    portal_setup.runImportStepFromProfile(profile, "skins")
+
+    logger.info("SENAITE Health install handler [DONE]")
 
 
 def setupHealthTestContent(context):

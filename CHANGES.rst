@@ -15,6 +15,7 @@ Changelog
 
 **Fixed**
 
+- #82 Inconsistent behavior with health' skins priority over core's
 
 **Security**
 
