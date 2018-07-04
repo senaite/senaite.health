@@ -7,19 +7,21 @@
 
 """
 """
-from Products.ATContentTypes.content import schemata
 from AccessControl import ClassSecurityInfo
+
 from Products.Archetypes import atapi
-from Products.Archetypes.public import *
-from Products.CMFCore import permissions
+from Products.Archetypes.public import ReferenceField
+from Products.Archetypes.public import Schema
+from Products.Archetypes.public import SelectionWidget
+from Products.Archetypes.public import StringField
+from Products.Archetypes.public import StringWidget
 from Products.CMFCore.utils import getToolByName
+from zope.interface import implements
+
+from bika.health import bikaMessageFactory as _
 from bika.health.config import *
 from bika.health.interfaces import IDoctor
-from bika.health.permissions import *
 from bika.lims.content.contact import Contact
-from bika.lims import bikaMessageFactory as _b
-from bika.health import bikaMessageFactory as _
-from zope.interface import implements
 
 schema = Contact.schema.copy() + Schema((
     StringField('DoctorID',
@@ -27,6 +29,20 @@ schema = Contact.schema.copy() + Schema((
         searchable=True,
         widget=StringWidget(
             label=_('Doctor ID'),
+        ),
+    ),
+    ReferenceField(
+        'PrimaryReferrer',
+        vocabulary='get_clients',
+        allowed_types=('Client',),
+        relationship='PatientClient',
+        required=0,
+        widget=SelectionWidget(
+            format='select',
+            description=_('Associate the doctor to a client. '
+                          'This doctor will not be accessible from '
+                          'other clients.'),
+            label=_('Client'),
         ),
     ),
 ))
@@ -50,5 +66,20 @@ class Doctor(Contact):
         bc = getToolByName(self, 'bika_catalog')
         return [p.getObject() for p in bc(portal_type='AnalysisRequest', getDoctorUID=self.UID())]
 
+    def get_clients(self):
+        # Only show clients to which we have Manage AR rights.
+        mtool = getToolByName(self, 'portal_membership')
+        clientfolder = self.clients
+        clients = []
+        for client in clientfolder.objectValues("Client"):
+            if not mtool.checkPermission(ManageAnalysisRequests, client):
+                continue
+            clients.append([client.UID(), client.Title()])
+        clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
+        clients.insert(0, ['', ''])
+        return DisplayList(clients)
+
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
+
+
 atapi.registerType(Doctor, PROJECTNAME)
