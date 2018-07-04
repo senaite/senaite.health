@@ -6,10 +6,12 @@
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
 from Products.CMFCore.utils import getToolByName
-from bika.lims import bikaMessageFactory as _b
+
 from bika.health import bikaMessageFactory as _
-from bika.lims.browser.client import ClientContactsView
 from bika.health.permissions import *
+from bika.lims import api
+from bika.lims.browser.client import ClientContactsView
+from bika.lims.interfaces import IClient, ILabContact
 
 
 class DoctorsView(ClientContactsView):
@@ -80,6 +82,7 @@ class DoctorsView(ClientContactsView):
                              'getMobilePhone']})
             stat = self.request.get("%s_review_state"%self.form_id, 'default')
             self.show_select_column = stat != 'all'
+        self._apply_filter_by_client()
         return super(DoctorsView, self).__call__()
 
     def folderitems(self):
@@ -94,3 +97,32 @@ class DoctorsView(ClientContactsView):
                  (items[x]['url'], items[x]['getFullname'])
 
         return items
+
+    def _apply_filter_by_client(self):
+        # If the current context is a Client, filter Doctors by Client UID
+        if IClient.providedBy(self.context):
+            client_uid = api.get_uid(self.context)
+            self.contentFilter['getPrimaryReferrerUID'] = client_uid
+            return
+
+        # If the current user is a Client contact, filter the Doctors in
+        # accordance. For the rest of users (LabContacts), the visibility of
+        # the doctors depend on their permissions
+        user = api.get_current_user()
+        roles = user.getRoles()
+        if 'Client' not in roles:
+            return
+
+        # Are we sure this a ClientContact?
+        # May happen that this is a Plone member, w/o having a ClientContact
+        # assigned or having a LabContact assigned... weird
+        contact = api.get_user_contact(user)
+        if not contact or ILabContact.providedBy(contact):
+            return
+
+        # Is the parent from the Contact a Client?
+        client = api.get_parent(contact)
+        if not client or not IClient.providedBy(client):
+            return
+        client_uid = api.get_uid(client)
+        self.contentFilter['getPrimaryReferrerUID'] = client_uid
