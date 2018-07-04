@@ -144,6 +144,20 @@ def setupHealthVarious(context):
         description="",
         condition="")
 
+    # Add doctor action for client portal_type programmatically
+    client = portal.portal_types.getTypeInfo("Client")
+    client.addAction(
+        id="doctors",
+        name="Doctor",
+        action="string:${object_url}/doctors",
+        permission=permissions.View,
+        category="object",
+        visible=True,
+        icon_expr="string:${portal_url}/images/doctor.png",
+        link_target="",
+        description="",
+        condition="")
+
     setupEthnicities(bika_setup)
 
 

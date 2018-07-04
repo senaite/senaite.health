@@ -5,6 +5,8 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
+from Products.CMFCore import permissions
+
 from bika.health import logger
 from bika.health.config import PROJECTNAME as product
 from bika.lims.upgrade import upgradestep
@@ -32,6 +34,29 @@ def upgrade(tool):
     setup = portal.portal_setup
     setup.runImportStepFromProfile(profile, "skins")
 
+    add_doctor_action_for_client(portal)
+
     logger.info("{0} upgraded to version {1}".format(product, version))
 
     return True
+
+
+def add_doctor_action_for_client(portal):
+    # Add doctor action for client portal_type programmatically
+    client = portal.portal_types.getTypeInfo("Client")
+    for action in client.listActionInfos():
+        if action.get('id', None) == 'doctors':
+            logger.info("Already existing 'doctor' action for client portal_type")
+            return None
+    client.addAction(
+        id="doctors",
+        name="Doctor",
+        action="string:${object_url}/doctors",
+        permission=permissions.View,
+        category="object",
+        visible=True,
+        icon_expr="string:${portal_url}/images/doctor.png",
+        link_target="",
+        description="",
+        condition="")
+    logger.info("'doctor' action for client portal_type added")
