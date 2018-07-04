@@ -35,6 +35,8 @@ def upgrade(tool):
     setup.runImportStepFromProfile(profile, "skins")
 
     add_doctor_action_for_client(portal)
+    ut.addIndex('portal_catalog', 'getPrimaryReferrerUID', 'FieldIndex')
+    ut.refreshCatalogs()
 
     logger.info("{0} upgraded to version {1}".format(product, version))
 

@@ -349,6 +349,7 @@ def setupHealthCatalogs(context):
         return
     addIndex(pc, 'getDoctorID', 'FieldIndex')
     addIndex(pc, 'getDoctorUID', 'FieldIndex')
+    addIndex(pc, 'getPrimaryReferrerUID', 'FieldIndex')
     addColumn(pc, 'getDoctorID')
     addColumn(pc, 'getDoctorUID')
 

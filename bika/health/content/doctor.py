@@ -35,7 +35,7 @@ schema = Contact.schema.copy() + Schema((
         'PrimaryReferrer',
         vocabulary='get_clients',
         allowed_types=('Client',),
-        relationship='PatientClient',
+        relationship='DoctorClient',
         required=0,
         widget=SelectionWidget(
             format='select',
@@ -78,6 +78,12 @@ class Doctor(Contact):
         clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
         clients.insert(0, ['', ''])
         return DisplayList(clients)
+
+    def getPrimaryReferrerUID(self):
+        primary_referrer = self.getPrimaryReferrer()
+        if primary_referrer:
+            return primary_referrer.UID()
+
 
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
 
