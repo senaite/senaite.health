@@ -148,7 +148,7 @@ def setupHealthVarious(context):
     client = portal.portal_types.getTypeInfo("Client")
     client.addAction(
         id="doctors",
-        name="Doctor",
+        name="Doctors",
         action="string:${object_url}/doctors",
         permission=permissions.View,
         category="object",
@@ -203,7 +203,7 @@ def setupHealthPermissions(context):
     mp(AddAnalysisRequest, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
     mp(AddSample, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
     mp(AddSamplePartition, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
-    mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Client'], 0)
     mp(AddAetiologicAgent, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddTreatment, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddDrug, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)

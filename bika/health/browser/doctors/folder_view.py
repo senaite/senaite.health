@@ -53,9 +53,12 @@ class DoctorsView(ClientContactsView):
 
     def __call__(self):
         mtool = getToolByName(self.context, 'portal_membership')
-        if mtool.checkPermission(AddDoctor, self.context):
+        can_add_doctors = mtool.checkPermission(AddDoctor, self.context)
+        if can_add_doctors:
+            add_doctors_url = '{}/doctors/createObject?type_name=Doctor' \
+                .format(self.portal_url)
             self.context_actions[_('Add')] = {
-                'url': 'createObject?type_name=Doctor',
+                'url': add_doctors_url,
                 'icon': '++resource++bika.lims.images/add.png'
             }
         if mtool.checkPermission(ManageDoctors, self.context):

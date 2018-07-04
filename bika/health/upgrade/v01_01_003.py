@@ -9,6 +9,7 @@ from Products.CMFCore import permissions
 
 from bika.health import logger
 from bika.health.config import PROJECTNAME as product
+from bika.health.permissions import AddDoctor
 from bika.lims import api
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
@@ -58,7 +59,7 @@ def add_doctor_action_for_client(portal):
             return None
     client.addAction(
         id="doctors",
-        name="Doctor",
+        name="Doctors",
         action="string:${object_url}/doctors",
         permission=permissions.View,
         category="object",
@@ -102,4 +103,4 @@ def update_permissions_clients(portal):
     mp(permissions.View,
        ['Manager', 'LabManager', 'LabClerk', 'LabTechnician',
         'Doctor', 'Owner', 'Sampler', 'Preserver', 'Client'], 0)
-
+    mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Client'], 0)
