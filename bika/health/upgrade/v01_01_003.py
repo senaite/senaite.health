@@ -87,14 +87,14 @@ def update_permissions_clients(portal):
         "Changing permissions for doctor objects: {0}".format(total))
     for brain in brains:
         if 'Client' not in brain.allowedRolesAndUsers:
-            if counter % 100 == 0:
-                logger.info(
-                    "Changing permissions for doctor objects: " +
-                    "{0}/{1}".format(counter, total))
             obj = api.get_object(brain)
             workflow.updateRoleMappingsFor(obj)
             obj.reindexObject()
         counter += 1
+        if counter % 100 == 0:
+            logger.info(
+                "Changing permissions for doctor objects: " +
+                "{0}/{1}".format(counter, total))
     logger.info(
         "Changed permissions for doctor objects: " +
         "{0}/{1}".format(counter, total))
