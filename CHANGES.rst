@@ -9,6 +9,7 @@ Changelog
 
 **Changed**
 
+- #85 New icon set
 
 **Removed**
 
