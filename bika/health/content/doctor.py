@@ -77,7 +77,7 @@ class Doctor(Contact):
             if not mtool.checkPermission(ManageAnalysisRequests, client):
                 continue
             clients.append([client.UID(), client.Title()])
-        clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
+        clients.sort(key=lambda x: x[1].lower())
         clients.insert(0, ['', ''])
         return DisplayList(clients)
 
