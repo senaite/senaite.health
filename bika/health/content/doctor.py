@@ -69,6 +69,10 @@ class Doctor(Contact):
         return [p.getObject() for p in bc(portal_type='AnalysisRequest', getDoctorUID=self.UID())]
 
     def get_clients(self):
+        """
+        Vocabulary list with clients which the user has Manage AR rights.
+        :return: A DisplayList object
+        """
         # Only show clients to which we have Manage AR rights.
         mtool = api.get_tool('portal_membership')
         clientfolder = self.clients
