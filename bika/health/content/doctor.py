@@ -18,6 +18,8 @@ from Products.Archetypes.public import StringWidget
 from Products.CMFCore.utils import getToolByName
 from zope.interface import implements
 
+from bika.lims import api
+
 from bika.health import bikaMessageFactory as _
 from bika.health.config import *
 from bika.health.interfaces import IDoctor
@@ -68,7 +70,7 @@ class Doctor(Contact):
 
     def get_clients(self):
         # Only show clients to which we have Manage AR rights.
-        mtool = getToolByName(self, 'portal_membership')
+        mtool = api.get_tool('portal_membership')
         clientfolder = self.clients
         clients = []
         for client in clientfolder.objectValues("Client"):
