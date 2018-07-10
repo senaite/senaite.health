@@ -51,7 +51,11 @@ def upgrade(tool):
 
 
 def add_doctor_action_for_client(portal):
-    # Add doctor action for client portal_type programmatically
+    """
+    Adds doctor action for client portal_type programmatically
+    :param portal: The portal object
+    :return: None
+    """
     client = portal.portal_types.getTypeInfo("Client")
     for action in client.listActionInfos():
         if action.get('id', None) == 'doctors':
