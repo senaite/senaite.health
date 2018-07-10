@@ -102,6 +102,10 @@ class DoctorsView(ClientContactsView):
         return items
 
     def _apply_filter_by_client(self):
+        """
+        From the current user and the context, update the filter that will be
+        used for filtering the Doctor's list.
+        """
         # If the current context is a Client, filter Doctors by Client UID
         if IClient.providedBy(self.context):
             client_uid = api.get_uid(self.context)
