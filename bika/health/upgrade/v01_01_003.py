@@ -39,11 +39,8 @@ def upgrade(tool):
     setup.runImportStepFromProfile(profile, 'propertiestool')
 
     add_doctor_action_for_client(portal)
-    ut.addIndexAndColumn('portal_catalog', 'allowedRolesAndUsers', 'FieldIndex')
-    ut.addIndex('portal_catalog', 'getPrimaryReferrerUID', 'FieldIndex')
-    ut.refreshCatalogs()
 
-    update_permissions_clients(portal)
+    update_permissions_clients(portal, ut)
 
     logger.info("{0} upgraded to version {1}".format(product, version))
 
@@ -75,15 +72,22 @@ def add_doctor_action_for_client(portal):
     logger.info("'doctor' action for client portal_type added")
 
 
-def update_permissions_clients(portal):
+def update_permissions_clients(portal, ut):
     """
-    Maps and updates the permissions for clients.
+    Maps and updates the permissions for clients and doctors.
+    :param portal: The portal object
+    :param ut: UpgradeUtils object
 
     :return: None
     """
     workflow_tool = api.get_tool("portal_workflow")
     workflow = workflow_tool.getWorkflowById('bika_doctor_workflow')
     catalog = api.get_tool('portal_catalog')
+
+    # Adding new index and columns in portal_catalog for doctors
+    ut.addIndexAndColumn('portal_catalog', 'allowedRolesAndUsers', 'FieldIndex')
+    ut.addIndex('portal_catalog', 'getPrimaryReferrerUID', 'FieldIndex')
+
     brains = catalog(portal_type='Doctor')
     counter = 0
     total = len(brains)
