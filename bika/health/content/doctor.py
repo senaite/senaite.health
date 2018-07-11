@@ -73,15 +73,10 @@ class Doctor(Contact):
         Vocabulary list with clients which the user has Manage AR rights.
         :return: A DisplayList object
         """
-        # Only show clients to which we have Manage AR rights.
-        mtool = api.get_tool('portal_membership')
-        clientfolder = self.clients
-        clients = []
-        for client in clientfolder.objectValues("Client"):
-            if not mtool.checkPermission(ManageAnalysisRequests, client):
-                continue
-            clients.append([client.UID(), client.Title()])
-        clients.sort(key=lambda x: x[1].lower())
+        query = dict(portal_type='Client', inactive_state='active', sort_order='ascending',
+                     sort_on='title')
+        brains = api.search(query, 'portal_catalog')
+        clients = map(lambda brain: [api.get_uid(brain), brain.Title], brains)
         clients.insert(0, ['', ''])
         return DisplayList(clients)
 
