@@ -93,7 +93,8 @@ def update_permissions_clients(portal, ut):
     logger.info(
         "Changing permissions for doctor objects: {0}".format(total))
     for brain in brains:
-        if 'Client' not in brain.allowedRolesAndUsers:
+        allowed = brain.allowedRolesAndUsers or []
+        if 'Client' not in allowed:
             obj = api.get_object(brain)
             workflow.updateRoleMappingsFor(obj)
             obj.reindexObject()
