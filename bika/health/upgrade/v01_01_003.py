@@ -108,3 +108,4 @@ def update_permissions_clients(portal):
        ['Manager', 'LabManager', 'LabClerk', 'LabTechnician',
         'Doctor', 'Owner', 'Sampler', 'Preserver', 'Client'], 0)
     mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Client'], 0)
+    portal.doctors.reindexObject()
