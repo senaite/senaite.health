@@ -36,7 +36,6 @@ def upgrade(tool):
     setup = portal.portal_setup
     setup.runImportStepFromProfile(profile, "skins")
     setup.runImportStepFromProfile(profile, 'workflow')
-    setup.runImportStepFromProfile(profile, 'propertiestool')
 
     add_doctor_action_for_client(portal)
 
