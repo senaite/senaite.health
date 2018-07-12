@@ -7,19 +7,23 @@
 
 """
 """
-from Products.ATContentTypes.content import schemata
 from AccessControl import ClassSecurityInfo
+
 from Products.Archetypes import atapi
-from Products.Archetypes.public import *
-from Products.CMFCore import permissions
+from Products.Archetypes.public import ReferenceField
+from Products.Archetypes.public import Schema
+from Products.Archetypes.public import SelectionWidget
+from Products.Archetypes.public import StringField
+from Products.Archetypes.public import StringWidget
 from Products.CMFCore.utils import getToolByName
+from zope.interface import implements
+
+from bika.lims import api
+
+from bika.health import bikaMessageFactory as _
 from bika.health.config import *
 from bika.health.interfaces import IDoctor
-from bika.health.permissions import *
 from bika.lims.content.contact import Contact
-from bika.lims import bikaMessageFactory as _b
-from bika.health import bikaMessageFactory as _
-from zope.interface import implements
 
 schema = Contact.schema.copy() + Schema((
     StringField('DoctorID',
@@ -27,6 +31,20 @@ schema = Contact.schema.copy() + Schema((
         searchable=True,
         widget=StringWidget(
             label=_('Doctor ID'),
+        ),
+    ),
+    ReferenceField(
+        'PrimaryReferrer',
+        vocabulary='get_clients',
+        allowed_types=('Client',),
+        relationship='DoctorClient',
+        required=0,
+        widget=SelectionWidget(
+            format='select',
+            description=_('Associate the doctor to a client. '
+                          'This doctor will not be accessible from '
+                          'other clients.'),
+            label=_('Client'),
         ),
     ),
 ))
@@ -50,5 +68,25 @@ class Doctor(Contact):
         bc = getToolByName(self, 'bika_catalog')
         return [p.getObject() for p in bc(portal_type='AnalysisRequest', getDoctorUID=self.UID())]
 
+    def get_clients(self):
+        """
+        Vocabulary list with clients which the user has Manage AR rights.
+        :return: A DisplayList object
+        """
+        query = dict(portal_type='Client', inactive_state='active', sort_order='ascending',
+                     sort_on='title')
+        brains = api.search(query, 'portal_catalog')
+        clients = map(lambda brain: [api.get_uid(brain), brain.Title], brains)
+        clients.insert(0, ['', ''])
+        return DisplayList(clients)
+
+    def getPrimaryReferrerUID(self):
+        primary_referrer = self.getPrimaryReferrer()
+        if primary_referrer:
+            return primary_referrer.UID()
+
+
 # schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
+
+
 atapi.registerType(Doctor, PROJECTNAME)

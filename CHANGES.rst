@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #83 Allow client contact to create and edit Doctors
 
 **Changed**
 

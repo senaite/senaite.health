@@ -144,6 +144,20 @@ def setupHealthVarious(context):
         description="",
         condition="")
 
+    # Add doctor action for client portal_type programmatically
+    client = portal.portal_types.getTypeInfo("Client")
+    client.addAction(
+        id="doctors",
+        name="Doctors",
+        action="string:${object_url}/doctors",
+        permission=permissions.View,
+        category="object",
+        visible=True,
+        icon_expr="string:${portal_url}/images/doctor.png",
+        link_target="",
+        description="",
+        condition="")
+
     setupEthnicities(bika_setup)
 
 
@@ -189,7 +203,7 @@ def setupHealthPermissions(context):
     mp(AddAnalysisRequest, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
     mp(AddSample, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
     mp(AddSamplePartition, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
-    mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
+    mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Client'], 0)
     mp(AddAetiologicAgent, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddTreatment, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
     mp(AddDrug, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
@@ -256,7 +270,7 @@ def setupHealthPermissions(context):
     mp(CancelAndReinstate, ['Manager', 'LabManager', 'LabClerk'], 0)
     mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner'], 0)
     mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver'], 0)
+    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'Client'], 0)
     portal.doctors.reindexObject()
 
     # /reports folder permissions
@@ -335,6 +349,7 @@ def setupHealthCatalogs(context):
         return
     addIndex(pc, 'getDoctorID', 'FieldIndex')
     addIndex(pc, 'getDoctorUID', 'FieldIndex')
+    addIndex(pc, 'getPrimaryReferrerUID', 'FieldIndex')
     addColumn(pc, 'getDoctorID')
     addColumn(pc, 'getDoctorUID')
 
