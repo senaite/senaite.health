@@ -22,4 +22,12 @@
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 
+    <browser:page
+        for="*"
+        name="ajax-client-from-current-user"
+        class=".client.ajaxGetClientInfoFromCurrentUser"
+        permission="zope.Public"
+        layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
 </configure>

@@ -5,9 +5,15 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
+import json
+
+import plone
 from Products.CMFCore.utils import getToolByName
-from bika.lims import bikaMessageFactory as _
 from bika.health.ajax.ajaxhandler import AjaxHandler
+from bika.lims import api
+from bika.lims import bikaMessageFactory as _
+from bika.lims.browser import BrowserView
+from bika.lims.interfaces import IClient
 
 
 class ClientAjaxHandler(AjaxHandler):
@@ -57,3 +63,23 @@ class ClientAjaxHandler(AjaxHandler):
                    ATTACH: sch[ATTACH].get(bs)}
 
         return res, None
+
+
+class ajaxGetClientInfoFromCurrentUser(BrowserView):
+    """Returns the client information associated to the current user (if the
+    current user has a contact associated that it's parent is a Client).
+    Otherwise, returns an empty dict
+    """
+
+    def __call__(self):
+        plone.protect.CheckAuthenticator(self.request)
+        curr_user = api.get_current_user()
+        contact = api.get_user_contact(curr_user, contact_types=['Contact'])
+        parent = contact and contact.getParent() or None
+        if parent and not IClient.providedBy(parent):
+            parent = None
+        ret = {'ClientTitle': parent and parent.Title() or '',
+               'ClientID': parent and parent.getClientID() or '',
+               'ClientSysID': parent and parent.id or '',
+               'ClientUID': parent and parent.UID() or '',}
+        return json.dumps(ret)
