@@ -10,6 +10,8 @@ from Products.CMFCore import permissions
 from bika.health import logger
 from bika.health.config import PROJECTNAME as product
 from bika.health.permissions import AddDoctor
+from bika.health.setuphandlers import apply_batch_permissions_for_clients, \
+    add_permission_for_role
 from bika.lims import api
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
@@ -37,48 +39,22 @@ def upgrade(tool):
     setup.runImportStepFromProfile(profile, "skins")
     setup.runImportStepFromProfile(profile, 'workflow')
 
-    add_doctor_action_for_client(portal)
+    # Allow client contacts to list, add and edit batches (cases)
+    apply_batch_permissions_for_clients(portal)
 
-    update_permissions_clients(portal, ut)
+    # Allow clients to list, add and edit doctors
+    apply_doctor_permissions_for_clients(portal, ut)
 
     logger.info("{0} upgraded to version {1}".format(product, version))
 
     return True
 
 
-def add_doctor_action_for_client(portal):
-    """
-    Adds doctor action for client portal_type programmatically
-    :param portal: The portal object
-    :return: None
-    """
-    client = portal.portal_types.getTypeInfo("Client")
-    for action in client.listActionInfos():
-        if action.get('id', None) == 'doctors':
-            logger.info("Already existing 'doctor' action for client portal_type")
-            return None
-    client.addAction(
-        id="doctors",
-        name="Doctors",
-        action="string:${object_url}/doctors",
-        permission=permissions.View,
-        category="object",
-        visible=True,
-        icon_expr="string:${portal_url}/images/doctor.png",
-        link_target="",
-        description="",
-        condition="")
-    logger.info("'doctor' action for client portal_type added")
+def apply_doctor_permissions_for_clients(portal, ut):
+    # Add doctor action for client portal_type
+    add_doctor_action_for_client(portal)
 
-
-def update_permissions_clients(portal, ut):
-    """
-    Maps and updates the permissions for clients and doctors.
-    :param portal: The portal object
-    :param ut: UpgradeUtils object
-
-    :return: None
-    """
+    # Allow client contacts to list/add/edit Doctors
     workflow_tool = api.get_tool("portal_workflow")
     workflow = workflow_tool.getWorkflowById('bika_doctor_workflow')
     catalog = api.get_tool('portal_catalog')
@@ -106,10 +82,32 @@ def update_permissions_clients(portal, ut):
     logger.info(
         "Changed permissions for doctor objects: " +
         "{0}/{1}".format(counter, total))
+
     # Allowing client to view clients folder
-    mp = portal.doctors.manage_permission
-    mp(permissions.View,
-       ['Manager', 'LabManager', 'LabClerk', 'LabTechnician',
-        'Doctor', 'Owner', 'Sampler', 'Preserver', 'Client'], 0)
-    mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Client'], 0)
-    portal.doctors.reindexObject()
+    add_permission_for_role(portal.doctors, permissions.View, 'Client')
+    add_permission_for_role(portal.doctors, AddDoctor, 'Client')
+
+
+def add_doctor_action_for_client(portal):
+    """
+    Adds doctor action for client portal_type programmatically
+    :param portal: The portal object
+    :return: None
+    """
+    client = portal.portal_types.getTypeInfo("Client")
+    for action in client.listActionInfos():
+        if action.get('id', None) == 'doctors':
+            logger.info("Already existing 'doctor' action for client portal_type")
+            return None
+    client.addAction(
+        id="doctors",
+        name="Doctors",
+        action="string:${object_url}/doctors",
+        permission=permissions.View,
+        category="object",
+        visible=True,
+        icon_expr="string:${portal_url}/images/doctor.png",
+        link_target="",
+        description="",
+        condition="")
+    logger.info("'doctor' action for client portal_type added")

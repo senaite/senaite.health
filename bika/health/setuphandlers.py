@@ -8,6 +8,7 @@
 """ Bika setup handlers. """
 
 from Products.CMFCore import permissions
+from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFEditions.Permissions import AccessPreviousVersions
 from Products.CMFEditions.Permissions import ApplyVersionControl
@@ -20,6 +21,7 @@ from bika.health.catalog\
     import getCatalogDefinitions as getCatalogDefinitionsHealth
 from bika.health.catalog import getCatalogExtensions
 from bika.health.config import PROJECTNAME as product
+from bika.lims import api
 from bika.lims.utils import tmpID
 from bika.lims.idserver import renameAfterCreation
 from bika.health.permissions import AddAetiologicAgent
@@ -43,7 +45,7 @@ from bika.health.permissions import AddInsuranceCompany
 from bika.health.permissions import AddEthnicity
 from bika.health.permissions import EditPatient
 from bika.health.permissions import ManageDoctors
-from bika.lims.permissions import AddAnalysisRequest
+from bika.lims.permissions import AddAnalysisRequest, EditBatch, AddBatch
 from bika.lims.permissions import AddAnalysisSpec
 from bika.lims.permissions import AddSample
 from bika.lims.permissions import AddSamplePartition
@@ -401,9 +403,122 @@ def post_install(portal_setup):
     profile = 'profile-{0}:default'.format(product)
     portal_setup.runImportStepFromProfile(profile, "skins")
 
+    # Allow client contacts to list, add and edit batches (cases)
+    # Since bika_batch_workflow lives in senaite and we don't have a workflow
+    # definition here, we need to apply the permission changes against the
+    # workflow manually
+    apply_batch_permissions_for_clients(portal_setup)
+
     logger.info("SENAITE Health post-install handler [DONE]")
 
 
 def setupHealthTestContent(context):
     """Setup custom content"""
     pass
+
+
+def apply_batch_permissions_for_clients(portal):
+    """Apply permissions for client contacts to bika_batch_workfklow, so they
+    can list, add and edit Batches (Clinical Cases)
+    """
+    # Give permission to Client for listing batches and show the "Add" button
+    add_permission_for_role(portal.batches, permissions.View, 'Client')
+    add_permission_for_role(portal, AddBatch, 'Client')
+
+    # Add client to permission-maps of bika_batch_workflow.
+    # We don't want the client to be able to close and re-open batches, so these
+    # permission mappings are only applied to "open" state (initial state)
+    wfid = 'bika_batch_workflow'
+    wfstate = 'open'
+    perms = [EditBatch, ModifyPortalContent, permissions.View, AddAnalysisRequest]
+    added = add_permissions_for_role_in_workflow(wfid, wfstate, ['Client'], perms)
+    if not added:
+        logger.info("No changes in {}. Skipping rolemapping".format(wfid))
+        return
+
+    # Redo the rolemapping for all batches that are open
+    wtool = api.get_tool("portal_workflow")
+    workflow = wtool.getWorkflowById(wfid)
+    catalog = api.get_tool('bika_catalog')
+    brains = catalog(portal_type='Batch', review_state=wfstate)
+    counter = 0
+    total = len(brains)
+    logger.info(
+        "Changing permissions for Batch objects: {0}".format(total))
+    for brain in brains:
+        obj = api.get_object(brain)
+        workflow.updateRoleMappingsFor(obj)
+        obj.reindexObject()
+        counter += 1
+        if counter % 100 == 0:
+            logger.info(
+                "Changing permissions for Batch objects: " +
+                "{0}/{1}".format(counter, total))
+    logger.info(
+        "Changed permissions for Batch objects: " +
+        "{0}/{1}".format(counter, total))
+
+
+def add_permission_for_role(folder, permission, role):
+    """Grants a permission to the given role and given folder
+    :param folder: the folder to which the permission for the role must apply
+    :param permission: the permission to be assigned
+    :param role: role to which the permission must be granted
+    :return True if succeed, otherwise, False
+    """
+    roles = filter(lambda perm: perm.get('selected') == 'SELECTED',
+                   folder.rolesOfPermission(permission))
+    roles = map(lambda perm_role: perm_role['name'], roles)
+    if role in roles:
+        # Nothing to do, the role has the permission granted already
+        logger.info(
+            "Role '{}' has permission {} for {} already".format(role,
+                                                                repr(permission),
+                                                                repr(folder)))
+        return False
+    roles.append(role)
+    acquire = folder.acquiredRolesAreUsedBy(permission) == 'CHECKED' and 1 or 0
+    folder.manage_permission(permission, roles=roles, acquire=acquire)
+    folder.reindexObject()
+    logger.info(
+        "Added permission {} to role '{}' for {}".format(repr(permission), role,
+                                                         repr(folder)))
+    return True
+
+
+def add_permissions_for_role_in_workflow(wfid, wfstate, roles, permissions):
+    """Adds the permissions passed in for the given roles and for the specified
+    workflow and its state
+    :param wfid: workflow id
+    :param wfstate: workflow state
+    :param roles: roles the permissions must be granted to
+    :param permissions: permissions to be granted
+    :return True if succeed, otherwise, False
+    """
+    wtool = api.get_tool("portal_workflow")
+    workflow = wtool.getWorkflowById(wfid)
+    if not workflow:
+        return False
+    state = workflow.states.get(wfstate, None)
+    if not state:
+        return False
+    # Get the permission-roles that apply to this state
+    added = False
+    for permission in permissions:
+        # Get the roles that applies for this permission
+        permission_info = state.getPermissionInfo(permission)
+        acquired = permission_info['acquired']
+        st_roles = permission_info['roles']
+        roles_to_add = filter(lambda role: role not in st_roles, roles)
+        if not roles_to_add:
+            logger.info("Permission {} already granted for roles {} and state "
+                        "{} in {}".format(repr(permission), repr(roles),
+                                        wfstate, wfid))
+            continue
+
+        logger.info("Adding roles {} to permission {} in {} with state {}"
+                    .format(repr(roles), repr(permission), wfid, wfstate))
+        st_roles.extend(roles_to_add)
+        state.setPermission(permission, acquired, st_roles)
+        added = True
+    return added
