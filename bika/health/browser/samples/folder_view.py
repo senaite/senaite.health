@@ -87,30 +87,30 @@ class SamplesView(BaseView):
                 for ar in ars:
                     doctor = ar.Schema()['Doctor'].get(ar) if ar else None
                     if doctor and doctor.Title() not in doctors \
-                        and wf.getInfoFor(ar, 'review_state') != 'invalid':
+                            and wf.getInfoFor(ar, 'review_state') != 'invalid':
                         doctors.append(doctor.Title())
                         doctorsanchors.append("<a href='%s'>%s</a>" % (doctor.absolute_url(), doctor.Title()))
-                items[x]['getDoctor'] = ', '.join(doctors);
+                items[x]['getDoctor'] = ', '.join(doctors)
                 items[x]['replace']['getDoctor'] = ', '.join(doctorsanchors)
         return items
 
     def getPatient(self, sample):
-        # Onse sample can have more than one AR associated, but if is
+        # One sample can have more than one AR associated, but if is
         # the case, we must only take into account the one that is not
         # invalidated/retracted
         wf = getToolByName(self.context, 'portal_workflow')
         rawars = sample.getAnalysisRequests()
         target_ar = None
-        ars = [ar for ar in rawars \
+        ars = [ar for ar in rawars
                if (wf.getInfoFor(ar, 'review_state') != 'invalid')]
-        if (len(ars) == 0 and len(rawars) > 0):
+        if len(ars) == 0 and len(rawars) > 0:
             # All ars are invalid. Retrieve the info from the last one
             target_ar = rawars[len(rawars) - 1]
-        elif (len(ars) > 1):
+        elif len(ars) > 1:
             # There's more than one valid AR
             # That couldn't happen never. Anyway, retrieve the last one
             target_ar = ars[len(ars) - 1]
-        elif (len(ars) == 1):
+        elif len(ars) == 1:
             # One ar matches
             target_ar = ars[0]
         if target_ar:
