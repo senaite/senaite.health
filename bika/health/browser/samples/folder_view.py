@@ -17,7 +17,6 @@ class SamplesView(BaseView):
 
     def __init__(self, context, request):
         super(SamplesView, self).__init__(context, request)
-
         # Add Patient fields
         self.columns['getPatientID'] = {
             'title': _('Patient ID'),
@@ -49,19 +48,14 @@ class SamplesView(BaseView):
         roles = member.getRoles()
         wf = getToolByName(self.context, 'portal_workflow')
         if 'Manager' not in roles \
-            and 'LabManager' not in roles \
-            and 'LabClerk' not in roles:
+                and 'LabManager' not in roles \
+                and 'LabClerk' not in roles:
             # Remove patient fields. Must be done here because in __init__
             # method, member.getRoles() returns empty
-            del self.columns['getPatientID']
-            del self.columns['getClientPatientID']
-            del self.columns['getPatient']
-            del self.columns['getDoctor']
-            for rs in self.review_states:
-                del rs['columns'][rs['columns'].index('getClientPatientID')]
-                del rs['columns'][rs['columns'].index('getPatientID')]
-                del rs['columns'][rs['columns'].index('getPatient')]
-                del rs['columns'][rs['columns'].index('getDoctor')]
+            self.remove_column('getPatientID')
+            self.remove_column('getClientPatientID')
+            self.remove_column('getPatient')
+            self.remove_column('getDoctor')
         else:
             for x in range(len(items)):
                 if 'obj' not in items[x]:
