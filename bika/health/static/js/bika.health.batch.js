@@ -130,6 +130,22 @@ function HealthBatchEditView() {
                 }
             });
         }
+        // Maybe the current user is a client contact. In that case, only the
+        // client the current user belongs to must be available
+        if (refclientuid == null) {
+            $.ajax({
+                url: window.portal_url + "/ajax-client-from-current-user",
+                type: 'POST',
+                async: false,
+                data: {'_authenticator': $('input[name="_authenticator"]').val()},
+                dataType: "json",
+                success: function(data, textStatus, $XHR){
+                    if (data['ClientUID'] != '') {
+                        refclientuid = data['ClientUID'] != '' ? data['ClientUID'] : null;
+                    }
+                }
+            });
+        }
         return refclientuid != '' ? refclientuid : null;
     }
 
