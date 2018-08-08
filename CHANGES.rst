@@ -17,6 +17,7 @@ Changelog
 
 **Fixed**
 
+- #97 Traceback accessing Doctor samples when user is not Manager, LabManager or LabClerk
 - #82 Inconsistent behavior with health' skins priority over core's
 - #81 Traceback when importing diseases with setupdata.xlsx
 
