@@ -202,6 +202,8 @@ function HealthBatchEditView() {
             // client inside patient-related combos
             applyFilter($("#Patient"), 'getPrimaryReferrerUID', rcuid);
             applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', rcuid);
+            // Also, show only the Doctors that are not from a different client
+            applyFilter($("#Doctor"), 'getPrimaryReferrerUID', [rcuid, null]);
         }
 
         // By default, get the referrer uids from the form itself. If the form is
