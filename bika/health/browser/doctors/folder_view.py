@@ -5,16 +5,17 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from Products.CMFCore.utils import getToolByName
+from collections import OrderedDict
 
+from Products.CMFCore.utils import getToolByName
 from bika.health import bikaMessageFactory as _
 from bika.health.permissions import *
 from bika.lims import api
 from bika.lims.browser.client import ClientContactsView
-from bika.lims.interfaces import IClient, ILabContact
+from bika.lims.interfaces import IClient
 from bika.lims.utils import get_link
 from plone.memoize import view as viewcache
-from collections import OrderedDict
+
 
 class DoctorsView(ClientContactsView):
 
@@ -87,20 +88,10 @@ class DoctorsView(ClientContactsView):
     def get_user_client_uid(self, default=None):
         """Returns the id of the client the current user belongs to
         """
-        user = api.get_current_user()
-        roles = user.getRoles()
-        if 'Client' not in roles:
-            return default
-
-        contact = api.get_user_contact(user)
-        if not contact or ILabContact.providedBy(contact):
-            return default
-
-        client = api.get_parent(contact)
-        if not client or not IClient.providedBy(client):
-            return default
-
-        return api.get_uid(client)
+        client = api.get_current_client()
+        if client:
+            return api.get_uid(client)
+        return default
 
     def folderitem(self, obj, item, index):
         """Applies new properties to the item to be rendered
