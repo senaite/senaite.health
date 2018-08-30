@@ -12,6 +12,7 @@ from bika.health.permissions import *
 from bika.lims import api
 from bika.lims.browser.client import ClientContactsView
 from bika.lims.interfaces import IClient, ILabContact
+from bika.lims.utils import get_link
 from plone.memoize import view as viewcache
 
 
@@ -132,15 +133,12 @@ class DoctorsView(ClientContactsView):
         referrer_uid = api.get_object(obj).getPrimaryReferrerUID()
         return not referrer_uid or referrer_uid == client_uid
 
-    def folderitems(self):
-        items = super(DoctorsView, self).folderitems()
-        for x in range(len(items)):
-            if not 'obj' in items[x]:
-                continue
-            obj = items[x]['obj']
-            items[x]['replace']['getDoctorID'] = "<a href='%s'>%s</a>" % \
-                 (items[x]['url'], items[x]['getDoctorID'])
-            items[x]['replace']['getFullname'] = "<a href='%s'>%s</a>" % \
-                 (items[x]['url'], items[x]['getFullname'])
 
-        return items
+    def folderitem(self, obj, item, index):
+        """Applies new properties to the item to be rendered
+        """
+        item = super(DoctorsView, self).folderitem(obj, item, index)
+        url = item.get("url")
+        doctor_id = item.get("getDoctorID")
+        item['replace']['getDoctorID'] = get_link(url, value=doctor_id)
+        return item
