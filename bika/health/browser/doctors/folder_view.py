@@ -75,6 +75,12 @@ class DoctorsView(ClientContactsView):
             client_uid = api.get_uid(self.context)
             self.contentFilter['getPrimaryReferrerUID'] = client_uid
 
+        # If the current user is a client contact, do not display the doctors
+        # assigned to other clients
+        elif self.get_user_client_uid():
+            client_uid = self.get_user_client_uid()
+            self.contentFilter['getPrimaryReferrerUID'] = [client_uid, None]
+
         return super(DoctorsView, self).__call__()
 
     @viewcache.memoize
@@ -95,26 +101,6 @@ class DoctorsView(ClientContactsView):
             return default
 
         return api.get_uid(client)
-
-    def isItemAllowed(self, obj):
-        """
-        It checks if the item can be added to the list. If the current user is
-        a client contact, only doctors without client assigned or assigned to
-        sime client as the contact will be displayed.
-        """
-        allowed = super(DoctorsView, self).isItemAllowed(obj)
-        if not allowed:
-            return False
-
-        # Current user belongs to a client
-        client_uid = self.get_user_client_uid()
-        if not client_uid:
-            return True
-
-        # Only visible if the Doctor has the same client assigned or None
-        referrer_uid = api.get_object(obj).getPrimaryReferrerUID()
-        return not referrer_uid or referrer_uid == client_uid
-
 
     def folderitem(self, obj, item, index):
         """Applies new properties to the item to be rendered
