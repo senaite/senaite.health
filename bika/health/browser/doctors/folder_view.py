@@ -12,6 +12,7 @@ from bika.health.permissions import *
 from bika.lims import api
 from bika.lims.browser.client import ClientContactsView
 from bika.lims.interfaces import IClient, ILabContact
+from plone.memoize import view as viewcache
 
 
 class DoctorsView(ClientContactsView):
@@ -85,8 +86,51 @@ class DoctorsView(ClientContactsView):
                              'getMobilePhone']})
             stat = self.request.get("%s_review_state"%self.form_id, 'default')
             self.show_select_column = stat != 'all'
-        self._apply_filter_by_client()
+
+        # If the current context is a Client, filter Doctors by Client UID
+        if IClient.providedBy(self.context):
+            client_uid = api.get_uid(self.context)
+            self.contentFilter['getPrimaryReferrerUID'] = client_uid
+
         return super(DoctorsView, self).__call__()
+
+    @viewcache.memoize
+    def get_user_client_uid(self, default=None):
+        """Returns the id of the client the current user belongs to
+        """
+        user = api.get_current_user()
+        roles = user.getRoles()
+        if 'Client' not in roles:
+            return default
+
+        contact = api.get_user_contact(user)
+        if not contact or ILabContact.providedBy(contact):
+            return default
+
+        client = api.get_parent(contact)
+        if not client or not IClient.providedBy(client):
+            return default
+
+        return api.get_uid(client)
+
+    def isItemAllowed(self, obj):
+        """
+        It checks if the item can be added to the list. If the current user is
+        a client contact, only doctors without client assigned or assigned to
+        sime client as the contact will be displayed.
+        """
+        allowed = super(DoctorsView, self).isItemAllowed(obj)
+        if not allowed:
+            return False
+
+        # Current user belongs to a client
+        client_uid = self.get_user_client_uid()
+        if not client_uid:
+            return True
+
+        # Only visible if the Doctor has the same client assigned or None
+        referrer_uid = api.get_object(obj).getPrimaryReferrerUID()
+        return not referrer_uid or referrer_uid == client_uid
 
     def folderitems(self):
         items = super(DoctorsView, self).folderitems()
@@ -100,36 +144,3 @@ class DoctorsView(ClientContactsView):
                  (items[x]['url'], items[x]['getFullname'])
 
         return items
-
-    def _apply_filter_by_client(self):
-        """
-        From the current user and the context, update the filter that will be
-        used for filtering the Doctor's list.
-        """
-        # If the current context is a Client, filter Doctors by Client UID
-        if IClient.providedBy(self.context):
-            client_uid = api.get_uid(self.context)
-            self.contentFilter['getPrimaryReferrerUID'] = client_uid
-            return
-
-        # If the current user is a Client contact, filter the Doctors in
-        # accordance. For the rest of users (LabContacts), the visibility of
-        # the doctors depend on their permissions
-        user = api.get_current_user()
-        roles = user.getRoles()
-        if 'Client' not in roles:
-            return
-
-        # Are we sure this a ClientContact?
-        # May happen that this is a Plone member, w/o having a ClientContact
-        # assigned or having a LabContact assigned... weird
-        contact = api.get_user_contact(user)
-        if not contact or ILabContact.providedBy(contact):
-            return
-
-        # Is the parent from the Contact a Client?
-        client = api.get_parent(contact)
-        if not client or not IClient.providedBy(client):
-            return
-        client_uid = api.get_uid(client)
-        self.contentFilter['getPrimaryReferrerUID'] = client_uid
