@@ -19,6 +19,7 @@ Changelog
 **Fixed**
 
 - #102 Doctors assigned to other clients are listed when logged as Client
+- #103 All Samples are listed inside Case context
 - #99 Traceback when publishing health results from inside a client
 - #97 Traceback accessing Doctor samples when user is not Manager, LabManager or LabClerk
 - #82 Inconsistent behavior with health' skins priority over core's
