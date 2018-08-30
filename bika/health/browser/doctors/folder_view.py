@@ -14,7 +14,7 @@ from bika.lims.browser.client import ClientContactsView
 from bika.lims.interfaces import IClient, ILabContact
 from bika.lims.utils import get_link
 from plone.memoize import view as viewcache
-
+from collections import OrderedDict
 
 class DoctorsView(ClientContactsView):
 
@@ -26,31 +26,21 @@ class DoctorsView(ClientContactsView):
         self.title = self.context.translate(_("Doctors"))
         self.icon = self.portal_url + "/++resource++bika.health.images/doctor_big.png"
         self.description = ""
-        self.show_sort_column = False
-        self.show_select_row = False
-        self.show_select_column = False
-        self.pagesize = 50
 
-        self.columns = {
-            'getDoctorID': {'title': _('Doctor ID'),
-                            'index': 'getDoctorID'},
-            'getFullname': {'title': _('Full Name'),
-                            'index': 'getFullname'},
-            'getEmailAddress': {'title': _('Email Address')},
-            'getBusinessPhone': {'title': _('Business Phone')},
-            'getMobilePhone': {'title': _('Mobile Phone')},
-        }
+        # Prepend getDoctorID
+        self.columns = OrderedDict([
+            ("getDoctorID", {
+                "title": _('Doctor ID'),
+                "index": "getDoctorID",
+                "sortable": True, }),
+        ] + self.columns.items())
 
         self.review_states = [
             {'id':'default',
              'title': _('Active'),
              'contentFilter': {'inactive_state': 'active'},
              'transitions': [],
-             'columns': ['getDoctorID',
-                         'getFullname',
-                         'getEmailAddress',
-                         'getBusinessPhone',
-                         'getMobilePhone']},
+             'columns': self.columns.keys()},
         ]
 
     def __call__(self):
@@ -70,21 +60,13 @@ class DoctorsView(ClientContactsView):
                  'title': _('Dormant'),
                  'contentFilter': {'inactive_state': 'inactive'},
                  'transitions': [{'id':'activate'}, ],
-                 'columns': ['getDoctorID',
-                             'getFullname',
-                             'getEmailAddress',
-                             'getBusinessPhone',
-                             'getMobilePhone']})
+                 'columns': self.columns.keys()})
             self.review_states.append(
                 {'id':'all',
                  'title': _('All'),
                  'contentFilter':{},
                  'transitions':[{'id':'empty'}],
-                 'columns': ['getDoctorID',
-                             'getFullname',
-                             'getEmailAddress',
-                             'getBusinessPhone',
-                             'getMobilePhone']})
+                 'columns': self.columns.keys()})
             stat = self.request.get("%s_review_state"%self.form_id, 'default')
             self.show_select_column = stat != 'all'
 
