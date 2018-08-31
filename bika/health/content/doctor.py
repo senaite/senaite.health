@@ -16,6 +16,8 @@ from Products.Archetypes.public import SelectionWidget
 from Products.Archetypes.public import StringField
 from Products.Archetypes.public import StringWidget
 from Products.CMFCore.utils import getToolByName
+from bika.lims.catalog.analysisrequest_catalog import \
+    CATALOG_ANALYSIS_REQUEST_LISTING
 from zope.interface import implements
 
 from bika.lims import api
@@ -66,15 +68,45 @@ class Doctor(Contact):
 
     def getARs(self, analysis_state):
         bc = getToolByName(self, 'bika_catalog')
-        return [p.getObject() for p in bc(portal_type='AnalysisRequest', getDoctorUID=self.UID())]
+        return [p.getObject() for p in bc(portal_type='AnalysisRequest',
+                                          getDoctorUID=self.UID())]
+
+    def getAnalysisRequests(self):
+        """
+        Returns the Analysis Requests this Doctor is assigned to
+        :return:
+        """
+        query = dict(portal_type='AnalysisRequest', getDoctorUID=self.UID())
+        return api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
+
+    def getBatches(self):
+        """
+        Returns the Batches this Doctor is assigned to
+        :return:
+        """
+        query = dict(portal_type='Batch', getDoctorUID=self.UID())
+        return api.search(query, 'bika_catalog')
 
     def get_clients(self):
         """
-        Vocabulary list with clients which the user has Manage AR rights.
+        Vocabulary list with clients
         :return: A DisplayList object
         """
-        query = dict(portal_type='Client', inactive_state='active', sort_order='ascending',
-                     sort_on='title')
+        if self.getBatches() or self.getAnalysisRequests():
+            # Allow to change the client if there are no ARs associated
+            client = self.getPrimaryReferrer()
+            if not client:
+                return DisplayList([('', '')])
+            return DisplayList([(api.get_uid(client), client.Title())])
+
+        # If the current user is a client contact, do not display other clients
+        client = api.get_current_client()
+        if client:
+            return DisplayList([(api.get_uid(client), client.Title())])
+
+        # Search for clients
+        query = dict(portal_type='Client', inactive_state='active',
+                     sort_order='ascending', sort_on='title')
         brains = api.search(query, 'portal_catalog')
         clients = map(lambda brain: [api.get_uid(brain), brain.Title], brains)
         clients.insert(0, ['', ''])
