@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #102 Add Primary Referrer column in Doctor listings
 - #85 Allow client contact to list/add/edit Batches from its own Client
 - #83 Allow client contact to create and edit Doctors
 

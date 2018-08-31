@@ -28,13 +28,28 @@ class DoctorsView(ClientContactsView):
         self.icon = self.portal_url + "/++resource++bika.health.images/doctor_big.png"
         self.description = ""
 
-        # Prepend getDoctorID
-        self.columns = OrderedDict([
+        self.columns = OrderedDict((
             ("getDoctorID", {
                 "title": _('Doctor ID'),
                 "index": "getDoctorID",
                 "sortable": True, }),
-        ] + self.columns.items())
+            ("getFullname", {
+                "title": _("Full Name"),
+                "index": "getFullname",
+                "sortable": True, }),
+            ("getPrimaryReferrer", {
+                "title": _("Primary Referrer"),
+                "index": "getPrimaryReferrerUID",
+                "sortable": True, }),
+            ("Username", {
+                "title": _("User Name"), }),
+            ("getEmailAddress", {
+                "title": _("Email Address"), }),
+            ("getBusinessPhone", {
+                "title": _("Business Phone"), }),
+            ("getMobilePhone", {
+                "title": _("MobilePhone"), }),
+        ))
 
         self.review_states = [
             {'id':'default',
@@ -100,4 +115,11 @@ class DoctorsView(ClientContactsView):
         url = item.get("url")
         doctor_id = item.get("getDoctorID")
         item['replace']['getDoctorID'] = get_link(url, value=doctor_id)
+        item['getPrimaryReferrer'] = ""
+        doctor = api.get_object(obj)
+        pri = doctor.getPrimaryReferrer()
+        if pri:
+            pri_url = pri.absolute_url()
+            pri = pri.Title()
+            item['replace']['getPrimaryReferrer'] = get_link(pri_url, value=pri)
         return item
