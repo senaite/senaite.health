@@ -38,6 +38,7 @@ def upgrade(tool):
     setup = portal.portal_setup
     setup.runImportStepFromProfile(profile, "skins")
     setup.runImportStepFromProfile(profile, 'workflow')
+    setup.runImportStepFromProfile(profile, "typeinfo")
 
     # Allow client contacts to list, add and edit batches (cases)
     apply_batch_permissions_for_clients(portal)
