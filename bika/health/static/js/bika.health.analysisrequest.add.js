@@ -298,6 +298,12 @@ function HealthAnalysisRequestAddView() {
             if (element.length > 0) {
                 filter_combogrid(element[0], "getParentUID", clientuid);
             }
+
+            // Doctor searches
+            element = $("#Doctor-" + col);
+            if (element.length > 0) {
+                filter_combogrid(element[0], "getPrimaryReferrerUID", [clientuid, null]);
+            }
         }
     }
 

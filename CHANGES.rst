@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #102 Add Primary Referrer column in Doctor listings
 - #85 Allow client contact to list/add/edit Batches from its own Client
 - #83 Allow client contact to create and edit Doctors
 
@@ -18,7 +19,8 @@ Changelog
 
 **Fixed**
 
-- #102 All Samples are listed inside Case context
+- #102 Doctors assigned to other clients are listed when logged as Client
+- #103 All Samples are listed inside Case context
 - #99 Traceback when publishing health results from inside a client
 - #97 Traceback accessing Doctor samples when user is not Manager, LabManager or LabClerk
 - #82 Inconsistent behavior with health' skins priority over core's

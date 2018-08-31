@@ -5,13 +5,16 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from Products.CMFCore.utils import getToolByName
+from collections import OrderedDict
 
+from Products.CMFCore.utils import getToolByName
 from bika.health import bikaMessageFactory as _
 from bika.health.permissions import *
 from bika.lims import api
 from bika.lims.browser.client import ClientContactsView
-from bika.lims.interfaces import IClient, ILabContact
+from bika.lims.interfaces import IClient
+from bika.lims.utils import get_link
+from plone.memoize import view as viewcache
 
 
 class DoctorsView(ClientContactsView):
@@ -24,31 +27,36 @@ class DoctorsView(ClientContactsView):
         self.title = self.context.translate(_("Doctors"))
         self.icon = self.portal_url + "/++resource++bika.health.images/doctor_big.png"
         self.description = ""
-        self.show_sort_column = False
-        self.show_select_row = False
-        self.show_select_column = False
-        self.pagesize = 50
 
-        self.columns = {
-            'getDoctorID': {'title': _('Doctor ID'),
-                            'index': 'getDoctorID'},
-            'getFullname': {'title': _('Full Name'),
-                            'index': 'getFullname'},
-            'getEmailAddress': {'title': _('Email Address')},
-            'getBusinessPhone': {'title': _('Business Phone')},
-            'getMobilePhone': {'title': _('Mobile Phone')},
-        }
+        self.columns = OrderedDict((
+            ("getDoctorID", {
+                "title": _('Doctor ID'),
+                "index": "getDoctorID",
+                "sortable": True, }),
+            ("getFullname", {
+                "title": _("Full Name"),
+                "index": "getFullname",
+                "sortable": True, }),
+            ("getPrimaryReferrer", {
+                "title": _("Primary Referrer"),
+                "index": "getPrimaryReferrerUID",
+                "sortable": True, }),
+            ("Username", {
+                "title": _("User Name"), }),
+            ("getEmailAddress", {
+                "title": _("Email Address"), }),
+            ("getBusinessPhone", {
+                "title": _("Business Phone"), }),
+            ("getMobilePhone", {
+                "title": _("MobilePhone"), }),
+        ))
 
         self.review_states = [
             {'id':'default',
              'title': _('Active'),
              'contentFilter': {'inactive_state': 'active'},
              'transitions': [],
-             'columns': ['getDoctorID',
-                         'getFullname',
-                         'getEmailAddress',
-                         'getBusinessPhone',
-                         'getMobilePhone']},
+             'columns': self.columns.keys()},
         ]
 
     def __call__(self):
@@ -68,68 +76,50 @@ class DoctorsView(ClientContactsView):
                  'title': _('Dormant'),
                  'contentFilter': {'inactive_state': 'inactive'},
                  'transitions': [{'id':'activate'}, ],
-                 'columns': ['getDoctorID',
-                             'getFullname',
-                             'getEmailAddress',
-                             'getBusinessPhone',
-                             'getMobilePhone']})
+                 'columns': self.columns.keys()})
             self.review_states.append(
                 {'id':'all',
                  'title': _('All'),
                  'contentFilter':{},
                  'transitions':[{'id':'empty'}],
-                 'columns': ['getDoctorID',
-                             'getFullname',
-                             'getEmailAddress',
-                             'getBusinessPhone',
-                             'getMobilePhone']})
+                 'columns': self.columns.keys()})
             stat = self.request.get("%s_review_state"%self.form_id, 'default')
             self.show_select_column = stat != 'all'
-        self._apply_filter_by_client()
-        return super(DoctorsView, self).__call__()
 
-    def folderitems(self):
-        items = super(DoctorsView, self).folderitems()
-        for x in range(len(items)):
-            if not 'obj' in items[x]:
-                continue
-            obj = items[x]['obj']
-            items[x]['replace']['getDoctorID'] = "<a href='%s'>%s</a>" % \
-                 (items[x]['url'], items[x]['getDoctorID'])
-            items[x]['replace']['getFullname'] = "<a href='%s'>%s</a>" % \
-                 (items[x]['url'], items[x]['getFullname'])
-
-        return items
-
-    def _apply_filter_by_client(self):
-        """
-        From the current user and the context, update the filter that will be
-        used for filtering the Doctor's list.
-        """
         # If the current context is a Client, filter Doctors by Client UID
         if IClient.providedBy(self.context):
             client_uid = api.get_uid(self.context)
             self.contentFilter['getPrimaryReferrerUID'] = client_uid
-            return
 
-        # If the current user is a Client contact, filter the Doctors in
-        # accordance. For the rest of users (LabContacts), the visibility of
-        # the doctors depend on their permissions
-        user = api.get_current_user()
-        roles = user.getRoles()
-        if 'Client' not in roles:
-            return
+        # If the current user is a client contact, do not display the doctors
+        # assigned to other clients
+        elif self.get_user_client_uid():
+            client_uid = self.get_user_client_uid()
+            self.contentFilter['getPrimaryReferrerUID'] = [client_uid, None]
 
-        # Are we sure this a ClientContact?
-        # May happen that this is a Plone member, w/o having a ClientContact
-        # assigned or having a LabContact assigned... weird
-        contact = api.get_user_contact(user)
-        if not contact or ILabContact.providedBy(contact):
-            return
+        return super(DoctorsView, self).__call__()
 
-        # Is the parent from the Contact a Client?
-        client = api.get_parent(contact)
-        if not client or not IClient.providedBy(client):
-            return
-        client_uid = api.get_uid(client)
-        self.contentFilter['getPrimaryReferrerUID'] = client_uid
+    @viewcache.memoize
+    def get_user_client_uid(self, default=None):
+        """Returns the id of the client the current user belongs to
+        """
+        client = api.get_current_client()
+        if client:
+            return api.get_uid(client)
+        return default
+
+    def folderitem(self, obj, item, index):
+        """Applies new properties to the item to be rendered
+        """
+        item = super(DoctorsView, self).folderitem(obj, item, index)
+        url = item.get("url")
+        doctor_id = item.get("getDoctorID")
+        item['replace']['getDoctorID'] = get_link(url, value=doctor_id)
+        item['getPrimaryReferrer'] = ""
+        doctor = api.get_object(obj)
+        pri = doctor.getPrimaryReferrer()
+        if pri:
+            pri_url = pri.absolute_url()
+            pri = pri.Title()
+            item['replace']['getPrimaryReferrer'] = get_link(pri_url, value=pri)
+        return item
