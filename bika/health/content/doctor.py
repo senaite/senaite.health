@@ -5,27 +5,21 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-"""
-"""
 from AccessControl import ClassSecurityInfo
-
 from Products.Archetypes import atapi
 from Products.Archetypes.public import ReferenceField
 from Products.Archetypes.public import Schema
 from Products.Archetypes.public import SelectionWidget
 from Products.Archetypes.public import StringField
 from Products.Archetypes.public import StringWidget
-from Products.CMFCore.utils import getToolByName
-from bika.lims.catalog.analysisrequest_catalog import \
-    CATALOG_ANALYSIS_REQUEST_LISTING
-from zope.interface import implements
-
-from bika.lims import api
-
 from bika.health import bikaMessageFactory as _
 from bika.health.config import *
 from bika.health.interfaces import IDoctor
+from bika.lims import api
+from bika.lims.catalog.analysisrequest_catalog import \
+    CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.content.contact import Contact
+from zope.interface import implements
 
 schema = Contact.schema.copy() + Schema((
     StringField('DoctorID',
@@ -37,7 +31,7 @@ schema = Contact.schema.copy() + Schema((
     ),
     ReferenceField(
         'PrimaryReferrer',
-        vocabulary='get_clients',
+        vocabulary='get_clients_vocabulary',
         allowed_types=('Client',),
         relationship='DoctorClient',
         required=0,
@@ -58,36 +52,40 @@ class Doctor(Contact):
     displayContentsTab = False
     schema = schema
 
-    security.declarePublic('getSamples')
+    def getSamples(self, full_objects=False):
+        """
+        Returns the Samples this Doctor is assigned to
+        :return:
+        """
+        query = dict(portal_type="Sample", getDoctorUID=self.UID())
+        brains = api.search(query, "bika_catalog")
+        if full_objects:
+            return map(lambda brain: api.get_object(brain), brains)
+        return brains
 
-    def getSamples(self):
-        bc = getToolByName(self, 'bika_catalog')
-        return [p.getObject() for p in bc(portal_type='Sample', getDoctorUID=self.UID())]
-
-    security.declarePublic('getARs')
-
-    def getARs(self, analysis_state):
-        bc = getToolByName(self, 'bika_catalog')
-        return [p.getObject() for p in bc(portal_type='AnalysisRequest',
-                                          getDoctorUID=self.UID())]
-
-    def getAnalysisRequests(self):
+    def getAnalysisRequests(self, full_objects=False):
         """
         Returns the Analysis Requests this Doctor is assigned to
         :return:
         """
         query = dict(portal_type='AnalysisRequest', getDoctorUID=self.UID())
-        return api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
+        brains = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
+        if full_objects:
+            return map(lambda brain: api.get_object(brain), brains)
+        return brains
 
-    def getBatches(self):
+    def getBatches(self, full_objects=False):
         """
         Returns the Batches this Doctor is assigned to
         :return:
         """
         query = dict(portal_type='Batch', getDoctorUID=self.UID())
-        return api.search(query, 'bika_catalog')
+        brains = api.search(query, 'bika_catalog')
+        if full_objects:
+            return map(lambda brain: api.get_object(brain), brains)
+        return brains
 
-    def get_clients(self):
+    def get_clients_vocabulary(self):
         """
         Vocabulary list with clients
         :return: A DisplayList object
