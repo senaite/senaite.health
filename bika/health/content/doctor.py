@@ -85,8 +85,16 @@ class Doctor(Contact):
         if primary_referrer:
             return primary_referrer.UID()
 
-
-# schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
-
+    def current_user_can_edit(self):
+        """Returns true if the current user can edit this Doctor.
+        """
+        user_client = api.get_current_client()
+        if user_client:
+            # The current user is a client contact. This user can only edit
+            # this doctor if it has the same client assigned
+            client_uid = api.get_uid(user_client)
+            doctor_client = self.getPrimaryReferrer()
+            return doctor_client and api.get_uid(doctor_client) == client_uid
+        return True
 
 atapi.registerType(Doctor, PROJECTNAME)

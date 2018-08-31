@@ -17,7 +17,7 @@
  <property name="allow_discussion">False</property>
  <property name="default_view_fallback">False</property>
 
- <alias from="(Default)" to="base_edit"/>
+ <alias from="(Default)" to="analysisrequests"/>
  <alias from="view" to="base_edit"/>
  <alias from="edit" to="base_edit"/>
 
@@ -35,12 +35,12 @@
  <action title="Edit"
          action_id="edit"
          category="object"
-         condition_expr=""
+         condition_expr="python:object.current_user_can_edit()"
          url_expr="string:${object_url}/edit"
          i18n:attributes="title"
          i18n:domain="plone"
          visible="True">
-    <permission value="BIKA: Manage Bika"/>
+    <permission value="Modify portal content"/>
  </action>
 
  <action title="Analysis Requests"
