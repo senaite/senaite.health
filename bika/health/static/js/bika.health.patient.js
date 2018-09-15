@@ -238,43 +238,116 @@ function HealthPatientEditView() {
      * showing all fields.
      */
     function loadAnonymous() {
-        tohide = ["#patient-base-edit #archetypes-fieldname-Salutation",
-                  "#patient-base-edit #archetypes-fieldname-Middleinitial",
-                  "#patient-base-edit #archetypes-fieldname-Middlename",
-                  "#patient-base-edit #archetypes-fieldname-Firstname",
-                  "#patient-base-edit #archetypes-fieldname-Surname",
-                  "#patient-base-edit #archetypes-fieldname-AgeSplitted",
-                  "#patient-base-edit #archetypes-fieldname-BirthDateEstimated"];
+        var prefix = "#patient-base-edit #"
 
-        if ($('#patient-base-edit #Anonymous').is(':checked')) {
+        // Tabs to hide
+        var tabs_to_hide = [
+            "default",
+            "personal",
+            "insurance",
+            "address",
+            "identification",
+            "publication-preference",
+        ];
+
+        // Fields to hide
+        var tohide = [
+            "Salutation",
+            "Middleinitial",
+            "Middlename",
+            "Firstname",
+            "Surname",
+            "AgeSplitted_year",
+            "AgeSplitted_month",
+            "AgeSplitted_day",
+            "BirthDate",
+            "BirthDateEstimated",
+            "ConsentSMS",
+        ];
+
+        // Non-required fields
+        var nonrequired = [
+            "Surname",
+            "AgeSplitted",
+            "BirthDate",
+            "BirthDateEstimated",
+        ];
+
+        // Required fields
+        var required = [
+            "ClientPatientID",
+        ];
+
+        if ($(prefix + 'Anonymous').is(':checked')) {
+            // Hide tabs
+            for (i=0;i<tabs_to_hide.length;i++) {
+                $("#fieldsetlegend-"+tabs_to_hide[i]).closest("li.formTab").hide();
+            }
             // Hide non desired input fields
             for (i=0;i<tohide.length;i++){
-                $(tohide[i]).hide();
+                $(prefix + tohide[i]).closest(".field").hide();
+            }
+            // Make fields non-required
+            for (i=0;i<nonrequired.length;i++){
+                make_unrequired(prefix + nonrequired[i]);
+            }
+            // Make fields required
+            for (i=0;i<required.length;i++){
+                make_required(prefix + required[i]);
             }
             // Set default values
-            $("#patient-base-edit #ClientPatientID").attr("required", true);
-            $("#patient-base-edit #ClientPatientID_help").before('<span class="required" title="Required">&nbsp;</span>');
-            $("#patient-base-edit input[id='Firstname']").val(_("AP"));
-            cpid = $("#patient-base-edit #ClientPatientID").val();
+            $(prefix + "Firstname").val(_("AP"));
+            var cpid = $(prefix +"ClientPatientID").val();
             if (cpid && cpid.length > 0) {
-                $("#patient-base-edit input[id='Surname']").val(cpid);
+                $(prefix + "Surname").val(cpid);
             } else {
-                $("#patient-base-edit input[id='Surname']").val("-");
+                $(prefix + "Surname").val("");
             }
-            $("#patient-base-edit #archetypes-fieldname-BirthDate").find('span[class="required"]').remove();
-            $("#patient-base-edit input[id='BirthDate']").attr("required", false);
-            $("#patient-base-edit input[id='BirthDate']").val("");
 
         } else {
-            // Show desired input fields
-            for (i=0;i<tohide.length;i++){
-                $(tohide[i]+":hidden").show();
+            // Restore tabs visibility
+            for (i=0;i<tabs_to_hide.length;i++) {
+                $("#fieldsetlegend-"+tabs_to_hide[i]).closest("li.formTab").show();
             }
-            $("#patient-base-edit #archetypes-fieldname-ClientPatientID").find('span[class="required"]').remove();
-            $("#patient-base-edit input[id='ClientPatientID']").attr("required", false);
-            $("#patient-base-edit input[id='BirthDate']").attr("required", true);
-            $("#patient-base-edit #BirthDate_help").before('<span class="required" title="Required">&nbsp;</span>');
+            // Restore input fields visibility
+            for (i=0;i<tohide.length;i++){
+                $(prefix + tohide[i]).closest(".field").show();
+            }
+            // Make fields required
+            for (i=0;i<nonrequired.length;i++){
+                make_required(prefix + nonrequired[i]);
+            }
+            // Make fields non-required
+            for (i=0;i<required.length;i++){
+                make_unrequired(prefix + required[i]);
+            }
+            // Set default values
+            $(prefix + "Firstname").val("");
         }
+    }
+
+    function make_required(fieldname) {
+        console.log("Set required: "+fieldname);
+        $(fieldname).attr('required', 'required');
+        var field = $(fieldname).closest(".field");
+        $(field).find(".formQuestion .required").remove();
+        var lbl = $(field).find(".formQuestion");
+        if (lbl && lbl.length > 0) {
+            var span = '<span class="required" title="Required"></span>';
+            var field_help = $(lbl).find(".help-block");
+            if (field_help && field_help.length > 0) {
+                $(field_help).before(span);
+            } else {
+                $(lbl[0]).html($(lbl[0]).html() + span);
+            }
+        }
+    }
+
+    function make_unrequired(fieldname) {
+        console.log("Set unrequired: "+fieldname);
+        $(fieldname).removeAttr('required');
+        var field = $(fieldname).closest(".field");
+        $(field).find(".formQuestion .required").remove();
     }
 
     function fillClient(uid) {
