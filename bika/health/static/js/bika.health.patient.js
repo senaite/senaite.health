@@ -368,7 +368,7 @@ function HealthPatientEditView() {
      * Returns the div element with "field" class that wraps an archetype field
      */
     function get_field(field_id) {
-        var field = $('#'+field_id);
+        var field = $('#patient-base-edit #'+field_id);
         if (!$(field).hasClass(".field")) {
             field = $(field).closest(".field");
         }
