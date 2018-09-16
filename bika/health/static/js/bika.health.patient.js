@@ -257,18 +257,15 @@ function HealthPatientEditView() {
             "Middlename",
             "Firstname",
             "Surname",
-            "AgeSplitted_year",
-            "AgeSplitted_month",
-            "AgeSplitted_day",
-            "BirthDate",
-            "BirthDateEstimated",
             "ConsentSMS",
         ];
 
         // Non-required fields
         var nonrequired = [
             "Surname",
-            "AgeSplitted",
+            "AgeSplitted_year",
+            "AgeSplitted_month",
+            "AgeSplitted_day",
             "BirthDate",
             "BirthDateEstimated",
         ];
