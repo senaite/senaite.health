@@ -45,6 +45,10 @@ function HealthPatientEditView() {
      */
     this.load = function() {
 
+        // Store the visibility and required fields by default, to be able to
+        // restore their default values anytime.
+        store_field_defaults();
+
         // These are not meant to show up in the main patient base_edit form.
         // they are flagged 'visible' though, so they do show up when requested.
         $('.template-base_edit #archetypes-fieldname-Allergies').hide();
@@ -60,14 +64,15 @@ function HealthPatientEditView() {
             var iid = document.referrer.split("/bika_insurancecompanies/")[1].split("/")[0];
             fillInsuranceCompanyReferrer(iid);
         }
-    // Adapt datepicker to current needs
-    $("#BirthDate").datepicker("destroy");
-    $("#BirthDate").datepicker({
-        dateFormat: "yy-mm-dd",
-        changeMonth:true,
-        changeYear:true,
-        yearRange: "-100:+0"
-    });
+
+        // Adapt datepicker to current needs
+        $("#BirthDate").datepicker("destroy");
+        $("#BirthDate").datepicker({
+            dateFormat: "yy-mm-dd",
+            changeMonth:true,
+            changeYear:true,
+            yearRange: "-100:+0"
+        });
 
         if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
             $('#archetypes-fieldname-MenstrualStatus').hide();
@@ -87,6 +92,51 @@ function HealthPatientEditView() {
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
+
+    /**
+     * Store the default visibility and required values for all fields, by
+     * adding default-required and default-visible attributes to each field
+     * with their original values
+     */
+    function store_field_defaults() {
+        console.log("Storing default visibility/required");
+        $("#patient-base-edit div.field").each(function() {
+            var field_id = $(this).attr("id");
+            if (!field_id) {
+                return;
+            }
+            var required = $(this).find(".formQuestion .required").length == 1;
+            var visible = $(this).is(":visible")
+            $(this).attr("default-required", required);
+            $(this).attr("default-visible", visible);
+        });
+    }
+
+    /**
+     * Reset the default visibility and required values for all fields, based
+     * on the values for attributes default-required and default-visible
+     */
+    function restore_field_defaults() {
+        console.log("Restoring default visibility/required");
+        $("#patient-base-edit div.field").each(function() {
+            var field_id = $(this).attr("id");
+            if (!field_id) {
+                return;
+            }
+            var required = $(this).attr("default-required");
+            var visible = $(this).attr("default-visible");
+            if (required === 'true') {
+                make_required(field_id);
+            } else {
+                make_unrequired(field_id);
+            }
+            if (visible === 'true') {
+                show_field(field_id);
+            } else {
+                hide_field(field_id);
+            }
+        });
+    }
 
     /**
      * Management of events and triggers
@@ -238,8 +288,6 @@ function HealthPatientEditView() {
      * showing all fields.
      */
     function loadAnonymous() {
-        var prefix = "#patient-base-edit #"
-
         // Tabs to hide
         var tabs_to_hide = [
             "default",
@@ -272,33 +320,34 @@ function HealthPatientEditView() {
 
         // Required fields
         var required = [
+            "Firstname",
             "ClientPatientID",
         ];
 
-        if ($(prefix + 'Anonymous').is(':checked')) {
+        if ($('#patient-base-edit #Anonymous').is(':checked')) {
             // Hide tabs
             for (i=0;i<tabs_to_hide.length;i++) {
                 $("#fieldsetlegend-"+tabs_to_hide[i]).closest("li.formTab").hide();
             }
             // Hide non desired input fields
             for (i=0;i<tohide.length;i++){
-                $(prefix + tohide[i]).closest(".field").hide();
+                hide_field(tohide[i]);
             }
             // Make fields non-required
             for (i=0;i<nonrequired.length;i++){
-                make_unrequired(prefix + nonrequired[i]);
+                make_unrequired(nonrequired[i]);
             }
             // Make fields required
             for (i=0;i<required.length;i++){
-                make_required(prefix + required[i]);
+                make_required(required[i]);
             }
             // Set default values
-            $(prefix + "Firstname").val(_("AP"));
-            var cpid = $(prefix +"ClientPatientID").val();
+            $("#patient-base-edit #Firstname").val(_("AP"));
+            var cpid = $("#patient-base-edit #ClientPatientID").val();
             if (cpid && cpid.length > 0) {
-                $(prefix + "Surname").val(cpid);
+                $("#patient-base-edit #Surname").val(cpid);
             } else {
-                $(prefix + "Surname").val("");
+                $("#patient-base-edit #Surname").val("");
             }
 
         } else {
@@ -306,27 +355,34 @@ function HealthPatientEditView() {
             for (i=0;i<tabs_to_hide.length;i++) {
                 $("#fieldsetlegend-"+tabs_to_hide[i]).closest("li.formTab").show();
             }
-            // Restore input fields visibility
-            for (i=0;i<tohide.length;i++){
-                $(prefix + tohide[i]).closest(".field").show();
-            }
-            // Make fields required
-            for (i=0;i<nonrequired.length;i++){
-                make_required(prefix + nonrequired[i]);
-            }
-            // Make fields non-required
-            for (i=0;i<required.length;i++){
-                make_unrequired(prefix + required[i]);
-            }
+            // Restore default visibility and required
+            restore_field_defaults();
+
             // Set default values
-            $(prefix + "Firstname").val("");
+            $("#patient-base-edit #Firstname").val("");
         }
     }
 
-    function make_required(fieldname) {
-        console.log("Set required: "+fieldname);
-        $(fieldname).attr('required', 'required');
-        var field = $(fieldname).closest(".field");
+
+    /**
+     * Returns the div element with "field" class that wraps an archetype field
+     */
+    function get_field(field_id) {
+        var field = $('#'+field_id);
+        if (!$(field).hasClass(".field")) {
+            field = $(field).closest(".field");
+        }
+        return field;
+    }
+
+    /**
+     * Set a field as required.
+     * field_id can be either the id of the div element .field that wraps the
+     * input field or the id of any of the elements it contains
+     */
+    function make_required(field_id) {
+        console.log("Set required: " + field_id);
+        var field = get_field(field_id);
         $(field).find(".formQuestion .required").remove();
         var lbl = $(field).find(".formQuestion");
         if (lbl && lbl.length > 0) {
@@ -340,11 +396,37 @@ function HealthPatientEditView() {
         }
     }
 
-    function make_unrequired(fieldname) {
-        console.log("Set unrequired: "+fieldname);
-        $(fieldname).removeAttr('required');
-        var field = $(fieldname).closest(".field");
+    /**
+     * Set a field as unrequired.
+     * field_id can be either the id of the div element .field that wraps the
+     * input(s) field(s) or the id of any of the elements it contains
+     */
+    function make_unrequired(field_id) {
+        console.log("Set unrequired: "+field_id);
+        var field = get_field(field_id);
         $(field).find(".formQuestion .required").remove();
+    }
+
+    /**
+     * Hides a field.
+     * field_id can be either the id of the div element .field that wraps the
+     * input(s) field(s) or the id of any of the elements it contains
+     */
+    function hide_field(field_id) {
+        console.log("Hide field: "+field_id);
+        var field = get_field(field_id);
+        field.hide();
+    }
+
+    /**
+     * Displays a field.
+     * field_id can be either the id of the div element .field that wraps the
+     * input(s) field(s) or the id of any of the elements it contains
+     */
+    function show_field(field_id) {
+        console.log("Show field: "+field_id);
+        var field = get_field(field_id);
+        field.show();
     }
 
     function fillClient(uid) {
