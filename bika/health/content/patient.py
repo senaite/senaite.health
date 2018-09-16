@@ -100,7 +100,7 @@ schema = Person.schema.copy() + Schema((
     ),
     DateTimeField_bl(
         'BirthDate',
-        required=0,
+        required=1,
         validators=('isDateFormat',),
         widget=DateTimeWidget_bl(
             label=_('Birth date'),

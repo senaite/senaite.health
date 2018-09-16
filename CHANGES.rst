@@ -21,6 +21,7 @@ Changelog
 
 **Fixed**
 
+- #105 Date of Birth and Age are required fields for anonymous patients
 - #102 Doctors assigned to other clients are listed when logged as Client
 - #103 All Samples are listed inside Case context
 - #99 Traceback when publishing health results from inside a client
