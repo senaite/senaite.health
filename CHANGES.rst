@@ -7,8 +7,6 @@ Changelog
 **Added**
 
 - #102 Add Primary Referrer column in Doctor listings
-- #85 Allow client contact to list/add/edit Batches from its own Client
-- #102 Add Primary Referrer column in Doctor listings
 - #85 Allow client contact to list/add/edit Cases from its own Client
 - #83 Allow client contact to create and edit Doctors
 
@@ -21,6 +19,7 @@ Changelog
 
 **Fixed**
 
+- #108 Autodetect suitable client in Doctor's edit view
 - #109 Traceback `bika_widgets/remarks does not exist for`
 - #107 DateTime validator fires even if DateOfBirth is non-mandatory
 - #106 Fields from Patient's additional tabs are not displayed

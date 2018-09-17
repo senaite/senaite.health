@@ -94,7 +94,24 @@ class Doctor(Contact):
             # Allow to change the client if there are no ARs associated
             client = self.getPrimaryReferrer()
             if not client:
-                return DisplayList([('', '')])
+                # Maybe all Batches and ARs assigned to this Doctor belong to
+                # the same Client.. If so, just assign this client by default
+                client_uids = map(lambda ar: ar.getClientUID,
+                                  self.getAnalysisRequests())
+                client_uids = list(set(client_uids))
+                if len(client_uids) > 1:
+                    # More than one client assigned!
+                    return DisplayList([('', '')])
+                clients = map(lambda batch: batch.getClient(),
+                              self.getBatches(full_objects=True))
+                client_uids += map(lambda client: api.get_uid(client), clients)
+                client_uids = list(set(client_uids))
+                if len(client_uids) > 1:
+                    # More than one client assigned!
+                    return DisplayList([('', '')])
+
+                client = api.get_object_by_uid(client_uids[0])
+
             return DisplayList([(api.get_uid(client), client.Title())])
 
         # If the current user is a client contact, do not display other clients
