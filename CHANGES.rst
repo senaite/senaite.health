@@ -21,6 +21,7 @@ Changelog
 
 **Fixed**
 
+- #106 Fields from Patient's additional tabs are not displayed
 - #105 Date of Birth and Age are required fields for anonymous patients
 - #102 Doctors assigned to other clients are listed when logged as Client
 - #103 All Samples are listed inside Case context

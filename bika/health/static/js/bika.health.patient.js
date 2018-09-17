@@ -49,13 +49,6 @@ function HealthPatientEditView() {
         // restore their default values anytime.
         store_field_defaults();
 
-        // These are not meant to show up in the main patient base_edit form.
-        // they are flagged 'visible' though, so they do show up when requested.
-        $('.template-base_edit #archetypes-fieldname-Allergies').hide();
-        $('.template-base_edit #archetypes-fieldname-TreatmentHistory').hide();
-        $('.template-base_edit #archetypes-fieldname-ImmunizationHistory').hide();
-        $('.template-base_edit #archetypes-fieldname-TravelHistory').hide();
-        $('.template-base_edit #archetypes-fieldname-ChronicConditions').hide();
         // It fills out the Insurance Company field.
         var frominsurance = document.referrer.search('/bika_insurancecompanies/') >= 0;
         if (frominsurance){
@@ -74,9 +67,6 @@ function HealthPatientEditView() {
             yearRange: "-100:+0"
         });
 
-        if ($('#archetypes-fieldname-Gender #Gender').val()!='female') {
-            $('#archetypes-fieldname-MenstrualStatus').hide();
-        }
         if ($('#patient-base-edit')) {
             loadAnonymous();
         }
@@ -106,7 +96,9 @@ function HealthPatientEditView() {
                 return;
             }
             var required = $(this).find(".formQuestion .required").length == 1;
-            var visible = $(this).is(":visible")
+            // Note we don't do a :isvisible here, cause the field might belong
+            // to a fieldset (tab) that is currently hidden.
+            var visible = !($(this).css("display") == "none");
             $(this).attr("default-required", required);
             $(this).attr("default-visible", visible);
         });
@@ -136,6 +128,22 @@ function HealthPatientEditView() {
                 hide_field(field_id);
             }
         });
+
+        // If the Patient is a Male, do not display Menstrual Status field
+        var gender = get_field("Gender");
+        if ($(gender).val()!='female') {
+            hide_field("MenstrualStatus");
+        } else {
+            show_field("MenstrualStatus");
+        }
+
+        // These are not meant to show up in the main patient base_edit form.
+        // they are flagged 'visible' though, so they do show up when requested.
+        hide_field("Allergies");
+        hide_field("TreatmentHistory");
+        hide_field("ImmunizationHistory");
+        hide_field("TravelHistory");
+        hide_field("ChronicConditions");
     }
 
     /**
@@ -363,14 +371,16 @@ function HealthPatientEditView() {
         }
     }
 
-
     /**
      * Returns the div element with "field" class that wraps an archetype field
      */
     function get_field(field_id) {
-        var field = $('#patient-base-edit #'+field_id);
-        if (!$(field).hasClass(".field")) {
-            field = $(field).closest(".field");
+        var field = $('#patient-base-edit #archetypes-fieldname-'+field_id);
+        if (!field) {
+            field = $('#patient-base-edit #'+field_id);
+            if (!$(field).hasClass(".field")) {
+                field = $(field).closest(".field");
+            }
         }
         return field;
     }
