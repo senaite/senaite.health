@@ -25,7 +25,11 @@ class Date_Format_Validator:
     name = "isDateFormat"
 
     def __call__(self, value, *args, **kwargs):
-        instance = kwargs['instance']
+        field = kwargs.get('field', None)
+        required = hasattr(field, "required") and field.required or False
+        if not value and not required:
+            return True
+
         try:
             datetime.strptime(value, '%Y-%m-%d')
         except ValueError:
