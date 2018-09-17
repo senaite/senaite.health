@@ -21,6 +21,7 @@ Changelog
 
 **Fixed**
 
+- #109 Traceback `bika_widgets/remarks does not exist for`
 - #107 DateTime validator fires even if DateOfBirth is non-mandatory
 - #106 Fields from Patient's additional tabs are not displayed
 - #105 Date of Birth and Age are required fields for anonymous patients

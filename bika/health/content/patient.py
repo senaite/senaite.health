@@ -17,11 +17,13 @@ from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
 from bika.lims.browser.fields import AddressField
 from bika.lims.browser.fields import DateTimeField as DateTimeField_bl
+from bika.lims.browser.fields.remarksfield import RemarksField
 from bika.lims.browser.widgets import AddressWidget
 from bika.lims.browser.widgets import DateTimeWidget as DateTimeWidget_bl
 from bika.lims.browser.widgets import RecordsWidget
 from bika.health.widgets import SplittedDateWidget
 from bika.health.config import *
+from bika.lims.browser.widgets.remarkswidget import RemarksWidget
 from bika.lims.content.person import Person
 from bika.health.interfaces import IPatient
 from bika.health.permissions import *
@@ -187,16 +189,11 @@ schema = Person.schema.copy() + Schema((
             visible=False
         ),
     ),
-    TextField(
+    RemarksField(
         'Remarks',
         searchable=True,
-        default_content_type='text/plain',
-        allowable_content_types=('text/plain', ),
-        default_output_type="text/plain",
-        widget=TextAreaWidget(
-            macro="bika_widgets/remarks",
+        widget=RemarksWidget(
             label=_('Remarks'),
-            append_only=True,
         ),
     ),
     RecordsField(
