@@ -21,6 +21,7 @@ Changelog
 
 **Fixed**
 
+- #108 Autodetect suitable client in Doctor's edit view
 - #107 DateTime validator fires even if DateOfBirth is non-mandatory
 - #106 Fields from Patient's additional tabs are not displayed
 - #105 Date of Birth and Age are required fields for anonymous patients
