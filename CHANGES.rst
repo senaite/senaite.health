@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.3 (unreleased)
+1.1.3 (2018-10-10)
 ------------------
 
 **Added**
@@ -13,9 +13,6 @@ Changelog
 **Changed**
 
 - #85 New icon set
-
-**Removed**
-
 
 **Fixed**
 
@@ -30,8 +27,6 @@ Changelog
 - #97 Traceback accessing Doctor samples when user is not Manager, LabManager or LabClerk
 - #82 Inconsistent behavior with health' skins priority over core's
 - #81 Traceback when importing diseases with setupdata.xlsx
-
-**Security**
 
 
 1.1.2 (2018-05-05)
