@@ -17,6 +17,7 @@ profile = 'profile-{0}:default'.format(product)
 @upgradestep(product, version)
 def upgrade(tool):
     portal = tool.aq_inner.aq_parent
+    setup = portal.portal_setup
     ut = UpgradeUtils(portal)
     ver_from = ut.getInstalledVersion(product)
 
@@ -28,7 +29,7 @@ def upgrade(tool):
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
 
     # -------- ADD YOUR STUFF BELOW --------
-
+    setup.runImportStepFromProfile(profile, 'browserlayer')
 
     logger.info("{0} upgraded to version {1}".format(product, version))
 
