@@ -13,7 +13,7 @@ msgstr ""
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: DOMAIN\n"
+"Domain: senaite.health\n"
 "Language: lt\n"
 
 #: bika/health/content/aetiologicagent.py:21
