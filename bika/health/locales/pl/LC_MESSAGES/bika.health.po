@@ -1,12 +1,13 @@
 #
 # Translators:
+# Piotr Turek <piotr.turek@borpol.com.pl>, 2017
 # Ryszard Grodowski <ryszard@grodowski.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Bika-LIMS\n"
 "POT-Creation-Date: 2017-11-10 15:50+0000\n"
-"PO-Revision-Date: 2017-09-19 20:28+0000\n"
-"Last-Translator: Ryszard Grodowski <ryszard@grodowski.com>\n"
+"PO-Revision-Date: 2017-12-28 13:26+0000\n"
+"Last-Translator: Piotr Turek <piotr.turek@borpol.com.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/bikalabs/bika-lims/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -502,7 +503,7 @@ msgstr "Numer EPI"
 #: bika/health/controlpanel/bika_insurancecompanies.py:34
 #: bika/health/controlpanel/bika_vaccinationcenters.py:43
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 # File: ../content/doctors/folder_view.py, line: 27
 # File: ../content/vaccinationcenter/vaccinationcenter.py, line: 33
@@ -596,7 +597,7 @@ msgstr ""
 #: bika/health/controlpanel/bika_insurancecompanies.py:38
 #: bika/health/controlpanel/bika_vaccinationcenters.py:47
 msgid "Fax"
-msgstr ""
+msgstr "Faks"
 
 # File: ../content/patient/__init__.py, line: 221
 #: bika/health/content/patient.py:395
@@ -1202,7 +1203,7 @@ msgstr "Leczenie specyficzne"
 # File: ../content/patient/__init__.py, line: 117
 #: bika/health/content/patient.py:174
 msgid "Start"
-msgstr ""
+msgstr "Start"
 
 # File: ../controlpanel/bika_epidemiologicalyears.py, line: 36
 #: bika/health/controlpanel/bika_epidemiologicalyears.py:36
