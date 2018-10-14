@@ -40,19 +40,19 @@
       permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
+    <browser:page
+      for="bika.lims.interfaces.IClient"
+      name="publish"
+      class="bika.health.browser.analysisrequest.publish.AnalysisRequestPublishView"
+      permission="zope.Public"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
 
     <!-- Override senaite.core's default workflow actions -->
     <browser:page
       for="bika.lims.interfaces.IClient"
       name="workflow_action"
       class="bika.health.browser.client.workflow.ClientWorkflowAction"
-      permission="zope.Public"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="publish"
-      class="bika.health.browser.analysisrequest.publish.AnalysisRequestPublishView"
       permission="zope.Public"
       layer="bika.health.interfaces.IBikaHealth"
     />
