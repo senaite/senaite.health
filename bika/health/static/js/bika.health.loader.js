@@ -1,7 +1,7 @@
 window.bika = window.bika || { lims: {} };
 window.bika.health={};
-window.jarn.i18n.loadCatalog("bika.health");
-var _h = window.jarn.i18n.MessageFactory("bika.health");
+window.jarn.i18n.loadCatalog("senaite.health");
+var _h = window.jarn.i18n.MessageFactory("senaite.health");
 
 /**
  * Dictionary of JS objects to be loaded at runtime.
