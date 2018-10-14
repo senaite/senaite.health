@@ -10,9 +10,12 @@ Changelog
 
 **Changed**
 
+- #110 Added health-specific layer
 
 **Removed**
 
+- #110 Removed z3c.unconfigure dependency
+- #110 Removed taskqueue.collective dependency
 
 **Fixed**
 
