@@ -9,7 +9,7 @@
       name="gettreatments"
       class=".gettreatments.ajaxGetTreatments"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

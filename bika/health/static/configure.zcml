@@ -9,19 +9,19 @@
   <browser:resourceDirectory
       name="bika.health.images"
       directory="images"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
       />
 
   <browser:resourceDirectory
       name="bika.health.css"
       directory="css"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
       />
 
   <browser:resourceDirectory
       name="bika.health.js"
       directory="js"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
       />
 
 </configure>

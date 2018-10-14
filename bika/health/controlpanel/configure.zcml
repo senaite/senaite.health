@@ -9,7 +9,7 @@
       name="folder_view"
       class=".bika_drugs.DrugsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -17,7 +17,7 @@
       name="folder_view"
       class=".bika_drugprohibitions.DrugProhibitionsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -25,7 +25,7 @@
       name="folder_view"
       class=".bika_diseases.DiseasesView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -33,7 +33,7 @@
       name="folder_view"
       class=".bika_aetiologicagents.AetiologicAgentsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -41,7 +41,7 @@
       name="folder_view"
       class=".bika_treatments.TreatmentsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -49,7 +49,7 @@
       name="folder_view"
       class=".bika_symptoms.SymptomsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -57,7 +57,7 @@
       name="folder_view"
       class=".bika_casestatuses.CaseStatusesView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -65,7 +65,7 @@
       name="folder_view"
       class=".bika_caseoutcomes.CaseOutcomesView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -73,7 +73,7 @@
       name="folder_view"
       class=".bika_casesyndromicclassifications.CaseSyndromicClassificationsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -81,7 +81,7 @@
       name="folder_view"
       class=".bika_immunizations.ImmunizationsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -89,7 +89,7 @@
       name="folder_view"
       class=".bika_vaccinationcenters.VaccinationCentersView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -97,7 +97,7 @@
       name="folder_view"
       class=".bika_epidemiologicalyears.EpidemiologicalYearsView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -105,7 +105,7 @@
       name="folder_view"
       class=".bika_identifiertypes.IdentifierTypesView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
       <browser:page
@@ -113,7 +113,7 @@
       name="folder_view"
       class=".bika_insurancecompanies.InsuranceCompaniesView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -121,7 +121,7 @@
       name="folder_view"
       class=".bika_ethnicities.EthnicitiesView"
       permission="bika.lims.ManageBika"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

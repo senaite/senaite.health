@@ -9,7 +9,7 @@
       name="folder_view"
       class=".folder_view.DoctorsView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -17,7 +17,7 @@
       name="getdoctors"
       class=".getdoctors.ajaxGetDoctors"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

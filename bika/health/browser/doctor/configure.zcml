@@ -10,7 +10,7 @@
       name="workflow_action"
       class="bika.health.browser.client.workflow.ClientWorkflowAction"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -18,7 +18,7 @@
       name="analysisrequests"
       class=".analysisrequests.AnalysisRequestsView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -26,7 +26,7 @@
       name="samples"
       class=".samples.SamplesView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
     
     <browser:page
@@ -34,7 +34,7 @@
       name="getDoctorID"
       class=".getdoctorid.ajaxGetDoctorID"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
     
     <browser:page
@@ -42,7 +42,7 @@
       name="getdoctorinfo"
       class=".getdoctorinfo.ajaxGetDoctorInfo"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

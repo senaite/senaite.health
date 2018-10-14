@@ -11,7 +11,7 @@
       name="batches"
       class=".batches.BatchesView"
       permission="bika.health.permissions.ViewBatches"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -19,7 +19,7 @@
       name="analysisrequests"
       class=".analysisrequests.AnalysisRequestsView"
       permission="bika.health.permissions.ViewAnalysisRequests"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -27,7 +27,7 @@
       name="samples"
       class=".samples.SamplesView"
       permission="bika.health.permissions.ViewSamples"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -35,7 +35,7 @@
       name="historicresults"
       class=".historicresults.HistoricResultsView"
       permission="bika.health.permissions.ViewAnalysisRequests"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -43,7 +43,7 @@
       name="historicjson"
       class=".historicresults.historicResultsJSON"
       permission="bika.health.permissions.ViewAnalysisRequests"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -51,7 +51,7 @@
       name="getpatientinfo"
       class=".getpatientinfo.ajaxGetPatientInfo"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -59,7 +59,7 @@
       name="allergies"
       class=".allergies.AllergiesView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -67,7 +67,7 @@
       name="chronicconditions"
       class=".chronicconditions.ChronicConditionsView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -75,7 +75,7 @@
       name="treatmenthistory"
       class=".treatmenthistory.TreatmentHistoryView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -83,7 +83,7 @@
       name="immunizationhistory"
       class=".immunizationhistory.ImmunizationHistoryView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -91,7 +91,7 @@
       name="travelhistory"
       class=".travelhistory.TravelHistoryView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -99,7 +99,7 @@
       name="multifile"
       class=".files.PatientMultifileView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>
