@@ -1,5 +1,6 @@
 #
 # Translators:
+# alex r <aa989190f363e46d@googlemail.com>, 2018
 # Andrey Stefaniv <stefaniv@irm.kz>, 2017
 # Михаил Стручалин <m.struchalin@gmail.com>, 2017
 # Михаил Стручалин <m.struchalin@gmail.com>, 2017
@@ -7,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bika-LIMS\n"
 "POT-Creation-Date: 2012-10-20 09:21+0000\n"
-"PO-Revision-Date: 2017-09-23 12:44+0000\n"
-"Last-Translator: Михаил Стручалин <m.struchalin@gmail.com>\n"
+"PO-Revision-Date: 2018-07-17 13:03+0000\n"
+"Last-Translator: alex r <aa989190f363e46d@googlemail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/bikalabs/bika-lims/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

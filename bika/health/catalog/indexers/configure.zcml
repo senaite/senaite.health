@@ -1,6 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="bika">
+    i18n_domain="senaite.health">
 
     <adapter factory=".analysisrequest.getPatientID" name="getPatientID" />
     <adapter factory=".analysisrequest.getPatientTitle" name="getPatientTitle" />

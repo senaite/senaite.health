@@ -1,14 +1,21 @@
 [main]
 host = https://www.transifex.com
 
-[bika-lims.bika-health]
-file_filter = <lang>/LC_MESSAGES/bika.health.po
+[senaite-health.core]
+file_filter = <lang>/LC_MESSAGES/senaite.core.po
 host = https://www.transifex.com
-source_file = bika.health.pot
+source_file = senaite.core.pot
 source_lang = en
 type = PO
 
-[bika-lims.plone-health]
+[senaite-health.health]
+file_filter = <lang>/LC_MESSAGES/senaite.health.po
+host = https://www.transifex.com
+source_file = senaite.health.pot
+source_lang = en
+type = PO
+
+[senaite-health.plone]
 file_filter = <lang>/LC_MESSAGES/plone.po
 host = https://www.transifex.com
 source_file = plone.pot

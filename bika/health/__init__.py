@@ -6,10 +6,11 @@
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
 from zope.i18nmessageid import MessageFactory
-bikaMessageFactory = MessageFactory('bika.health')
+bikaMessageFactory = MessageFactory('senaite.health')
+_ = MessageFactory('senaite.health')
 
 import logging
-logger = logging.getLogger('Bika Health')
+logger = logging.getLogger('senaite.health')
 
 from bika.lims.validators import *
 from bika.health.validators import *
