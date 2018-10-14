@@ -5,19 +5,83 @@
            xmlns:plone="http://namespaces.plone.org/plone"
            xmlns:five="http://namespaces.zope.org/five">
 
+    <!-- TODO: Is this strictly necessary? -->
     <include package="plone.resource" file="meta.zcml"/>
     <plone:static
         directory="templates/reports"
         type="reports"
         name="bika.health"
     />
-   
+
+    <!-- TODO: This was used for panic alert, to be removed -->
     <browser:page
       for="*"
       name="email_popup"
       class="bika.health.browser.analysisrequest.emailpopup.EmailPopupView"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
+    <!-- Override senaite.core's default views -->
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="base_view"
+      class="bika.health.browser.analysisrequest.view.AnalysisRequestView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="manage_results"
+      class="bika.health.browser.analysisrequest.manageresults.ManageResultsView"
+      permission="bika.lims.EditResults"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="invoice"
+      class="bika.health.browser.analysisrequest.invoice.InvoiceView"
+      permission="bika.lims.ManageInvoices"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="invoice_print"
+      class="bika.health.browser.analysisrequest.invoice.InvoicePrintView"
+      permission="bika.lims.ManageInvoices"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="invoice_create"
+      class="bika.health.browser.analysisrequest.invoice.InvoiceCreate"
+      permission="bika.lims.ManageInvoices"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+
+    <!-- Override senaite.core's default workflow actions -->
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="workflow_action"
+      class="bika.health.browser.analysisrequest.workflow.AnalysisRequestWorkflowAction"
+      permission="zope.Public"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+
+    <!-- Analysis Request publish  (single AR) -->
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequest"
+      name="publish"
+      class="bika.health.browser.analysisrequest.publish.AnalysisRequestPublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <!-- Analysis Request publish  (multiple AR) -->
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequestsFolder"
+      name="publish"
+      class="bika.health.browser.analysisrequest.publish.AnalysisRequestPublishView"
+      permission="bika.lims.ManageAnalysisRequests"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
 </configure>
