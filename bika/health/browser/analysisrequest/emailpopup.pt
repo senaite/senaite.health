@@ -1,5 +1,5 @@
 <html
-    i18n:domain="bika"
+    i18n:domain="senaite.health"
     tal:define="portal_state context/@@plone_portal_state;
                 portal_url portal_state/portal_url;
                 locale portal_state/locale;">
