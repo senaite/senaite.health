@@ -371,6 +371,7 @@ class Patients(WorksheetImporter):
 class Analysis_Specifications(WorksheetImporter):
 
     def Import(self):
+        print "EOOO"
         s_t = ''
         c_t = 'lab'
         bucket = {}
@@ -424,7 +425,7 @@ class Analysis_Specifications(WorksheetImporter):
                 renameAfterCreation(obj)
 
 class Insurance_Companies(WorksheetImporter):
-    
+
     def Import(self):
         folder = self.context.bika_setup.bika_insurancecompanies
         for row in self.get_rows(3):
@@ -446,22 +447,3 @@ class Insurance_Companies(WorksheetImporter):
                 self.fill_addressfields(row, obj)
                 obj.unmarkCreationFlag()
                 renameAfterCreation(obj)
-
-from bika.lims.exportimport.setupdata import Setup as BaseSetup
-
-
-class Setup(BaseSetup):
-
-    def Import(self):
-        BaseSetup.Import(self)
-
-        values = {}
-        rows = self.get_rows(3)
-        for row in rows:
-            values[row['Field']] = row['Value']
-
-        self.context.bika_setup.edit(
-            EnablePanicAlert=self.to_bool(values.get('EnablePanicAlert', True)),
-            EnableAnalysisRemarks=self.to_bool(values.get('EnableAnalysisRemarks', True))
-        )
-
