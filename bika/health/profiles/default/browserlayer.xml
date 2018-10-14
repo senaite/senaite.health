@@ -1,0 +1,4 @@
+<layers>
+  <layer name="bika.health"
+         interface="bika.health.interfaces.IBikaHealth" />
+</layers>

@@ -1,7 +1,21 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:zcml="http://namespaces.zope.org/browser"
-           xmlns:fss="http://namespaces.zope.org/browser"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five">
+           xmlns:browser="http://namespaces.zope.org/browser">
 
+    <!-- Override senaite.core's default views -->
+    <browser:page
+      for="bika.lims.interfaces.IWorksheet"
+      name="manage_results"
+      class="bika.health.browser.worksheet.manageresults.ManageResultsView"
+      permission="bika.lims.EditWorksheet"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+
+    <!-- Override senaite.core's default workflow actions -->
+    <browser:page
+      for="bika.lims.interfaces.IWorksheet"
+      name="workflow_action"
+      class="bika.health.browser.worksheet.workflow.WorkflowAction"
+      permission="zope.Public"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
 </configure>

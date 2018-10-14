@@ -1,22 +1,23 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:cmf="http://namespaces.zope.org/cmf"
     xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
-    xmlns:monkey="http://namespaces.plone.org/monkey"
     i18n_domain="bika.health">
 
+  <!-- Include the configs from other dependencies first -->
   <includeDependencies package="." />
-  <includeDependenciesOverrides package="." />
 
   <i18n:registerTranslations directory="locales" />
 
   <five:registerPackage package="." initialize=".initialize" />
 
+  <!-- Filesystem directory view -->
+  <cmf:registerDirectory name="skins" directory="skins" recursive="True"/>
+
   <include file="permissions.zcml" />
 
+  <!-- Package includes -->
   <include package=".adapters"/>
   <include package=".content"/>
   <include package=".controlpanel"/>
@@ -26,7 +27,5 @@
   <include package=".setupdata"/>
   <include package=".catalog.indexers" />
   <include file="profiles.zcml" />
-
-  <cmf:registerDirectory name="skins" directory="skins" recursive="True" />
 
 </configure>

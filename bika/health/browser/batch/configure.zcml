@@ -1,15 +1,43 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:zcml="http://namespaces.zope.org/browser"
-           xmlns:fss="http://namespaces.zope.org/browser"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:five="http://namespaces.zope.org/five">
+           xmlns:browser="http://namespaces.zope.org/browser">
 
+    <!-- Additional views in Batch context -->
     <browser:page
       for="bika.lims.interfaces.IBatch"
       name="getBatchInfo"
       class=".getbatchinfo.ajaxGetBatchInfo"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+
+    <!-- Override senaite.core's default views -->
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="samples"
+      class="bika.health.browser.batch.samples.BatchSamplesView"
+      permission="zope2.View"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="analysisrequests"
+      class="bika.health.browser.batch.analysisrequests.BatchAnalysisRequestsView"
+      permission="zope2.View"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <browser:page
+      for="bika.lims.interfaces.IBatch"
+      name="publish"
+      class="bika.health.browser.batch.publish.BatchPublishView"
+      permission="bika.lims.Publish"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+    <browser:page
+      for="bika.lims.interfaces.IBatchFolder"
+      name="base_view"
+      class="bika.health.browser.batch.batchfolder.BatchFolderContentsView"
+      permission="cmf.ListFolderContents"
+      layer="bika.health.interfaces.IBikaHealth"
     />
     
 </configure>

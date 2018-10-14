@@ -9,7 +9,7 @@
       name="getimmunizations"
       class=".getimmunizations.ajaxGetImmunizations"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

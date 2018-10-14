@@ -11,7 +11,7 @@
       name="ajax-bikasetup"
       class=".bikasetup.BikaSetupAjaxHandler"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
     
     <browser:page
@@ -19,7 +19,7 @@
       name="ajax-client"
       class=".client.ClientAjaxHandler"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -27,7 +27,7 @@
         name="ajax-client-from-current-user"
         class=".client.ajaxGetClientInfoFromCurrentUser"
         permission="zope.Public"
-        layer="bika.lims.interfaces.IBikaLIMS"
+        layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

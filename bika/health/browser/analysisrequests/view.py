@@ -5,11 +5,11 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
+from Products.CMFCore.utils import getToolByName
+from bika.health import bikaMessageFactory as _
+from bika.health import logger
 from bika.lims import api
 from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
-from bika.health import bikaMessageFactory as _
-from Products.CMFCore.utils import getToolByName
-from bika.health.catalog import CATALOG_PATIENT_LISTING
 from bika.lims.utils import get_link
 from plone.memoize import view as viewcache
 
@@ -34,6 +34,7 @@ class AnalysisRequestsView(BaseView):
         }
 
     def folderitems(self, full_objects=False):
+        logger.info("*** Bika Health's folderitems ***")
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
         # We will use this list for each element

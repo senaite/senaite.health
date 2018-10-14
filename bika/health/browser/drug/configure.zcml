@@ -9,7 +9,7 @@
       name="getdrugs"
       class=".getdrugs.ajaxGetDrugs"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

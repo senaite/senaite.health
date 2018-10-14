@@ -12,7 +12,7 @@
       name="folder_view"
       class=".folder_view.PatientsView"
       permission="zope2.View"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
     <browser:page
@@ -20,7 +20,7 @@
       name="getpatients"
       class=".getpatients.ajaxGetPatients"
       permission="zope.Public"
-      layer="bika.lims.interfaces.IBikaLIMS"
+      layer="bika.health.interfaces.IBikaHealth"
     />
 
 </configure>

@@ -4,11 +4,11 @@
 #
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
-
+from bika.lims.interfaces import IBikaLIMS
 from zope.interface import Interface
 
 
-class IBikaHealth(Interface):
+class IBikaHealth(IBikaLIMS):
     """Marker interface that defines a Zope 3 browser layer.
     A layer specific for this add-on product.
     This interface is referred in browserlayer.xml.
