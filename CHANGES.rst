@@ -20,6 +20,8 @@ Changelog
 
 **Fixed**
 
+- #112 Insufficient privileges when "AR add" is clicked inside Patient
+
 
 1.1.3 (2018-10-10)
 ------------------

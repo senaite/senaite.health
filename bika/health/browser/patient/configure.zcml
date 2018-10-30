@@ -102,4 +102,13 @@
       layer="bika.health.interfaces.IBikaHealth"
     />
 
+    <!-- Redirect to Client AR Add view when "AR Add" clicked inside Patient -->
+    <browser:page
+      for="bika.health.interfaces.IPatient"
+      name="ar_add"
+      class=".analysisrequests.AnalysisRequestAddRedirectView"
+      permission="bika.lims.permissions.AddAnalysisRequest"
+      layer="bika.lims.interfaces.IBikaLIMS"
+    />
+
 </configure>
