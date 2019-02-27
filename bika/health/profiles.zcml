@@ -28,14 +28,6 @@
   </genericsetup:importStep>
 
   <genericsetup:importStep
-      name="setupHealthPermissions"
-      title="Bika Health: Setup Permissions"
-      description="Configure default permission"
-      handler="bika.health.setuphandlers.setupHealthPermissions">
-    <depends name="content" />
-  </genericsetup:importStep>
-
-  <genericsetup:importStep
       name="setupHealthCatalogs"
       title="Bika Health: Setup Catalogs"
       description="Create and configure catalogs and indexes"

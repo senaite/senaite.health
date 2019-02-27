@@ -5,7 +5,6 @@ bika_casesyndromicclassifications,CaseSyndromicClassifications
 bika_diseases,Diseases
 bika_drugprohibitions,DrugProhibitions
 bika_drugs,Drugs
-bika_epidemiologicalyears,EpidemiologicalYears
 bika_identifiertypes,IdentifierTypes
 bika_immunizations,Immunizations
 bika_symptoms,Symptoms

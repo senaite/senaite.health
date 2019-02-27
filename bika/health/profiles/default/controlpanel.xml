@@ -1,142 +1,220 @@
 <?xml version="1.0"?>
-<!-- Here are defined the content types that should be shown on BikaLIMS Configuration (Site Setup) -->
-<object name="portal_controlpanel" meta_type="Plone Control Panel Tool"
- xmlns:i18n="http://xml.zope.org/namespaces/i18n"
- i18n:domain="plone">
+<!-- This creates an action in Site Setup control panel in Plone. Actions are
+  bundled in categories. In Plone 4, only "Member", "Plone" and "Products" are
+  supported. Senaite core adds the category "bika", that renders the
+  "LIMS Configuration" section" in control panel.
+-->
+<object name="portal_controlpanel"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
- <configlet title="Patient Symptoms and Conditions" action_id="bika_symptoms"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/symptom.png"
-    url_expr="string:$portal_url/bika_setup/bika_symptoms"
-    visible="True"
-  i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
-  <configlet title="Drugs" action_id="bika_drugs"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/drug.png"
-    url_expr="string:$portal_url/bika_setup/bika_drugs"
-    visible="True"
-    i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
- <configlet title="Drug Prohibitions" action_id="bika_drugprohibitions"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/drugprohibition.png"
-    url_expr="string:$portal_url/bika_setup/bika_drugprohibitions"
-    visible="True"
-    i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
- <configlet title="Diseases" action_id="bika_diseases"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/disease.png"
-    url_expr="string:$portal_url/bika_setup/bika_diseases"
-    visible="True"
-    i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
- <configlet title="Aetiologic Agents" action_id="bika_aetiologicagents"
-    appId="bika.lims" category="bika" condition_expr=""
+ <!-- Link "Aetiologic Agents" in "LIMS configuration" control panel -->
+ <configlet
+    title="Aetiologic Agents"
+    action_id="bika_aetiologicagents"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
     icon_expr="string:++resource++bika.health.images/aetiologicagent.png"
     url_expr="string:$portal_url/bika_setup/bika_aetiologicagents"
     visible="True"
+    i18n:domain="senaite.health"
     i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
+    <permission>BIKA: Manage Bika</permission>
  </configlet>
 
- <configlet title="Treatments" action_id="bika_treatments"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/treatment.png"
-    url_expr="string:$portal_url/bika_setup/bika_treatments"
-    visible="True"
-    i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
- <configlet title="Immunizations" action_id="bika_immunizations"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/immunization.png"
-    url_expr="string:$portal_url/bika_setup/bika_immunizations"
-    visible="True"
-    i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
-  <configlet title="Vaccination Centers" action_id="bika_vaccinationcenters"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/vaccinationcenter.png"
-    url_expr="string:$portal_url/bika_setup/bika_vaccinationcenters"
-    visible="True"
-    i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
-  <configlet title="Case Statuses" action_id="bika_casestatuses"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/casestatus.png"
-    url_expr="string:$portal_url/bika_setup/bika_casestatuses"
-    visible="True"
-    i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
-  <configlet title="Case Outcomes" action_id="bika_caseoutcomes"
-    appId="bika.lims" category="bika" condition_expr=""
+ <!-- Link "Case Outcomes" in "LIMS configuration" control panel -->
+ <configlet
+    title="Case Outcomes"
+    action_id="bika_caseoutcomes"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
     icon_expr="string:++resource++bika.health.images/caseoutcome.png"
     url_expr="string:$portal_url/bika_setup/bika_caseoutcomes"
     visible="True"
-  i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
- </configlet>
-
-  <configlet title="Case Syndromic Classifications" action_id="bika_casesyndromicclassifications"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/casesyndromicclassification.png"
-    url_expr="string:$portal_url/bika_setup/bika_casesyndromicclassifications"
-    visible="True"
+    i18n:domain="senaite.health"
     i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
+    <permission>BIKA: Manage Bika</permission>
  </configlet>
 
- <configlet title="Epidemiological Years" action_id="bika_epidemiologicalyears"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/epidemiologicalyear.png"
-    url_expr="string:$portal_url/bika_setup/bika_epidemiologicalyears"
+ <!-- Link "Case Statuses" in "LIMS configuration" control panel -->
+ <configlet
+    title="Case Statuses"
+    action_id="bika_casestatuses"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/casestatus.png"
+    url_expr="string:$portal_url/bika_setup/bika_casestatuses"
     visible="True"
+    i18n:domain="senaite.health"
     i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
+    <permission>BIKA: Manage Bika</permission>
  </configlet>
 
- <configlet title="Identifier Types" action_id="bika_identifiertypes"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.health.images/identifiertype.png"
-    url_expr="string:$portal_url/bika_setup/bika_identifiertypes"
+ <!-- Link "Diseases" in "LIMS configuration" control panel -->
+ <configlet
+    title="Diseases"
+    action_id="bika_diseases"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/disease.png"
+    url_expr="string:$portal_url/bika_setup/bika_diseases"
     visible="True"
+    i18n:domain="senaite.health"
     i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
+    <permission>BIKA: Manage Bika</permission>
  </configlet>
 
- <configlet title="Insurance Companies" action_id="bika_insurancecompanies"
-    appId="bika.lims" category="bika" condition_expr=""
-    icon_expr="string:++resource++bika.lims.images/laboratory.png"
-    url_expr="string:$portal_url/bika_setup/bika_insurancecompanies"
+ <!-- Link "Drug Prohibitions" in "LIMS configuration" control panel -->
+ <configlet
+    title="Drug Prohibitions"
+    action_id="bika_drugprohibitions"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/drugprohibition.png"
+    url_expr="string:$portal_url/bika_setup/bika_drugprohibitions"
     visible="True"
+    i18n:domain="senaite.health"
     i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
+    <permission>BIKA: Manage Bika</permission>
  </configlet>
 
- <configlet title="Ethnicities" action_id="bika_ethnicities"
-    appId="bika.lims" category="bika" condition_expr=""
+ <!-- Link "Drugs" in "LIMS configuration" control panel -->
+ <configlet
+    title="Drugs"
+    action_id="bika_drugs"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/drug.png"
+    url_expr="string:$portal_url/bika_setup/bika_drugs"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Ethnicities" in "LIMS configuration" control panel -->
+ <configlet
+    title="Ethnicities"
+    action_id="bika_ethnicities"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
     icon_expr="string:++resource++bika.health.images/patient.png"
     url_expr="string:$portal_url/bika_setup/bika_ethnicities"
     visible="True"
+    i18n:domain="senaite.health"
     i18n:attributes="title">
-  <permission>BIKA: Manage Bika</permission>
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Identifier Types" in "LIMS configuration" control panel -->
+ <configlet
+    title="Identifier Types"
+    action_id="bika_identifiertypes"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/identifiertype.png"
+    url_expr="string:$portal_url/bika_setup/bika_identifiertypes"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Immunizations" in "LIMS configuration" control panel -->
+ <configlet
+    title="Immunizations"
+    action_id="bika_immunizations"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/immunization.png"
+    url_expr="string:$portal_url/bika_setup/bika_immunizations"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Insurance Companies" in "LIMS configuration" control panel -->
+ <configlet
+    title="Insurance Companies"
+    action_id="bika_insurancecompanies"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/insurance_company.png"
+    url_expr="string:$portal_url/bika_setup/bika_insurancecompanies"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Symptoms and Conditions" in "LIMS configuration" control panel -->
+ <configlet
+    title="Symptoms and Conditions"
+    action_id="bika_symptoms"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/symptom.png"
+    url_expr="string:$portal_url/bika_setup/bika_symptoms"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Syndromes" in "LIMS configuration" control panel -->
+ <configlet
+    title="Syndromes"
+    action_id="bika_casesyndromicclassifications"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/casesyndromicclassification.png"
+    url_expr="string:$portal_url/bika_setup/bika_casesyndromicclassifications"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Treatments" in "LIMS configuration" control panel -->
+ <configlet
+    title="Treatments"
+    action_id="bika_treatments"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/treatment.png"
+    url_expr="string:$portal_url/bika_setup/bika_treatments"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
+ </configlet>
+
+ <!-- Link "Vaccination Centers" in "LIMS configuration" control panel -->
+ <configlet
+    title="Vaccination Centers"
+    action_id="bika_vaccinationcenters"
+    appId="senaite.health"
+    category="bika"
+    condition_expr=""
+    icon_expr="string:++resource++bika.health.images/vaccinationcenter.png"
+    url_expr="string:$portal_url/bika_setup/bika_vaccinationcenters"
+    visible="True"
+    i18n:domain="senaite.health"
+    i18n:attributes="title">
+    <permission>BIKA: Manage Bika</permission>
  </configlet>
 
 </object>

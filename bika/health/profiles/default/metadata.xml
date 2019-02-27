@@ -1,7 +1,13 @@
 <?xml version="1.0"?>
+<!-- This file contains add-on dependency and version information. Is read
+  during Plone start-up and is required to be present and well-formatted for the
+  add-on to appear in the installer control panel.
+  If dependencies are defined, "portal_setup" installs the profiles listed as
+  dependencies before installing this add-on own profile.
+-->
 <metadata>
   <version>1.2.0</version>
   <dependencies>
-    <dependency>profile-bika.lims:default</dependency>
+    <dependency>profile-senaite.lims:default</dependency>
   </dependencies>
 </metadata>

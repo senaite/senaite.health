@@ -1,127 +1,137 @@
 <?xml version="1.0"?>
 
 <object name="portal_workflow" meta_type="Plone Workflow Tool">
+ <property name="title" purge="False">Senaite Health Workflows</property>
 
- <property name="title" purge="False">
-  Contains workflow definitions for your portal</property>
+  <!-- *** SENAITE.CORE GENERIC WORKFLOWS *** -->
+  <object name="senaite_cancellable_type_workflow" meta_type="Workflow"/>
+  <object name="senaite_deactivable_type_workflow" meta_type="Workflow"/>
+  <object name="senaite_one_state_workflow" meta_type="Workflow"/>
 
- <object name="bika_doctor_workflow" meta_type="Workflow"/>
- <object name="bika_patient_workflow" meta_type="Workflow"/>
+  <!-- *** SENAITE.HEALTH WORKFLOWS *** -->
+  <!-- Workflow: bika_doctor_workflow -->
+  <object name="senaite_health_doctor_workflow" meta_type="Workflow"/>
+
+  <!-- Workflow: bika_patient_workflow -->
+  <object name="senaite_health_patient_workflow" meta_type="Workflow"/>
 
  <bindings>
 
-  <type type_id="AetiologicAgents"/>
+  <!-- *** BINDINGS TO SENAITE.CORE WORKFLOWS *** -->
+  <!-- Bind senaite_one_state by default if type not known -->
+  <default>
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </default>
+
+  <!-- Bindings to "senaite_one_state_workflow" -->
+  <!-- Setup folders -->
+  <type type_id="AetiologicAgents">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="CaseOutcomes">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="CaseStatuses">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="CaseSyndromicClassifications">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="Diseases">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="Drugs">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="DrugProhibitions">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="Ethnicities">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="IdentifierTypes">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="Immunizations">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="InsuranceCompanies">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="Symptoms">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="Treatments">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="VaccinationCenters">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <!-- Other folders and types -->
+  <type type_id="Patients">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+  <type type_id="Doctors">
+    <bound-workflow workflow_id="senaite_one_state_workflow"/>
+  </type>
+
+  <!-- Bindings to "senaite_deactivable_type_workflow" -->
   <type type_id="AetiologicAgent">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-
   <type type_id="CaseOutcome">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="CaseOutcomes"/>
-
   <type type_id="CaseStatus">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="CaseStatuses"/>
-
   <type type_id="CaseSyndromicClassification">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="CaseSyndromicClassifications"/>
-
   <type type_id="Disease">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="Diseases"/>
-
   <type type_id="Drug">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="Drugs"/>
-
   <type type_id="DrugProhibition">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="DrugProhibitions"/>
-
-  <type type_id="EpidemiologicalYear">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
-  </type>
-  <type type_id="EpidemiologicalYears"/>
-
   <type type_id="IdentifierType">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="IdentifierTypes"/>
-
-  <type type_id="Instrument">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
-  </type>
-  <type type_id="Instruments"/>
-
-  <type type_id="Patient">
-   <bound-workflow workflow_id="bika_patient_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
-  </type>
-  <type type_id="Patients"/>
-
-  <type type_id="Doctor">
-   <bound-workflow workflow_id="bika_doctor_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
-  </type>
-  <type type_id="Doctors"/>
-
   <type type_id="Treatment">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="Treatments"/>
-
   <type type_id="Immunization">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="Immunizations"/>
-
   <type type_id="Symptom">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="Symptoms"/>
-
   <type type_id="VaccinationCenter">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="VaccinationCenters"/>
-
   <type type_id="VaccinationCenterContact">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-
   <type type_id="InsuranceCompany">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="InsuranceCompanies"/>
-
   <type type_id="Ethnicity">
-   <bound-workflow workflow_id="bika_one_state_workflow"/>
-   <bound-workflow workflow_id="bika_inactive_workflow"/>
+   <bound-workflow workflow_id="senaite_deactivable_type_workflow"/>
   </type>
-  <type type_id="Ethnicities"/>
+
+  <!-- Bindings to "senaite_cancellable_type_workflow" -->
+
+
+  <!-- *** BINDINGS TO SENAITE.HEALTH WORKFLOWS *** -->
+  <type type_id="Doctor">
+   <bound-workflow workflow_id="senaite_health_doctor_workflow"/>
+  </type>
+  <type type_id="Patient">
+   <bound-workflow workflow_id="senaite_health_patient_workflow"/>
+  </type>
 
  </bindings>
 </object>

@@ -10,48 +10,18 @@
 from Products.CMFCore import permissions
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFCore.utils import getToolByName
-from Products.CMFEditions.Permissions import AccessPreviousVersions
-from Products.CMFEditions.Permissions import ApplyVersionControl
-from Products.CMFEditions.Permissions import SaveNewVersion
 from bika.health import logger
-from bika.lims.catalog import setup_catalogs
-from bika.lims.catalog\
-    import getCatalogDefinitions as getCatalogDefinitionsLIMS
-from bika.health.catalog\
+from bika.health.catalog \
     import getCatalogDefinitions as getCatalogDefinitionsHealth
 from bika.health.catalog import getCatalogExtensions
 from bika.health.config import PROJECTNAME as product
 from bika.lims import api
-from bika.lims.utils import tmpID
+from bika.lims.catalog \
+    import getCatalogDefinitions as getCatalogDefinitionsLIMS
+from bika.lims.catalog import setup_catalogs
 from bika.lims.idserver import renameAfterCreation
-from bika.health.permissions import AddAetiologicAgent
-from bika.health.permissions import ManageDoctors
-from bika.health.permissions import ViewPatients
-from bika.health.permissions import ViewBatches
-from bika.health.permissions import ViewSamples
-from bika.health.permissions import ViewAnalysisRequests
-from bika.health.permissions import ViewInsuranceCompanies
-from bika.health.permissions import ViewEthnicities
-from bika.health.permissions import AddAetiologicAgent
-from bika.health.permissions import AddDoctor
-from bika.health.permissions import AddDrug
-from bika.health.permissions import AddDrugProhibition
-from bika.health.permissions import AddImmunization
-from bika.health.permissions import AddPatient
-from bika.health.permissions import AddSymptom
-from bika.health.permissions import AddTreatment
-from bika.health.permissions import AddVaccinationCenter
-from bika.health.permissions import AddInsuranceCompany
-from bika.health.permissions import AddEthnicity
-from bika.health.permissions import EditPatient
-from bika.health.permissions import ManageDoctors
-from bika.lims.permissions import AddAnalysisRequest, EditBatch, AddBatch
-from bika.lims.permissions import AddAnalysisSpec
-from bika.lims.permissions import AddSample
-from bika.lims.permissions import AddSamplePartition
-from bika.lims.permissions import ManageAnalysisRequests
-from bika.lims.permissions import ManageClients
-from bika.lims.permissions import CancelAndReinstate
+from bika.lims.permissions import AddAnalysisRequest, AddBatch
+from bika.lims.utils import tmpID
 
 
 class Empty:
@@ -106,7 +76,6 @@ def setupHealthVarious(context):
                    'bika_vaccinationcenters',
                    'bika_casestatuses',
                    'bika_caseoutcomes',
-                   'bika_epidemiologicalyears',
                    'bika_identifiertypes',
                    'bika_casesyndromicclassifications',
                    'bika_insurancecompanies',
@@ -183,107 +152,6 @@ def setupHealthGroupsAndRoles(context):
     if 'Doctors' not in portal_groups.listGroupIds():
         portal_groups.addGroup('Doctors', title="Doctors",
             roles=['Member', 'Doctor'])
-
-    # if 'VaccinationCenters' not in portal_groups.listGroupIds():
-    #     portal_groups.addGroup('VaccinationCenters', title="",
-    #         roles=['Member', ])
-
-
-def setupHealthPermissions(context):
-    """ Set up some suggested role to permission mappings.
-    New types and anything that differs from bika.lims gets specified here.
-    These lines completely overwrite those in bika.lims - Changes common to
-    both packages should be made in both places!
-    """
-
-    if context.readDataFile('bika.health.txt') is None:
-        return
-    portal = context.getSite()
-
-    # Root permissions
-    mp = portal.manage_permission
-    mp(AddAnalysisRequest, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
-    mp(AddSample, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
-    mp(AddSamplePartition, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Doctor', 'Sampler'], 1)
-    mp(AddDoctor, ['Manager', 'Owner', 'LabManager', 'LabClerk', 'Client'], 0)
-    mp(AddAetiologicAgent, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddTreatment, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddDrug, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddImmunization, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddVaccinationCenter, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddInsuranceCompany, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddSymptom, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddDrugProhibition, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-    mp(AddEthnicity, ['Manager', 'Owner', 'LabManager', 'LabClerk'], 1)
-
-    mp(ApplyVersionControl, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
-    mp(SaveNewVersion, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
-    mp(AccessPreviousVersions, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Owner', 'RegulatoryInspector'], 1)
-
-    mp(ManageAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 1)
-    mp(ManageDoctors, ['Manager', 'LabManager', 'Owner', 'LabClerk'], 1)
-
-    mp(ViewBatches, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
-    mp(ViewSamples, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
-    mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
-    mp(ViewInsuranceCompanies, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
-    mp(ViewEthnicities, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector'], 1)
-
-    # /clients folder permissions
-    # Member role must have view permission on /clients, to see the list.
-    # This means within a client, perms granted on Member role are available
-    # in clients not our own, allowing sideways entry if we're not careful.
-    mp = portal.clients.manage_permission
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp(permissions.View,               ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
-    mp(ManageClients, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector'], 0)
-    mp(permissions.AddPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'Client', 'RegulatoryInspector'], 1)
-    mp(AddAnalysisSpec, ['Manager', 'LabManager', 'Owner'], 0)
-    portal.clients.reindexObject()
-
-    for obj in portal.clients.objectValues():
-        mp = obj.manage_permission
-        mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-        mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member', 'Analyst', 'Sampler', 'Preserver', 'RegulatoryInspector'], 0)
-        mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Owner'], 0)
-        mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner', 'RegulatoryInspector'], 0)
-        obj.reindexObject()
-
-    # /patients
-    mp = portal.patients.manage_permission
-    mp(AddPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
-    mp(EditPatient, ['Manager', 'LabManager', 'LabClerk', 'Client'], 1)
-    mp(ViewPatients, ['Manager', 'LabManager', 'Owner', 'LabClerk', 'Doctor', 'RegulatoryInspector', 'Client'], 1)
-    mp(ViewAnalysisRequests, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
-    mp(ViewSamples, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
-    mp(ViewBatches, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
-    mp(CancelAndReinstate, ['Manager', 'LabManager', 'LabClerk'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor'], 0)
-    mp(permissions.ModifyPortalContent, ['Manager', 'LabManager', 'LabClerk', 'RegulatoryInspector', 'Doctor', 'Client'], 0)
-    portal.patients.reindexObject()
-
-    # /doctors
-    mp = portal.doctors.manage_permission
-    mp(CancelAndReinstate, ['Manager', 'LabManager', 'LabClerk'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Analyst', 'Sampler', 'Preserver', 'Owner'], 0)
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'LabTechnician', 'Doctor', 'Owner', 'Sampler', 'Preserver', 'Client'], 0)
-    portal.doctors.reindexObject()
-
-    # /reports folder permissions
-    mp = portal.reports.manage_permission
-    mp(permissions.ListFolderContents, ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor'], 0)
-    mp(permissions.View, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Member'], 0)
-    mp('Access contents information', ['Manager', 'LabManager', 'Member', 'LabClerk', 'Doctor', 'Owner'], 0)
-    mp(permissions.AddPortalContent, ['Manager', 'LabManager', 'LabClerk', 'Doctor', 'Owner', 'Member'], 0)
-    mp('ATContentTypes: Add Image', ['Manager', 'Labmanager', 'LabClerk', 'Doctor', 'Member', ], 0)
-    mp('ATContentTypes: Add File', ['Manager', 'Labmanager', 'LabClerk', 'Doctor', 'Member', ], 0)
-    portal.reports.reindexObject()
 
 
 def setupHealthCatalogs(context):
@@ -372,7 +240,6 @@ def setupHealthCatalogs(context):
     at.setCatalogsByType('Immunization', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseStatus', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseOutcome', ['bika_setup_catalog', ])
-    at.setCatalogsByType('EpidemiologicalYear', ['bika_setup_catalog', ])
     at.setCatalogsByType('IdentifierType', ['bika_setup_catalog', ])
     at.setCatalogsByType('CaseSyndromicClassification', ['bika_setup_catalog', ])
     at.setCatalogsByType('Ethnicity', ['bika_setup_catalog', ])
@@ -430,7 +297,7 @@ def apply_batch_permissions_for_clients(portal):
     # permission mappings are only applied to "open" state (initial state)
     wfid = 'bika_batch_workflow'
     wfstate = 'open'
-    perms = [EditBatch, ModifyPortalContent, permissions.View, AddAnalysisRequest]
+    perms = [ModifyPortalContent, permissions.View, AddAnalysisRequest]
     added = add_permissions_for_role_in_workflow(wfid, wfstate, ['Client'], perms)
     if not added:
         logger.info("No changes in {}. Skipping rolemapping".format(wfid))

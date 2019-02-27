@@ -12,30 +12,26 @@ _ = MessageFactory('senaite.health')
 import logging
 logger = logging.getLogger('senaite.health')
 
-from bika.lims.validators import *
 from bika.health.validators import *
 from bika.health.config import *
-from bika.health.permissions import *
+from bika.health import permissions
 
-from AccessControl import ModuleSecurityInfo, allow_module
+from AccessControl import allow_module
 from Products.Archetypes.atapi import process_types, listTypes
 from Products.CMFCore import utils as plone_utils
-from Products.CMFCore.DirectoryView import registerDirectory
-from Products.CMFCore.utils import ContentInit, ToolInit, getToolByName
-from Products.CMFPlone import PloneMessageFactory
-from Products.CMFPlone.interfaces import IPloneSiteRoot
-from Products.GenericSetup import EXTENSION, profile_registry
 
-allow_module('AccessControl')
-allow_module('bika.health')
-allow_module('bika.lims')
-allow_module('bika.lims.permissions')
-allow_module('bika.lims.utils')
-allow_module('bika.health.permissions')
+
+
+# Make senaite.health modules importable by through-the-web
+# https://docs.plone.org/develop/plone/security/sandboxing.html
+# https://docs.zope.org/zope2/zdgbook/Security.html
+# This allows Script python (e.g. guards from skins) to access to these modules.
+# To provide access to a module inside of a package, we need to provide security
+# declarations for all of the the packages and sub-packages along the path
+# used to access the module. Thus, all the modules from the path passed in to
+# `allow_module` will be available.
+# TODO Check if we really need to allow utils module
 allow_module('bika.health.utils')
-allow_module('json')
-allow_module('pdb')
-allow_module('zope.i18n.locales')
 
 
 def initialize(context):
@@ -50,7 +46,6 @@ def initialize(context):
     from content.doctors import Doctors
     from content.drug import Drug
     from content.drugprohibition import DrugProhibition
-    from content.epidemiologicalyear import EpidemiologicalYear
     from content.identifiertype import IdentifierType
     from content.immunization import Immunization
     from content.insurancecompany import InsuranceCompany
@@ -68,7 +63,6 @@ def initialize(context):
     from controlpanel.bika_diseases import Diseases
     from controlpanel.bika_drugprohibitions import DrugProhibitions
     from controlpanel.bika_drugs import Drugs
-    from controlpanel.bika_epidemiologicalyears import EpidemiologicalYears
     from controlpanel.bika_identifiertypes import IdentifierTypes
     from controlpanel.bika_immunizations import Immunizations
     from controlpanel.bika_treatments import Treatments

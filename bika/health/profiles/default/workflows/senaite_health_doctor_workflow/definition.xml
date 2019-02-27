@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
              i18n:domain="plone"
-             workflow_id="bika_patient_workflow"
-             title="Bika Patient Workflow"
+             workflow_id="senaite_health_doctor_workflow"
+             title="Senaite Health Doctor Workflow"
              state_variable="review_state"
              initial_state="active"
              manager_bypass="False">
 
  <permission>Access contents information</permission>
+ <permission>Change portal events</permission>
  <permission>Modify portal content</permission>
- <permission>List folder contents</permission>
  <permission>View</permission>
 
  <state state_id="active" title="Active" i18n:attributes="title">
@@ -18,6 +18,20 @@
    <permission-role>Manager</permission-role>
    <permission-role>LabManager</permission-role>
    <permission-role>LabClerk</permission-role>
+   <permission-role>Analyst</permission-role>
+   <permission-role>Sampler</permission-role>
+   <permission-role>Preserver</permission-role>
+   <permission-role>Owner</permission-role>
+   <permission-role>Doctor</permission-role>
+   <permission-role>Client</permission-role>
+  </permission-map>
+  <permission-map name="Change portal events" acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>LabManager</permission-role>
+   <permission-role>LabClerk</permission-role>
+   <permission-role>Analyst</permission-role>
+   <permission-role>Sampler</permission-role>
+   <permission-role>Preserver</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Doctor</permission-role>
    <permission-role>Client</permission-role>
@@ -26,14 +40,9 @@
    <permission-role>Manager</permission-role>
    <permission-role>LabManager</permission-role>
    <permission-role>LabClerk</permission-role>
-   <permission-role>Owner</permission-role>
-   <permission-role>Doctor</permission-role>
-   <permission-role>Client</permission-role>
-  </permission-map>
-  <permission-map name="List folder contents" acquired="False">
-   <permission-role>Manager</permission-role>
-   <permission-role>LabManager</permission-role>
-   <permission-role>LabClerk</permission-role>
+   <permission-role>Analyst</permission-role>
+   <permission-role>Sampler</permission-role>
+   <permission-role>Preserver</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Doctor</permission-role>
    <permission-role>Client</permission-role>
@@ -42,6 +51,9 @@
    <permission-role>Manager</permission-role>
    <permission-role>LabManager</permission-role>
    <permission-role>LabClerk</permission-role>
+   <permission-role>Analyst</permission-role>
+   <permission-role>Sampler</permission-role>
+   <permission-role>Preserver</permission-role>
    <permission-role>Owner</permission-role>
    <permission-role>Doctor</permission-role>
    <permission-role>Client</permission-role>

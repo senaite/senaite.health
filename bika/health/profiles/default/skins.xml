@@ -1,17 +1,13 @@
 <?xml version="1.0"?>
-<object name="portal_skins"
-        meta_type="Plone Skins Tool"
-        allow_any="False"
-        cookie_persistence="False"
-        default_skin="Sunburst Theme"
-        request_varname="plone_skin">
+<object name="portal_skins">
 
-  <object name="bika_health"
+  <!-- Register folder for through-the-web Zope scripts (python) -->
+  <object name="senaite_health_scripts"
           meta_type="Filesystem Directory View"
-          directory="bika.health:skins/bika_health"/>
+          directory="bika.health:zope_scripts"/>
 
   <skin-path name="*">
-    <layer name="bika_health" insert-before="bika"/>
+    <layer name="senaite_health_scripts" insert-after="custom"/>
   </skin-path>
 
 </object>

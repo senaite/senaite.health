@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2017-2019 by it's authors
+
 from setuptools import setup, find_packages
 
 version = '1.2.0'

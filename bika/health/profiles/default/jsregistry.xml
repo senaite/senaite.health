@@ -78,17 +78,6 @@
               inline="False"
               insert-after="*"/>
 
-  <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.analysisrequest.ar_add_health_standard.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              expression=""
-              inline="False"
-              insert-after="*"/>
-
   <!-- Add javascripts ALWAYS BEFORE this one -->
   <javascript authenticated="True"
               id="++resource++bika.health.js/bika.health.loader.js"
@@ -112,14 +101,4 @@
               inline="False"
               insert-after="*"/>
 
-  <!-- Remove javascripts not longer used -->
-  <javascript id="++resource++bika.health.js/utils.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/doctor.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/client.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/bika.health.analysisrequest_add.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/bika.health.patient_edit.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/bika.health.batch_view.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/bika.health.batch_edit.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/bika.health.bikasetup_edit.js" enabled="False"/>
-  <javascript id="++resource++bika.health.js/bika.health.client_edit.js" enabled="False"/>
 </object>

@@ -93,14 +93,6 @@
     />
 
     <browser:page
-      for="bika.health.interfaces.IEpidemiologicalYears"
-      name="folder_view"
-      class=".bika_epidemiologicalyears.EpidemiologicalYearsView"
-      permission="bika.lims.ManageBika"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
-    <browser:page
       for="bika.health.interfaces.IIdentifierTypes"
       name="folder_view"
       class=".bika_identifiertypes.IdentifierTypesView"
