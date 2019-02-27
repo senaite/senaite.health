@@ -4,6 +4,9 @@ Changelog
 
 1.2.0 (unreleased)
 ------------------
+**TODO**
+
+- Integrate panic level viewlet
 
 **Added**
 

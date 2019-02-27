@@ -13,15 +13,6 @@
         name="bika.health"
     />
 
-    <!-- TODO: This was used for panic alert, to be removed -->
-    <browser:page
-      for="*"
-      name="email_popup"
-      class="bika.health.browser.analysisrequest.emailpopup.EmailPopupView"
-      permission="zope.Public"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
     <!-- Override senaite.core's default views -->
     <browser:page
       for="bika.lims.interfaces.IAnalysisRequest"
@@ -56,15 +47,6 @@
       name="invoice_create"
       class="bika.health.browser.analysisrequest.invoice.InvoiceCreate"
       permission="bika.lims.ManageInvoices"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
-    <!-- Override senaite.core's default workflow actions -->
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="workflow_action"
-      class="bika.health.browser.analysisrequest.workflow.AnalysisRequestWorkflowAction"
-      permission="zope.Public"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
