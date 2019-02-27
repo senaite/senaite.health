@@ -32,6 +32,7 @@ def setupEthnicities(bika_setup):
     """
     Creates standard ethnicities
     """
+
     ethnicities = ['Native American', 'Asian', 'Black', 'Native Hawaiian or Other Pacific Islander', 'White',
                    'Hispanic or Latino']
     for ethnicityName in ethnicities:

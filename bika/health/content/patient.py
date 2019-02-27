@@ -5,7 +5,6 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from Products.ATContentTypes.content import schemata
 from AccessControl import ClassSecurityInfo
 from Products.ATContentTypes.utils import DT2dt
 from Products.ATExtensions.ateapi import RecordsField
@@ -29,11 +28,8 @@ from bika.health.interfaces import IPatient
 from bika.health.permissions import *
 from bika.health.widgets import ReadonlyStringWidget
 from datetime import datetime
-from zope.component import getAdapters
 from zope.interface import implements
-from Products.Archetypes.references import HoldingReference
 from bika.health.widgets.patientmenstrualstatuswidget import PatientMenstrualStatusWidget
-from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 schema = Person.schema.copy() + Schema((
     StringField(
@@ -621,7 +617,7 @@ schema = Person.schema.copy() + Schema((
     ),
     LinesField(
         'PublicationPreferences',
-        vocabulary_factory='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
+        vocabulary_factory='bika.health.obsolete.CustomPubPrefVocabularyFactory',
         schemata='Publication preference',
         widget=MultiSelectionWidget(
             label=_("Publication preference"),

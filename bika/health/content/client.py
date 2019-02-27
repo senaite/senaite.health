@@ -15,7 +15,6 @@ from plone.indexer.decorator import indexer
 from bika.health import bikaMessageFactory as _
 from zope.component import adapts, getAdapters
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
-from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 @indexer(IClient)
 def getClientID(instance):
@@ -48,7 +47,7 @@ class ClientSchemaExtender(object):
                               "preferences' tab."))
         ),
         ExtLinesField('PatientPublicationPreferences',
-            vocabulary_factory='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
+            vocabulary_factory='bika.health.obsolete.CustomPubPrefVocabularyFactory',
             schemata='Results Reports',
             widget=MultiSelectionWidget(
                 label=_("Default publication preference for Patients"),

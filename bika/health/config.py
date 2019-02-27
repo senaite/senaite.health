@@ -39,5 +39,3 @@ MENSTRUAL_STATUSES = DisplayList((
     ('irregular', _('Irregular')),
     ('none', _('No menstrual cycle')),
 ))
-
-EMAIL_SUBJECT_OPTIONS.add('health.cp', _('Client PID'))
