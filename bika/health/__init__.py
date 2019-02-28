@@ -15,6 +15,7 @@ logger = logging.getLogger('senaite.health')
 from bika.health.validators import *
 from bika.health.config import *
 from bika.health import permissions
+from Products.CMFCore.permissions import AddPortalContent
 
 from AccessControl import allow_module
 from Products.Archetypes.atapi import process_types, listTypes
@@ -77,7 +78,8 @@ def initialize(context):
     allTypes = zip(content_types, constructors)
     for atype, constructor in allTypes:
         kind = "%s: Add %s" % (config.PROJECTNAME, atype.portal_type)
-        perm = ADD_CONTENT_PERMISSIONS.get(atype.portal_type, ADD_CONTENT_PERMISSION)
+        perm_name = "Add{}".format(atype.portal_type)
+        perm = getattr(permissions, perm_name, AddPortalContent)
         plone_utils.ContentInit(kind,
                           content_types      = (atype,),
                           permission         = perm,

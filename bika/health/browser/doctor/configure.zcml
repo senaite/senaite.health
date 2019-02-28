@@ -4,15 +4,6 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="senaite.health">
 
-    <!-- Workflow action button clicked -->
-    <browser:page
-      for="bika.health.interfaces.IDoctor"
-      name="workflow_action"
-      class="bika.health.browser.client.workflow.ClientWorkflowAction"
-      permission="zope.Public"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
     <browser:page
       for="bika.health.interfaces.IDoctor"
       name="analysisrequests"
@@ -21,14 +12,6 @@
       layer="bika.health.interfaces.IBikaHealth"
     />
 
-    <browser:page
-      for="bika.health.interfaces.IDoctor"
-      name="samples"
-      class=".samples.SamplesView"
-      permission="zope2.View"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    
     <browser:page
       for="*"
       name="getDoctorID"

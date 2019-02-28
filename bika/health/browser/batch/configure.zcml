@@ -13,13 +13,6 @@
     <!-- Override senaite.core's default views -->
     <browser:page
       for="bika.lims.interfaces.IBatch"
-      name="samples"
-      class="bika.health.browser.batch.samples.BatchSamplesView"
-      permission="zope2.View"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IBatch"
       name="analysisrequests"
       class="bika.health.browser.batch.analysisrequests.BatchAnalysisRequestsView"
       permission="zope2.View"
@@ -29,7 +22,7 @@
       for="bika.lims.interfaces.IBatch"
       name="publish"
       class="bika.health.browser.batch.publish.BatchPublishView"
-      permission="bika.lims.Publish"
+      permission="senaite.core.permissions.TransitionPublishResults"
       layer="bika.health.interfaces.IBikaHealth"
     />
     <browser:page

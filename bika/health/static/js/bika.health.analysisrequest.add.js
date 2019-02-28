@@ -351,6 +351,7 @@ function HealthAnalysisRequestAddView() {
     }
 
     /**
+     * TODO 1.3 Replace this function by loadPatientFromAnalysisRequest
      * Loads the patient from the selected sample when the user creates
      * a secondary AR for it. Sets the Patient-related fields as readonly.
      * If id is empty or null, the Patient fields gets reseted and editable.

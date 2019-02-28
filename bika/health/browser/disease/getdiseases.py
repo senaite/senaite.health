@@ -7,14 +7,12 @@
 
 """Fetch diseases from ICD and bika_setup tables
 """
-from bika.health import bikaMessageFactory as _
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.browser import BrowserView
-from bika.lims.permissions import *
-from operator import itemgetter
-from bika.health.icd9cm import icd9_codes
 import json
+from operator import itemgetter
+
 import plone
+from bika.health.icd9cm import icd9_codes
+from bika.lims.browser import BrowserView
 
 
 class ajaxGetDiseases(BrowserView):

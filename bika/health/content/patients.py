@@ -5,17 +5,16 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from Products.ATContentTypes.content import schemata
+import json
+
 from Products.Archetypes import atapi
+from Products.Archetypes import DisplayList
 from Products.CMFCore.utils import getToolByName
-from bika.lims import bikaMessageFactory as _b
-from bika.health import bikaMessageFactory as _
 from bika.health.config import PROJECTNAME
 from bika.health.interfaces import IPatients
-from bika.health.permissions import *
+from bika.lims import api
 from plone.app.folder.folder import ATFolder, ATFolderSchema
 from zope.interface.declarations import implements
-import json
 
 schema = ATFolderSchema.copy()
 
@@ -32,7 +31,7 @@ class Patients(ATFolder):
         client = hasattr(self, 'getPrimaryReferrer') and self.getPrimaryReferrer() or None
         if client:
             for contact in client.objectValues('Contact'):
-                if isActive(contact):
+                if api.is_active(contact):
                     pairs.append((contact.UID(), contact.Title()))
                     if not dl:
                         objects.append(contact)
@@ -57,7 +56,7 @@ class Patients(ATFolder):
             ccs = []
             if hasattr(contact, 'getCCContact'):
                 for cc in contact.getCCContact():
-                    if isActive(cc):
+                    if api.is_active(cc):
                         ccs.append({'title': cc.Title(),
                                     'uid': cc.UID(), })
             item['ccs_json'] = json.dumps(ccs)

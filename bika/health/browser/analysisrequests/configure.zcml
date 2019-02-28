@@ -6,16 +6,7 @@
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
       name="base_view"
       class="bika.health.browser.analysisrequests.view.AnalysisRequestsView"
-      permission="bika.lims.ManageAnalysisRequests"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
-    <!-- Override senaite.core's default workflow actions -->
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequestsFolder"
-      name="workflow_action"
-      class="bika.health.browser.client.workflow.ClientWorkflowAction"
-      permission="zope.Public"
+      permission="senaite.core.permissions.ManageAnalysisRequests"
       layer="bika.health.interfaces.IBikaHealth"
     />
 

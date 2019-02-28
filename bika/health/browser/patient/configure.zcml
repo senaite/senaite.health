@@ -24,14 +24,6 @@
 
     <browser:page
       for="bika.health.interfaces.IPatient"
-      name="samples"
-      class=".samples.SamplesView"
-      permission="bika.health.permissions.ViewSamples"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
-    <browser:page
-      for="bika.health.interfaces.IPatient"
       name="historicresults"
       class=".historicresults.HistoricResultsView"
       permission="bika.health.permissions.ViewAnalysisRequests"
@@ -107,7 +99,7 @@
       for="bika.health.interfaces.IPatient"
       name="ar_add"
       class=".analysisrequests.AnalysisRequestAddRedirectView"
-      permission="bika.lims.permissions.AddAnalysisRequest"
+      permission="senaite.core.permissions.AddAnalysisRequest"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 

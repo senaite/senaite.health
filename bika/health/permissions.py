@@ -29,21 +29,6 @@ AddDrugProhibition = 'BIKA: Add DrugProhibition'
 AddInsuranceCompany = 'BIKA: Add InsuranceCompany'
 AddEthnicity = 'BIKA: Add Ethnicity'
 
-# Add Permissions for specific types, if required
-ADD_CONTENT_PERMISSIONS = {
-    'Doctor': AddDoctor,
-    'Patient': AddPatient,
-    'AetiologicAgent': AddAetiologicAgent,
-    'Treatment': AddTreatment,
-    'Drug': AddDrug,
-    'Immunization': AddImmunization,
-    'VaccinationCenter': AddVaccinationCenter,
-    'Symptom': AddSymptom,
-    'DrugProhibition': AddDrugProhibition,
-    'InsuranceCompany': AddInsuranceCompany,
-    'Ethnicity': AddEthnicity
-}
-
 ManageDoctors = "BIKA: Manage Doctors"
 
 ViewBatches = "BIKA: View Batches"

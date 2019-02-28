@@ -86,11 +86,6 @@ def setupHealthVarious(context):
         obj.unmarkCreationFlag()
         obj.reindexObject()
 
-    # Move doctors and patients above Samples in nav
-    portal.moveObjectToPosition('doctors', portal.objectIds().index('samples'))
-    portal.moveObjectToPosition('patients', portal.objectIds().index('samples'))
-    portal.moveObjectToPosition('batches', portal.objectIds().index('samples'))
-
     # Resort Invoices and AR Invoice (HEALTH-215) in navigation
     portal.moveObjectToPosition('invoices', portal.objectIds().index('supplyorders'))
     portal.moveObjectToPosition('arimports', portal.objectIds().index('referencesamples'))
