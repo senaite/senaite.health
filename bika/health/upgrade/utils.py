@@ -76,7 +76,7 @@ def del_index(catalog_id, name):
         logger.info("Index '{}' not in catalog '{}'".format(name, catalog_id))
         return False
     catalog.delIndex(name)
-    logger.info("Index '{}' removed from '{}'".format(catalog_id, name))
+    logger.info("Index '{}' removed from '{}'".format(name, catalog_id))
     return True
 
 
@@ -88,5 +88,5 @@ def del_column(catalog_id, name):
         logger.info("Column '{}' not in catalog '{}'".format(name, catalog_id))
         return False
     catalog.delColumn(name)
-    logger.info("Column '{}' removed from '{}'".format(catalog_id, name))
+    logger.info("Column '{}' removed from '{}'".format(name, catalog_id))
     return True

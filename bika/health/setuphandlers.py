@@ -14,14 +14,37 @@ from bika.health import logger
 from bika.health.catalog \
     import getCatalogDefinitions as getCatalogDefinitionsHealth
 from bika.health.catalog import getCatalogExtensions
-from bika.health.config import PROJECTNAME as product
+from bika.health.config import PROJECTNAME as product, DEFAULT_PROFILE_ID
 from bika.lims import api
 from bika.lims.catalog \
     import getCatalogDefinitions as getCatalogDefinitionsLIMS
 from bika.lims.catalog import setup_catalogs
+from bika.health.config import PROJECTNAME
 from bika.lims.idserver import renameAfterCreation
 from bika.lims.permissions import AddAnalysisRequest, AddBatch
 from bika.lims.utils import tmpID
+
+
+ID_FORMATTING = [
+    {
+        # P000001, P000002
+        "portal_type": "Patient",
+        "form": "P{seq:06d}",
+        "prefix": "patient",
+        "sequence_type": "generated",
+        "counter_type": "",
+        "split_length": 1,
+    }, {
+        # D0001, D0002, D0003
+        "portal_type": "Doctor",
+        "form": "D{seq:04d}",
+        "prefix": "doctor",
+        "sequence_type": "generated",
+        "counter_type": "",
+        "split_length": 1,
+    }
+]
+
 
 
 class Empty:
@@ -251,28 +274,7 @@ def setupHealthCatalogs(context):
         catalogs_extension=getCatalogExtensions())
 
 
-def post_install(portal_setup):
-    """Runs after the last import step of the *default* profile
 
-    This handler is registered as a *post_handler* in the generic setup profile
-
-    :param portal_setup: SetupTool
-    """
-    logger.info("SENAITE Health post-install handler [BEGIN]")
-
-    # When installing senaite health together with core, health's skins are not
-    # set before core's, even if after-before is set in profiles/skins.xml
-    # Ensure health's skin layer(s) always gets priority over core's
-    profile = 'profile-{0}:default'.format(product)
-    portal_setup.runImportStepFromProfile(profile, "skins")
-
-    # Allow client contacts to list, add and edit batches (cases)
-    # Since bika_batch_workflow lives in senaite and we don't have a workflow
-    # definition here, we need to apply the permission changes against the
-    # workflow manually
-    apply_batch_permissions_for_clients(portal_setup)
-
-    logger.info("SENAITE Health post-install handler [DONE]")
 
 
 def setupHealthTestContent(context):
@@ -385,3 +387,65 @@ def add_permissions_for_role_in_workflow(wfid, wfstate, roles, permissions):
         state.setPermission(permission, acquired, st_roles)
         added = True
     return added
+
+
+def post_install(portal_setup):
+    """Runs after the last import step of the *default* profile
+    This handler is registered as a *post_handler* in the generic setup profile
+    :param portal_setup: SetupTool
+    """
+    logger.info("SENAITE Health post-install handler [BEGIN]")
+    context = portal_setup._getImportContext(DEFAULT_PROFILE_ID)
+    portal = context.getSite()
+
+    # When installing senaite health together with core, health's skins are not
+    # set before core's, even if after-before is set in profiles/skins.xml
+    # Ensure health's skin layer(s) always gets priority over core's
+    portal_setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "skins")
+
+    # Setup ID formatting for Health types
+    setup_id_formatting(portal)
+
+    # Allow client contacts to list, add and edit batches (cases)
+    # Since bika_batch_workflow lives in senaite and we don't have a workflow
+    # definition here, we need to apply the permission changes against the
+    # workflow manually
+    # TODO Revisit this
+    apply_batch_permissions_for_clients(portal)
+
+    logger.info("SENAITE Health post-install handler [DONE]")
+
+
+def setup_id_formatting(portal, format=None):
+    """Setup default ID Formatting for health content types
+    """
+    if not format:
+        logger.info("Setting up ID formatting ...")
+        for formatting in ID_FORMATTING:
+            setup_id_formatting(portal, format=formatting)
+        return
+
+    bs = portal.bika_setup
+    p_type = format.get("portal_type", None)
+    if not p_type:
+        return
+    id_map = bs.getIDFormatting()
+    id_format = filter(lambda id: id.get("portal_type", "") == p_type, id_map)
+    if id_format:
+        logger.info("ID Format for {} already set: '{}' [SKIP]"
+                    .format(p_type, id_format[0]["form"]))
+        return
+
+    form = format.get("form", "")
+    if not form:
+        logger.info("Param 'form' for portal type {} not set [SKIP")
+        return
+
+    logger.info("Applying format '{}' for {}".format(form, p_type))
+    ids = list()
+    for record in id_map:
+        if record.get('portal_type', '') == p_type:
+            continue
+        ids.append(record)
+    ids.append(format)
+    bs.setIDFormatting(ids)

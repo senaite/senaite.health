@@ -8,6 +8,7 @@
 from bika.health import logger
 from bika.health.catalog.patient_catalog import CATALOG_PATIENTS
 from bika.health.config import PROJECTNAME as product
+from bika.health.setuphandlers import setup_id_formatting
 from bika.health.upgrade.utils import setup_catalogs, del_index, del_column
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
@@ -35,7 +36,7 @@ INDEXES_TO_DELETE = [
     # Tuples of (catalog, index_name)
     (CATALOG_PATIENTS, "getPatientIdentifiers"),
     (CATALOG_PATIENTS, "inactive_state"),
-    (CATALOG_PATIENTS, "listing_searchable_text", "TextIndexNG3")
+    (CATALOG_PATIENTS, "listing_searchable_text")
 ]
 
 COLUMNS_TO_DELETE = [
@@ -69,8 +70,10 @@ def upgrade(tool):
     # Remove indexes and metadata columns
     remove_indexes_and_metadata(portal)
 
-    logger.info("{0} upgraded to version {1}".format(product, version))
+    # Setup ID Formatting
+    setup_id_formatting(portal)
 
+    logger.info("{0} upgraded to version {1}".format(product, version))
     return True
 
 
@@ -79,5 +82,5 @@ def remove_indexes_and_metadata(portal):
     """
     for catalog, name in INDEXES_TO_DELETE:
         del_index(catalog, name)
-    for catalog, name in COLUMNS:
+    for catalog, name in COLUMNS_TO_DELETE:
         del_column(catalog, name)

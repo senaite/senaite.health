@@ -9,6 +9,7 @@ from Products.Archetypes.public import DisplayList
 from bika.health import bikaMessageFactory as _
 
 PROJECTNAME = "bika.health"
+DEFAULT_PROFILE_ID = "profile-{}:default".format(PROJECTNAME)
 
 GENDERS = DisplayList((
     ('male', _('Male')),

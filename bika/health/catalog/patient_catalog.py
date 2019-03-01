@@ -24,6 +24,7 @@ CATALOG_INDEXES = {
     "getClientPatientID": "FieldIndex",
     # TODO Replace getFullName by Title
     "getFullname": "FieldIndex",
+    # TODO Remove in favour of getId or id
     "getPatientID": "FieldIndex",
     # TODO Remove in favour of client_uid
     "getPrimaryReferrerUID": "FieldIndex",

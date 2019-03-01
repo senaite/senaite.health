@@ -7,7 +7,6 @@
 
 from datetime import datetime
 
-from AccessControl import ClassSecurityInfo
 from Products.ATContentTypes.utils import DT2dt
 from Products.ATExtensions.ateapi import RecordsField
 from Products.Archetypes import atapi
@@ -23,6 +22,7 @@ from bika.health.widgets import SplittedDateWidget
 from bika.health.widgets.patientmenstrualstatuswidget import \
     PatientMenstrualStatusWidget
 from bika.lims import api
+from bika.lims import idserver
 from bika.lims.browser.fields import AddressField
 from bika.lims.browser.fields import DateTimeField as DateTimeField_bl
 from bika.lims.browser.fields.remarksfield import RemarksField
@@ -797,26 +797,23 @@ schema.moveField('ConsentSMS', after='PrimaryReferrer')
 
 class Patient(Person):
     implements(IPatient)
-    security = ClassSecurityInfo()
+    _at_rename_after_creation = True
     displayContentsTab = False
     schema = schema
 
-    _at_rename_after_creation = True
-
     def _renameAfterCreation(self, check_auto_id=False):
-        from bika.lims.idserver import renameAfterCreation
-        renameAfterCreation(self)
+        """Autogenerate the ID of the object based on core's ID formatting
+        settings for this type
+        """
+        idserver.renameAfterCreation(self)
 
     def Title(self):
-        """ Return the Fullname as title """
+        """Return the Fullname of the patient
+        """
         return safe_unicode(self.getFullname()).encode('utf-8')
-
-    security.declarePublic('getPatientID')
 
     def getPatientID(self):
         return self.getId()
-
-    security.declarePublic('getSamples')
 
     def getSamples(self, **kwargs):
         """Return samples taken from this Patient
