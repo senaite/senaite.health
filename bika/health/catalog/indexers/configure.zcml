@@ -1,17 +1,21 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="senaite.health">
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="senaite.health">
 
-    <adapter factory=".analysisrequest.getPatientID" name="getPatientID" />
-    <adapter factory=".analysisrequest.getPatientTitle" name="getPatientTitle" />
-    <adapter factory=".analysisrequest.getPatientUID" name="getPatientUID" />
-    <adapter factory=".analysisrequest.getPatientURL" name="getPatientURL" />
-    <adapter factory=".analysisrequest.getClientPatientID" name="getClientPatientID" />
+  <adapter factory=".analysisrequest.getPatientID" name="getPatientID" />
+  <adapter factory=".analysisrequest.getPatientTitle" name="getPatientTitle" />
+  <adapter factory=".analysisrequest.getPatientUID" name="getPatientUID" />
+  <adapter factory=".analysisrequest.getPatientURL" name="getPatientURL" />
+  <adapter factory=".analysisrequest.getClientPatientID" name="getClientPatientID" />
 
-    <adapter factory=".analysisrequest.getDoctorUID" name="getDoctorUID" />
-    <adapter factory=".analysisrequest.getDoctorTitle" name="getDoctorTitle" />
-    <adapter factory=".analysisrequest.getDoctorURL" name="getDoctorURL" />
+  <adapter factory=".analysisrequest.getDoctorUID" name="getDoctorUID" />
+  <adapter factory=".analysisrequest.getDoctorTitle" name="getDoctorTitle" />
+  <adapter factory=".analysisrequest.getDoctorURL" name="getDoctorURL" />
 
-    <adapter name="listing_searchable_text" factory=".patient.listing_searchable_text"/>
+  <!-- Patients catalog -->
+  <adapter name="client_uid" factory=".patient.client_uid"/>
+  <adapter name="client_assigned" factory=".patient.client_assigned"/>
+  <adapter name="searchable_text" factory=".patient.searchable_text"/>
+
 
 </configure>

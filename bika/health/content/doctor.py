@@ -120,7 +120,7 @@ class Doctor(Contact):
             return DisplayList([(api.get_uid(client), client.Title())])
 
         # Search for clients
-        query = dict(portal_type='Client', inactive_state='active',
+        query = dict(portal_type='Client', is_active=True,
                      sort_order='ascending', sort_on='title')
         brains = api.search(query, 'portal_catalog')
         clients = map(lambda brain: [api.get_uid(brain), brain.Title], brains)

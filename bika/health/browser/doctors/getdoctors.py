@@ -26,7 +26,7 @@ class ajaxGetDoctors(BrowserView):
         sidx = self.request['sidx']
         rows = []
 
-        query = dict(portal_type="Doctor", inactive_state="active")
+        query = dict(portal_type="Doctor", is_active=True)
         client = self.get_current_client()
         if client:
             # Search those Doctors that are assigned to the same client or

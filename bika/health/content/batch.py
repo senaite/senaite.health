@@ -43,7 +43,7 @@ class getCaseSyndromicClassification:
         bsc = getToolByName(instance, 'bika_setup_catalog')
         ret = []
         for p in bsc(portal_type = 'CaseSyndromicClassification',
-                      inactive_state = 'active',
+                      is_active = True,
                       sort_on = 'sortable_title'):
             ret.append((p.UID, p.Title))
         return DisplayList(ret)
@@ -55,7 +55,7 @@ class getCaseStatus:
         bsc = getToolByName(instance, 'bika_setup_catalog')
         ret = []
         for p in bsc(portal_type = 'CaseStatus',
-                      inactive_state = 'active',
+                      is_active = True,
                       sort_on = 'sortable_title'):
             ret.append((p.Title, p.Title))
         return DisplayList(ret)
@@ -67,7 +67,7 @@ class getCaseOutcome:
         bsc = getToolByName(instance, 'bika_setup_catalog')
         ret = []
         for p in bsc(portal_type = 'CaseOutcome',
-                      inactive_state = 'active',
+                      is_active = True,
                       sort_on = 'sortable_title'):
             ret.append((p.Title, p.Title))
         return DisplayList(ret)
@@ -166,7 +166,7 @@ class BatchSchemaExtender(object):
                 description="",
                 render_own_label=False,
                 visible={'edit': 'visible', 'view': 'visible'},
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 catalog_name='portal_catalog',
                 showOn=True,
                 colModel = [{'columnName':'DoctorID','width':'20','label':_('Doctor ID')},
@@ -209,7 +209,7 @@ class BatchSchemaExtender(object):
                 description="",
                 render_own_label=False,
                 visible={'edit': 'visible', 'view': 'visible'},
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 catalog_name='bikahealth_catalog_patient_listing',
                 search_fields=('SearchableText',),
                 showOn=False,
@@ -415,7 +415,7 @@ class BatchSchemaExtender(object):
                          'view': 'visible',
                          'add': 'visible'},
                 catalog_name='bikahealth_catalog_patient_listing',
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 showOn=True,
             ),
         ),

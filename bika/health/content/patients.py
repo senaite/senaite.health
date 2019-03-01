@@ -39,7 +39,7 @@ class Patients(ATFolder):
             return dl and DisplayList(pairs) or objects
         # fallback - all Lab Contacts
         for contact in bsc(portal_type='LabContact',
-                           inactive_state='active',
+                           is_active=True,
                            sort_on='sortable_title'):
             pairs.append((contact.UID, contact.Title))
             if not dl:

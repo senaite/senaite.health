@@ -9,7 +9,7 @@ import collections
 
 from bika.health import bikaMessageFactory as _
 from bika.health.utils import get_resource_url
-from bika.health.catalog import CATALOG_PATIENT_LISTING
+from bika.health.catalog import CATALOG_PATIENTS
 from bika.health.permissions import AddPatient
 from bika.lims import api
 from bika.lims.api import security
@@ -36,7 +36,7 @@ class PatientsView(BikaListingView):
         request.set("disable_border", 1)
 
         self.sort_on = "created"
-        self.catalog = CATALOG_PATIENT_LISTING
+        self.catalog = CATALOG_PATIENTS
         self.contentFilter = {'portal_type': 'Patient',
                               'sort_on': 'created',
                               'sort_order': 'descending'}
@@ -84,13 +84,13 @@ class PatientsView(BikaListingView):
                 "id": "default",
                 "title": _("Active"),
                 "contentFilter": {"is_active": True},
-                "transitions": [{"id": "deactivate"}, ],
+                "transitions": [],
                 "columns": self.columns.keys(),
             }, {
                 "id": "inactive",
                 "title": _("Inactive"),
                 "contentFilter": {'is_active': False},
-                "transitions": [{"id": "activate"}, ],
+                "transitions": [],
                 "columns": self.columns.keys(),
             }, {
                 "id": "all",
@@ -116,16 +116,15 @@ class PatientsView(BikaListingView):
                     "icon": "++resource++bika.lims.images/add.png"}
             }
 
-    def before_render(self):
-        """Called before template render hook
-        """
-        super(PatientsView, self).before_render()
-
         # If the current user is a client contact, display those patients that
-        # belong to same client only
+        # belong to same client or that do not belong to any client
         client = api.get_current_client()
         if client:
-            self.contentFilter['getPrimaryReferrerUID'] = api.get_uid(client)
+            query = dict(client_uid=[api.get_uid(client), "-1"])
+            # We add UID "-1" to also include Patients w/o Client assigned
+            self.contentFilter.update(query)
+            for rv in self.review_states:
+                rv["contentFilter"].update(query)
 
     def folderitems(self, full_objects=False, classic=False):
         # Force the folderitems to work with brains instead of objects

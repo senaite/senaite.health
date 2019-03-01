@@ -14,7 +14,7 @@ from Products.validation import validation
 from Products.validation.interfaces.IValidator import IValidator
 from datetime import datetime
 from bika.lims import api
-from bika.health.catalog.patient_catalog import CATALOG_PATIENT_LISTING
+from bika.health.catalog.patient_catalog import CATALOG_PATIENTS
 
 
 class Date_Format_Validator:
@@ -63,7 +63,7 @@ class UniqueClientPatientIDValidator:
         if not api.get_bika_setup().ClientPatientIDUnique:
             return True
         query = dict(getClientPatientID=value)
-        patients = api.search(query, CATALOG_PATIENT_LISTING)
+        patients = api.search(query, CATALOG_PATIENTS)
         instance = kwargs.get('instance')
         # If there are no patients with this Client Patient ID
         # then it is valid

@@ -47,7 +47,7 @@ class AnalysisRequestSchemaExtender(object):
                          'header_table': 'visible',
                          'secondary': 'disabled'},
                 catalog_name='portal_catalog',
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 showOn=True,
                 add_button={
                     'visible': True,
@@ -75,7 +75,7 @@ class AnalysisRequestSchemaExtender(object):
                          'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
                 search_fields=('SearchableText',),
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 colModel = [
                     {'columnName': 'Title', 'width': '30', 'label': _(
                         'Title'), 'align': 'left'},
@@ -140,7 +140,7 @@ class AnalysisRequestSchemaExtender(object):
                          'add': 'edit',
                          },
                 catalog_name='bikahealth_catalog_patient_listing',
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 showOn=True,
             ),
         ),

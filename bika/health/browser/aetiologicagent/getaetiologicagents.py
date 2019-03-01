@@ -28,7 +28,7 @@ class ajaxGetAetiologicAgents(BrowserView):
 
         # lookup objects from ZODB
         agents = self.bika_setup_catalog(portal_type='AetiologicAgent',
-                                         inactive_state='active')
+                                         is_active=True)
         if agents and searchTerm:
             agents = [agent for agent in agents if agent.Title.lower().find(searchTerm) > -1
                       or agent.Description.lower().find(searchTerm) > -1]

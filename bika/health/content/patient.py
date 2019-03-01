@@ -48,10 +48,9 @@ schema = Person.schema.copy() + Schema((
     ),
     ReferenceField(
         'PrimaryReferrer',
-        vocabulary='get_clients',
+        vocabulary='get_clients_vocabulary',
         allowed_types=('Client',),
         relationship='PatientClient',
-        required=1,
         widget=SelectionWidget(
             format='select',
             label=_('Client'),
@@ -868,17 +867,19 @@ class Patient(Person):
             return len(self.getSamplesOngoing())/len(samples)
         return 0
 
-    def get_clients(self):
+    def get_clients_vocabulary(self):
         client = api.get_current_client()
         if client:
             # Current user is a client contact. Load only this client
-            clients = [client]
-        else:
-            # Current user is not a client contact. Load all active clients
-            query = dict(portal_type="Client", is_active=True)
-            clients = api.search(query, "portal_catalog")
+            return DisplayList([api.get_uid(client), api.get_title(client)])
+
+        # Current user is not a client contact. Load all active clients
+        query = dict(portal_type="Client", is_active=True)
+        clients = api.search(query, "portal_catalog")
         clients = map(lambda cl: [api.get_uid(cl), api.get_title(cl)], clients)
         clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
+
+        # Lab personnel can set a Patient to be visible for all Clients
         clients.insert(0, ['', ''])
         return DisplayList(clients)
 
@@ -891,7 +892,7 @@ class Patient(Person):
         ret = [('', '')]
         # Other selections
         for ic in bsc(portal_type='InsuranceCompany',
-                      inactive_state='active',
+                      is_active=True,
                       sort_on='sortable_title'):
             ret.append((ic.UID, ic.Title))
         return DisplayList(ret)
@@ -1039,7 +1040,7 @@ class Patient(Person):
         bsc = getToolByName(self, 'bika_setup_catalog')
         items = [(c.UID, c.Title)
                  for c in bsc(portal_type='Ethnicity',
-                              inactive_state='active')]
+                              is_active=True)]
         items.sort(lambda x, y: cmp(x[1], y[1]))
         items.insert(0, ('', t(_(''))))
         return DisplayList(items)
@@ -1064,6 +1065,13 @@ class Patient(Person):
         Return all the multifile objects related with the patient
         """
         return self.objectValues('Multifile')
+
+    # TODO Replace "PrimaryReferrer" field from the Schema by "Client"
+    def getClient(self):
+        """Returns the client associated to this Patient, if any
+        """
+        return self.getPrimaryReferrer() or None
+
 
     def SearchableText(self):
         """

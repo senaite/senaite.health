@@ -59,7 +59,7 @@ class CaseSymptomsWidget(ATRecordsWidget):
             gender = patient and patient.getGender() or 'dk'
 
         symptoms = self.bika_setup_catalog(portal_type='Symptom',
-                                           inactive_state='active')
+                                           is_active=True)
         for symptom in symptoms:
             symptom = symptom.getObject()
             s_gender = symptom.getGender()

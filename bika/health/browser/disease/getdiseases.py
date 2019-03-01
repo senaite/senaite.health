@@ -29,7 +29,7 @@ class ajaxGetDiseases(BrowserView):
 
         # lookup objects from ZODB
         brains = self.bika_setup_catalog(portal_type='Disease',
-                                         inactive_state='active')
+                                         is_active=True)
         if brains and searchTerm:
             brains = [p for p in brains if p.Title.lower().find(searchTerm) > -1
                       or p.Description.lower().find(searchTerm) > -1]

@@ -31,14 +31,14 @@ class Doctors(ATFolder):
         objects = []
         # All Doctors
         for contact in pc(portal_type='Doctor',
-                          inactive_state='active',
+                          is_active=True,
                           sort_on='sortable_title'):
             pairs.append((contact.UID, contact.Title))
             if not dl:
                 objects.append(contact.getObject())
         # All LabContacts
         for contact in bsc(portal_type='LabContact',
-                           inactive_state='active',
+                           is_active=True,
                            sort_on='sortable_title'):
             pairs.append((contact.UID, contact.Title))
             if not dl:
