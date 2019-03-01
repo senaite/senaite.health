@@ -26,7 +26,7 @@ setup(
     keywords=['lims', 'lis', 'senaite', 'opensource', 'health'],
     author='SENAITE Foundation',
     author_email='support@senaite.com',
-    url='https://github.com/senaite/senaite.core',
+    url='https://github.com/senaite/senaite.health',
     license='GPLv2',
     packages=find_packages(exclude=['ez_setup']),
     namespace_packages=['bika'],

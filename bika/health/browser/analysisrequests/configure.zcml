@@ -6,7 +6,7 @@
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
       name="base_view"
       class="bika.health.browser.analysisrequests.view.AnalysisRequestsView"
-      permission="senaite.core.permissions.ManageAnalysisRequests"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 

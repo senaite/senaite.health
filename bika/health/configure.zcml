@@ -6,16 +6,25 @@
     i18n_domain="senaite.health">
 
   <!-- Include the configs from other dependencies first -->
-  <includeDependencies package="." />
+  <!--includeDependencies package="." /-->
 
+  <!-- Register i18n resources -->
   <i18n:registerTranslations directory="locales" />
 
+  <!-- Initialize the package and setup "Add" permissions for all types -->
   <five:registerPackage package="." initialize=".initialize" />
 
-  <!-- Filesystem directory view -->
+  <!-- Filesystem directory view for skins resources (widgets, etc.) -->
   <cmf:registerDirectory name="skins" directory="skins" recursive="True"/>
 
+  <!-- Register Translations -->
+  <i18n:registerTranslations directory="locales" />
+
+  <!-- Senaite Health specific permissions -->
   <include file="permissions.zcml" />
+
+  <!-- Needed for senaite.core permissions -->
+  <include package="bika.lims" file="permissions.zcml" />
 
   <!-- Package includes -->
   <include package=".adapters"/>
@@ -26,6 +35,9 @@
   <include package=".static"/>
   <include package=".setupdata"/>
   <include package=".catalog.indexers" />
+
+  <!-- Installation profile
+  TODO Rely on a post_install profile only -->
   <include file="profiles.zcml" />
 
 </configure>

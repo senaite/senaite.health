@@ -5,11 +5,8 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from bika.lims.config import *
 from Products.Archetypes.public import DisplayList
-from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
-from bika.health.permissions import *
 
 PROJECTNAME = "bika.health"
 

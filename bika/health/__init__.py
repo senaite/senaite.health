@@ -32,6 +32,7 @@ from Products.CMFCore import utils as plone_utils
 # used to access the module. Thus, all the modules from the path passed in to
 # `allow_module` will be available.
 # TODO Check if we really need to allow utils module
+allow_module('bika.health')
 allow_module('bika.health.utils')
 
 

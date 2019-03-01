@@ -103,7 +103,7 @@ def setupHealthVarious(context):
     client.addAction(id="patients",
         name="Patients",
         action="string:${object_url}/patients",
-        permission="BIKA: View Patients",
+        permission=permissions.View,
         category="object",
         visible=True,
         icon_expr="string:${portal_url}/images/patient.png",
