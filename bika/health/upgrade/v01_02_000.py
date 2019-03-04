@@ -5,11 +5,16 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
+import time
+
+import transaction
 from bika.health import logger
 from bika.health.catalog.patient_catalog import CATALOG_PATIENTS
 from bika.health.config import PROJECTNAME as product
 from bika.health.setuphandlers import setup_id_formatting
+from bika.health.subscribers.patient import purge_owners_for
 from bika.health.upgrade.utils import setup_catalogs, del_index, del_column
+from bika.lims import api
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
 
@@ -62,7 +67,8 @@ def upgrade(tool):
     logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
 
     # -------- ADD YOUR STUFF BELOW --------
-    setup.runImportStepFromProfile(profile, 'browserlayer')
+    setup.runImportStepFromProfile(profile, "browserlayer")
+    setup.runImportStepFromProfile(profile, "typeinfo")
 
     # Setup catalogs
     setup_catalogs(CATALOGS_BY_TYPE, INDEXES, COLUMNS)
@@ -72,6 +78,15 @@ def upgrade(tool):
 
     # Setup ID Formatting
     setup_id_formatting(portal)
+
+    # Remove "Samples" action views from Doctors and Patients
+    remove_sample_actions(portal)
+
+    # Apply "Owner" roles for patients to client contacts
+    apply_patients_ownership(portal)
+
+    # Update workflows
+    update_workflows(portal)
 
     logger.info("{0} upgraded to version {1}".format(product, version))
     return True
@@ -84,3 +99,61 @@ def remove_indexes_and_metadata(portal):
         del_index(catalog, name)
     for catalog, name in COLUMNS_TO_DELETE:
         del_column(catalog, name)
+
+
+def remove_samples_action(type_info):
+    """Removes any action with id="samples" from inside the specified obj
+    """
+    actions = map(lambda action: action.id, type_info._actions)
+    for index, action in enumerate(actions, start=0):
+        if action == 'samples':
+            type_info.deleteActions([index])
+            break
+
+
+def remove_sample_actions(portal):
+    """Remove the "Sample" action view from inside Patient and Doctor objects
+    """
+    logger.info("Removing Samples action view from Patients ...")
+    patient_type = portal.portal_types.getTypeInfo("Patient")
+    remove_samples_action(patient_type)
+
+    logger.info("Removing Samples action view from Doctors ...")
+    doctor_type = portal.portal_types.getTypeInfo("Doctor")
+    remove_samples_action(doctor_type)
+
+
+def apply_patients_ownership(portal):
+    """Set the role "Owner" to all the client contacts that belong to the same
+    client as the patient, if any
+    """
+    logger.info("Applying Patients ownership ...")
+    brains = api.search(dict(portal_type="Patient"), CATALOG_PATIENTS)
+    total = len(brains)
+    for num, brain in enumerate(brains):
+        if num % 100 == 0:
+            logger.info("Applying Patients Ownership {}/{}".format(num, total))
+        purge_owners_for(api.get_object(brain))
+    commit_transaction(portal)
+
+
+def update_workflows(portal):
+    """Updates the affected workflows
+    """
+    logger.info("Updating workflows ...")
+
+    # Re-import rolemap and workflow tools
+    setup = portal.portal_setup
+    setup.runImportStepFromProfile(profile, "rolemap")
+    setup.runImportStepFromProfile(profile, "workflow")
+
+    # Update role mappings for Patient objects
+    ut = UpgradeUtils(portal)
+    ut.recursiveUpdateRoleMappings(portal.patients, commit_window=500)
+    commit_transaction(portal)
+
+def commit_transaction(portal):
+    start = time.time()
+    transaction.commit()
+    end = time.time()
+    logger.info("Commit transaction ... Took {:.2f}s".format(end - start))

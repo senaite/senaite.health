@@ -1,16 +1,13 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="senaite.health">
 
     <browser:page
       for="bika.health.interfaces.IPatient"
       name="batches"
       class=".batches.BatchesView"
-      permission="bika.health.permissions.ViewBatches"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
@@ -18,7 +15,7 @@
       for="bika.health.interfaces.IPatient"
       name="analysisrequests"
       class=".analysisrequests.AnalysisRequestsView"
-      permission="bika.health.permissions.ViewAnalysisRequests"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
@@ -26,7 +23,7 @@
       for="bika.health.interfaces.IPatient"
       name="historicresults"
       class=".historicresults.HistoricResultsView"
-      permission="bika.health.permissions.ViewAnalysisRequests"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
@@ -34,7 +31,7 @@
       for="*"
       name="historicjson"
       class=".historicresults.historicResultsJSON"
-      permission="bika.health.permissions.ViewAnalysisRequests"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
