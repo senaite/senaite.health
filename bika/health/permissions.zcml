@@ -8,19 +8,34 @@
 	The two files must be kept in sync.
 /-->
 
-# Add Permissions:
-# ----------------
-<permission id="bika.health.permissions.AddPatient" title="BIKA: Add Patient"/>
-<permission id="bika.health.permissions.AddDoctor" title="BIKA: Add Doctor"/>
-<permission id="bika.health.permissions.AddAetiologicAgent" title="BIKA: Add AetiologicAgent"/>
-<permission id="bika.health.permissions.AddTreatment" title="BIKA: Add Treatment"/>
-<permission id="bika.health.permissions.AddDrug" title="BIKA: Add Drug"/>
-<permission id="bika.health.permissions.AddImunization" title="BIKA: Add Immunization"/>
-<permission id="bika.health.permissions.AddVaccinationCenter" title="BIKA: Add VaccinationCenter"/>
-<permission id="bika.health.permissions.AddInsuranceCompany" title="BIKA: Add InsuranceCompany"/>
-<permission id="bika.health.permissions.AddSymptom" title="BIKA: Add Symptom"/>
-<permission id="bika.health.permissions.AddDrugProhibition" title="BIKA: Add DrugProhibition"/>+
-<permission id="bika.health.permissions.AddEthnicity" title="BIKA: Add Ethnicity"/>
+# Add Permissions
+# ===============
+<permission id="senaite.health.premissions.AddAetiologicAgent" title="senaite.health: Add AetiologicAgent"/>
+<permission id="senaite.health.premissions.AddDoctor" title="senaite.health: Add Doctor"/>
+<permission id="senaite.health.premissions.AddDrug" title="senaite.health: Add Drug"/>
+<permission id="senaite.health.premissions.AddDrugProhibition" title="senaite.health: Add DrugProhibition"/>+
+<permission id="senaite.health.premissions.AddEthnicity" title="senaite.health: Add Ethnicity"/>
+<permission id="senaite.health.premissions.AddImunization" title="senaite.health: Add Immunization"/>
+<permission id="senaite.health.premissions.AddInsuranceCompany" title="senaite.health: Add InsuranceCompany"/>
+<permission id="senaite.health.permissions.AddPatient" title="senaite.health: Add Patient"/>
+<permission id="senaite.health.premissions.AddSymptom" title="senaite.health: Add Symptom"/>
+<permission id="senaite.health.premissions.AddTreatment" title="senaite.health: Add Treatment"/>
+<permission id="senaite.health.premissions.AddVaccinationCenter" title="senaite.health: Add VaccinationCenter"/>
+
+
+# Transition Permissions
+# ======================
+<permission id="senaite.health.premissions.TransitionActivatePatient" title="senaite.health: Transition: Activate Patient"/>
+<permission id="senaite.health.premissions.TransitionDeactivatePatient" title="senaite.health: Transition: Deactivate Patient"/>
+
+
+# Behavioral permissions
+# ======================
+<permission id="senaite.health.permissions.ViewPatients" title="senaite.health: View Patients"/>
+
+
+
+
 
 <permission id="bika.health.ManageDoctors" title="BIKA: Manage Doctors"/>
 
@@ -31,8 +46,6 @@
 <permission id="bika.health.permissions.ViewInsuranceCompanies" title="BIKA: View InsuranceCompanies"/>
 <permission id="bika.health.permissions.ViewEthnicities" title="BIKA: View Ethnicities"/>
 
-# Patient permissions
-<permission id="bika.health.permissions.ViewPatients" title="BIKA: View Patients"/>
 <permission id="bika.health.permissions.EditPatient" title="BIKA: Edit Patient"/>
 
 </configure>

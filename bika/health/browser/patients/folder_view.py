@@ -14,6 +14,7 @@ from bika.health.permissions import AddPatient
 from bika.lims import api
 from bika.lims.api import security
 from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.interfaces import IClient
 from bika.lims.utils import get_link
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
@@ -107,7 +108,7 @@ class PatientsView(BikaListingView):
 
         # Render the Add button. We need to do this here because patients live
         # inside site.patients folder
-        # TODO Security Patients should live inside Client folders!
+        self.context_actions = {}
         patients = api.get_portal().patients
         if security.check_permission(AddPatient, patients):
             self.context_actions = {
@@ -125,6 +126,10 @@ class PatientsView(BikaListingView):
             self.contentFilter.update(query)
             for rv in self.review_states:
                 rv["contentFilter"].update(query)
+
+        # If the current context is a Client, remove the title column
+        if IClient.providedBy(self.context):
+            self.remove_column('getPrimaryReferrerTitle')
 
     def folderitems(self, full_objects=False, classic=False):
         # Force the folderitems to work with brains instead of objects

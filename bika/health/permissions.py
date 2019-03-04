@@ -5,29 +5,34 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-"""All permissions are defined here.
-They are also defined in permissions.zcml.
-The two files must be kept in sync.
+# Add Permissions
+# ===============
+# For "Add" permissions, keep the name of the variable as "Add<portal_type>".
+# When the module gets initialized (bika.lims.__init__), the function initialize
+# will look through these Add permissions attributes when registering types and
+# will automatically associate them with their types.
+AddAetiologicAgent = 'senaite.health: Add AetiologicAgent'
+AddDoctor = 'senaite.health: Add Doctor'
+AddDrug = 'senaite.health: Add Drug'
+AddDrugProhibition = 'senaite.health: Add DrugProhibition'
+AddEthnicity = 'senaite.health: Add Ethnicity'
+AddImmunization = 'senaite.health: Add Immunization'
+AddInsuranceCompany = 'senaite.health: Add InsuranceCompany'
+AddPatient = 'senaite.health: Add Patient'
+AddSymptom = 'senaite.health: Add Symptom'
+AddTreatment = 'senaite.health: AddTreatment'
+AddVaccinationCenter = 'senaite.health: Add VaccinationCenter'
 
-bika.health.__init__ imports * from this file, so
-bika.health.PermName or bika.health.permissions.PermName are
-both valid.
+# Transition permissions
+# ======================
+TransitionActivatePatient = "senaite.health: Transition: Activate Patient"
+TransitionDeactivatePatient = "senaite.health: Transition: Deactivate Patient"
 
-"""
 
-# Add Permissions:
-# ----------------
-AddPatient = 'BIKA: Add Patient'
-AddDoctor = 'BIKA: Add Doctor'
-AddAetiologicAgent = 'BIKA: Add AetiologicAgent'
-AddTreatment = 'BIKA: AddTreatment'
-AddDrug = 'BIKA: Add Drug'
-AddImmunization = 'BIKA: Add Immunization'
-AddVaccinationCenter = 'BIKA: Add VaccinationCenter'
-AddSymptom = 'BIKA: Add Symptom'
-AddDrugProhibition = 'BIKA: Add DrugProhibition'
-AddInsuranceCompany = 'BIKA: Add InsuranceCompany'
-AddEthnicity = 'BIKA: Add Ethnicity'
+# Behavioral permissions
+# ======================
+ViewPatients = "senaite.health: View Patients"
+
 
 ManageDoctors = "BIKA: Manage Doctors"
 
@@ -38,5 +43,4 @@ ViewInsuranceCompanies = "BIKA: View InsuranceCompanies"
 ViewEthnicities = "BIKA: View Ethnicities"
 
 # Patient permissions
-ViewPatients = 'BIKA: View Patients'
 EditPatient = 'BIKA: Edit Patient'

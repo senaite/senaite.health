@@ -6,8 +6,8 @@
     <browser:page
       for="bika.lims.interfaces.IClient"
       name="patients"
-      class="bika.health.browser.client.patients.ClientPatientsView"
-      permission="bika.health.permissions.ViewPatients"
+      class="bika.health.browser.patients.folder_view.PatientsView"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
     <browser:page

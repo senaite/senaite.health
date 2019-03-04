@@ -15,6 +15,7 @@ from bika.health.catalog \
     import getCatalogDefinitions as getCatalogDefinitionsHealth
 from bika.health.catalog import getCatalogExtensions
 from bika.health.config import PROJECTNAME as product, DEFAULT_PROFILE_ID
+from bika.health.permissions import ViewPatients
 from bika.lims import api
 from bika.lims.catalog \
     import getCatalogDefinitions as getCatalogDefinitionsLIMS
@@ -126,7 +127,7 @@ def setupHealthVarious(context):
     client.addAction(id="patients",
         name="Patients",
         action="string:${object_url}/patients",
-        permission=permissions.View,
+        permission=ViewPatients,
         category="object",
         visible=True,
         icon_expr="string:${portal_url}/images/patient.png",
