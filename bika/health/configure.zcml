@@ -28,13 +28,14 @@
 
   <!-- Package includes -->
   <include package=".adapters"/>
+  <include package=".ajax"/>
+  <include package=".browser"/>
+  <include package=".catalog.indexers" />
   <include package=".content"/>
   <include package=".controlpanel"/>
-  <include package=".browser"/>
-  <include package=".ajax"/>
-  <include package=".static"/>
   <include package=".setupdata"/>
-  <include package=".catalog.indexers" />
+  <include package=".static"/>
+  <include package=".subscribers" />
 
   <!-- Installation profile
   TODO Rely on a post_install profile only -->

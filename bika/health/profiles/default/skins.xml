@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<object name="portal_skins">
+<object name="portal_skins"
+        meta_type="Plone Skins Tool"
+        allow_any="False"
+        cookie_persistence="False"
+        default_skin="Sunburst Theme"
+        request_varname="plone_skin">
 
   <!-- Skins path -->
   <object name="bika_health"

@@ -40,7 +40,7 @@ schema = Person.schema.copy() + Schema((
         'PatientID',
         searchable=1,
         required=0,
-        widget=ReadonlyStringWidget(
+        widget=StringWidget(
             visible={'view': 'visible', 'edit': 'hidden'},
             label=_('Patient ID'),
             css='readonly-emphasize',
@@ -868,7 +868,7 @@ class Patient(Person):
         client = api.get_current_client()
         if client:
             # Current user is a client contact. Load only this client
-            return DisplayList([api.get_uid(client), api.get_title(client)])
+            return DisplayList([(api.get_uid(client), api.get_title(client))])
 
         # Current user is not a client contact. Load all active clients
         query = dict(portal_type="Client", is_active=True)

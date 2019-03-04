@@ -42,7 +42,7 @@
          i18n:attributes="title"
          i18n:domain="plone"
          visible="True">
-    <permission value="BIKA: Edit Patient"/>
+    <permission value="Modify portal content"/>
  </action>
 
  <action title="Batches"
