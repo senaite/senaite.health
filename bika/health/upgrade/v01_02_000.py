@@ -8,12 +8,11 @@
 import time
 
 import transaction
-from Products.CMFCore import permissions
 from bika.health import logger
 from bika.health.catalog.patient_catalog import CATALOG_PATIENTS
 from bika.health.config import PROJECTNAME
-from bika.health.permissions import ViewPatients
-from bika.health.setuphandlers import setup_id_formatting
+from bika.health.setuphandlers import setup_id_formatting, \
+    setup_content_actions, remove_action, setup_roles_permissions
 from bika.health.subscribers.patient import purge_owners_for
 from bika.health.upgrade.utils import setup_catalogs, del_index, del_column
 from bika.lims import api
@@ -79,11 +78,14 @@ def upgrade(tool):
     # Remove indexes and metadata columns
     remove_indexes_and_metadata()
 
+    # Setup permissions
+    setup_roles_permissions(portal)
+
     # Setup ID Formatting
     setup_id_formatting(portal)
 
     # Add "Patients" and "Doctors" action views in Client type
-    add_health_actions(portal)
+    setup_content_actions(portal)
 
     # Remove "Samples" action views from Doctors and Patients
     remove_sample_actions(portal)
@@ -105,47 +107,6 @@ def remove_indexes_and_metadata():
         del_index(catalog, name)
     for catalog, name in COLUMNS_TO_DELETE:
         del_column(catalog, name)
-
-
-def add_health_actions(portal):
-    """Add "patients" and "doctors" action views inside Client view
-    """
-    client_type = portal.portal_types.getTypeInfo("Client")
-
-    remove_action(client_type, "patients")
-    client_type.addAction(
-        id="patients",
-        name="Patients",
-        action="string:${object_url}/patients",
-        permission=ViewPatients,
-        category="object",
-        visible=True,
-        icon_expr="string:${portal_url}/images/patient.png",
-        link_target="",
-        description="",
-        condition="")
-
-    remove_action(client_type, "doctors")
-    client_type.addAction(
-        id="doctors",
-        name="Doctors",
-        action="string:${object_url}/doctors",
-        permission=permissions.View,
-        category="object",
-        visible=True,
-        icon_expr="string:${portal_url}/images/doctor.png",
-        link_target="",
-        description="",
-        condition="")
-
-
-def remove_action(type_info, action_id):
-    actions = map(lambda action: action.id, type_info._actions)
-    if action_id not in actions:
-        return True
-    index = actions.index(action_id)
-    type_info.deleteActions([index])
-    return remove_action(type_info, action_id)
 
 
 def remove_sample_actions(portal):

@@ -15,7 +15,7 @@ from zope.interface import implements
 CATALOG_PATIENTS = "bikahealth_catalog_patient_listing"
 
 CATALOG_TYPES = [
-    "Patients",
+    "Patient",
 ]
 
 CATALOG_INDEXES = {

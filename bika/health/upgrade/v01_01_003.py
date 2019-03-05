@@ -10,8 +10,7 @@ from Products.CMFCore import permissions
 from bika.health import logger
 from bika.health.config import PROJECTNAME as product
 from bika.health.permissions import AddDoctor
-from bika.health.setuphandlers import apply_batch_permissions_for_clients, \
-    add_permission_for_role
+from bika.health.setuphandlers import add_permission_for_role
 from bika.lims import api
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
@@ -39,9 +38,6 @@ def upgrade(tool):
     setup.runImportStepFromProfile(profile, "skins")
     setup.runImportStepFromProfile(profile, 'workflow')
     setup.runImportStepFromProfile(profile, "typeinfo")
-
-    # Allow client contacts to list, add and edit batches (cases)
-    apply_batch_permissions_for_clients(portal)
 
     # Allow clients to list, add and edit doctors
     apply_doctor_permissions_for_clients(portal, ut)

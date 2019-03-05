@@ -32,7 +32,7 @@ class PatientsView(BikaListingView):
         self.icon = get_resource_url("patient_big.png")
         self.form_id = "list_health_patients"
         self.show_select_row = False
-        self.show_select_column = False
+        self.show_select_column = True
         self.show_select_all_checkboxes = False
         request.set("disable_border", 1)
 

@@ -25,12 +25,5 @@
       permission="senaite.core.permissions.TransitionPublishResults"
       layer="bika.health.interfaces.IBikaHealth"
     />
-    <browser:page
-      for="bika.lims.interfaces.IBatchFolder"
-      name="base_view"
-      class="bika.health.browser.batch.batchfolder.BatchFolderContentsView"
-      permission="cmf.ListFolderContents"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    
+
 </configure>

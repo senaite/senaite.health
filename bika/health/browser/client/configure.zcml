@@ -2,35 +2,37 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-    <!-- Additional views in Client context -->
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="patients"
-      class="bika.health.browser.patients.folder_view.PatientsView"
-      permission="zope2.View"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="doctors"
-      class="bika.health.browser.client.doctors.ClientDoctorsView"
-      permission="zope2.View"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
+  <!-- Batches view -->
+  <subscriber
+    for="bika.lims.browser.client.ClientBatchesView
+         bika.lims.interfaces.IClient"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory="bika.health.browser.batchfolder.BatchListingViewAdapter" />
 
-    <!-- Override senaite.core's default views -->
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="batches"
-      class="bika.health.browser.client.batches.BatchesView"
-      permission="zope2.View"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IClient"
-      name="base_view"
-      class="bika.health.browser.client.analysisrequests.AnalysisRequestsView"
-      permission="zope2.View"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
+  <!-- Doctors view -->
+  <browser:page
+    for="bika.lims.interfaces.IClient"
+    name="doctors"
+    class="bika.health.browser.client.doctors.ClientDoctorsView"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+
+  <!-- Patients view -->
+  <browser:page
+    for="bika.lims.interfaces.IClient"
+    name="patients"
+    class="bika.health.browser.patients.folder_view.PatientsView"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+
+  <!-- Samples view -->
+  <browser:page
+    for="bika.lims.interfaces.IClient"
+    name="base_view"
+    class="bika.health.browser.client.analysisrequests.AnalysisRequestsView"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
 </configure>

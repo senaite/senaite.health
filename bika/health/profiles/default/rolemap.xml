@@ -30,19 +30,6 @@
   </roles>
 
   <permissions>
-
-    <!-- PLONE PERMISSIONS
-    NOTE: We make only *add* (acquire="True") our permissions here -->
-    <permission name="View" acquire="True">
-      <role name="Doctor"/>
-    </permission>
-    <permission name="Access contents information" acquire="True">
-      <role name="Doctor"/>
-    </permission>
-    <permission name="List folder contents" acquire="True">
-      <role name="Doctor"/>
-    </permission>
-
     <!-- SENAITE HEALTH PERMISSIONS -->
     <!-- Add Permissions -->
     <permission name="senaite.health: Add AetiologicAgent" acquire="False">

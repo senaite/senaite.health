@@ -23,4 +23,12 @@
   <include package=".vaccinationcenter"/>
   <include package=".vaccinationcentercontact"/>
 
+
+  <!-- Batches view with additional filters and columns -->
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.lims.interfaces.IBatchFolder"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory="bika.health.browser.batchfolder.BatchListingViewAdapter" />
+
 </configure>

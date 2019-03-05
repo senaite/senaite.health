@@ -2,11 +2,9 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="senaite.health">
-
-  <!-- Include the configs from other dependencies first -->
-  <!--includeDependencies package="." /-->
 
   <!-- Register i18n resources -->
   <i18n:registerTranslations directory="locales" />
@@ -27,18 +25,24 @@
   <include package="bika.lims" file="permissions.zcml" />
 
   <!-- Package includes -->
-  <include package=".adapters"/>
-  <include package=".ajax"/>
-  <include package=".browser"/>
+  <include package=".adapters" />
+  <include package=".ajax" />
+  <include package=".browser" />
   <include package=".catalog.indexers" />
-  <include package=".content"/>
-  <include package=".controlpanel"/>
-  <include package=".setupdata"/>
-  <include package=".static"/>
+  <include package=".content" />
+  <include package=".controlpanel" />
+  <include package=".setupdata" />
+  <include package=".static" />
   <include package=".subscribers" />
+  <include package=".upgrade" />
 
-  <!-- Installation profile
-  TODO Rely on a post_install profile only -->
-  <include file="profiles.zcml" />
+  <!-- Installation profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="SENAITE Health"
+      directory="profiles/default"
+      description="Health Care extension for SENAITE"
+      post_handler="bika.health.setuphandlers.post_install"
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
 
 </configure>

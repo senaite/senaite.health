@@ -1,15 +1,23 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    i18n_domain="senaite.health">
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="senaite.health">
 
-    <browser:page
-      for="bika.health.interfaces.IPatient"
-      name="batches"
-      class=".batches.BatchesView"
-      permission="zope2.View"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
+  <!-- Batches view. Use core's default, but with subscriber -->
+  <browser:page
+    for="bika.health.interfaces.IPatient"
+    name="batches"
+    class="bika.lims.browser.batchfolder.BatchFolderContentsView"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.health.interfaces.IPatient"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory="bika.health.browser.patient.batches.BatchListingViewAdapter"
+  />
+
 
     <browser:page
       for="bika.health.interfaces.IPatient"
