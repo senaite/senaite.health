@@ -5,19 +5,17 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-import time
-
-import transaction
 from bika.health import logger
 from bika.health.catalog.patient_catalog import CATALOG_PATIENTS
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import setup_id_formatting, \
-    setup_content_actions, remove_action, setup_roles_permissions
+    setup_content_actions, remove_action, setup_roles_permissions, \
+    setup_batches_ownership
 from bika.health.subscribers.patient import purge_owners_for
 from bika.health.upgrade.utils import setup_catalogs, del_index, del_column
 from bika.lims import api
 from bika.lims.upgrade import upgradestep
-from bika.lims.upgrade.utils import UpgradeUtils
+from bika.lims.upgrade.utils import UpgradeUtils, commit_transaction
 
 version = '1.2.0'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
@@ -90,8 +88,11 @@ def upgrade(tool):
     # Remove "Samples" action views from Doctors and Patients
     remove_sample_actions(portal)
 
-    # Apply "Owner" roles for patients to client contacts
-    apply_patients_ownership(portal)
+    # Setup "Owner" roles for patients to client contacts
+    setup_patients_ownership(portal)
+
+    # Setup "Owner" roles for batches to client contacts
+    setup_batches_ownership(portal)
 
     # Update workflows
     update_workflows(portal)
@@ -121,7 +122,7 @@ def remove_sample_actions(portal):
     remove_action(doctor_type, "samples")
 
 
-def apply_patients_ownership(portal):
+def setup_patients_ownership(portal):
     """Set the role "Owner" to all the client contacts that belong to the same
     client as the patient, if any
     """
@@ -132,7 +133,10 @@ def apply_patients_ownership(portal):
         if num % 100 == 0:
             logger.info("Applying Patients Ownership {}/{}".format(num, total))
         purge_owners_for(api.get_object(brain))
-    commit_transaction(portal)
+
+        if num % 1000 == 0:
+            commit_transaction()
+    commit_transaction()
 
 
 def update_workflows(portal):
@@ -148,11 +152,4 @@ def update_workflows(portal):
     # Update role mappings for Patient objects
     ut = UpgradeUtils(portal)
     ut.recursiveUpdateRoleMappings(portal.patients, commit_window=500)
-    commit_transaction(portal)
-
-
-def commit_transaction(portal):
-    start = time.time()
-    transaction.commit()
-    end = time.time()
-    logger.info("Commit transaction ... Took {:.2f}s".format(end - start))
+    commit_transaction()

@@ -7,7 +7,7 @@
 
 from Products.CMFCore import permissions
 from Products.CMFCore.permissions import View, AccessContentsInformation, \
-    ListFolderContents, ModifyPortalContent
+    ListFolderContents
 from Products.CMFCore.utils import getToolByName
 from bika.health import logger
 from bika.health.catalog \
@@ -15,13 +15,14 @@ from bika.health.catalog \
 from bika.health.catalog import getCatalogExtensions
 from bika.health.config import DEFAULT_PROFILE_ID
 from bika.health.permissions import ViewPatients
+from bika.health.subscribers.batch import purge_owners_for
 from bika.lims.catalog \
     import getCatalogDefinitions as getCatalogDefinitionsLIMS
 from bika.lims.catalog import setup_catalogs
 from bika.lims.idserver import renameAfterCreation
 from bika.lims.permissions import AddBatch
+from bika.lims.upgrade.utils import commit_transaction
 from bika.lims.utils import tmpID
-from bika.lims import api
 
 
 class Empty(object):
@@ -89,6 +90,9 @@ def post_install(portal_setup):
 
     # Setup site structure
     setup_site_structure(context)
+
+    # Setup "Owner" roles for batches to client contacts
+    setup_batches_ownership(portal)
 
     # Setup javascripts
     setup_javascripts(portal)
@@ -214,6 +218,23 @@ def setup_site_structure(context):
     portal.moveObjectToPosition('invoices', portal.objectIds().index('supplyorders'))
     portal.moveObjectToPosition('arimports', portal.objectIds().index('referencesamples'))
     logger.info("Setup site structure [DONE]")
+
+
+def setup_batches_ownership(portal):
+    """Walks-through all batches and set the role "Owner" to all the client
+    contacts that belong to the same client as the batch, if any
+    """
+    logger.info("Setup Batches/Cases ownership ...")
+    batches = portal.batches.objectValues("Batch")
+    total = len(batches)
+    for num, batch in enumerate(batches):
+        if num % 100 == 0:
+            logger.info("Setup Batches ownership {}/{}".format(num, total))
+        purge_owners_for(batch)
+
+        if num % 1000 == 0:
+            commit_transaction()
+    commit_transaction()
 
 
 def setup_javascripts(portal):
