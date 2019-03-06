@@ -36,6 +36,9 @@
   <include package=".subscribers" />
   <include package=".upgrade" />
 
+  <!-- TODO REMOVE obsolete module -->
+  <include package=".obsolete" />
+
   <!-- Installation profile -->
   <genericsetup:registerProfile
       name="default"
