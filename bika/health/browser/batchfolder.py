@@ -5,10 +5,13 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
+import collections
+
 from bika.health import bikaMessageFactory as _
 from bika.health.utils import get_field_value
 from bika.lims import api
 from bika.lims.api import security
+from bika.lims.interfaces import IClient
 from bika.lims.permissions import AddBatch
 from bika.lims.utils import get_link
 from senaite.core.listing import utils
@@ -32,6 +35,8 @@ class BatchListingViewAdapter(object):
     def before_render(self):
         # Additional columns
         self.add_columns()
+        # Remove unnecessary columns
+        self.hide_columns()
 
         # Apply client filter, if necessary
         client = api.get_current_client()
@@ -85,39 +90,55 @@ class BatchListingViewAdapter(object):
 
         return item
 
+    def is_client_context(self):
+        """Returns whether the batch listing is displayed in IClient context
+        or if the current user is a client contact
+        """
+        return api.get_current_client() or IClient.providedBy(self.context)
+
+    def hide_columns(self):
+        # Columns to hide
+        hide = ["Title", "BatchDate", "Description",]
+        if api.get_current_client():
+            # Hide client-specific columns
+            hide.extend(["Client", "ClientID"])
+
+        # Remove the columns from all review_states
+        for rv in self.listing.review_states:
+            rv_columns = rv.get("columns", self.listing.columns.keys())
+            rv_columns = filter(lambda col: col not in hide, rv_columns)
+            rv["columns"] = rv_columns
+
     def add_columns(self):
         """Adds health-specific columns in the listing
         """
-        health_columns = {
-            "getPatientID": {
+        is_client_context = self.is_client_context()
+        health_columns = collections.OrderedDict((
+            ("getPatientID", {
                 "title": _("Patient ID"),
-                "toggle": True,
-                "after": "ClientBatchID",
-            },
-            "getClientPatientID": {
+                "toggle": is_client_context,
+                "after": "ClientBatchID", }),
+            ("getClientPatientID", {
                 "title": _("Client PID"),
-                "toggle": True,
-                "after": "getPatientID",
-            },
-            "Patient": {
+                "toggle": is_client_context,
+                "after": "getPatientID", }),
+            ("Patient", {
                 "title": _("Patient"),
-                "toggle": True,
+                "toggle": is_client_context,
                 "index": "getPatientTitle",
-                "after": "getClientPatientID",
-            },
-            "Doctor": {
+                "after": "getClientPatientID", }),
+            ("Doctor", {
                 "title": _("Doctor"),
+                "toggle": True,
                 "index": "getDoctorTitle",
-                "after": "Patient",
-            },
-            "OnsetDate": {
+                "after": "Patient", }),
+            ("OnsetDate", {
                 "title": _("Onset Date"),
-                "after": "Patient"
-            }
-        }
+                "toggle": True,
+                "after": "Patient", }),
+        ))
 
         # Add the columns
-        self.listing.columns.update(health_columns)
         rv_keys = map(lambda r: r["id"], self.listing.review_states)
         for column_id, column_values in health_columns.items():
             utils.add_column(listing=self.listing,
