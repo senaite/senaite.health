@@ -82,9 +82,7 @@ class AnalysisRequestSchemaExtender(object):
                     # UID is required in colModel
                     {'columnName': 'UID', 'hidden': True},
                 ],
-                showOn=False,
-                delay=1000,
-                minLength=2,
+                showOn=True,
                 add_button={
                     'visible': True,
                     'url': 'patients/portal_factory/Patient/new/edit',
