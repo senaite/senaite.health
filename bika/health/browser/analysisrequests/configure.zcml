@@ -10,4 +10,14 @@
       layer="bika.health.interfaces.IBikaHealth"
     />
 
+    <!-- Dummy class to redirect to Client's AR Add form when the user (a client
+    contact) clicks the Add button in analysisrequests folder -->
+    <browser:page
+      for="bika.lims.interfaces.IAnalysisRequestsFolder"
+      name="ar_add"
+      class=".view.AnalysisRequestAddView"
+      permission="senaite.core.permissions.AddAnalysisRequest"
+      layer="bika.health.interfaces.IBikaHealth"
+    />
+
 </configure>

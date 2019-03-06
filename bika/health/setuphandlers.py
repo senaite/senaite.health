@@ -20,7 +20,7 @@ from bika.lims.catalog \
     import getCatalogDefinitions as getCatalogDefinitionsLIMS
 from bika.lims.catalog import setup_catalogs
 from bika.lims.idserver import renameAfterCreation
-from bika.lims.permissions import AddBatch
+from bika.lims.permissions import AddBatch, AddAnalysisRequest
 from bika.lims.upgrade.utils import commit_transaction
 from bika.lims.utils import tmpID
 
@@ -130,6 +130,11 @@ def setup_roles_permissions(portal):
     for role_name, permissions in ROLES:
         for permission in permissions:
             add_permission_for_role(portal, permission, role_name)
+
+    # Add "Add AnalysisRequest" permission for Clients in base analysisrequests
+    # This makes the "Add" button to appear in AnalysisRequestsFolder view
+    analysis_requests = portal.analysisrequests
+    add_permission_for_role(analysis_requests, AddAnalysisRequest, "Client")
     logger.info("Setup roles permissions [DONE]")
 
 
