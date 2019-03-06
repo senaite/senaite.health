@@ -44,11 +44,11 @@ class BatchListingViewAdapter(object):
                 rv["contentFilter"].update(query)
 
         # Render the Add button
-        self.context_actions = {}
+        self.listing.context_actions = {}
         batches = api.get_portal().batches
         if security.check_permission(AddBatch, batches):
             url = api.get_url(batches)
-            self.context_actions = {
+            self.listing.context_actions = {
                 _("Add"): {
                     "url": "{}/createObject?type_name=Batch".format(url),
                     "icon": "++resource++bika.lims.images/add.png"}
