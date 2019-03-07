@@ -58,7 +58,7 @@
   <permission value="View"/>
  </action>
 
- <action title="Analysis Requests"
+ <action title="Samples"
          action_id="analysisrequests"
          category="object"
          condition_expr=""
