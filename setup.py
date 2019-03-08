@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of SENAITE.HEALTH
+#
+# Copyright 2017-2019 by it's authors
+
 from setuptools import setup, find_packages
 
 version = '1.2.0'
@@ -20,7 +26,7 @@ setup(
     keywords=['lims', 'lis', 'senaite', 'opensource', 'health'],
     author='SENAITE Foundation',
     author_email='support@senaite.com',
-    url='https://github.com/senaite/senaite.core',
+    url='https://github.com/senaite/senaite.health',
     license='GPLv2',
     packages=find_packages(exclude=['ez_setup']),
     namespace_packages=['bika'],

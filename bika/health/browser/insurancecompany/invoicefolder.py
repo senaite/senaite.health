@@ -5,19 +5,13 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from zope.interface.declarations import implements
-from plone.app.content.browser.interfaces import IFolderContentsView
-from bika.lims.permissions import AddInvoice
-from bika.lims.permissions import ManageInvoices
-from plone.app.layout.globals.interfaces import IViewView
-from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims.browser.invoicefolder import InvoiceFolderContentsView
-from bika.lims.utils import currency_format
-
-
-from bika.lims.permissions import AddInvoice
 from Products.CMFCore.utils import getToolByName
 from bika.lims import bikaMessageFactory as _
+from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.permissions import ManageInvoices
+from bika.lims.utils import currency_format
+from plone.app.content.browser.interfaces import IFolderContentsView
+from zope.interface.declarations import implements
 
 """ This file contains an invoice type folder to be used in insurance company's stuff.
 """

@@ -9,12 +9,28 @@ from Products.CMFCore.utils import getToolByName
 from bika.health import bikaMessageFactory as _
 from bika.health import logger
 from bika.lims import api
+from bika.lims.browser.analysisrequest import AnalysisRequestAddView as ARAdd
 from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
 from bika.lims.utils import get_link
 from plone.memoize import view as viewcache
 
 
+class AnalysisRequestAddView(ARAdd):
+    """Dummy class to allow redirection when client tries to
+    create an Analysis Request from analysisrequests base folder
+    """
+    def __call__(self):
+        client = api.get_current_client()
+        if client:
+            url = api.get_url(client)
+            ar_count = self.get_ar_count()
+            return self.request.response.redirect("{}/ar_add?ar_count={}"
+                                                  .format(url, ar_count))
+        return super(AnalysisRequestAddView, self).__call__()
+
+
 class AnalysisRequestsView(BaseView):
+
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)
         self.columns['BatchID']['title'] = _('Case ID')

@@ -5,28 +5,17 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from Products.CMFCore.utils import getToolByName
-from bika.health.browser.batch.batchfolder import BatchFolderContentsView
-from bika.health import bikaMessageFactory as _
+from bika.health.browser.batchfolder import BatchListingViewAdapter
 
 
-class BatchesView(BatchFolderContentsView):
+class PatientBatchListingViewAdapter(BatchListingViewAdapter):
 
-    def __init__(self, context, request):
-        super(BatchesView, self).__init__(context, request)
-        self.view_url = self.context.absolute_url() + "/batches"
-        self.contentFilter['getPatientID'] = self.context.id
+    def before_render(self):
+        """Called before the listing renders
+        """
+        super(PatientBatchListingViewAdapter, self).before_render()
 
         # Hide patient columns
-        self.columns['getPatientID']['toggle'] = False
-        self.columns['getClientPatientID']['toggle'] = False
-        self.columns['Patient']['toggle'] = False
-
-    def __call__(self):
-        self.context_actions[_('Add')] = \
-                {'url': self.portal.absolute_url() \
-                        + '/batches/createObject?type_name=Batch',
-                 'icon': self.portal.absolute_url() \
-                        + '/++resource++bika.lims.images/add.png'}
-        return BatchFolderContentsView.__call__(self)
-
+        self.listing.columns['getPatientID']['toggle'] = False
+        self.listing.columns['getClientPatientID']['toggle'] = False
+        self.listing.columns['Patient']['toggle'] = False

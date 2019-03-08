@@ -4,6 +4,10 @@ Changelog
 
 1.2.0 (unreleased)
 ------------------
+**TODO**
+
+- Integrate panic level viewlet
+- AR Add form makes use of `getsamplepatient` to get the Patient from Sample!
 
 **Added**
 

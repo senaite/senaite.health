@@ -46,7 +46,7 @@ class ContactsView(BikaListingView):
         self.review_states = [
             {'id':'default',
              'title': _('Active'),
-             'contentFilter': {'inactive_state': 'active'},
+             'contentFilter': {'is_active': True},
              'transitions': [{'id':'deactivate'}, ],
              'columns': ['getFullname',
                          'getEmailAddress',
@@ -55,7 +55,7 @@ class ContactsView(BikaListingView):
                          'getFax']},
             {'id':'inactive',
              'title': _('Dormant'),
-             'contentFilter': {'inactive_state': 'inactive'},
+             'contentFilter': {'is_active': False},
              'transitions': [{'id':'activate'}, ],
              'columns': ['getFullname',
                          'getEmailAddress',

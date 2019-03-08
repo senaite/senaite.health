@@ -1,0 +1,38 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="senaite.core">
+
+  <!-- Patient creation. If a client has been assigned to the patient, client
+   contacts become the Owners of the Patient, so besides lab personnel, only
+   contacts of same client will be able to view and edit the patient -->
+  <subscriber
+    for="bika.health.interfaces.IPatient
+         Products.Archetypes.interfaces.IObjectInitializedEvent"
+    handler=".patient.ObjectInitializedEventHandler"
+  />
+
+  <!-- Patient modification. Purges role "Owner" for this patient from client
+   contacts that do not belong to the same client the patient is assigned to -->
+  <subscriber
+    for="bika.health.interfaces.IPatient
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".patient.ObjectModifiedEventHandler"
+  />
+
+  <!-- Batch creation. If a client has been assigned to the batch, client
+   contacts become the Owners of the Batch, so besides lab personnel, only
+   contacts of same client will be able to view and edit the batch -->
+  <subscriber
+    for="bika.lims.interfaces.IBatch
+         Products.Archetypes.interfaces.IObjectInitializedEvent"
+    handler=".batch.ObjectInitializedEventHandler"
+  />
+
+  <!-- Batch modification. Purges role "Owner" for this batch from client
+   contacts that do not belong to the same client the batch is assigned to -->
+  <subscriber
+    for="bika.lims.interfaces.IBatch
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".batch.ObjectModifiedEventHandler"
+  />
+
+</configure>

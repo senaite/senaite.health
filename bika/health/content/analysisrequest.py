@@ -47,7 +47,7 @@ class AnalysisRequestSchemaExtender(object):
                          'header_table': 'visible',
                          'secondary': 'disabled'},
                 catalog_name='portal_catalog',
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 showOn=True,
                 add_button={
                     'visible': True,
@@ -69,22 +69,18 @@ class AnalysisRequestSchemaExtender(object):
                 label=_('Patient'),
                 size=20,
                 render_own_label=True,
-                visible={'edit': 'visible',
-                         'view': 'visible',
-                         'add': 'edit',
+                visible={'add': 'edit',
                          'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
                 search_fields=('SearchableText',),
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 colModel = [
                     {'columnName': 'Title', 'width': '30', 'label': _(
                         'Title'), 'align': 'left'},
                     # UID is required in colModel
                     {'columnName': 'UID', 'hidden': True},
                 ],
-                showOn=False,
-                delay=1000,
-                minLength=2,
+                showOn=True,
                 add_button={
                     'visible': True,
                     'url': 'patients/portal_factory/Patient/new/edit',
@@ -108,7 +104,7 @@ class AnalysisRequestSchemaExtender(object):
         ExtStringField(
             'ClientPatientID',
             searchable=True,
-            required=1,
+            required=0,
             read_permission=ViewPatients,
             write_permission=permissions.ModifyPortalContent,
             widget=ReferenceWidget(
@@ -140,7 +136,7 @@ class AnalysisRequestSchemaExtender(object):
                          'add': 'edit',
                          },
                 catalog_name='bikahealth_catalog_patient_listing',
-                base_query={'inactive_state': 'active'},
+                base_query={'is_active': True},
                 showOn=True,
             ),
         ),

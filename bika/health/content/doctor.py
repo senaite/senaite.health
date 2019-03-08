@@ -5,7 +5,6 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from AccessControl import ClassSecurityInfo
 from Products.Archetypes import atapi
 from Products.Archetypes.public import ReferenceField
 from Products.Archetypes.public import Schema
@@ -16,6 +15,7 @@ from bika.health import bikaMessageFactory as _
 from bika.health.config import *
 from bika.health.interfaces import IDoctor
 from bika.lims import api
+from bika.lims import idserver
 from bika.lims.catalog.analysisrequest_catalog import \
     CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.content.contact import Contact
@@ -48,9 +48,15 @@ schema = Contact.schema.copy() + Schema((
 
 class Doctor(Contact):
     implements(IDoctor)
-    security = ClassSecurityInfo()
+    _at_rename_after_creation = True
     displayContentsTab = False
     schema = schema
+
+    def _renameAfterCreation(self, check_auto_id=False):
+        """Autogenerate the ID of the object based on core's ID formatting
+        settings for this type
+        """
+        idserver.renameAfterCreation(self)
 
     def getSamples(self, full_objects=False):
         """
@@ -120,7 +126,7 @@ class Doctor(Contact):
             return DisplayList([(api.get_uid(client), client.Title())])
 
         # Search for clients
-        query = dict(portal_type='Client', inactive_state='active',
+        query = dict(portal_type='Client', is_active=True,
                      sort_order='ascending', sort_on='title')
         brains = api.search(query, 'portal_catalog')
         clients = map(lambda brain: [api.get_uid(brain), brain.Title], brains)

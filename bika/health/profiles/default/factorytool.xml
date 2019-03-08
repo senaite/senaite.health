@@ -1,4 +1,14 @@
 <?xml version="1.0"?>
+<!-- This import step informs the portal_factory tool that we want it to manage
+  our content types. This tool deals with the fact that in Archetypes and most
+  CMF types, the object is actually created before the first edit form is filled
+  in. That is, there are no true "add forms".
+  The factory tool creates a temporary object in lieu of an "add form", and then
+  moves the object to the proper location after it has been successfully saved.
+  This is only needed for Archetypes content types. It makes sure when you
+  start adding a content item but don’t finish it, that no half created item
+  lingers.
+-->
 <object name="portal_factory" meta_type="Plone Factory Tool">
  <factorytypes>
   <type portal_type="AetiologicAgent"/>
@@ -9,14 +19,14 @@
   <type portal_type="Doctor"/>
   <type portal_type="Drug"/>
   <type portal_type="DrugProhibition"/>
-  <type portal_type="EpidemiologicalYear"/>
+  <type portal_type="Ethnicity"/>
   <type portal_type="IdentifierType" />
   <type portal_type="Immunization" />
+  <type portal_type="InsuranceCompany"/>
   <type portal_type="Patient"/>
   <type portal_type="Symptom"/>
   <type portal_type="Treatment"/>
   <type portal_type="VaccinationCenter" />
-  <type portal_type="InsuranceCompany"/>
-  <type portal_type="Ethnicity"/>
+  <type portal_type="VaccinationCenterContact" />
  </factorytypes>
 </object>

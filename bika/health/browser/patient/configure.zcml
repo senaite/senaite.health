@@ -1,32 +1,29 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-    i18n_domain="senaite.health">
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="senaite.health">
 
-    <browser:page
-      for="bika.health.interfaces.IPatient"
-      name="batches"
-      class=".batches.BatchesView"
-      permission="bika.health.permissions.ViewBatches"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
+  <!-- Batches view. Use core's default, but with subscriber -->
+  <browser:page
+    for="bika.health.interfaces.IPatient"
+    name="batches"
+    class="bika.lims.browser.batchfolder.BatchFolderContentsView"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.health.interfaces.IPatient"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory="bika.health.browser.patient.batches.BatchListingViewAdapter"
+  />
+
 
     <browser:page
       for="bika.health.interfaces.IPatient"
       name="analysisrequests"
       class=".analysisrequests.AnalysisRequestsView"
-      permission="bika.health.permissions.ViewAnalysisRequests"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
-    <browser:page
-      for="bika.health.interfaces.IPatient"
-      name="samples"
-      class=".samples.SamplesView"
-      permission="bika.health.permissions.ViewSamples"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
@@ -34,7 +31,7 @@
       for="bika.health.interfaces.IPatient"
       name="historicresults"
       class=".historicresults.HistoricResultsView"
-      permission="bika.health.permissions.ViewAnalysisRequests"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
@@ -42,7 +39,7 @@
       for="*"
       name="historicjson"
       class=".historicresults.historicResultsJSON"
-      permission="bika.health.permissions.ViewAnalysisRequests"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
@@ -107,7 +104,7 @@
       for="bika.health.interfaces.IPatient"
       name="ar_add"
       class=".analysisrequests.AnalysisRequestAddRedirectView"
-      permission="bika.lims.permissions.AddAnalysisRequest"
+      permission="senaite.core.permissions.AddAnalysisRequest"
       layer="bika.lims.interfaces.IBikaLIMS"
     />
 

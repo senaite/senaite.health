@@ -1,6 +1,16 @@
 <?xml version="1.0"?>
-<object name="portal_types" meta_type="Plone Types Tool">
- <property name="title">Controls the available content types in your portal</property>
+<!-- This adds content types in the portal_types tool. The meta_type can be:
+  - "Dexterity FTI": for Dexterity content. This is probably what you want.
+  - "Factory-based Type Information with dynamic views": for Archetypes content
+     and for the Plone Site itself
+  - "Factory-based Type Information": for Archetypes content that does not need
+     dynamic views, the ability to choose a view in the display menu.
+
+  The types.xml should be accompanied by a types folder with details information
+  on the new types. If you are editing an already existing type, then types.xml
+  is not needed: a file in the types folder is enough.
+-->
+<object name="portal_types">
  <object name="AetiologicAgent" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="AetiologicAgents" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="CaseOutcome" meta_type="Factory-based Type Information with dynamic views"/>
@@ -11,29 +21,27 @@
  <object name="CaseSyndromicClassifications" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Disease" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Diseases" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Doctor" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Doctors" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Drug" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Drugs" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="DrugProhibition" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="DrugProhibitions" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="EpidemiologicalYear" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="EpidemiologicalYears" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Ethnicity" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Ethnicities" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="IdentifierType" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="IdentifierTypes" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Patient" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Patients" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Doctor" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Doctors" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Symptoms" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Symptom" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Treatment" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="Treatments" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Immunization" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="Immunizations" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="InsuranceCompany" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="InsuranceCompanies" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Patient" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Patients" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Symptoms" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Symptom" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Treatment" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="Treatments" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="VaccinationCenter" meta_type="Factory-based Type Information with dynamic views"/>
- <object name="VaccinationCenters" meta_type="Factory-based Type Information with dynamic views"/>
  <object name="VaccinationCenterContact" meta_type="Factory-based Type Information with dynamic views"/>
+ <object name="VaccinationCenters" meta_type="Factory-based Type Information with dynamic views"/>
 </object>

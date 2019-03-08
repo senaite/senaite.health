@@ -4,11 +4,14 @@
 #
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+
 from bika.lims.interfaces import IBikaLIMS
+from senaite.impress.interfaces import ISenaiteImpressLayer
+from senaite.lims.interfaces import ISenaiteLIMS
 from zope.interface import Interface
 
 
-class IBikaHealth(IBikaLIMS):
+class IBikaHealth(IBikaLIMS, ISenaiteLIMS, ISenaiteImpressLayer):
     """Marker interface that defines a Zope 3 browser layer.
     A layer specific for this add-on product.
     This interface is referred in browserlayer.xml.
@@ -66,9 +69,6 @@ class ICaseOutcomes(Interface):
     ""
 
 class ICaseSyndromicClassifications(Interface):
-    ""
-
-class IEpidemiologicalYears(Interface):
     ""
 
 class IIdentifierTypes(Interface):

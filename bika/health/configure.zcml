@@ -2,30 +2,50 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     i18n_domain="senaite.health">
 
-  <!-- Include the configs from other dependencies first -->
-  <includeDependencies package="." />
-
+  <!-- Register i18n resources -->
   <i18n:registerTranslations directory="locales" />
 
+  <!-- Initialize the package and setup "Add" permissions for all types -->
   <five:registerPackage package="." initialize=".initialize" />
 
-  <!-- Filesystem directory view -->
+  <!-- Filesystem directory view for skins resources (widgets, etc.) -->
   <cmf:registerDirectory name="skins" directory="skins" recursive="True"/>
 
+  <!-- Register Translations -->
+  <i18n:registerTranslations directory="locales" />
+
+  <!-- Senaite Health specific permissions -->
   <include file="permissions.zcml" />
 
+  <!-- Needed for senaite.core permissions -->
+  <include package="bika.lims" file="permissions.zcml" />
+
   <!-- Package includes -->
-  <include package=".adapters"/>
-  <include package=".content"/>
-  <include package=".controlpanel"/>
-  <include package=".browser"/>
-  <include package=".ajax"/>
-  <include package=".static"/>
-  <include package=".setupdata"/>
+  <include package=".adapters" />
+  <include package=".ajax" />
+  <include package=".browser" />
   <include package=".catalog.indexers" />
-  <include file="profiles.zcml" />
+  <include package=".content" />
+  <include package=".controlpanel" />
+  <include package=".setupdata" />
+  <include package=".static" />
+  <include package=".subscribers" />
+  <include package=".upgrade" />
+
+  <!-- TODO REMOVE obsolete module -->
+  <include package=".obsolete" />
+
+  <!-- Installation profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="SENAITE Health"
+      directory="profiles/default"
+      description="Health Care extension for SENAITE"
+      post_handler="bika.health.setuphandlers.post_install"
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
 
 </configure>

@@ -5,13 +5,11 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from bika.health import bikaMessageFactory as _
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.browser import BrowserView
-from bika.lims.permissions import *
-from operator import itemgetter
 import json
+from operator import itemgetter
+
 import plone
+from bika.lims.browser import BrowserView
 
 
 class ajaxGetTreatments(BrowserView):
@@ -28,7 +26,7 @@ class ajaxGetTreatments(BrowserView):
 
         # lookup objects from ZODB
         brains = self.bika_setup_catalog(portal_type='Treatment',
-                                         inactive_state='active')
+                                         is_active=True)
         if brains and searchTerm:
             brains = [p for p in brains if p.Title.lower().find(searchTerm) > -1]
 

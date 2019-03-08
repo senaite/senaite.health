@@ -54,7 +54,7 @@ class DoctorsView(ClientContactsView):
         self.review_states = [
             {'id':'default',
              'title': _('Active'),
-             'contentFilter': {'inactive_state': 'active'},
+             'contentFilter': {'is_active': True},
              'transitions': [],
              'columns': self.columns.keys()},
         ]
@@ -74,7 +74,7 @@ class DoctorsView(ClientContactsView):
             self.review_states.append(
                 {'id':'inactive',
                  'title': _('Dormant'),
-                 'contentFilter': {'inactive_state': 'inactive'},
+                 'contentFilter': {'is_active': False},
                  'transitions': [{'id':'activate'}, ],
                  'columns': self.columns.keys()})
             self.review_states.append(

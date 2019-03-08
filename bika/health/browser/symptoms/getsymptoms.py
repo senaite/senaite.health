@@ -29,7 +29,7 @@ class ajaxGetSymptoms(BrowserView):
 
         # lookup objects from ZODB
         brains = self.bika_setup_catalog(portal_type='Symptom',
-                                         inactive_state='active')
+                                         is_active=True)
         if brains and self.searchTerm:
             for brain in brains:
                 obj = brain.getObject()

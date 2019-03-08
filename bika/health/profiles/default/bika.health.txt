@@ -1,1 +1,2 @@
-This file is used as a marker in setuphandlers.py.
+This file must exist to prevent setuphandlers.py from being run in every
+product context available.

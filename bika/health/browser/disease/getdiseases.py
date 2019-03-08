@@ -7,14 +7,12 @@
 
 """Fetch diseases from ICD and bika_setup tables
 """
-from bika.health import bikaMessageFactory as _
-from bika.lims import bikaMessageFactory as _b
-from bika.lims.browser import BrowserView
-from bika.lims.permissions import *
-from operator import itemgetter
-from bika.health.icd9cm import icd9_codes
 import json
+from operator import itemgetter
+
 import plone
+from bika.health.icd9cm import icd9_codes
+from bika.lims.browser import BrowserView
 
 
 class ajaxGetDiseases(BrowserView):
@@ -31,7 +29,7 @@ class ajaxGetDiseases(BrowserView):
 
         # lookup objects from ZODB
         brains = self.bika_setup_catalog(portal_type='Disease',
-                                         inactive_state='active')
+                                         is_active=True)
         if brains and searchTerm:
             brains = [p for p in brains if p.Title.lower().find(searchTerm) > -1
                       or p.Description.lower().find(searchTerm) > -1]

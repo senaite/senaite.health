@@ -8,7 +8,7 @@
 from Products.ZCTextIndex.ParseTree import ParseError
 from bika.lims.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
-from bika.health.catalog import CATALOG_PATIENT_LISTING
+from bika.health.catalog import CATALOG_PATIENTS
 import plone
 import json
 
@@ -38,7 +38,7 @@ class ajaxGetPatientInfo(BrowserView):
         if PatientUID:
             try:
                 bpc = getToolByName(
-                    self.context, CATALOG_PATIENT_LISTING)
+                    self.context, CATALOG_PATIENTS)
                 proxies = bpc(UID=PatientUID)
             except ParseError:
                 pass
@@ -52,14 +52,14 @@ class ajaxGetPatientInfo(BrowserView):
         elif ClientPatientID:
             try:
                 bpc = getToolByName(
-                    self.context, CATALOG_PATIENT_LISTING)
+                    self.context, CATALOG_PATIENTS)
                 proxies = bpc(getClientPatientID=ClientPatientID)
             except ParseError:
                 pass
         elif Fullname:
             try:
                 bpc = getToolByName(
-                    self.context, CATALOG_PATIENT_LISTING)
+                    self.context, CATALOG_PATIENTS)
                 proxies = bpc(Title=Fullname,
                               sort_on='created',
                               sort_order='reverse')

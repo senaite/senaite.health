@@ -5,11 +5,11 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from bika.lims.browser import BrowserView
-from bika.lims.permissions import *
-from operator import itemgetter
 import json
+from operator import itemgetter
+
 import plone
+from bika.lims.browser import BrowserView
 
 
 class ajaxGetAetiologicAgentSubtypes(BrowserView):

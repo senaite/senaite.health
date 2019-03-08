@@ -5,42 +5,42 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from Products.ATContentTypes.content import schemata
-from AccessControl import ClassSecurityInfo
+from datetime import datetime
+
 from Products.ATContentTypes.utils import DT2dt
 from Products.ATExtensions.ateapi import RecordsField
 from Products.Archetypes import atapi
 from Products.Archetypes.public import *
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
-from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
+from bika.health.config import *
+from bika.health.interfaces import IPatient
+from bika.health.utils import translate_i18n as t
+from bika.health.widgets import ReadonlyStringWidget
+from bika.health.widgets import SplittedDateWidget
+from bika.health.widgets.patientmenstrualstatuswidget import \
+    PatientMenstrualStatusWidget
+from bika.lims import api
+from bika.lims import idserver
 from bika.lims.browser.fields import AddressField
 from bika.lims.browser.fields import DateTimeField as DateTimeField_bl
 from bika.lims.browser.fields.remarksfield import RemarksField
 from bika.lims.browser.widgets import AddressWidget
 from bika.lims.browser.widgets import DateTimeWidget as DateTimeWidget_bl
 from bika.lims.browser.widgets import RecordsWidget
-from bika.health.widgets import SplittedDateWidget
-from bika.health.config import *
 from bika.lims.browser.widgets.remarkswidget import RemarksWidget
+from bika.lims.catalog.analysisrequest_catalog import \
+    CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.content.person import Person
-from bika.health.interfaces import IPatient
-from bika.health.permissions import *
-from bika.health.widgets import ReadonlyStringWidget
-from datetime import datetime
-from zope.component import getAdapters
 from zope.interface import implements
-from Products.Archetypes.references import HoldingReference
-from bika.health.widgets.patientmenstrualstatuswidget import PatientMenstrualStatusWidget
-from bika.lims.vocabularies import CustomPubPrefVocabularyFactory
 
 schema = Person.schema.copy() + Schema((
     StringField(
         'PatientID',
         searchable=1,
         required=0,
-        widget=ReadonlyStringWidget(
+        widget=StringWidget(
             visible={'view': 'visible', 'edit': 'hidden'},
             label=_('Patient ID'),
             css='readonly-emphasize',
@@ -48,10 +48,9 @@ schema = Person.schema.copy() + Schema((
     ),
     ReferenceField(
         'PrimaryReferrer',
-        vocabulary='get_clients',
+        vocabulary='get_clients_vocabulary',
         allowed_types=('Client',),
         relationship='PatientClient',
-        required=1,
         widget=SelectionWidget(
             format='select',
             label=_('Client'),
@@ -619,15 +618,6 @@ schema = Person.schema.copy() + Schema((
             description=_("If checked, results reports will also be sent "
                           "to the Patient automatically."))
     ),
-    LinesField(
-        'PublicationPreferences',
-        vocabulary_factory='bika.lims.vocabularies.CustomPubPrefVocabularyFactory',
-        schemata='Publication preference',
-        widget=MultiSelectionWidget(
-            label=_("Publication preference"),
-            description=_("Select the preferred channels to be used for "
-                          "sending the results reports to this Patient."))
-    ),
     BooleanField(
         'PublicationAttachmentsPermitted',
         default=False,
@@ -807,111 +797,86 @@ schema.moveField('ConsentSMS', after='PrimaryReferrer')
 
 class Patient(Person):
     implements(IPatient)
-    security = ClassSecurityInfo()
+    _at_rename_after_creation = True
     displayContentsTab = False
     schema = schema
 
-    _at_rename_after_creation = True
-
     def _renameAfterCreation(self, check_auto_id=False):
-        from bika.lims.idserver import renameAfterCreation
-        renameAfterCreation(self)
+        """Autogenerate the ID of the object based on core's ID formatting
+        settings for this type
+        """
+        idserver.renameAfterCreation(self)
 
     def Title(self):
-        """ Return the Fullname as title """
+        """Return the Fullname of the patient
+        """
         return safe_unicode(self.getFullname()).encode('utf-8')
-
-    security.declarePublic('getPatientID')
 
     def getPatientID(self):
         return self.getId()
 
-    security.declarePublic('getSamples')
+    def getSamples(self, **kwargs):
+        """Return samples taken from this Patient
+        """
+        catalog = api.get_tool(CATALOG_ANALYSIS_REQUEST_LISTING, context=self)
+        query = dict([(k, v) for k, v in kwargs.items()
+                      if k in catalog.indexes()])
+        query["getPatientUID"] = api.get_uid(self)
+        brains = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
+        if not kwargs.get("full_objects", False):
+            return brains
+        return map(api.get_object, brains)
 
-    def getSamples(self):
-        """ get all samples taken from this Patient """
-        samples = []
-        for ar in self.getARs():
-            sample = ar.getObject().getSample()
-            if sample:
-                samples.append(sample)
-        return samples
+    def getSamplesCancelled(self, full_objects=False):
+        """Return samples taken from this Patient that are in cancelled state
+        """
+        return self.getSamples(review_state="cancelled",
+                               full_objects=full_objects)
 
-    def getSamplesCancelled(self):
+    def getSamplesPublished(self, full_objects=False):
+        """Return samples taken from this Patient that are in published state
         """
-        Cancelled Samples
-        """
-        workflow = getToolByName(self, 'portal_workflow')
-        l = self.getSamples()
-        return [sample for samples in l if
-                workflow.getInfoFor(analysis, 'review_state') == 'cancelled']
+        return self.getSamples(review_state="published",
+                               full_objects=full_objects)
 
-    def getSamplesPublished(self):
+    def getSamplesOngoing(self, full_objects=False):
+        """Return samples taken from this Patient that are ongoing
         """
-        Published Samples
-        """
-        workflow = getToolByName(self, 'portal_workflow')
-        ars = self.getARs()
-        samples = []
-        samples_uids = []
-        for ar in ars:
-            if ar.review_state == 'published':
-                # Getting the object now
-                sample = ar.getObject().getSample()
-                if sample and sample.UID() not in samples_uids:
-                    samples.append(sample.UID())
-                    samples_uids.append(sample)
-        return samples
-
-    def getSamplesOngoing(self):
-        """
-        Ongoing on Samples
-        """
-        workflow = getToolByName(self, 'portal_workflow')
-        ars = self.getARs()
-        states = [
-            'verified', 'to_be_sampled', 'scheduled_sampling', 'sampled',
-            'to_be_preserved', 'sample_due', 'sample_prep', 'sample_received',
-            'to_be_verified', ]
-        samples = []
-        samples_uids = []
-        for ar in ars:
-            if ar.review_state in states:
-                # Getting the object now
-                sample = ar.getObject().getSample()
-                if sample and sample.UID() not in samples_uids:
-                    samples.append(sample.UID())
-                    samples_uids.append(sample)
-        return samples
+        ongoing_statuses = [
+            "to_be_sampled",
+            "scheduled_sampling",
+            "to_be_sampled",
+            "sample_due",
+            "sample_received",
+            "attachment_due",
+            "to_be_verified",
+            "verified",
+            "to_be_preserved"]
+        return self.getSamples(review_state=ongoing_statuses, is_active=True,
+                               full_objects=full_objects)
 
     def getNumberOfSamplesOngoingRatio(self):
         """
         Returns the ratio between NumberOfSamplesOngoing/NumberOfSamples
         """
-        result = 0
-        if self.getNumberOfSamples() > 0:
-            result = self.getNumberOfSamplesOngoing()/self.getNumberOfSamples()
-        return result
+        samples = self.getSamples()
+        if len(samples) > 0:
+            return len(self.getSamplesOngoing())/len(samples)
+        return 0
 
-    security.declarePublic('getARs')
+    def get_clients_vocabulary(self):
+        client = api.get_current_client()
+        if client:
+            # Current user is a client contact. Load only this client
+            return DisplayList([(api.get_uid(client), api.get_title(client))])
 
-    def getARs(self, analysis_state=None):
-        bc = getToolByName(self, 'bika_catalog')
-        ars = bc(
-            portal_type='AnalysisRequest',
-            getPatientUID=self.UID())
-        return ars
-
-    def get_clients(self):
-        # Only show clients to which we have Manage AR rights.
-        mtool = getToolByName(self, 'portal_membership')
-        clientfolder = self.clients
-        clients = []
-        for client in clientfolder.objectValues("Client"):
-            if not mtool.checkPermission(ManageAnalysisRequests, client):
-                continue
-            clients.append([client.UID(), client.Title()])
+        # Current user is not a client contact. Load all active clients
+        query = dict(portal_type="Client", is_active=True)
+        clients = api.search(query, "portal_catalog")
+        clients = map(lambda cl: [api.get_uid(cl), api.get_title(cl)], clients)
         clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
+
+        # Lab personnel can set a Patient to be visible for all Clients
         clients.insert(0, ['', ''])
         return DisplayList(clients)
 
@@ -924,7 +889,7 @@ class Patient(Person):
         ret = [('', '')]
         # Other selections
         for ic in bsc(portal_type='InsuranceCompany',
-                      inactive_state='active',
+                      is_active=True,
                       sort_on='sortable_title'):
             ret.append((ic.UID, ic.Title))
         return DisplayList(ret)
@@ -1072,7 +1037,7 @@ class Patient(Person):
         bsc = getToolByName(self, 'bika_setup_catalog')
         items = [(c.UID, c.Title)
                  for c in bsc(portal_type='Ethnicity',
-                              inactive_state='active')]
+                              is_active=True)]
         items.sort(lambda x, y: cmp(x[1], y[1]))
         items.insert(0, ('', t(_(''))))
         return DisplayList(items)
@@ -1097,6 +1062,13 @@ class Patient(Person):
         Return all the multifile objects related with the patient
         """
         return self.objectValues('Multifile')
+
+    # TODO Replace "PrimaryReferrer" field from the Schema by "Client"
+    def getClient(self):
+        """Returns the client associated to this Patient, if any
+        """
+        return self.getPrimaryReferrer() or None
+
 
     def SearchableText(self):
         """

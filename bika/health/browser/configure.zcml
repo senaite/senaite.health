@@ -1,10 +1,5 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five"
-    xmlns:cmf="http://namespaces.zope.org/cmf"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="senaite.health">
 
   <include package=".analysis"/>
@@ -18,18 +13,22 @@
   <include package=".doctors"/>
   <include package=".drug"/>
   <include package=".drugprohibition"/>
-  <include package=".epidemiologicalyear"/>
   <include package=".identifiertype"/>
   <include package=".immunization"/>
   <include package=".insurancecompany"/>
   <include package=".patient"/>
   <include package=".patients"/>
-  <include package=".sample"/>
-  <include package=".samples"/>
   <include package=".symptoms"/>
   <include package=".treatment"/>
   <include package=".vaccinationcenter"/>
   <include package=".vaccinationcentercontact"/>
-  <include package=".worksheet"/>
+
+
+  <!-- Batches view with additional filters and columns -->
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.lims.interfaces.IBatchFolder"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory="bika.health.browser.batchfolder.BatchListingViewAdapter" />
 
 </configure>

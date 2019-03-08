@@ -1,0 +1,8 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <utility
+    component="bika.health.obsolete.CustomPubPrefVocabularyFactory"
+    name="bika.health.obsolete.CustomPubPrefVocabularyFactory"
+    />
+
+</configure>

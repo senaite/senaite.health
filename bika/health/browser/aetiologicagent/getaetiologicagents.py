@@ -5,11 +5,11 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from bika.lims.browser import BrowserView
-from bika.lims.permissions import *
-from operator import itemgetter
 import json
+from operator import itemgetter
+
 import plone
+from bika.lims.browser import BrowserView
 
 
 class ajaxGetAetiologicAgents(BrowserView):
@@ -28,7 +28,7 @@ class ajaxGetAetiologicAgents(BrowserView):
 
         # lookup objects from ZODB
         agents = self.bika_setup_catalog(portal_type='AetiologicAgent',
-                                         inactive_state='active')
+                                         is_active=True)
         if agents and searchTerm:
             agents = [agent for agent in agents if agent.Title.lower().find(searchTerm) > -1
                       or agent.Description.lower().find(searchTerm) > -1]

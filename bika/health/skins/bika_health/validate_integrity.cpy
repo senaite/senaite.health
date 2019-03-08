@@ -42,7 +42,6 @@ else:
                  'Treatment': '/bika_setup/bika_treatments',
                  'VaccionationCenter': '/bika_setup/bika_vaccionationcenters',
                  'InsuranceCompany':  '/bika_setup/bika_insurancecompanies',
-                 'EpidemiologicalYear': '/bika_setup/bika_epidemiologicalyears',
                  'IdentifierType': '/bika_setup/bika_identifiertypes',
                  'Symptom': '/bika_setup/bika_symptoms',
                  'Patient': patient_redirection}

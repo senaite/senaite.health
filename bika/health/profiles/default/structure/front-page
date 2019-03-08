@@ -1,6 +1,6 @@
 id: front-page
-title: Welcome to Bika Health 3.1.5 - Naringenin
-description: Bika Laboratory Information Management System customised for use in Health laboratories.
+title: SENAITE Health 1.2
+description: SENAITE LIMS extension for Health Care Laboratories
 subject:
 relatedItems:
 location:
@@ -8,7 +8,7 @@ language:
 effectiveDate: 2014/10/10 14:00:00 GMT+2
 expirationDate: None
 creation_date: 2014/10/10 14:00:00 GMT+2
-modification_date: 2014/10/10 14:00:00 GMT+2
+modification_date: 2019/02/27 17:00:00 GMT+2
 creators: admin
 contributors:
 rights:

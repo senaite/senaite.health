@@ -5,16 +5,10 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from AccessControl import getSecurityManager
 from DateTime import DateTime
-from Products.AdvancedQuery import Or, MatchRegexp, Between
-from Products.Archetypes.config import REFERENCE_CATALOG
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims import bikaMessageFactory as _b
-from bika.health import bikaMessageFactory as _
 from bika.lims.browser import BrowserView
-from bika.lims.permissions import *
 
 
 class BatchPublishView(BrowserView):

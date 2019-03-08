@@ -5,20 +5,12 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from AccessControl import getSecurityManager
-from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
-from bika.lims import bikaMessageFactory as _b
-from bika.health import bikaMessageFactory as _
-from bika.lims.browser import BrowserView
-from Products.ZCTextIndex.ParseTree import ParseError
-from bika.health.permissions import *
-from bika.lims.utils import isActive
-from operator import itemgetter
-from zope.i18n import translate
-from zope.interface import implements
 import json
+from operator import itemgetter
+
 import plone
+from Products.CMFCore.utils import getToolByName
+from bika.lims.browser import BrowserView
 
 
 class ajaxGetPatients(BrowserView):
@@ -46,7 +38,7 @@ class ajaxGetPatients(BrowserView):
         # brains = bikahealth_catalog_patient_listing.evalAdvancedQuery(aq)
 
         bpc = getToolByName(self.context, 'bikahealth_catalog_patient_listing')
-        proxies = bpc(portal_type='Patient', inactive_state='active')
+        proxies = bpc(portal_type='Patient', is_active=True)
         for patient in proxies:
             addidfound = False
             addids = patient.getPatientIdentifiersStr

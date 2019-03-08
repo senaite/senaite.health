@@ -6,6 +6,7 @@
         default_skin="Sunburst Theme"
         request_varname="plone_skin">
 
+  <!-- Skins path -->
   <object name="bika_health"
           meta_type="Filesystem Directory View"
           directory="bika.health:skins/bika_health"/>

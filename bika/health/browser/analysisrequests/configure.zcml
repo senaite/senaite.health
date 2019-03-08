@@ -6,16 +6,17 @@
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
       name="base_view"
       class="bika.health.browser.analysisrequests.view.AnalysisRequestsView"
-      permission="bika.lims.ManageAnalysisRequests"
+      permission="zope2.View"
       layer="bika.health.interfaces.IBikaHealth"
     />
 
-    <!-- Override senaite.core's default workflow actions -->
+    <!-- Dummy class to redirect to Client's AR Add form when the user (a client
+    contact) clicks the Add button in analysisrequests folder -->
     <browser:page
       for="bika.lims.interfaces.IAnalysisRequestsFolder"
-      name="workflow_action"
-      class="bika.health.browser.client.workflow.ClientWorkflowAction"
-      permission="zope.Public"
+      name="ar_add"
+      class=".view.AnalysisRequestAddView"
+      permission="senaite.core.permissions.AddAnalysisRequest"
       layer="bika.health.interfaces.IBikaHealth"
     />
 

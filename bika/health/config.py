@@ -5,13 +5,11 @@
 # Copyright 2018 by it's authors.
 # Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
 
-from bika.lims.config import *
 from Products.Archetypes.public import DisplayList
-from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
-from bika.health.permissions import *
 
 PROJECTNAME = "bika.health"
+DEFAULT_PROFILE_ID = "profile-{}:default".format(PROJECTNAME)
 
 GENDERS = DisplayList((
     ('male', _('Male')),
@@ -39,5 +37,3 @@ MENSTRUAL_STATUSES = DisplayList((
     ('irregular', _('Irregular')),
     ('none', _('No menstrual cycle')),
 ))
-
-EMAIL_SUBJECT_OPTIONS.add('health.cp', _('Client PID'))

@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<rolemap>
+  <roles>
+    <!-- SENAITE HEALTH ROLES -->
+    <role name="Doctor"/>
+
+    <!-- SENAITE ROLES -->
+    <role name="Analyst"/>
+    <role name="Client"/>
+    <role name="LabClerk"/>
+    <role name="LabManager"/>
+    <role name="Preserver"/>
+    <role name="Publisher"/>
+    <role name="RegulatoryInspector"/>
+    <role name="Sampler"/>
+    <role name="SamplingCoordinator"/>
+    <role name="Verifier"/>
+
+    <!-- PLONE ROLES -->
+    <role name="Anonymous"/>
+    <role name="Authenticated"/>
+    <role name="Contributor"/>
+    <role name="Editor"/>
+    <role name="Manager"/>
+    <role name="Member"/>
+    <role name="Owner"/>
+    <role name="Reader"/>
+    <role name="Reviewer"/>
+    <role name="Site Administrator"/>
+  </roles>
+
+  <permissions>
+    <!-- SENAITE HEALTH PERMISSIONS -->
+    <!-- Add Permissions -->
+    <permission name="senaite.health: Add AetiologicAgent" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add Doctor" acquire="False">
+      <role name="Client" />
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add Drug" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add DrugProhibition" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add Ethnicity" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add Immunization" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add InsuranceCompany" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add Patient" acquire="False">
+      <role name="Client" />
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add Symptom" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add Treatment" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Add VaccinationCenter" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+
+    <!-- Transition Permissions -->
+    <permission name="senaite.health: Transition: Activate Patient" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Transition: Deactivate Patient" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+
+    <!-- Behavioral Permissions -->
+    <permission name="senaite.health: View Patients" acquire="False">
+      <role name="Client"/>
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+  </permissions>
+
+</rolemap>

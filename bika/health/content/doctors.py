@@ -10,12 +10,11 @@ import json
 from Products.Archetypes import atapi
 from Products.Archetypes.utils import DisplayList
 from Products.CMFCore.utils import getToolByName
-from plone.app.folder.folder import ATFolder, ATFolderSchema
-from zope.interface.declarations import implements
-
 from bika.health.config import PROJECTNAME
 from bika.health.interfaces import IDoctors
-from bika.lims.utils import isActive
+from bika.lims import api
+from plone.app.folder.folder import ATFolder, ATFolderSchema
+from zope.interface.declarations import implements
 
 schema = ATFolderSchema.copy()
 
@@ -32,14 +31,14 @@ class Doctors(ATFolder):
         objects = []
         # All Doctors
         for contact in pc(portal_type='Doctor',
-                          inactive_state='active',
+                          is_active=True,
                           sort_on='sortable_title'):
             pairs.append((contact.UID, contact.Title))
             if not dl:
                 objects.append(contact.getObject())
         # All LabContacts
         for contact in bsc(portal_type='LabContact',
-                           inactive_state='active',
+                           is_active=True,
                            sort_on='sortable_title'):
             pairs.append((contact.UID, contact.Title))
             if not dl:
@@ -56,7 +55,7 @@ class Doctors(ATFolder):
             ccs = []
             if hasattr(contact, 'getCCContact'):
                 for cc in contact.getCCContact():
-                    if isActive(cc):
+                    if api.is_active(cc):
                         ccs.append({'title': cc.Title(),
                                     'uid': cc.UID(), })
             item['ccs_json'] = json.dumps(ccs)
