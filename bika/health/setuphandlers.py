@@ -219,9 +219,6 @@ def setup_site_structure(context):
         obj.unmarkCreationFlag()
         obj.reindexObject()
 
-    # Resort Invoices and AR Invoice (HEALTH-215) in navigation
-    portal.moveObjectToPosition('invoices', portal.objectIds().index('supplyorders'))
-    portal.moveObjectToPosition('arimports', portal.objectIds().index('referencesamples'))
     logger.info("Setup site structure [DONE]")
 
 
