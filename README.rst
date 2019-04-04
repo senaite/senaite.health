@@ -29,11 +29,9 @@
 Introduction
 ============
 
-SENAITE.HEALTH is an Open Source Laboratory Information System (LIS) suitable
-for Health Care Laboratories, focused on patient and clinical cases.
-
 SENAITE.HEALTH is an extension for `SENAITE.LIMS
-<https://github.com/senaite/senaite.lims>`_.
+<https://github.com/senaite/senaite.lims>`_ to make it suitable for Health Care
+Laboratories, with additional entities as Patient, Doctor, Clinical Cases, etc.
 
 
 Installation
@@ -52,9 +50,9 @@ into the `eggs` list inside the `[buildout]` section of your `buildout.cfg`::
        senaite.lims
        senaite.health
 
-For the changes to take effect you need to re-run buildout from your console:
+For the changes to take effect you need to re-run buildout from your console::
 
-   bin/buildout
+   $ bin/buildout
 
 Start the instance and login as admin user. Go to Site Setup > Add-ons, select
 "SENAITE HEALTH" and press Install.
