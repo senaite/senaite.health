@@ -10,12 +10,6 @@
 .. image:: https://img.shields.io/pypi/v/senaite.health.svg?style=flat-square
     :target: https://pypi.python.org/pypi/senaite.health
 
-.. image:: https://travis-ci.org/senaite/senaite.health.svg?branch=master
-    :target: https://travis-ci.org/senaite/senaite.health
-
-.. image:: https://img.shields.io/scrutinizer/g/senaite/senaite.health/master.svg?style=flat-square
-    :target: https://scrutinizer-ci.com/g/senaite/senaite.health/
-    
 .. image:: https://img.shields.io/github/issues-pr/senaite/senaite.health.svg?style=flat-square
     :target: https://github.com/seniate/senaite.health/pulls
 
@@ -49,18 +43,18 @@ Please follow the `installation instructions for SENAITE LIMS
 <https://github.com/senaite/senaite.lims#installation>`_ first.
 
 After SENAITE LIMS is installed, stop the instance and add `senaite.health`
-into the `eggs` list inside the `[buildout]` section of your `buildout.cfg`:
+into the `eggs` list inside the `[buildout]` section of your `buildout.cfg`::
 
-  [buildout]
-  eggs =
-      Plone
-      Pillow
-      senaite.lims
-      senaite.health
+   [buildout]
+   eggs =
+       Plone
+       Pillow
+       senaite.lims
+       senaite.health
 
 For the changes to take effect you need to re-run buildout from your console:
 
-  bin/buildout
+   bin/buildout
 
 Start the instance and login as admin user. Go to Site Setup > Add-ons, select
 "SENAITE HEALTH" and press Install.
