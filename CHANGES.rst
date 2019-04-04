@@ -15,6 +15,7 @@ Changelog
 
 **Changed**
 
+- #118 Make senaite.health to depend on senaite.lims (instead of senaite.core)
 - #110 Added health-specific layer
 
 **Removed**
