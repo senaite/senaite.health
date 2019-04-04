@@ -31,7 +31,8 @@ Introduction
 
 SENAITE.HEALTH is an extension for `SENAITE.LIMS
 <https://github.com/senaite/senaite.lims>`_ to make it suitable for Health Care
-Laboratories, with additional entities as Patient, Doctor, Clinical Cases, etc.
+Laboratories, with additional capabilities for the management of patients,
+doctors, clinical cases, symptoms, and a lot more.
 
 
 Installation
