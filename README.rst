@@ -76,6 +76,9 @@ receive a variety of other contributions.
 Please, read `Contributing to senaite.health document
 <https://github.com/senaite/senaite.health/blob/master/CONTRIBUTING.md>`_.
 
+If you wish to contribute with translations, check the project site on
+`Transifex <https://www.transifex.com/senaite/senaite-health/>`_.
+
 
 Feedback and support
 ====================
