@@ -1,0 +1,12 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="senaite.health">
+
+  <!-- senaite.impress resource directory -->
+  <plone:static
+      directory="reports"
+      type="senaite.impress.reports"
+      name="senaite.health"/>
+
+</configure>
