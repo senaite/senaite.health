@@ -13,27 +13,26 @@
         name="bika.health"
     />
 
-    <!-- Override senaite.core's default views -->
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="invoice"
-      class="bika.health.browser.analysisrequest.invoice.InvoiceView"
-      permission="senaite.core.permissions.ManageInvoices"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="invoice_print"
-      class="bika.health.browser.analysisrequest.invoice.InvoicePrintView"
-      permission="senaite.core.permissions.ManageInvoices"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="invoice_create"
-      class="bika.health.browser.analysisrequest.invoice.InvoiceCreate"
-      permission="senaite.core.permissions.ManageInvoices"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
+  <!-- Add Patient's insurance number in the invoice -->
+  <browser:page
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="invoice"
+    class="bika.health.browser.analysisrequest.invoice.InvoiceView"
+    permission="senaite.core.permissions.ManageInvoices"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+  <browser:page
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="invoice_print"
+    class="bika.health.browser.analysisrequest.invoice.InvoicePrintView"
+    permission="senaite.core.permissions.ManageInvoices"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+  <browser:page
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="invoice_create"
+    class="bika.health.browser.analysisrequest.invoice.InvoiceCreate"
+    permission="senaite.core.permissions.ManageInvoices"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
 </configure>
