@@ -63,6 +63,10 @@ COLUMNS_TO_DELETE = [
     (CATALOG_PATIENTS, "inactive_state"),
 ]
 
+CSS_TO_REMOVE = [
+    "++resource++bika.health.css/hide_contentmenu.css",
+    "++resource++bika.health.css/hide_editable_border.css",
+]
 
 @upgradestep(PROJECTNAME, version)
 def upgrade(tool):
@@ -82,6 +86,7 @@ def upgrade(tool):
     # -------- ADD YOUR STUFF BELOW --------
     setup.runImportStepFromProfile(profile, "browserlayer")
     setup.runImportStepFromProfile(profile, "typeinfo")
+    setup.runImportStepFromProfile(profile, "skins")
 
     # Setup catalogs
     setup_catalogs(CATALOGS_BY_TYPE, INDEXES, COLUMNS)
@@ -109,6 +114,9 @@ def upgrade(tool):
 
     # Update workflows
     update_workflows(portal)
+
+    # remove stale CSS
+    remove_stale_css(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
@@ -166,3 +174,12 @@ def update_workflows(portal):
     ut = UpgradeUtils(portal)
     ut.recursiveUpdateRoleMappings(portal.patients, commit_window=500)
     commit_transaction()
+
+
+def remove_stale_css(portal):
+    """Removes stale CSS
+    """
+    logger.info("Removing stale css ...")
+    for css in CSS_TO_REMOVE:
+        logger.info("Unregistering CSS %s" % css)
+        portal.portal_css.unregisterResource(css)
