@@ -18,32 +18,28 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-import doctest
-from os.path import join
+from bika.health.tests.base import SimpleTestCase
 
-from pkg_resources import resource_listdir
 
-import unittest2 as unittest
-from bika.health.config import PROJECTNAME
-from bika.health.tests.base import BaseTestCase
-from Testing import ZopeTestCase as ztc
+class TestSetup(SimpleTestCase):
+    """Test Setup
+    """
 
-rst_filenames = [f for f in resource_listdir(PROJECTNAME, "tests/doctests")
-                 if f.endswith('.rst')]
+    def test_is_senaite_core_installed(self):
+        qi = self.portal.portal_quickinstaller
+        self.assertTrue(qi.isProductInstalled("bika.lims"))
 
-doctests = [join("doctests", filename) for filename in rst_filenames]
+    def test_is_senaite_lims_installed(self):
+        qi = self.portal.portal_quickinstaller
+        self.assertTrue(qi.isProductInstalled("senaite.lims"))
 
-flags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE | doctest.REPORT_NDIFF
+    def test_is_senaite_health_installed(self):
+        qi = self.portal.portal_quickinstaller
+        self.assertTrue(qi.isProductInstalled("bika.health"))
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    for doctestfile in doctests:
-        suite.addTests([
-            ztc.ZopeDocFileSuite(
-                doctestfile,
-                test_class=BaseTestCase,
-                optionflags=flags
-            )
-        ])
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestSetup))
     return suite

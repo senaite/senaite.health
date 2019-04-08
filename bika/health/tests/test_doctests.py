@@ -19,27 +19,31 @@
 # Some rights reserved, see README and LICENSE.
 
 import doctest
-import unittest
+from os.path import join
 
-from plone.testing import layered
-from bika.health.testing import BASE_TESTING
+from pkg_resources import resource_listdir
 
-OPTIONFLAGS = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
+import unittest2 as unittest
+from bika.health.config import PROJECTNAME
+from bika.health.tests.base import SimpleTestCase
+from Testing import ZopeTestCase as ztc
 
-DOCTESTS = [
-]
+rst_filenames = [f for f in resource_listdir(PROJECTNAME, "tests/doctests")
+                 if f.endswith('.rst')]
+
+doctests = [join("doctests", filename) for filename in rst_filenames]
+
+flags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE | doctest.REPORT_NDIFF
 
 
 def test_suite():
     suite = unittest.TestSuite()
-    for module in DOCTESTS:
+    for doctestfile in doctests:
         suite.addTests([
-            layered(
-                doctest.DocTestSuite(
-                    module=module,
-                    optionflags=OPTIONFLAGS
-                ),
-                layer=BASE_TESTING
-            ),
+            ztc.ZopeDocFileSuite(
+                doctestfile,
+                test_class=SimpleTestCase,
+                optionflags=flags
+            )
         ])
     return suite
