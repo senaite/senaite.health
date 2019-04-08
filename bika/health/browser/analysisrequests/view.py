@@ -101,16 +101,27 @@ class AnalysisRequestsView(BaseView):
         item = super(AnalysisRequestsView, self)\
             .folderitem(obj, item, index)
 
+        url = '{}/analysisrequests'.format(obj.getPatientURL)
         item['getPatientID'] = obj.getPatientID
         item['getPatientTitle'] = obj.getPatientTitle
         item['getClientPatientID'] = obj.getClientPatientID
-        url = '{}/analysisrequests'.format(obj.getPatientURL)
-        item['replace']['getPatientTitle'] = get_link(url, obj.getPatientTitle)
-        item['replace']['getPatientID'] = get_link(url, obj.getPatientID)
-        item['replace']['getClientPatientID'] = get_link(url, obj.getClientPatientID)
 
+        # Replace with Patient's URLs
+        if obj.getClientPatientID:
+            item['replace']['getClientPatientID'] = get_link(
+                url, obj.getClientPatientID)
+
+        if obj.getPatientTitle:
+            item['replace']['getPatientTitle'] = get_link(
+                url, obj.getPatientTitle)
+
+        if obj.getPatientID:
+            item['replace']['getPatientID'] = get_link(url, obj.getPatientID)
+
+        # Doctor
         item['getDoctorTitle'] = obj.getDoctorTitle
         if obj.getDoctorURL:
             url = '{}/analysisrequests'.format(obj.getDoctorURL)
             item['replace']['getDoctorTitle'] = get_link(url, obj.getDoctorTitle)
+
         return item
