@@ -1,5 +1,5 @@
 <div id="invoice"
-  i18n:domain="senaite.core"
+  i18n:domain="senaite.health"
   tal:define="sample view/sample;
               invoice sample/Invoice;">
 
