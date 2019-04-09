@@ -1,9 +1,22 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.HEALTH
+# This file is part of SENAITE.HEALTH.
 #
-# Copyright 2018 by it's authors.
-# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+# SENAITE.HEALTH is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, version 2.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# Copyright 2018-2019 by it's authors.
+# Some rights reserved, see README and LICENSE.
 
 from Products.CMFCore.utils import getToolByName
 from bika.health import bikaMessageFactory as _
@@ -88,16 +101,27 @@ class AnalysisRequestsView(BaseView):
         item = super(AnalysisRequestsView, self)\
             .folderitem(obj, item, index)
 
+        url = '{}/analysisrequests'.format(obj.getPatientURL)
         item['getPatientID'] = obj.getPatientID
         item['getPatientTitle'] = obj.getPatientTitle
         item['getClientPatientID'] = obj.getClientPatientID
-        url = '{}/analysisrequests'.format(obj.getPatientURL)
-        item['replace']['getPatientTitle'] = get_link(url, obj.getPatientTitle)
-        item['replace']['getPatientID'] = get_link(url, obj.getPatientID)
-        item['replace']['getClientPatientID'] = get_link(url, obj.getClientPatientID)
 
+        # Replace with Patient's URLs
+        if obj.getClientPatientID:
+            item['replace']['getClientPatientID'] = get_link(
+                url, obj.getClientPatientID)
+
+        if obj.getPatientTitle:
+            item['replace']['getPatientTitle'] = get_link(
+                url, obj.getPatientTitle)
+
+        if obj.getPatientID:
+            item['replace']['getPatientID'] = get_link(url, obj.getPatientID)
+
+        # Doctor
         item['getDoctorTitle'] = obj.getDoctorTitle
         if obj.getDoctorURL:
             url = '{}/analysisrequests'.format(obj.getDoctorURL)
             item['replace']['getDoctorTitle'] = get_link(url, obj.getDoctorTitle)
+
         return item

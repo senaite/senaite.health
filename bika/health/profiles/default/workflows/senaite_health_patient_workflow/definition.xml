@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-             i18n:domain="plone"
+             i18n:domain="senaite.health"
              workflow_id="senaite_health_patient_workflow"
              title="Senaite Health Patient Workflow"
              state_variable="review_state"

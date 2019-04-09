@@ -1,13 +1,8 @@
 Changelog
 =========
 
-
-1.2.0 (unreleased)
+1.2.0 (2019-04-09)
 ------------------
-**TODO**
-
-- Integrate panic level viewlet
-- AR Add form makes use of `getsamplepatient` to get the Patient from Sample!
 
 **Added**
 
@@ -15,6 +10,8 @@ Changelog
 
 **Changed**
 
+- #118 Make senaite.health to depend on senaite.lims (instead of senaite.core)
+- #116 Compatibility with senaite.core 1.3
 - #110 Added health-specific layer
 
 **Removed**

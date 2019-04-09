@@ -18,14 +18,16 @@ contributions descending.
 Translators
 ===========
 
-- lemoene Smit, lemoene@bikalabs.com, Afrikaans (af)
+- Lemoene Smit, lemoene@bikalabs.com, Afrikaans (af)
 - Jordi Puiggené, jpuiggene@naralabs.com, Catalan (ca)
 - limsgr, inactive+limsgr@transifex.com, Greek (el)
-- Alfonso de la Guarda Reyes, alfonsodg@gmail.com, Spanish (es)
 - Jordi Puiggené, jpuiggene@naralabs.com, Spanish (es)
+- Alfonso de la Guarda Reyes, alfonsodg@gmail.com, Spanish (es)
 - Alfonso de la Guarda Reyes, alfonsodg@gmail.com, Spanish (Peru) (es_PE)
 - Bidossessi ALAHASSA, rodrigue.alahassa@gmail.com, French (fr)
 - Alessandro Ciai, a.ciai@btree.it, Italian (it)
+- ສີສຸວັນ ສັງບົວບຸລົມ, sisouvan@gmail.com, Lao (Laos) (lo_LA)
+- Piotr Turek, piotr.turek@borpol.com.pl, Polish (pl)
 - Ryszard Grodowski, ryszard@grodowski.com, Polish (pl)
 - Frederico Ribeiro, freddy.boc@gmail.com, Portuguese (Brazil) (pt_BR)
 - PabloBF, pablobusattof@gmail.com, Portuguese (Brazil) (pt_BR)
@@ -34,3 +36,4 @@ Translators
 - Михаил Стручалин, m.struchalin@gmail.com, Russian (ru)
 - Arthur Markov, arti.markov@gmail.com, Russian (ru)
 - Andrey Stefaniv, stefaniv@irm.kz, Russian (ru)
+- alex r, aa989190f363e46d@googlemail.com, Russian (ru)

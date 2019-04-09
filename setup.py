@@ -33,8 +33,8 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "senaite.core>=1.3.0",
-        'archetypes.schemaextender',
+        "archetypes.schemaextender",
+        "senaite.lims>=1.3.0",
     ],
     extras_require={
         'test': [

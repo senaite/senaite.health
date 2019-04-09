@@ -1,21 +1,34 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.HEALTH
+# This file is part of SENAITE.HEALTH.
 #
-# Copyright 2018 by it's authors.
-# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+# SENAITE.HEALTH is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, version 2.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# Copyright 2018-2019 by it's authors.
+# Some rights reserved, see README and LICENSE.
 
 from Products.ATContentTypes.content import schemata
 from Products.Archetypes import atapi
-from bika.lims.browser.bika_listing import BikaListingView
-from bika.health.config import PROJECTNAME
-from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
+from bika.health.config import PROJECTNAME
 from bika.health.interfaces import IAetiologicAgents
-from plone.app.layout.globals.interfaces import IViewView
+from bika.lims.browser.bika_listing import BikaListingView
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.folder.folder import ATFolder, ATFolderSchema
+from plone.app.layout.globals.interfaces import IViewView
 from zope.interface.declarations import implements
+
 
 class AetiologicAgentsView(BikaListingView):
     implements(IFolderContentsView, IViewView)
@@ -63,6 +76,13 @@ class AetiologicAgentsView(BikaListingView):
              'columns': ['Title',
                          'Description']},
         ]
+
+    def before_render(self):
+        """Before template render hook
+        """
+        super(AetiologicAgentsView, self).before_render()
+        # Don't allow any context actions on Aetiologic agents folder
+        self.request.set("disable_border", 1)
 
     def folderitems(self):
         items = BikaListingView.folderitems(self)

@@ -2,145 +2,129 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2017-11-10 15:50+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"POT-Creation-Date: 2019-04-08 23:04+0000\n"
+"PO-Revision-Date: 2018-10-14 15:05+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch (https://www.transifex.com/senaite/teams/87046/nl/)\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8 latin1\n"
-"Domain: senaite.core\n"
+"Domain: DOMAIN\n"
 "Language: nl\n"
 
-#: bika/health/content/aetiologicagent.py:21
+#: bika/health/content/aetiologicagent.py:41
 msgid "A list of aetiologic agent subtypes."
 msgstr ""
 
-#: bika/health/content/patient.py:257
+#: bika/health/content/patient.py:377
 msgid "A list of immunizations administered to the patient."
 msgstr ""
 
-#: bika/health/content/patient.py:183
+#: bika/health/content/patient.py:241
 msgid "A list of patient treatments and drugs administered."
 msgstr ""
 
-#: bika/health/content/patient.py:297
+#: bika/health/content/patient.py:440
 msgid "A list of places visited by the patient."
 msgstr ""
 
-#: bika/health/browser/analysisrequest/ajax.py:52
-msgid "AP"
-msgstr ""
-
-#: bika/health/browser/doctors/folder_view.py:35
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:41
-#: bika/health/controlpanel/bika_aetiologicagents.py:42
+#: bika/health/browser/doctors/folder_view.py:69
+#: bika/health/browser/patients/folder_view.py:99
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:61
 msgid "Active"
 msgstr ""
 
-#: bika/health/content/immunization.py:111
+#: bika/health/content/immunization.py:131
 msgid "Active immunization"
 msgstr ""
 
-#: bika/health/content/treatment.py:79
+#: bika/health/content/treatment.py:99
 msgid "Active treatment"
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:48
-#: bika/health/browser/patient/analysisrequests.py:40
-#: bika/health/browser/patient/batches.py:19
+#: bika/health/browser/batchfolder.py:70
+#: bika/health/browser/doctors/folder_view.py:81
+#: bika/health/browser/patient/files.py:55
 msgid "Add"
 msgstr ""
 
-#: bika/health/content/batch.py:210
+#: bika/health/content/batch.py:231
 msgid "Additional Identifiers"
 msgstr ""
 
-#: bika/health/controlpanel/bika_symptoms.py:31
+#: bika/health/controlpanel/bika_symptoms.py:51
 msgid "Additional Symptoms not covered by ICD codes, can be entered here."
 msgstr ""
 
-#: bika/health/content/patient.py:135
+#: bika/health/content/patient.py:174
 msgid "Additional identifiers"
 msgstr ""
 
-#: bika/health/content/batch.py:307
+#: bika/health/content/batch.py:328
 msgid "Additional notes"
 msgstr ""
 
-#: bika/health/controlpanel/bika_aetiologicagents.py:24
+#: bika/health/controlpanel/bika_aetiologicagents.py:44
 msgid "Aetiologic Agents"
 msgstr ""
 
-#: bika/health/content/batch.py:337
+#: bika/health/content/batch.py:358
 msgid "Aetiologic agent"
 msgstr ""
 
-#: bika/health/browser/patients/folder_view.py:69
-#: bika/health/content/patient.py:84
+#: bika/health/browser/patients/folder_view.py:80
+#: bika/health/content/patient.py:110
 msgid "Age"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/emailpopup.pt:31
-msgid "Alert client"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/view.py:55
-msgid "Alert client about panic levels exceeded"
-msgstr ""
-
-#: bika/health/content/bikasetup.py:22
+#: bika/health/content/bikasetup.py:41
 msgid "Alert labmanagers with an email when an analysis result exceeding a panic level is submitted"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:71
-#: bika/health/browser/doctors/folder_view.py:66
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:59
+#: bika/health/browser/doctors/folder_view.py:95
+#: bika/health/browser/patient/files.py:81
+#: bika/health/browser/patients/folder_view.py:111
 msgid "All"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:64
-#: bika/health/content/client.py:38
+#: bika/health/content/bikasetup.py:83
+#: bika/health/content/client.py:56
 msgid "Allow results distribution to Patients"
 msgstr ""
 
-#: bika/health/content/patient.py:430
+#: bika/health/content/patient.py:630
 msgid "Allow results distribution to this patient"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/templates/ar_add_health_standard.pt:140
-msgid "Analysis Request details"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/publish.py:34
-msgid "Analysis results for %s"
-msgstr ""
-
-#: bika/health/content/patient.py:414
+#: bika/health/content/patient.py:612
 msgid "Anonymous"
 msgstr ""
 
-#: bika/health/content/symptom.py:23
+#: bika/health/content/symptom.py:43
 msgid "Applies to"
 msgstr ""
 
-#: bika/health/content/drug.py:40
+#: bika/health/content/drug.py:60
 msgid "Appropriate doses and dosage"
 msgstr ""
 
-#: bika/health/config.py:17
+#: bika/health/config.py:35
 msgid "Asian"
+msgstr ""
+
+#: bika/health/content/doctor.py:53
+msgid "Associate the doctor to a client. This doctor will not be accessible from other clients."
 msgstr ""
 
 #. Default: "Case"
 msgid "Batch"
 msgstr ""
 
-#: bika/health/browser/batch/publish.pt:52
+#. Default: "Case ID"
 msgid "Batch ID"
 msgstr ""
 
@@ -148,86 +132,73 @@ msgstr ""
 msgid "Batches"
 msgstr ""
 
-#: bika/health/content/patient.py:93
+#: bika/health/content/patient.py:120
 msgid "Birth date"
 msgstr ""
 
-#: bika/health/content/patient.py:100
+#: bika/health/content/patient.py:128
 msgid "Birth date is estimated"
 msgstr ""
 
-#: bika/health/content/patient.py:342
+#: bika/health/content/patient.py:520
 msgid "Birth place"
 msgstr ""
 
-#: bika/health/browser/patients/folder_view.py:74
+#: bika/health/browser/patients/folder_view.py:85
 msgid "BirthDate"
 msgstr ""
 
-#: bika/health/config.py:18
+#: bika/health/config.py:36
 msgid "Black"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/emailpopup.pt:79
-msgid "Body"
-msgstr ""
-
-#: bika/health/config.py:27
+#: bika/health/config.py:45
 msgid "Both"
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:29
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:34
+#: bika/health/browser/doctors/folder_view.py:62
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:54
 msgid "Business Phone"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:56
-msgid "Cancelled"
-msgstr ""
-
-#: bika/health/browser/patients/folder_view.py:129
-msgid "Cannot create patients without any system clients configured."
-msgstr ""
-
-#: bika/health/content/analysisrequest.py:239
+#: bika/health/content/analysisrequest.py:181
 msgid "Case"
 msgstr ""
 
-#: bika/health/browser/analysisrequests/view.py:11
-#: bika/health/browser/batch/batchfolder.py:12
-#: bika/health/browser/patient/analysisrequests.py:26
+#: bika/health/browser/analysisrequests/view.py:49
+#: bika/health/browser/patient/analysisrequests.py:33
 msgid "Case ID"
 msgstr ""
 
-#: bika/health/controlpanel/bika_caseoutcomes.py:24
+#: bika/health/controlpanel/bika_caseoutcomes.py:44
 msgid "Case Outcomes"
 msgstr ""
 
-#: bika/health/controlpanel/bika_casestatuses.py:24
+#: bika/health/controlpanel/bika_casestatuses.py:44
 msgid "Case Statuses"
 msgstr ""
 
-#: bika/health/controlpanel/bika_casesyndromicclassifications.py:27
+#: bika/health/controlpanel/bika_casesyndromicclassifications.py:47
 msgid "Case Syndromic Classifications"
 msgstr ""
 
-#: bika/health/content/batch.py:321
+#: bika/health/content/batch.py:342
 msgid "Case outcome"
 msgstr ""
 
-#: bika/health/content/batch.py:314
+#: bika/health/content/batch.py:335
 msgid "Case status"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:10
+#: bika/health/browser/batchfolder.py:46
 msgid "Cases"
 msgstr ""
 
-#: bika/health/content/drug.py:18
+#: bika/health/content/drug.py:38
 msgid "Category"
 msgstr ""
 
-#: bika/health/content/treatment.py:80
+#: bika/health/content/treatment.py:100
 msgid "Causal treatment"
 msgstr ""
 
@@ -235,29 +206,25 @@ msgstr ""
 msgid "Changes saved."
 msgstr ""
 
-#: bika/health/content/symptom.py:31
+#: bika/health/content/symptom.py:51
 msgid "Check if patient can experience different stress  levels (none, mild, moderate, severe) of the symptom"
 msgstr ""
 
-#: bika/health/content/patient.py:369
+#: bika/health/content/patient.py:553
 msgid "Citizenship"
 msgstr ""
 
-#: bika/health/content/patient.py:384
+#: bika/health/content/patient.py:574
 msgid "Civil status"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/templates/ar_add_health_standard.pt:31
-msgid "Classic template"
-msgstr ""
-
-#: bika/health/browser/batch/batchfolder.py:17
-#: bika/health/browser/batch/publish.pt:60
-#: bika/health/browser/insurancecompany/invoicefolder.py:42
+#: bika/health/browser/insurancecompany/invoicefolder.py:56
+#: bika/health/content/doctor.py:56
+#: bika/health/content/patient.py:69
 msgid "Client"
 msgstr ""
 
-#: bika/health/content/batch.py:474
+#: bika/health/content/batch.py:495
 msgid "Client Case ID"
 msgstr ""
 
@@ -265,589 +232,576 @@ msgstr ""
 msgid "Client ID"
 msgstr ""
 
-#: bika/health/browser/analysisrequests/view.py:16
-#: bika/health/browser/batch/batchfolder.py:14
-#: bika/health/browser/patients/folder_view.py:60
+#: bika/health/browser/analysisrequests/view.py:55
+#: bika/health/browser/batchfolder.py:135
+#: bika/health/browser/patients/folder_view.py:70
 msgid "Client PID"
 msgstr ""
 
-#: bika/health/content/analysisrequest.py:182
-#: bika/health/content/patient.py:408
+#: bika/health/content/analysisrequest.py:124
+#: bika/health/content/patient.py:605
 msgid "Client Patient ID"
 msgstr ""
 
-#: bika/health/browser/patient/analysisrequests.py:44
-msgid "Client contact required before request may be submitted"
+#: bika/health/content/bikasetup.py:142
+msgid "Client Patient ID must be unique"
 msgstr ""
 
 #. Default: "Clients"
 msgid "Clients"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:44
-msgid "Closed"
-msgstr ""
-
-#: bika/health/content/batch.py:267
-#: bika/health/content/patient.py:300
+#: bika/health/content/batch.py:288
+#: bika/health/content/patient.py:447
 msgid "Code"
 msgstr ""
 
-#: bika/health/content/immunization.py:74
+#: bika/health/content/immunization.py:94
 msgid "Collectives at risk"
 msgstr ""
 
-#: bika/health/controlpanel/bika_insurancecompanies.py:32
+#: bika/health/controlpanel/bika_insurancecompanies.py:52
 msgid "Company Name"
 msgstr ""
 
-#: bika/health/content/patient.py:536
+#: bika/health/content/patient.py:741
 msgid "Consent to SMS"
 msgstr ""
 
-#: bika/health/content/treatment.py:81
+#: bika/health/content/treatment.py:101
 msgid "Conservative treatment"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/templates/ar_add_health_standard.pt:146
-msgid "Contact Person <span class=\"required\" title=\"Required\"></span>"
-msgstr ""
-
-#: bika/health/content/patient.py:285
+#: bika/health/content/patient.py:425
 msgid "Country"
 msgstr ""
 
-#: bika/health/content/patient.py:117
+#: bika/health/content/patient.py:149
 msgid "Country and state"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:20
-msgid "Created"
-msgstr ""
-
-#: bika/health/content/patient.py:249
+#: bika/health/content/patient.py:362
 msgid "Date"
 msgstr ""
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:56
+#: bika/health/browser/insurancecompany/invoicefolder.py:70
 msgid "Default"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:75
-#: bika/health/content/client.py:48
+#: bika/health/content/bikasetup.py:94
+#: bika/health/content/client.py:66
 msgid "Default publication preference for Patients"
 msgstr ""
 
-#: bika/health/content/batch.py:269
-#: bika/health/content/patient.py:140
-#: bika/health/controlpanel/bika_aetiologicagents.py:35
+#: bika/health/content/batch.py:290
+#: bika/health/content/patient.py:187
+#: bika/health/controlpanel/bika_aetiologicagents.py:55
 msgid "Description"
 msgstr ""
 
-#: bika/health/controlpanel/bika_diseases.py:38
+#: bika/health/controlpanel/bika_diseases.py:58
 msgid "Disease"
 msgstr ""
 
-#: bika/health/controlpanel/bika_diseases.py:29
+#: bika/health/controlpanel/bika_diseases.py:49
 msgid "Diseases"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:16
-#: bika/health/browser/samples/folder_view.py:28
-#: bika/health/content/analysisrequest.py:83
+#: bika/health/browser/analysisrequests/view.py:62
+#: bika/health/browser/batchfolder.py:144
+#: bika/health/content/analysisrequest.py:54
 msgid "Doctor"
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:24
-#: bika/health/content/batch.py:165
-#: bika/health/content/doctor.py:22
+#: bika/health/browser/doctors/folder_view.py:46
+#: bika/health/content/batch.py:185
+#: bika/health/content/doctor.py:42
 msgid "Doctor ID"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:113
+#: bika/health/content/bikasetup.py:132
 msgid "Doctor field is mandatory in cases"
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:15
+#: bika/health/browser/doctors/folder_view.py:40
 msgid "Doctors"
 msgstr ""
 
-#: bika/health/config.py:12
+#: bika/health/browser/patient/files.py:67
+msgid "Document ID"
+msgstr ""
+
+#: bika/health/browser/patient/files.py:71
+msgid "Document Location"
+msgstr ""
+
+#: bika/health/browser/patient/files.py:73
+msgid "Document Type"
+msgstr ""
+
+#: bika/health/browser/patient/files.py:69
+msgid "Document Version"
+msgstr ""
+
+#: bika/health/config.py:30
 msgid "Don't Know"
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:56
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:50
-#: bika/health/controlpanel/bika_aetiologicagents.py:48
+#: bika/health/browser/doctors/folder_view.py:89
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:70
+#: bika/health/controlpanel/bika_aetiologicagents.py:68
 msgid "Dormant"
 msgstr ""
 
-#: bika/health/content/patient.py:173
-#: bika/health/controlpanel/bika_drugs.py:38
+#: bika/health/content/patient.py:226
+#: bika/health/controlpanel/bika_drugs.py:58
 msgid "Drug"
 msgstr ""
 
-#: bika/health/controlpanel/bika_drugprohibitions.py:38
+#: bika/health/controlpanel/bika_drugprohibitions.py:58
 msgid "Drug Prohibition"
 msgstr ""
 
-#: bika/health/content/patient.py:209
+#: bika/health/content/patient.py:293
 msgid "Drug Prohibition Explanation"
 msgstr ""
 
-#: bika/health/controlpanel/bika_drugprohibitions.py:29
+#: bika/health/controlpanel/bika_drugprohibitions.py:49
 msgid "Drug Prohibition Explanations"
 msgstr ""
 
 #. Default: "Indications"
-#: bika/health/content/drug.py:27
+#: bika/health/content/drug.py:47
 msgid "Drug indications"
 msgstr ""
 
 #. Default: "Posology"
-#: bika/health/content/drug.py:38
+#: bika/health/content/drug.py:58
 msgid "Drug posology"
 msgstr ""
 
 #. Default: "Preservation"
-#: bika/health/content/drug.py:60
+#: bika/health/content/drug.py:80
 msgid "Drug preservation"
 msgstr ""
 
 #. Default: "Side effects"
-#: bika/health/content/drug.py:49
+#: bika/health/content/drug.py:69
 msgid "Drug side effects"
 msgstr ""
 
-#: bika/health/controlpanel/bika_drugs.py:29
+#: bika/health/controlpanel/bika_drugs.py:49
 msgid "Drugs"
 msgstr ""
 
-#: bika/health/content/patient.py:246
+#: bika/health/content/patient.py:359
 msgid "EPI Number"
 msgstr ""
 
-#: bika/health/controlpanel/bika_insurancecompanies.py:34
-#: bika/health/controlpanel/bika_vaccinationcenters.py:43
+#: bika/health/controlpanel/bika_insurancecompanies.py:54
+#: bika/health/controlpanel/bika_vaccinationcenters.py:63
+#: bika/health/obsolete/__init__.py:40
 msgid "Email"
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:28
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:33
+#: bika/health/browser/doctors/folder_view.py:60
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:53
 msgid "Email Address"
 msgstr ""
 
-#: bika/health/content/treatment.py:82
+#: bika/health/content/treatment.py:102
 msgid "Empirical treatment"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:102
+#: bika/health/content/bikasetup.py:121
 msgid "Enable Bika's analysis request form."
 msgstr ""
 
-#: bika/health/content/bikasetup.py:21
+#: bika/health/content/bikasetup.py:40
 msgid "Enable panic levels alert"
 msgstr ""
 
-#: bika/health/content/patient.py:175
+#: bika/health/content/patient.py:228
 msgid "End"
 msgstr ""
 
-#: bika/health/controlpanel/bika_epidemiologicalyears.py:39
-msgid "End Date"
-msgstr ""
-
-#: bika/health/controlpanel/bika_epidemiologicalyears.py:24
-msgid "Epidemiological Years"
-msgstr ""
-
-#: bika/health/controlpanel/bika_epidemiologicalyears.py:26
-msgid "Epidemiological year calendars"
-msgstr ""
-
-#: bika/health/content/epidemiologicalyear.py:24
-msgid "Epidemiological year end date"
-msgstr ""
-
-#: bika/health/content/epidemiologicalyear.py:17
-msgid "Epidemiological year start date"
-msgstr ""
-
-#: bika/health/controlpanel/bika_ethnicities.py:24
+#: bika/health/controlpanel/bika_ethnicities.py:44
 msgid "Ethnicities"
 msgstr ""
 
-#: bika/health/content/patient.py:351
+#: bika/health/content/patient.py:531
 msgid "Ethnicity"
 msgstr ""
 
-#: bika/health/controlpanel/bika_ethnicities.py:33
+#: bika/health/controlpanel/bika_ethnicities.py:53
 msgid "Ethnicity Name"
 msgstr ""
 
-#: bika/health/content/patient.py:352
+#: bika/health/content/patient.py:532
 msgid "Ethnicity eg. Asian, African, etc."
 msgstr ""
 
-#: bika/health/content/treatment.py:83
+#: bika/health/content/treatment.py:103
 msgid "Expectant/Symptomatic treatment"
 msgstr ""
 
-#: bika/health/ajax/ajaxhandler.py:54
+#: bika/health/ajax/ajaxhandler.py:74
 msgid "Failed ajax call: %s"
 msgstr ""
 
-#: bika/health/content/patient.py:379
+#: bika/health/content/patient.py:567
 msgid "Fathers name"
 msgstr ""
 
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:36
-#: bika/health/controlpanel/bika_insurancecompanies.py:38
-#: bika/health/controlpanel/bika_vaccinationcenters.py:47
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:56
+#: bika/health/controlpanel/bika_insurancecompanies.py:58
+#: bika/health/controlpanel/bika_vaccinationcenters.py:67
 msgid "Fax"
 msgstr ""
 
-#: bika/health/content/patient.py:395
+#: bika/health/content/patient.py:589
 msgid "Feature"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:38
+#: bika/health/content/bikasetup.py:57
 msgid "Feet/inches"
 msgstr ""
 
-#: bika/health/config.py:11
+#: bika/health/config.py:29
 msgid "Female"
 msgstr ""
 
-#: bika/health/content/patient.py:447
+#: bika/health/browser/patient/files.py:75
+msgid "File"
+msgstr ""
+
+#: bika/health/content/patient.py:640
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patient if this option is enabled"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:89
+#: bika/health/content/bikasetup.py:108
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patients if this option is enabled. This setting can be overriden either on 'Patient publication preferences' tab from Client view or on Patient's 'Publication preferences' tab."
 msgstr ""
 
-#: bika/health/content/client.py:60
+#: bika/health/content/client.py:78
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patients if this option is enabled. This setting can be overriden on Patient's 'Publication preferences' tab."
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:26
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:32
-#: bika/health/content/batch.py:166
+#: bika/health/browser/doctors/folder_view.py:50
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:52
+#: bika/health/content/batch.py:186
 msgid "Full Name"
 msgstr ""
 
-#: bika/health/content/analysisrequest.py:195
-#: bika/health/content/batch.py:394
+#: bika/health/content/analysisrequest.py:137
+#: bika/health/content/batch.py:415
 msgid "Fullname"
 msgstr ""
 
-#: bika/health/browser/patients/folder_view.py:64
-#: bika/health/content/patient.py:79
-#: bika/health/controlpanel/bika_symptoms.py:43
+#: bika/health/browser/patients/folder_view.py:75
+#: bika/health/content/patient.py:104
+#: bika/health/controlpanel/bika_symptoms.py:63
 msgid "Gender"
 msgstr ""
 
-#: bika/health/content/immunization.py:46
+#: bika/health/content/immunization.py:66
 msgid "Geographical areas can be characterized as having high, intermediate or low levels of infection."
 msgstr ""
 
-#: bika/health/content/immunization.py:45
+#: bika/health/content/immunization.py:65
 msgid "Geographical distribution"
 msgstr ""
 
-#: bika/health/content/patient.py:487
+#: bika/health/content/patient.py:685
 msgid "Guarantor ID"
 msgstr ""
 
-#: bika/health/content/patient.py:504
+#: bika/health/content/patient.py:704
 msgid "Guarantor's First Name"
 msgstr ""
 
-#: bika/health/content/patient.py:518
+#: bika/health/content/patient.py:720
 msgid "Guarantor's Phone (business)"
 msgstr ""
 
-#: bika/health/content/patient.py:524
+#: bika/health/content/patient.py:727
 msgid "Guarantor's Phone (home)"
 msgstr ""
 
-#: bika/health/content/patient.py:530
+#: bika/health/content/patient.py:734
 msgid "Guarantor's Phone (mobile)"
 msgstr ""
 
-#: bika/health/content/patient.py:496
+#: bika/health/content/patient.py:695
 msgid "Guarantor's Surname"
 msgstr ""
 
-#: bika/health/content/patient.py:512
+#: bika/health/content/patient.py:713
 msgid "Guarantor's postal address"
 msgstr ""
 
-#: bika/health/config.py:21
+#: bika/health/config.py:39
 msgid "Hispanic or Latino"
 msgstr ""
 
-#: bika/health/browser/patient/historicresults.py:25
+#: bika/health/browser/patient/historicresults.py:45
 msgid "Historic Results"
 msgstr ""
 
-#: bika/health/content/batch.py:359
+#: bika/health/content/batch.py:380
 msgid "Hours fasting"
 msgstr ""
 
-#: bika/health/content/disease.py:18
+#: bika/health/content/disease.py:38
 msgid "ICD Code"
 msgstr ""
 
-#: bika/health/content/patient.py:131
+#: bika/health/content/patient.py:167
 msgid "Identifier"
 msgstr ""
 
-#: bika/health/content/patient.py:130
+#: bika/health/content/patient.py:166
 msgid "Identifier Type"
 msgstr ""
 
-#: bika/health/controlpanel/bika_identifiertypes.py:24
+#: bika/health/controlpanel/bika_identifiertypes.py:44
 msgid "Identifier Types"
 msgstr ""
 
-#: bika/health/content/patient.py:431
+#: bika/health/content/patient.py:631
 msgid "If checked, results reports will also be sent to the Patient automatically."
 msgstr ""
 
-#: bika/health/content/bikasetup.py:65
+#: bika/health/content/bikasetup.py:84
 msgid "If checked, results reports will also be sent to the Patient automatically. This setting can be overriden either on 'Patient publication preferences' tab from Client view or on Patient's 'Publication preferences' tab."
 msgstr ""
 
-#: bika/health/content/client.py:39
+#: bika/health/content/client.py:57
 msgid "If checked, results reports will also be sent to the Patient automatically. This setting can be overriden either on Patient's 'Publication preferences' tab."
 msgstr ""
 
-#: bika/health/content/patient.py:422
+#: bika/health/content/patient.py:621
 msgid "If checked, settings will be inherited from the Client, so further changes in Client for this setting will be populated too."
 msgstr ""
 
-#: bika/health/content/client.py:29
+#: bika/health/content/client.py:47
 msgid "If checked, the settings for results reports distribution to patients will be inherited from Bika Setup, so further changes in Bika Setup for this setting will be populated too."
 msgstr ""
 
-#: bika/health/content/bikasetup.py:31
+#: bika/health/content/bikasetup.py:50
 msgid "If enabled, shows automatically an email form pop-up for alerting the client about a panic level exceeded when Analysis Request view is loaded"
 msgstr ""
 
-#: bika/health/content/patient.py:472
+#: bika/health/content/patient.py:668
 msgid "If it is checked the invoices will be send to the insurance company. In this case the insurance number will be mandatory."
 msgstr ""
 
-#: bika/health/content/patient.py:247
-#: bika/health/controlpanel/bika_immunizations.py:38
+#: bika/health/content/bikasetup.py:143
+msgid "If selected, Client Patient IDs will be forced to be unique"
+msgstr ""
+
+#: bika/health/content/patient.py:360
+#: bika/health/controlpanel/bika_immunizations.py:58
 msgid "Immunization"
 msgstr ""
 
 #. Default: "Type"
-#: bika/health/content/immunization.py:18
+#: bika/health/content/immunization.py:38
 msgid "Immunization form"
 msgstr ""
 
-#: bika/health/controlpanel/bika_immunizations.py:29
+#: bika/health/controlpanel/bika_immunizations.py:49
 msgid "Immunizations"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:54
+#: bika/health/browser/patients/folder_view.py:105
+msgid "Inactive"
+msgstr ""
+
+#: bika/health/content/bikasetup.py:73
 msgid "Inches"
 msgstr ""
 
-#: bika/health/validators.py:26
+#: bika/health/validators.py:52
 msgid "Incorrect data format in '${title}', should be YYYY-MM-DD"
 msgstr ""
 
-#: bika/health/content/patient.py:421
+#: bika/health/content/patient.py:620
 msgid "Inherit default settings"
 msgstr ""
 
-#: bika/health/content/client.py:28
+#: bika/health/content/client.py:46
 msgid "Inherit default settings for Patient results distribution"
 msgstr ""
 
-#: bika/health/controlpanel/bika_insurancecompanies.py:23
+#: bika/health/controlpanel/bika_insurancecompanies.py:43
 msgid "Insurance Companies"
 msgstr ""
 
-#: bika/health/content/patient.py:458
+#: bika/health/content/patient.py:652
 msgid "Insurance Company"
 msgstr ""
 
-#: bika/health/content/patient.py:465
+#: bika/health/content/patient.py:660
 msgid "Insurance Number"
 msgstr ""
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:44
+#: bika/health/browser/insurancecompany/invoicefolder.py:58
 msgid "Invoice Date"
 msgstr ""
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:40
+#: bika/health/browser/insurancecompany/invoicefolder.py:54
 msgid "Invoice Number"
 msgstr ""
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:32
+#: bika/health/browser/insurancecompany/invoicefolder.py:46
 msgid "Invoices"
 msgstr ""
 
-#: bika/health/config.py:32
+#: bika/health/config.py:50
 msgid "Irregular"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:103
+#: bika/health/content/bikasetup.py:122
 msgid "It enables the secondary analysis request form. This request has some characteristic features as allowing you to register more than one analysis request at the same time. It's useful if you are supposed to register a big amount of analysis request at the same time."
 msgstr ""
 
-#: bika/health/content/patient.py:217
+#: bika/health/content/patient.py:304
 msgid "Known Patient allergies to keep information that can aid drug reaction interpretation"
 msgstr ""
 
-#: bika/health/content/drug.py:51
+#: bika/health/content/drug.py:71
 msgid "Known undesirable effects of the drug"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:46
+#: bika/health/content/bikasetup.py:65
 msgid "Lbs"
 msgstr ""
 
-#: bika/health/controlpanel/bika_identifiertypes.py:26
+#: bika/health/controlpanel/bika_identifiertypes.py:46
 msgid "List of types of identifiers for multiple identifier records"
 msgstr ""
 
-#: bika/health/content/patient.py:286
+#: bika/health/content/patient.py:426
 msgid "Location"
 msgstr ""
 
-#: bika/health/config.py:10
+#: bika/health/config.py:28
 msgid "Male"
 msgstr ""
 
-#: bika/health/content/analysisspec.py:30
-#: bika/health/widgets/analysisspecificationwidget.py:20
+#: bika/health/content/analysisspec.py:50
+#: bika/health/widgets/analysisspecificationwidget.py:40
 msgid "Max panic"
 msgstr ""
 
-#: bika/health/content/analysisspec.py:29
-#: bika/health/widgets/analysisspecificationwidget.py:19
+#: bika/health/content/analysisspec.py:49
+#: bika/health/widgets/analysisspecificationwidget.py:39
 msgid "Min panic"
 msgstr ""
 
-#: bika/health/browser/doctors/folder_view.py:30
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:35
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:55
 msgid "Mobile Phone"
 msgstr ""
 
-#: bika/health/content/patient.py:374
+#: bika/health/browser/doctors/folder_view.py:64
+msgid "MobilePhone"
+msgstr ""
+
+#: bika/health/content/patient.py:560
 msgid "Mothers name"
 msgstr ""
 
-#: bika/health/controlpanel/bika_vaccinationcenters.py:41
+#: bika/health/controlpanel/bika_vaccinationcenters.py:61
 msgid "Name"
 msgstr ""
 
-#: bika/health/config.py:16
+#: bika/health/config.py:34
 msgid "Native American"
 msgstr ""
 
-#: bika/health/config.py:19
+#: bika/health/config.py:37
 msgid "Native Hawaiian or Other Pacific Islander"
 msgstr ""
 
-#: bika/health/browser/patient/historicresults.pt:254
-msgid "No historic results found"
-msgstr ""
-
-#: bika/health/config.py:33
+#: bika/health/config.py:51
 msgid "No menstrual cycle"
 msgstr ""
 
-#: bika/health/ajax/ajaxhandler.py:40
+#: bika/health/ajax/ajaxhandler.py:60
 msgid "No request id defined"
 msgstr ""
 
-#: bika/health/content/treatment.py:59
+#: bika/health/content/treatment.py:79
 msgid "Objective clinical findings"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/ajax.py:90
-msgid "One job added to the Analysis Request creation queue"
-msgstr ""
-
-#: bika/health/content/batch.py:270
+#: bika/health/content/batch.py:291
 msgid "Onset"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:18
-#: bika/health/content/batch.py:239
+#: bika/health/browser/batchfolder.py:149
+#: bika/health/content/batch.py:260
 msgid "Onset Date"
 msgstr ""
 
-#: bika/health/content/batch.py:255
+#: bika/health/content/batch.py:276
 msgid "Onset Date Estimated"
 msgstr ""
 
-#: bika/health/browser/batch/batchfolder.py:28
-msgid "Open"
+#: bika/health/obsolete/__init__.py:41
+msgid "PDF"
 msgstr ""
 
-#: bika/health/content/treatment.py:84
+#: bika/health/content/treatment.py:104
 msgid "Palliative treatment"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/workflow.py:60
-#: bika/health/browser/worksheet/workflow.py:61
-msgid "Panic alert"
-msgstr ""
-
-#: bika/health/ajax/client.py:23
+#: bika/health/ajax/client.py:49
 msgid "Parameter '%s' is missing"
 msgstr ""
 
-#: bika/health/content/immunization.py:112
+#: bika/health/content/immunization.py:132
 msgid "Passive immunization"
 msgstr ""
 
-#: bika/health/browser/analysisrequests/view.py:19
-#: bika/health/browser/batch/batchfolder.py:15
-#: bika/health/browser/insurancecompany/invoicefolder.py:49
+#: bika/health/browser/analysisrequests/view.py:59
+#: bika/health/browser/batchfolder.py:139
+#: bika/health/browser/insurancecompany/invoicefolder.py:63
 msgid "Patient"
 msgstr ""
 
-#: bika/health/content/batch.py:249
+#: bika/health/content/batch.py:270
 msgid "Patient Age at Case Onset Date"
 msgstr ""
 
-#: bika/health/browser/patient/files.py:13
-msgid "Patient Attachments"
+#: bika/health/browser/patient/files.py:49
+msgid "Patient Files"
 msgstr ""
 
-#: bika/health/browser/analysisrequests/view.py:14
-#: bika/health/browser/batch/batchfolder.py:13
-#: bika/health/browser/patients/folder_view.py:57
+#: bika/health/browser/analysisrequests/view.py:52
+#: bika/health/browser/batchfolder.py:131
+#: bika/health/browser/patients/folder_view.py:65
 msgid "Patient ID"
 msgstr ""
 
-#: bika/health/content/patient.py:136
+#: bika/health/content/patient.py:175
 msgid "Patient additional identifiers"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:40
+#: bika/health/content/bikasetup.py:59
 msgid "Patient condition height units"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:56
+#: bika/health/content/bikasetup.py:75
 msgid "Patient condition waist units"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:48
+#: bika/health/content/bikasetup.py:67
 msgid "Patient condition weight units"
 msgstr ""
 
-#: bika/health/content/patient.py:327
+#: bika/health/content/patient.py:489
 msgid "Patient's past medical history."
 msgstr ""
 
@@ -855,13 +809,12 @@ msgstr ""
 msgid "Patients"
 msgstr ""
 
-#: bika/health/browser/batch/publish.pt:68
-#: bika/health/controlpanel/bika_insurancecompanies.py:36
-#: bika/health/controlpanel/bika_vaccinationcenters.py:45
+#: bika/health/controlpanel/bika_insurancecompanies.py:56
+#: bika/health/controlpanel/bika_vaccinationcenters.py:65
 msgid "Phone"
 msgstr ""
 
-#: bika/health/content/patient.py:389
+#: bika/health/content/patient.py:581
 msgid "Photo"
 msgstr ""
 
@@ -869,327 +822,244 @@ msgstr ""
 msgid "Please correct the indicated errors."
 msgstr ""
 
-#: bika/health/content/immunization.py:92
+#: bika/health/content/immunization.py:112
 msgid "Prevention"
 msgstr ""
 
-#: bika/health/content/treatment.py:85
+#: bika/health/content/treatment.py:105
 msgid "Preventive/Prophylactic treatment"
 msgstr ""
 
-#: bika/health/browser/patients/folder_view.py:79
+#: bika/health/browser/doctors/folder_view.py:54
+#: bika/health/browser/patients/folder_view.py:90
 msgid "Primary Referrer"
 msgstr ""
 
-#: bika/health/browser/batch/publish.pt:124
-msgid "Print date:"
-msgstr ""
-
-#: bika/health/content/batch.py:268
+#: bika/health/content/batch.py:289
 msgid "Provisional diagnosis"
 msgstr ""
 
-#: bika/health/content/patient.py:438
-msgid "Publication preference"
-msgstr ""
-
-#: bika/health/browser/patient/historicresults.pt:218
-msgid "Range"
-msgstr ""
-
-#: bika/health/content/treatment.py:86
+#: bika/health/content/treatment.py:106
 msgid "Rational treatment"
 msgstr ""
 
-#: bika/health/config.py:31
+#: bika/health/config.py:49
 msgid "Regular"
 msgstr ""
 
-#: bika/health/content/immunization.py:36
+#: bika/health/content/immunization.py:56
 msgid "Relevant Facts"
 msgstr ""
 
-#: bika/health/content/aetiologicagent.py:16
-#: bika/health/content/insurancecompany.py:17
-#: bika/health/content/patient.py:160
+#: bika/health/content/aetiologicagent.py:36
+#: bika/health/content/insurancecompany.py:36
+#: bika/health/content/patient.py:208
 msgid "Remarks"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/ajax.py:35
-msgid "Required fields have no values: Patient"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/emailpopup.py:62
-#: bika/health/browser/analysisrequest/workflow.py:79
-#: bika/health/browser/worksheet/workflow.py:78
-msgid "Result"
-msgstr ""
-
-#: bika/health/browser/analysis/resultoutofrange.py:95
+#: bika/health/browser/analysis/resultoutofrange.py:114
 msgid "Result exceeded panic level"
 msgstr ""
 
-#: bika/health/browser/analysis/resultoutofrange.py:92
+#: bika/health/browser/analysis/resultoutofrange.py:111
 msgid "Result in shoulder panic range"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:88
-#: bika/health/content/client.py:59
-#: bika/health/content/patient.py:446
+#: bika/health/content/bikasetup.py:107
+#: bika/health/content/client.py:77
+#: bika/health/content/patient.py:639
 msgid "Results attachments permitted"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/templates/ar_add_health_standard.pt:292
-msgid "Save"
-msgstr ""
-
-#: bika/health/content/immunization.py:20
+#: bika/health/content/immunization.py:40
 msgid "Select a type of immunization. <br/>Active immunization entails the introduction of a foreign molecule into the body, which causes the body itself to generate immunity against the target. Vaccination is an active form of immunization<br/>Passive immunization is where pre-synthesized elements of the immune system are transferred to a person so that the body does not need to produce these elements itself. Currently, antibodies can be used for passive immunization"
 msgstr ""
 
-#: bika/health/content/treatment.py:22
+#: bika/health/content/treatment.py:42
 msgid "Select a type of treatment."
 msgstr ""
 
-#: bika/health/content/bikasetup.py:76
+#: bika/health/content/bikasetup.py:95
 msgid "Select the preferred channels to be used for sending the results reports to Patients. This setting can be overriden either on 'Patient publication preferences' tab from Client view or on Patient's 'Publication preferences' tab."
 msgstr ""
 
-#: bika/health/content/client.py:49
+#: bika/health/content/client.py:67
 msgid "Select the preferred channels to be used for sending the results reports to Patients. This setting can be overriden on Patient's 'Publication preferences' tab."
 msgstr ""
 
-#: bika/health/content/patient.py:439
-msgid "Select the preferred channels to be used for sending the results reports to this Patient."
-msgstr ""
-
-#: bika/health/content/patient.py:471
+#: bika/health/content/patient.py:667
 msgid "Send invoices to the insurance company."
 msgstr ""
 
-#: bika/health/ajax/ajaxhandler.py:46
+#: bika/health/ajax/ajaxhandler.py:66
 msgid "Service '%s' not found for %s"
 msgstr ""
 
-#: bika/health/ajax/ajaxhandler.py:43
+#: bika/health/ajax/ajaxhandler.py:63
 msgid "Service not defined"
 msgstr ""
 
-#: bika/health/content/symptom.py:30
+#: bika/health/content/symptom.py:50
 msgid "Severity levels permitted"
 msgstr ""
 
-#: bika/health/content/treatment.py:87
+#: bika/health/content/treatment.py:107
 msgid "Shock treatment"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:114
+#: bika/health/content/bikasetup.py:133
 msgid "Should the Doctor field be mandatory while creating a case?"
 msgstr ""
 
-#: bika/health/content/bikasetup.py:30
+#: bika/health/content/bikasetup.py:49
 msgid "Show client email pop-up when panic level"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/workflow.py:43
-#: bika/health/browser/worksheet/workflow.py:44
-msgid "Some results exceeded the panic levels that may indicate an imminent life-threatening condition"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/manageresults.py:24
-#: bika/health/browser/analysisrequest/view.py:23
-#: bika/health/browser/worksheet/manageresults.py:24
-msgid "Some results exceeded the panic levels that may indicate an imminent life-threatening condition."
-msgstr ""
-
-#: bika/health/browser/analysisrequest/emailpopup.py:78
-msgid "Some results from ${ar} exceeded panic range"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/workflow.py:83
-#: bika/health/browser/worksheet/workflow.py:81
-msgid "Some results from ${items} exceeded the panic levels that may indicate an imminent life-threatening condition: <br/><br/>{analysisresults}<br/><br/><b>Please, check the Analysis Request if you want to re-test the analysis or immediately alert the client.</b><br/><br/>{lab_address}"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/emailpopup.pt:34
-msgid "Some values exceeded the panic levels. Send an email to the client or close this window if you want to re-test to confirm the panic value."
-msgstr ""
-
-#: bika/health/content/treatment.py:88
+#: bika/health/content/treatment.py:108
 msgid "Specific treatment"
 msgstr ""
 
-#: bika/health/content/patient.py:174
+#: bika/health/content/patient.py:227
 msgid "Start"
 msgstr ""
 
-#: bika/health/controlpanel/bika_epidemiologicalyears.py:36
-msgid "Start Date"
-msgstr ""
-
-#: bika/health/browser/batch/batchfolder.py:19
-msgid "State"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/emailpopup.pt:51
-msgid "Subject"
-msgstr ""
-
-#: bika/health/content/treatment.py:50
+#: bika/health/content/treatment.py:70
 msgid "Subjective clinical findings"
 msgstr ""
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:46
+#: bika/health/browser/insurancecompany/invoicefolder.py:60
 msgid "Subtotal"
 msgstr ""
 
-#: bika/health/content/aetiologicagent.py:15
-#: bika/health/content/batch.py:339
+#: bika/health/content/aetiologicagent.py:35
+#: bika/health/content/batch.py:360
 msgid "Subtype"
 msgstr ""
 
-#: bika/health/content/treatment.py:89
+#: bika/health/content/treatment.py:109
 msgid "Supporting treatment"
 msgstr ""
 
-#: bika/health/controlpanel/bika_symptoms.py:38
+#: bika/health/controlpanel/bika_symptoms.py:58
 msgid "Symptom"
 msgstr ""
 
-#: bika/health/content/immunization.py:65
-#: bika/health/controlpanel/bika_symptoms.py:29
+#: bika/health/content/immunization.py:85
+#: bika/health/controlpanel/bika_symptoms.py:49
 msgid "Symptoms"
 msgstr ""
 
-#: bika/health/content/drug.py:29
+#: bika/health/content/drug.py:49
 msgid "Symptoms or the like for which the drug is suitable"
 msgstr ""
 
-#: bika/health/browser/patient/historicresults.pt:213
-msgid "Test"
-msgstr ""
-
-#: bika/health/content/patient.py:488
+#: bika/health/content/patient.py:686
 msgid "The ID number (Insurance Number) from the person whose contract cover the current patient."
 msgstr ""
 
-#: bika/health/content/patient.py:480
+#: bika/health/content/patient.py:677
 msgid "The patient and the guarantor are the same."
 msgstr ""
 
-#: bika/health/content/patient.py:479
+#: bika/health/content/patient.py:676
 msgid "The patient is the guarantor."
 msgstr ""
 
-#: bika/health/content/analysisrequest.py:130
-#: bika/health/content/batch.py:277
-#: bika/health/content/patient.py:139
+#: bika/health/content/analysisrequest.py:91
+#: bika/health/content/batch.py:298
+#: bika/health/content/patient.py:182
 msgid "Title"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/emailpopup.pt:66
-msgid "To"
-msgstr ""
-
-#: bika/health/browser/insurancecompany/invoicefolder.py:48
+#: bika/health/browser/insurancecompany/invoicefolder.py:62
 msgid "Total"
 msgstr ""
 
-#: bika/health/content/immunization.py:56
+#: bika/health/content/immunization.py:76
 msgid "Transmission"
 msgstr ""
 
-#: bika/health/content/immunization.py:83
-#: bika/health/controlpanel/bika_treatments.py:38
+#: bika/health/content/immunization.py:103
+#: bika/health/controlpanel/bika_treatments.py:58
 msgid "Treatment"
 msgstr ""
 
-#: bika/health/content/treatment.py:65
+#: bika/health/content/treatment.py:85
 msgid "Treatment Document"
 msgstr ""
 
-#: bika/health/content/treatment.py:41
+#: bika/health/content/treatment.py:61
 msgid "Treatment care"
 msgstr ""
 
 #. Default: "Procedure"
-#: bika/health/content/treatment.py:31
+#: bika/health/content/treatment.py:51
 msgid "Treatment procedure"
 msgstr ""
 
 #. Default: "Type"
-#: bika/health/content/treatment.py:20
+#: bika/health/content/treatment.py:40
 msgid "Treatment type"
 msgstr ""
 
-#: bika/health/controlpanel/bika_treatments.py:29
+#: bika/health/controlpanel/bika_treatments.py:49
 msgid "Treatments"
 msgstr ""
 
 #. Default: "End date"
-#: bika/health/content/patient.py:284
+#: bika/health/content/patient.py:424
 msgid "Trip End Date"
 msgstr ""
 
 #. Default: "Start date"
-#: bika/health/content/patient.py:283
+#: bika/health/content/patient.py:423
 msgid "Trip Start Date"
 msgstr ""
 
-#: bika/health/browser/analysisrequest/view.py:99
-msgid "Unable to send an email to alert client that some results exceeded the panic levels"
-msgstr ""
-
-#: bika/health/browser/analysisrequest/workflow.py:105
-#: bika/health/browser/worksheet/workflow.py:103
-msgid "Unable to send an email to alert lab managers that some analyses exceeded the panic levels"
-msgstr ""
-
-#: bika/health/browser/patient/historicresults.pt:217
-msgid "Units"
-msgstr ""
-
-#: bika/health/content/bikasetup.py:41
+#: bika/health/content/bikasetup.py:60
 msgid "Use '/' symbol to allow multiple-units submission"
 msgstr ""
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:47
+#: bika/health/browser/doctors/folder_view.py:58
+msgid "User Name"
+msgstr ""
+
+#: bika/health/browser/insurancecompany/invoicefolder.py:61
 msgid "VAT"
 msgstr ""
 
-#: bika/health/content/patient.py:248
+#: bika/health/content/patient.py:361
 msgid "Vaccination Center"
 msgstr ""
 
-#: bika/health/controlpanel/bika_vaccinationcenters.py:32
+#: bika/health/controlpanel/bika_vaccinationcenters.py:52
 msgid "Vaccination Centers"
 msgstr ""
 
-#: bika/health/widgets/analysisspecificationwidget.py:109
+#: bika/health/validators.py:90
+msgid "Validation failed: '${value}' is not unique"
+msgstr ""
+
+#: bika/health/widgets/analysisspecificationwidget.py:129
 msgid "Validation failed: Panic max value must be greater than panic min value"
 msgstr ""
 
-#: bika/health/widgets/analysisspecificationwidget.py:99
+#: bika/health/widgets/analysisspecificationwidget.py:119
 msgid "Validation failed: Panic min value must be numeric"
 msgstr ""
 
-#: bika/health/config.py:20
+#: bika/health/config.py:38
 msgid "White"
 msgstr ""
 
-#. Default: "Bika Health OS LIMS/LIS ${version} ${DYNAMIC_CONTENT}"
-#: bika/health/browser/bika-frontpage.pt:13
-msgid "bika-frontpage-title"
-msgstr ""
-
-#: bika/health/browser/analysis/resultoutofrange.py:87
+#: bika/health/browser/analysis/resultoutofrange.py:106
 msgid "maxpanic"
 msgstr ""
 
-#: bika/health/browser/analysis/resultoutofrange.py:86
+#: bika/health/browser/analysis/resultoutofrange.py:105
 msgid "minpanic"
 msgstr ""
 
-#: bika/health/content/drug.py:62
+#: bika/health/content/drug.py:82
 msgid "preservation"
 msgstr ""

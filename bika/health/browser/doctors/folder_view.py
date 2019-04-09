@@ -1,9 +1,22 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.HEALTH
+# This file is part of SENAITE.HEALTH.
 #
-# Copyright 2018 by it's authors.
-# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+# SENAITE.HEALTH is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, version 2.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# Copyright 2018-2019 by it's authors.
+# Some rights reserved, see README and LICENSE.
 
 from collections import OrderedDict
 
@@ -98,6 +111,13 @@ class DoctorsView(ClientContactsView):
             self.contentFilter['getPrimaryReferrerUID'] = [client_uid, None]
 
         return super(DoctorsView, self).__call__()
+
+    def before_render(self):
+        """Before template render hook
+        """
+        super(DoctorsView, self).before_render()
+        # Don't allow any context actions on Doctors folder
+        self.request.set("disable_border", 1)
 
     @viewcache.memoize
     def get_user_client_uid(self, default=None):

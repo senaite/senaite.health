@@ -1,9 +1,22 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of SENAITE.HEALTH
+# This file is part of SENAITE.HEALTH.
 #
-# Copyright 2018 by it's authors.
-# Some rights reserved. See LICENSE.rst, CONTRIBUTORS.rst.
+# SENAITE.HEALTH is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, version 2.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# Copyright 2018-2019 by it's authors.
+# Some rights reserved, see README and LICENSE.
 
 from Products.ATContentTypes.content import schemata
 from Products.Archetypes import atapi
@@ -29,7 +42,7 @@ class EthnicitiesView(BikaListingView):
                                 {'url': 'createObject?type_name=Ethnicity',
                                  'icon': '++resource++bika.lims.images/add.png'}}
         self.title = self.context.translate(_("Ethnicities"))
-        self.icon = self.portal_url + "/++resource++bika.health.images/patient.png"
+        self.icon = self.portal_url + "/++resource++bika.health.images/ethnicity_big.png"
         self.description = ""
         self.show_sort_column = False
         self.show_select_row = False
@@ -64,6 +77,13 @@ class EthnicitiesView(BikaListingView):
              'columns': ['Title',
                          'Description']},
         ]
+
+    def before_render(self):
+        """Before template render hook
+        """
+        super(EthnicitiesView, self).before_render()
+        # Don't allow any context actions on Ethnicities folder
+        self.request.set("disable_border", 1)
 
     def folderitems(self):
         items = BikaListingView.folderitems(self)

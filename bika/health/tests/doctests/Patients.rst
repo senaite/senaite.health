@@ -48,5 +48,5 @@ Create a Patient:
 
     >>> patient = api.create(patients, "Patient")
     >>> patient
-    <Patient at /plone/patients/patient-1>
+    <Patient at /plone/patients/P000001>
 

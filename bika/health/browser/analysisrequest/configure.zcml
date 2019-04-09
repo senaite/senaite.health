@@ -1,39 +1,26 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:zcml="http://namespaces.zope.org/browser"
-           xmlns:fss="http://namespaces.zope.org/browser"
-           xmlns:browser="http://namespaces.zope.org/browser"
-           xmlns:plone="http://namespaces.plone.org/plone"
-           xmlns:five="http://namespaces.zope.org/five">
+           xmlns:browser="http://namespaces.zope.org/browser">
 
-    <!-- TODO: Is this strictly necessary? -->
-    <include package="plone.resource" file="meta.zcml"/>
-    <plone:static
-        directory="templates/reports"
-        type="reports"
-        name="bika.health"
-    />
-
-    <!-- Override senaite.core's default views -->
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="invoice"
-      class="bika.health.browser.analysisrequest.invoice.InvoiceView"
-      permission="senaite.core.permissions.ManageInvoices"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="invoice_print"
-      class="bika.health.browser.analysisrequest.invoice.InvoicePrintView"
-      permission="senaite.core.permissions.ManageInvoices"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-    <browser:page
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="invoice_create"
-      class="bika.health.browser.analysisrequest.invoice.InvoiceCreate"
-      permission="senaite.core.permissions.ManageInvoices"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
+  <!-- Add Patient's insurance number in the invoice -->
+  <browser:page
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="invoice"
+    class="bika.health.browser.analysisrequest.invoice.InvoiceView"
+    permission="senaite.core.permissions.ManageInvoices"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+  <browser:page
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="invoice_print"
+    class="bika.health.browser.analysisrequest.invoice.InvoicePrintView"
+    permission="senaite.core.permissions.ManageInvoices"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+  <browser:page
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="invoice_create"
+    class="bika.health.browser.analysisrequest.invoice.InvoiceCreate"
+    permission="senaite.core.permissions.ManageInvoices"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
 </configure>

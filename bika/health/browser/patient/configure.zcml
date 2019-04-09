@@ -11,11 +11,13 @@
     permission="zope2.View"
     layer="bika.health.interfaces.IBikaHealth"
   />
+
+  <!-- Batches filtered by patient -->
   <subscriber
     for="bika.lims.browser.batchfolder.BatchFolderContentsView
          bika.health.interfaces.IPatient"
     provides="senaite.core.listing.interfaces.IListingViewAdapter"
-    factory="bika.health.browser.patient.batches.BatchListingViewAdapter"
+    factory="bika.health.browser.patient.batches.PatientBatchListingViewAdapter"
   />
 
 
