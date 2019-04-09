@@ -104,7 +104,7 @@
     appId="senaite.health"
     category="bika"
     condition_expr=""
-    icon_expr="string:++resource++bika.health.images/patient.png"
+    icon_expr="string:++resource++bika.health.images/ethnicity.png"
     url_expr="string:$portal_url/bika_setup/bika_ethnicities"
     visible="True"
     i18n:domain="senaite.health"

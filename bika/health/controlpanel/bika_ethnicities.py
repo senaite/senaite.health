@@ -42,7 +42,7 @@ class EthnicitiesView(BikaListingView):
                                 {'url': 'createObject?type_name=Ethnicity',
                                  'icon': '++resource++bika.lims.images/add.png'}}
         self.title = self.context.translate(_("Ethnicities"))
-        self.icon = self.portal_url + "/++resource++bika.health.images/patient.png"
+        self.icon = self.portal_url + "/++resource++bika.health.images/ethnicity_big.png"
         self.description = ""
         self.show_sort_column = False
         self.show_select_row = False
