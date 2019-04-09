@@ -82,6 +82,13 @@ class TreatmentsView(BikaListingView):
                          'Description']},
         ]
 
+    def before_render(self):
+        """Before template render hook
+        """
+        super(TreatmentsView, self).before_render()
+        # Don't allow any context actions on Treatments folder
+        self.request.set("disable_border", 1)
+
     def folderitems(self):
         items = BikaListingView.folderitems(self)
         for x in range(len(items)):

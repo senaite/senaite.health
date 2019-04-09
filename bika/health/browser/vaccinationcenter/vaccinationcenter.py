@@ -85,6 +85,13 @@ class ContactsView(BikaListingView):
                          'getFax']},
         ]
 
+    def before_render(self):
+        """Before template render hook
+        """
+        super(ContactsView, self).before_render()
+        # Don't allow any context actions on Vaccination Centers folder
+        self.request.set("disable_border", 1)
+
     def folderitems(self):
         items = BikaListingView.folderitems(self)
         for x in range(len(items)):

@@ -77,6 +77,13 @@ class CaseStatusesView(BikaListingView):
                          'Description']},
         ]
 
+    def before_render(self):
+        """Before template render hook
+        """
+        super(CaseStatusesView, self).before_render()
+        # Don't allow any context actions on Case statuses folder
+        self.request.set("disable_border", 1)
+
     def folderitems(self):
         items = BikaListingView.folderitems(self)
         for x in range(len(items)):

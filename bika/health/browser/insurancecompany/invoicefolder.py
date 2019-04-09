@@ -86,6 +86,13 @@ class InvoiceFolderView(BikaListingView):
             self.show_select_column = True
         return super(InvoiceFolderView, self).__call__()
 
+    def before_render(self):
+        """Before template render hook
+        """
+        super(InvoiceFolderView, self).before_render()
+        # Don't allow any context actions on Invoices folder
+        self.request.set("disable_border", 1)
+
     def isItemAllowed(self, obj):
         """
         Check if the invoice should be shown in the insurance company's invoice folder.
