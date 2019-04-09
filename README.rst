@@ -65,6 +65,52 @@ Start the instance and login as admin user. Go to Site Setup > Add-ons, select
 "SENAITE HEALTH" and press Install.
 
 
+Screenshots
+===========
+
+Dashboard
+---------
+
+.. image:: https://raw.githubusercontent.com/senaite/senaite.health/master/static/dashboard.png
+   :alt: Dashboard
+   :width: 760px
+   :align: center
+
+
+Analyses
+--------
+
+.. image:: https://raw.githubusercontent.com/senaite/senaite.health/master/static/analyses.png
+   :alt: Analsyes
+   :width: 760px
+   :align: center
+
+Patients
+--------
+
+.. image:: https://raw.githubusercontent.com/senaite/senaite.health/master/static/patients.png
+   :alt: Patients
+   :width: 760px
+   :align: center
+
+Cases
+-----
+
+.. image:: https://raw.githubusercontent.com/senaite/senaite.health/master/static/cases.png
+   :alt: Cases
+   :width: 760px
+   :align: center
+
+
+Aetiologic Agents
+-----------------
+
+.. image:: https://raw.githubusercontent.com/senaite/senaite.health/master/static/aetiologic_agents.png
+   :alt: Aetiologic agents
+   :width: 760px
+   :align: center
+
+
 Contribute
 ==========
 
