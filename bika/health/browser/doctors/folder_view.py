@@ -112,6 +112,13 @@ class DoctorsView(ClientContactsView):
 
         return super(DoctorsView, self).__call__()
 
+    def before_render(self):
+        """Before template render hook
+        """
+        super(DoctorsView, self).before_render()
+        # Don't allow any context actions on Doctors folder
+        self.request.set("disable_border", 1)
+
     @viewcache.memoize
     def get_user_client_uid(self, default=None):
         """Returns the id of the client the current user belongs to

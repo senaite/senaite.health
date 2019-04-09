@@ -20,12 +20,14 @@
 
 import json
 
-from Products.Archetypes import atapi
+from Products.ATContentTypes.content import schemata
+from Products.Archetypes.public import registerType
 from Products.Archetypes.utils import DisplayList
 from Products.CMFCore.utils import getToolByName
 from bika.health.config import PROJECTNAME
 from bika.health.interfaces import IDoctors
 from bika.lims import api
+from bika.lims.interfaces import IHaveNoBreadCrumbs
 from plone.app.folder.folder import ATFolder, ATFolderSchema
 from zope.interface.declarations import implements
 
@@ -33,7 +35,9 @@ schema = ATFolderSchema.copy()
 
 
 class Doctors(ATFolder):
-    implements(IDoctors)
+    """Root folder for Doctors
+    """
+    implements(IDoctors, IHaveNoBreadCrumbs)
     displayContentsTab = False
     schema = schema
 
@@ -77,5 +81,6 @@ class Doctors(ATFolder):
         items.sort(lambda x, y: cmp(x['title'].lower(), y['title'].lower()))
         return items
 
-# schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
-atapi.registerType(Doctors, PROJECTNAME)
+schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
+
+registerType(Doctors, PROJECTNAME)
