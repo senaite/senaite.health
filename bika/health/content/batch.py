@@ -228,7 +228,7 @@ class BatchSchemaExtender(object):
                 base_query={'is_active': True,
                             'sort_limit': 50,
                             'sort_on': 'getPatientID',
-                            'sort_order': 'descending'},
+                            'sort_order': 'ascending'},
                 colModel=[
                     {'columnName': "getPatientID",
                      'width': '30',
@@ -242,9 +242,8 @@ class BatchSchemaExtender(object):
                      'width': '30',
                      'label': _('Title'),
                      'align': 'left'},
-                    # UID is required in colModel
-                    {'columnName': 'UID', 'hidden': True},
                 ],
+                showOn=True,
                 add_button={
                     'visible': True,
                     'url': 'patients/portal_factory/Patient/new/edit',
@@ -417,7 +416,6 @@ class BatchSchemaExtender(object):
             widget=ReferenceWidget(
                 label=_b("Client Patient ID"),
                 size=20,
-                render_own_label=True,
                 visible={'edit': 'visible',
                          'view': 'visible',
                          'add': 'invisible'},
