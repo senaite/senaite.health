@@ -418,7 +418,7 @@ class BatchSchemaExtender(object):
                 size=20,
                 visible={'edit': 'visible',
                          'view': 'visible',
-                         'add': 'invisible'},
+                         'add': 'edit'},
                 catalog_name='bikahealth_catalog_patient_listing',
                 portal_types=('Patient',),
                 search_fields='getClientPatientID',
@@ -443,6 +443,7 @@ class BatchSchemaExtender(object):
                     # UID is required in colModel
                     {'columnName': 'UID', 'hidden': True},
                 ],
+                ui_item="getClientPatientID",
                 showOn=False,
             ),
         ),
