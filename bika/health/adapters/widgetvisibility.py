@@ -24,7 +24,7 @@ from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
 class PatientFieldsVisibility(SenaiteATWidgetVisibility):
     """
     Handles "Batch", "Patient" and "ClientPatientID" fields visibility.
-    They are not editable, regardles of the current state of the Sample, except
+    They are not editable, regardless of the current state of the Sample, except
     when displayed in AR Add view. The reason is that all these fields, together
     with Client field, are strongly related.
     """
