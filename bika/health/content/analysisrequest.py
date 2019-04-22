@@ -30,7 +30,7 @@ from zope.interface import implements
 from bika.health import bikaMessageFactory as _
 from bika.health.permissions import ViewPatients
 from bika.lims.browser.widgets import ReferenceWidget
-from bika.lims.fields import BooleanField
+from bika.lims.fields import ExtBooleanField
 from bika.lims.fields import BooleanWidget
 from bika.lims.fields import ExtReferenceField
 from bika.lims.fields import ExtStringField
@@ -115,7 +115,7 @@ class AnalysisRequestSchemaExtender(object):
             ),
         ),
 
-        BooleanField(
+        ExtBooleanField(
             'PanicEmailAlertToClientSent',
             default=False,
             widget=BooleanWidget(
