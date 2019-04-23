@@ -421,7 +421,7 @@ class BatchSchemaExtender(object):
                          'add': 'edit'},
                 catalog_name='bikahealth_catalog_patient_listing',
                 portal_types=('Patient',),
-                search_fields='getClientPatientID',
+                search_fields=('getClientPatientID',),
                 base_query={'is_active': True,
                             'sort_limit': 50,
                             'sort_on': 'getClientPatientID',
