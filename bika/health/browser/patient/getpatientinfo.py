@@ -22,6 +22,7 @@ from Products.ZCTextIndex.ParseTree import ParseError
 from bika.lims.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from bika.health.catalog import CATALOG_PATIENTS
+from bika.health import logger
 import plone
 import json
 
@@ -31,9 +32,7 @@ class ajaxGetPatientInfo(BrowserView):
     """
     def __call__(self):
         plone.protect.CheckAuthenticator(self.request)
-        Fullname = self.request.get('Fullname', '')
         PatientUID = self.request.get('PatientUID', '')
-        ClientPatientID = self.request.get('ClientPatientID', '')
         PatientID = self.request.get('PatientID', '')
         ret = {'PatientID': '',
                'PatientUID': '',
@@ -56,26 +55,11 @@ class ajaxGetPatientInfo(BrowserView):
             except ParseError:
                 pass
         elif PatientID:
+            logger.warn("Search of Patient by ID!!!")
             try:
                 bpc = getToolByName(
-                    self.context, 'bikahealth_catalog_patient_listing')
+                    self.context, CATALOG_PATIENTS)
                 proxies = bpc(id=PatientID)
-            except ParseError:
-                pass
-        elif ClientPatientID:
-            try:
-                bpc = getToolByName(
-                    self.context, CATALOG_PATIENTS)
-                proxies = bpc(getClientPatientID=ClientPatientID)
-            except ParseError:
-                pass
-        elif Fullname:
-            try:
-                bpc = getToolByName(
-                    self.context, CATALOG_PATIENTS)
-                proxies = bpc(Title=Fullname,
-                              sort_on='created',
-                              sort_order='reverse')
             except ParseError:
                 pass
 

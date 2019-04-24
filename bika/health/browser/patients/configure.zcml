@@ -11,12 +11,4 @@
       layer="bika.health.interfaces.IBikaHealth"
     />
 
-    <browser:page
-      for="*"
-      name="getpatients"
-      class=".getpatients.ajaxGetPatients"
-      permission="zope.Public"
-      layer="bika.health.interfaces.IBikaHealth"
-    />
-
 </configure>

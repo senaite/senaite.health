@@ -21,10 +21,10 @@
 from bika.health import bikaMessageFactory as _
 from bika.lims import api
 from bika.lims.browser import BrowserView
-from bika.lims.browser.analysisrequest import AnalysisRequestsView
+from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
 
 
-class AnalysisRequestsView(AnalysisRequestsView):
+class AnalysisRequestsView(BaseView):
 
     def __init__(self, context, request):
         super(AnalysisRequestsView, self).__init__(context, request)

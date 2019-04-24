@@ -30,7 +30,7 @@ from zope.interface import implements
 from bika.health import bikaMessageFactory as _
 from bika.health.permissions import ViewPatients
 from bika.lims.browser.widgets import ReferenceWidget
-from bika.lims.fields import BooleanField
+from bika.lims.fields import ExtBooleanField
 from bika.lims.fields import BooleanWidget
 from bika.lims.fields import ExtReferenceField
 from bika.lims.fields import ExtStringField
@@ -54,13 +54,11 @@ class AnalysisRequestSchemaExtender(object):
                 label=_('Doctor'),
                 size=20,
                 render_own_label=True,
-                visible={'edit': 'visible',
-                         'view': 'visible',
-                         'add': 'edit',
-                         'header_table': 'visible',
+                visible={'add': 'edit',
                          'secondary': 'disabled'},
                 catalog_name='portal_catalog',
-                base_query={'is_active': True},
+                base_query={'is_active': True,},
+                minLength=3,
                 showOn=True,
                 add_button={
                     'visible': True,
@@ -85,14 +83,26 @@ class AnalysisRequestSchemaExtender(object):
                 visible={'add': 'edit',
                          'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
-                search_fields=('SearchableText',),
-                base_query={'is_active': True},
+                search_fields=('searchable_text',),
+                base_query={'is_active': True,
+                            'sort_limit': 50,
+                            'sort_on': 'getPatientID',
+                            'sort_order': 'ascending'},
                 colModel = [
-                    {'columnName': 'Title', 'width': '30', 'label': _(
-                        'Title'), 'align': 'left'},
-                    # UID is required in colModel
-                    {'columnName': 'UID', 'hidden': True},
+                    {'columnName': "getPatientID",
+                     'width': '30',
+                     'label': _('PID'),
+                     'align': 'left'},
+                    {'columnName': "getClientPatientID",
+                     'width': '30',
+                     'label': _('CPID'),
+                     'align': 'left'},
+                    {'columnName': 'Title',
+                     'width': '30',
+                     'label': _('Fullname'),
+                     'align': 'left'},
                 ],
+                minLength=3,
                 showOn=True,
                 add_button={
                     'visible': True,
@@ -104,7 +114,7 @@ class AnalysisRequestSchemaExtender(object):
             ),
         ),
 
-        BooleanField(
+        ExtBooleanField(
             'PanicEmailAlertToClientSent',
             default=False,
             widget=BooleanWidget(
@@ -123,33 +133,32 @@ class AnalysisRequestSchemaExtender(object):
             widget=ReferenceWidget(
                 label=_("Client Patient ID"),
                 size=20,
-                colModel=[
-                    {'columnName': 'id',
-                                    'width': '20',
-                                    'label': _('Patient ID'),
-                                    'align':'left'},
-                    {'columnName': 'getClientPatientID',
-                                    'width': '20',
-                                    'label': _('Client PID'),
-                                    'align':'left'},
-                    {'columnName': 'Title',
-                                    'width': '60',
-                                    'label': _('Fullname'),
-                                    'align': 'left'},
-                    {'columnName': 'UID', 'hidden': True},
-                ],
-                ui_item='getClientPatientID',
-                search_query='',
-                discard_empty=('ClientPatientID',),
-                search_fields=('getClientPatientID',),
-                portal_types=('Patient',),
                 render_own_label=True,
-                visible={'edit': 'visible',
-                         'view': 'visible',
-                         'add': 'edit',
-                         },
+                visible={'add': 'edit',
+                         'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
-                base_query={'is_active': True},
+                portal_types=('Patient',),
+                search_field='getClientPatientID',
+                base_query={'is_active': True,
+                            'sort_limit': 50,
+                            'sort_on': 'getClientPatientID',
+                            'sort_order': 'ascending'},
+                colModel = [
+                    {'columnName': "getPatientID",
+                     'width': '30',
+                     'label': _('PID'),
+                     'align': 'left'},
+                    {'columnName': "getClientPatientID",
+                     'width': '30',
+                     'label': _('CPID'),
+                     'align': 'left'},
+                    {'columnName': 'Title',
+                     'width': '30',
+                     'label': _('Fullname'),
+                     'align': 'left'},
+                ],
+                ui_item="getClientPatientID",
+                minLength=3,
                 showOn=True,
             ),
         ),
