@@ -16,6 +16,7 @@ Changelog
 
 **Removed**
 
+- #120 Removed IBatchSearchableText indexer (senaite.core#1346)
 - #110 Removed z3c.unconfigure dependency
 - #110 Removed taskqueue.collective dependency
 
