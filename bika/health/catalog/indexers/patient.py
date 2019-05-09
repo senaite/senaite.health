@@ -24,24 +24,32 @@ from bika.lims import api
 from plone.indexer import indexer
 
 @indexer(IPatient)
-def searchable_text(instance):
-    """ Retrieves all the values of metadata columns in the catalog for
-    wildcard searches
-    :return: all metadata values joined in a string
+def listing_searchable_text(instance):
+    """Fulltext search for the Patient
     """
-    entries = []
-    catalog = api.get_tool(CATALOG_PATIENTS)
-    columns = catalog.schema()
-    brains = catalog({"UID": api.get_uid(instance)})
-    brain = brains[0] if brains else None
-    for column in columns:
-        brain_value = api.safe_getattr(brain, column, None)
-        instance_value = api.safe_getattr(instance, column, None)
-        parsed = api.to_searchable_text_metadata(brain_value or instance_value)
-        entries.append(parsed)
+    attributes = [
+        "Title",
+        "getFullname",
+        "getId",
+        "getPrimaryReferrerID",
+        "getPrimaryReferrerTitle",
+        "getClientPatientID"
+    ]
 
-    # Concatenate all strings to one text blob
-    return " ".join(entries)
+    def get_value(instance, func_name):
+        value = api.safe_getattr(instance, func_name, None)
+        if not value:
+            return None
+        parsed = api.to_searchable_text_metadata(value)
+        return parsed or None
+
+    out_values = set()
+    for attr in attributes:
+        value = get_value(instance, attr)
+        if value:
+            out_values.add(value)
+
+    return " ".join(out_values)
 
 
 @indexer(IPatient)

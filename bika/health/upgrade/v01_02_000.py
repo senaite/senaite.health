@@ -42,7 +42,7 @@ INDEXES = [
     # Tuples of (catalog, index_name, index_type)
     (CATALOG_PATIENTS, "client_assigned", "BooleanIndex"),
     (CATALOG_PATIENTS, "client_uid", "FieldIndex"),
-    (CATALOG_PATIENTS, "searchable_text", "TextIndexNG3")
+    (CATALOG_PATIENTS, "listing_searchable_text", "TextIndexNG3")
 ]
 
 COLUMNS = [
@@ -53,7 +53,7 @@ INDEXES_TO_DELETE = [
     # Tuples of (catalog, index_name)
     (CATALOG_PATIENTS, "getPatientIdentifiers"),
     (CATALOG_PATIENTS, "inactive_state"),
-    (CATALOG_PATIENTS, "listing_searchable_text")
+    (CATALOG_PATIENTS, "searchable_text")
 ]
 
 COLUMNS_TO_DELETE = [
@@ -84,9 +84,9 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
-    setup.runImportStepFromProfile(profile, "browserlayer")
-    setup.runImportStepFromProfile(profile, "typeinfo")
-    setup.runImportStepFromProfile(profile, "skins")
+    #setup.runImportStepFromProfile(profile, "browserlayer")
+    #setup.runImportStepFromProfile(profile, "typeinfo")
+    #setup.runImportStepFromProfile(profile, "skins")
 
     # Setup catalogs
     setup_catalogs(CATALOGS_BY_TYPE, INDEXES, COLUMNS)
@@ -95,28 +95,28 @@ def upgrade(tool):
     remove_indexes_and_metadata()
 
     # Setup permissions
-    setup_roles_permissions(portal)
+    #setup_roles_permissions(portal)
 
     # Setup ID Formatting
-    setup_id_formatting(portal)
+    #setup_id_formatting(portal)
 
     # Add "Patients" and "Doctors" action views in Client type
-    setup_content_actions(portal)
+    #setup_content_actions(portal)
 
     # Remove "Samples" action views from Doctors and Patients
-    remove_sample_actions(portal)
+    #remove_sample_actions(portal)
 
     # Setup "Owner" roles for patients to client contacts
-    setup_patients_ownership(portal)
+    #setup_patients_ownership(portal)
 
     # Setup "Owner" roles for batches to client contacts
-    setup_batches_ownership(portal)
+    #setup_batches_ownership(portal)
 
     # Update workflows
-    update_workflows(portal)
+    #update_workflows(portal)
 
     # remove stale CSS
-    remove_stale_css(portal)
+    #remove_stale_css(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
