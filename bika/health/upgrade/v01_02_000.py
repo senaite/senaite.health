@@ -42,7 +42,7 @@ INDEXES = [
     # Tuples of (catalog, index_name, index_type)
     (CATALOG_PATIENTS, "client_assigned", "BooleanIndex"),
     (CATALOG_PATIENTS, "client_uid", "FieldIndex"),
-    (CATALOG_PATIENTS, "searchable_text", "TextIndexNG3")
+    (CATALOG_PATIENTS, "listing_searchable_text", "TextIndexNG3")
 ]
 
 COLUMNS = [
@@ -53,7 +53,7 @@ INDEXES_TO_DELETE = [
     # Tuples of (catalog, index_name)
     (CATALOG_PATIENTS, "getPatientIdentifiers"),
     (CATALOG_PATIENTS, "inactive_state"),
-    (CATALOG_PATIENTS, "listing_searchable_text")
+    (CATALOG_PATIENTS, "searchable_text")
 ]
 
 COLUMNS_TO_DELETE = [

@@ -41,7 +41,7 @@ CATALOG_INDEXES = {
     "getPatientID": "FieldIndex",
     # TODO Remove in favour of client_uid
     "getPrimaryReferrerUID": "FieldIndex",
-    "searchable_text": "TextIndexNG3",
+    "listing_searchable_text": "TextIndexNG3",
 }
 
 CATALOG_COLUMNS = [

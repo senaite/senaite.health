@@ -223,7 +223,7 @@ class BatchSchemaExtender(object):
                 visible={'edit': 'visible',
                          'view': 'visible'},
                 catalog_name='bikahealth_catalog_patient_listing',
-                search_fields=('searchable_text',),
+                search_fields=('listing_searchable_text',),
                 base_query={'is_active': True,
                             'sort_limit': 50,
                             'sort_on': 'getPatientID',

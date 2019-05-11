@@ -15,7 +15,6 @@
   <!-- Patients catalog -->
   <adapter name="client_uid" factory=".patient.client_uid"/>
   <adapter name="client_assigned" factory=".patient.client_assigned"/>
-  <adapter name="searchable_text" factory=".patient.searchable_text"/>
-
+  <adapter name="listing_searchable_text" factory=".patient.listing_searchable_text"/>
 
 </configure>
