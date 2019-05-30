@@ -19,7 +19,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Case Outcomes" in "LIMS configuration" control panel -->
@@ -34,7 +34,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Case Statuses" in "LIMS configuration" control panel -->
@@ -49,7 +49,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Diseases" in "LIMS configuration" control panel -->
@@ -64,7 +64,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Drug Prohibitions" in "LIMS configuration" control panel -->
@@ -79,7 +79,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Drugs" in "LIMS configuration" control panel -->
@@ -94,7 +94,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Ethnicities" in "LIMS configuration" control panel -->
@@ -109,7 +109,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Identifier Types" in "LIMS configuration" control panel -->
@@ -124,7 +124,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Immunizations" in "LIMS configuration" control panel -->
@@ -139,7 +139,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Insurance Companies" in "LIMS configuration" control panel -->
@@ -154,7 +154,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Symptoms and Conditions" in "LIMS configuration" control panel -->
@@ -169,7 +169,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Syndromes" in "LIMS configuration" control panel -->
@@ -184,7 +184,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Treatments" in "LIMS configuration" control panel -->
@@ -199,7 +199,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
  <!-- Link "Vaccination Centers" in "LIMS configuration" control panel -->
@@ -214,7 +214,7 @@
     visible="True"
     i18n:domain="senaite.health"
     i18n:attributes="title">
-    <permission>BIKA: Manage Bika</permission>
+    <permission>senaite.core: Manage Bika</permission>
  </configlet>
 
 </object>
