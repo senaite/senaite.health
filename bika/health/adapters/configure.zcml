@@ -9,4 +9,28 @@
       name="PatientFieldsVisibility"
     />
 
+    <!-- Default value for Client field in Add Sample form -->
+    <adapter
+      factory=".addsample.ClientDefaultFieldValue"
+      for="*"
+      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+      name = "Client_default_value_hook"
+    />
+
+    <!-- Default value for Patient field in Add Sample form -->
+    <adapter
+      factory=".addsample.PatientDefaultFieldValue"
+      for="*"
+      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+      name = "Patient_default_value_hook"
+    />
+
+    <!-- Default value for Doctor field in Add Sample form -->
+    <adapter
+      factory=".addsample.DoctorDefaultFieldValue"
+      for="*"
+      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+      name = "Doctor_default_value_hook"
+    />
+
 </configure>
