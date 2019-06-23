@@ -39,10 +39,14 @@ class AnalysisRequestAddRedirectView(BrowserView):
     """
 
     def __call__(self):
-        client = self.context.getPrimaryReferrer()
-        url = "{}/{}".format(api.get_url(client), "ar_add")
+        base_folder = self.context.getPrimaryReferrer()
+        if not base_folder:
+            # Doctor w/o client assigned, just use analysisrequests folder
+            base_folder = api.get_portal().analysisrequests
+
+        url = "{}/{}".format(api.get_url(base_folder), "ar_add")
+        url = "{}?Patient={}".format(url, api.get_uid(self.context))
         qs = self.request.getHeader("query_string")
         if qs:
-            url = "{}?{}".format(url, qs)
-        self.request.response.redirect(url)
-        return
+            url = "{}&{}".format(url, qs)
+        return self.request.response.redirect(url)
