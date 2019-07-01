@@ -6,7 +6,7 @@
   dependencies before installing this add-on own profile.
 -->
 <metadata>
-  <version>1.2.1</version>
+  <version>1.2.2</version>
   <dependencies>
     <dependency>profile-senaite.lims:default</dependency>
   </dependencies>
