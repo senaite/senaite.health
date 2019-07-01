@@ -1,6 +1,21 @@
 Changelog
 =========
 
+1.2.1 (2019-07-01)
+------------------
+
+**Changed**
+
+- #129 Autofill fields from Add Sample depending on the context
+- #120 Remove BatchSearchableText indexer
+- #119 Faster Reference Widget searches
+
+**Fixed**
+
+- #125 Fix permissions due to global permission changes in core
+- #123 Filtering patient listing is slow
+
+
 1.2.0 (2019-04-09)
 ------------------
 
