@@ -9,7 +9,6 @@
 
   <permission>Access contents information</permission>
   <permission>Delete objects</permission>
-  <permission>Change portal events</permission>
   <permission>Modify portal content</permission>
   <permission>View</permission>
 
@@ -36,17 +35,6 @@
     <permission-role>Client</permission-role>
    </permission-map>
    <permission-map name="Delete objects" acquired="False"/>
-   <permission-map name="Change portal events" acquired="False">
-    <permission-role>Manager</permission-role>
-    <permission-role>LabManager</permission-role>
-    <permission-role>LabClerk</permission-role>
-    <permission-role>Analyst</permission-role>
-    <permission-role>Sampler</permission-role>
-    <permission-role>Preserver</permission-role>
-    <permission-role>Owner</permission-role>
-    <permission-role>Doctor</permission-role>
-    <permission-role>Client</permission-role>
-   </permission-map>
    <permission-map name="Modify portal content" acquired="False">
     <permission-role>Manager</permission-role>
     <permission-role>LabManager</permission-role>
@@ -91,17 +79,6 @@
      <permission-role>Client</permission-role>
      </permission-map>
     <permission-map name="Delete objects" acquired="False"/>
-    <permission-map name="Change portal events" acquired="False">
-     <permission-role>Manager</permission-role>
-     <permission-role>LabManager</permission-role>
-     <permission-role>LabClerk</permission-role>
-     <permission-role>Analyst</permission-role>
-     <permission-role>Sampler</permission-role>
-     <permission-role>Preserver</permission-role>
-     <permission-role>Owner</permission-role>
-     <permission-role>Doctor</permission-role>
-     <permission-role>Client</permission-role>
-    </permission-map>
     <permission-map name="Modify portal content" acquired="False"/>
     <permission-map name="View" acquired="False">
      <permission-role>LabClerk</permission-role>

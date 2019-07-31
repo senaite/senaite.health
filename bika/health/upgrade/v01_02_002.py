@@ -22,6 +22,15 @@ from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils, commit_transaction
+from Products.CMFCore import permissions
+
+from bika.health import logger
+from bika.health.config import PROJECTNAME as product
+from bika.health.permissions import AddDoctor
+from bika.health.setuphandlers import add_permission_for_role
+from bika.lims import api
+from bika.lims.upgrade import upgradestep
+from bika.lims.upgrade.utils import UpgradeUtils
 
 version = '1.2.2'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
@@ -43,6 +52,33 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
+    setup.runImportStepFromProfile(profile, 'workflow')
+
+    apply_doctor_permissions_for_clients(portal, ut)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
+
+
+def apply_doctor_permissions_for_clients(portal, ut):
+    workflow_tool = api.get_tool("portal_workflow")
+    workflow = workflow_tool.getWorkflowById('bika_doctor_workflow')
+    catalog = api.get_tool('portal_catalog')
+
+    brains = catalog(portal_type='Doctor')
+    counter = 0
+    total = len(brains)
+    logger.info(
+        "Changing permissions for doctor objects: {0}".format(total))
+    for brain in brains:
+        obj = api.get_object(brain)
+        workflow.updateRoleMappingsFor(obj)
+        obj.reindexObject()
+        counter += 1
+        if counter % 100 == 0:
+            logger.info(
+                "Changing permissions for doctor objects: " +
+                "{0}/{1}".format(counter, total))
+    logger.info(
+        "Changed permissions for doctor objects: " +
+        "{0}/{1}".format(counter, total))
