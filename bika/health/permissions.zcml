@@ -28,6 +28,9 @@
 <permission id="senaite.health.premissions.TransitionActivatePatient" title="senaite.health: Transition: Activate Patient"/>
 <permission id="senaite.health.premissions.TransitionDeactivatePatient" title="senaite.health: Transition: Deactivate Patient"/>
 
+<permission id="senaite.health.premissions.TransitionActivateDoctor" title="senaite.health: Transition: Activate Doctor"/>
+<permission id="senaite.health.premissions.TransitionDeactivateDoctor" title="senaite.health: Transition: Deactivate Doctor"/>
+
 
 # Behavioral permissions
 # ======================

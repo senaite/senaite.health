@@ -35,6 +35,9 @@ AddVaccinationCenter = 'senaite.health: Add VaccinationCenter'
 TransitionActivatePatient = "senaite.health: Transition: Activate Patient"
 TransitionDeactivatePatient = "senaite.health: Transition: Deactivate Patient"
 
+TransitionActivateDoctor = "senaite.health: Transition: Activate Doctor"
+TransitionDeactivateDoctor = "senaite.health: Transition: Deactivate Doctor"
+
 
 # Behavioral permissions
 # ======================
