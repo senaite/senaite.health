@@ -114,6 +114,18 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
+    <permission name="senaite.health: Transition: Activate Doctor" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Transition: Deactivate Doctor" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
 
     <!-- Behavioral Permissions -->
     <permission name="senaite.health: View Patients" acquire="False">
