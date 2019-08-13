@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #130 Allow to deactivate/activate Doctors
 
 **Changed**
 
@@ -15,6 +16,7 @@ Changelog
 
 **Fixed**
 
+- #131 Autofill ClientPatientID field in Sample Add form when Patient defined
 
 **Security**
 
