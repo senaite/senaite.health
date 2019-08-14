@@ -373,7 +373,7 @@ function HealthPatientEditView() {
      */
     function get_field(field_id) {
         var field = $('#patient-base-edit #archetypes-fieldname-'+field_id);
-        if (!field) {
+        if (!field || field.length < 1) {
             field = $('#patient-base-edit #'+field_id);
             if (!$(field).hasClass(".field")) {
                 field = $(field).closest(".field");
