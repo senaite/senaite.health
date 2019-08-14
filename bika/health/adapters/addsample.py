@@ -20,7 +20,7 @@
 
 from bika.health.interfaces import IDoctor, IPatient
 from bika.lims import api
-from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient
+from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient, IBatch
 from zope.component import adapts
 
 
@@ -66,6 +66,12 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if client:
             return client
 
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        client = batch and batch.getClient() or None
+        if client:
+            return client
+
         return None
 
 
@@ -93,3 +99,16 @@ class DoctorDefaultFieldValue(AddFormFieldDefaultValueAdapter):
 
         # Try with doctor explicitly defined in request
         return self.get_object_from_request_field("Doctor")
+
+
+class BatchDefaultFieldValue(AddFormFieldDefaultValueAdapter):
+    """Adapter that returns the default value for field Batch in Sample form
+    """
+    adapts(IGetDefaultFieldValueARAddHook)
+
+    def __call__(self, context):
+        if IBatch.providedBy(context):
+            return context
+
+        # Try with batch explicitly defined in request
+        return self.get_object_from_request_field("Batch")

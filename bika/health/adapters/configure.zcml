@@ -41,4 +41,12 @@
       name = "Doctor_default_value_hook"
     />
 
+    <!-- Default value for Batch (Case) field in Add Sample form -->
+    <adapter
+      factory=".addsample.BatchDefaultFieldValue"
+      for="*"
+      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+      name="Batch_default_value_hook"
+    />
+
 </configure>
