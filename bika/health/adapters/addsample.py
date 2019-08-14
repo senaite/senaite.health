@@ -74,7 +74,6 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
 
         return None
 
-
 class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
     """Adapter that returns the default value for field Patient in Sample form
     """
