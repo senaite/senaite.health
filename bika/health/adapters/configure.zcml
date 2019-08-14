@@ -25,6 +25,14 @@
       name = "Patient_default_value_hook"
     />
 
+    <!-- Default value for ClientPatientID field in Add Sample form -->
+    <adapter
+      factory=".addsample.PatientDefaultFieldValue"
+      for="*"
+      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+      name = "ClientPatientID_default_value_hook"
+    />
+
     <!-- Default value for Doctor field in Add Sample form -->
     <adapter
       factory=".addsample.DoctorDefaultFieldValue"
