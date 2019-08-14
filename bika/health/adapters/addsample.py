@@ -20,7 +20,7 @@
 
 from bika.health.interfaces import IDoctor, IPatient
 from bika.lims import api
-from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient
+from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient, IBatch
 from zope.component import adapts
 
 
@@ -38,13 +38,11 @@ class AddFormFieldDefaultValueAdapter(object):
         return api.get_object_by_uid(uid, default=None)
 
 
-
 class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
     """Adapter that returns the default value for field Client in Sample form
     """
 
     adapts(IGetDefaultFieldValueARAddHook)
-
 
     def __call__(self, context):
 
@@ -68,12 +66,16 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if client:
             return client
 
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        client = batch and batch.getClient() or None
+        if client:
+            return client
+
         return None
 
-
-
 class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
-    """Adapter that returns the default value for field Patien in Sample form
+    """Adapter that returns the default value for field Patient in Sample form
     """
     adapts(IGetDefaultFieldValueARAddHook)
 
@@ -81,9 +83,8 @@ class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IPatient.providedBy(context):
             return context
 
-        # Try with doctor explicitly defined in request
+        # Try with patient explicitly defined in request
         return self.get_object_from_request_field("Patient")
-
 
 
 class DoctorDefaultFieldValue(AddFormFieldDefaultValueAdapter):
@@ -91,10 +92,22 @@ class DoctorDefaultFieldValue(AddFormFieldDefaultValueAdapter):
     """
     adapts(IGetDefaultFieldValueARAddHook)
 
-
     def __call__(self, context):
         if IDoctor.providedBy(context):
             return context
 
         # Try with doctor explicitly defined in request
         return self.get_object_from_request_field("Doctor")
+
+
+class BatchDefaultFieldValue(AddFormFieldDefaultValueAdapter):
+    """Adapter that returns the default value for field Batch in Sample form
+    """
+    adapts(IGetDefaultFieldValueARAddHook)
+
+    def __call__(self, context):
+        if IBatch.providedBy(context):
+            return context
+
+        # Try with batch explicitly defined in request
+        return self.get_object_from_request_field("Batch")

@@ -11,7 +11,6 @@ function HealthAnalysisRequestAddView() {
     this.load = function () {
         datafilled = false;
         frombatch = window.location.href.search('/batches/') >= 0;
-        frompatient = document.referrer.search('/patients/') >= 0;
         fromars = window.location.href.search('/analysisrequests/') >=0;
 
         if (frombatch) {
@@ -20,12 +19,6 @@ function HealthAnalysisRequestAddView() {
             batchid = window.location.href.split("/batches/")[1].split("/")[0];
             datafilled = fillDataFromBatch(batchid);
 
-        } else if (frompatient) {
-            // The current AR add View comes from a patient AR folder view.
-            // Automatically fill the Client and Patient fields and set them
-            // as readonly.
-            pid = document.referrer.split("/patients/")[1].split("/")[0];
-            datafilled = fillDataFromPatient(pid);
         } else if(fromars){
           $('input[id^="Client-"]').bind("selected paste blur change", function () {
               colposition = get_arnum(this);
@@ -40,7 +33,7 @@ function HealthAnalysisRequestAddView() {
         // Filter ComboSearches is important here even patient is not found
         // because we are under patient's client folder.
         // Do not let other clients have ARs in this context!!!
-        if (!datafilled || frompatient) {
+        if (!datafilled) {
             // The current AR Add View doesn't come from a batch nor patient or
             // data autofilling failed. Handle event firing when Patient or
             // ClientPatientID fields change.
