@@ -365,9 +365,6 @@ function HealthPatientEditView() {
             }
             // Restore default visibility and required
             restore_field_defaults();
-
-            // Set default values
-            $("#patient-base-edit #Firstname").val("");
         }
     }
 
