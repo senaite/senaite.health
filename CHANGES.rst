@@ -15,6 +15,8 @@ Changelog
 
 **Fixed**
 
+- #133 System clearing patient first name on editing patient
+
 
 **Security**
 
