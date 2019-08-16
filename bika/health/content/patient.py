@@ -30,7 +30,6 @@ from bika.health import bikaMessageFactory as _
 from bika.health.config import *
 from bika.health.interfaces import IPatient
 from bika.health.utils import translate_i18n as t
-from bika.health.widgets import ReadonlyStringWidget
 from bika.health.widgets import SplittedDateWidget
 from bika.health.widgets.patientmenstrualstatuswidget import \
     PatientMenstrualStatusWidget
@@ -42,6 +41,7 @@ from bika.lims.browser.fields.remarksfield import RemarksField
 from bika.lims.browser.widgets import AddressWidget
 from bika.lims.browser.widgets import DateTimeWidget as DateTimeWidget_bl
 from bika.lims.browser.widgets import RecordsWidget
+from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.browser.widgets.remarkswidget import RemarksWidget
 from bika.lims.catalog.analysisrequest_catalog import \
     CATALOG_ANALYSIS_REQUEST_LISTING
@@ -61,12 +61,24 @@ schema = Person.schema.copy() + Schema((
     ),
     ReferenceField(
         'PrimaryReferrer',
-        vocabulary='get_clients_vocabulary',
         allowed_types=('Client',),
         relationship='PatientClient',
-        widget=SelectionWidget(
-            format='select',
-            label=_('Client'),
+        widget=ReferenceWidget(
+            label=_("Client"),
+            size=30,
+            catalog_name="portal_catalog",
+            base_query={"is_active": True,
+                        "sort_limit": 30,
+                        "sort_on": "sortable_title",
+                        "sort_order": "ascending"},
+            colModel=[
+                {"columnName": "Title", "label": _("Title"),
+                 "width": "30", "align": "left"},
+                {"columnName": "getProvince", "label": _("Province"),
+                 "width": "30", "align": "left"},
+                {"columnName": "getDistrict", "label": _("District"),
+                 "width": "30", "align": "left"}],
+            showOn=True,
         ),
     ),
     ComputedField(
@@ -876,22 +888,6 @@ class Patient(Person):
         if len(samples) > 0:
             return len(self.getSamplesOngoing())/len(samples)
         return 0
-
-    def get_clients_vocabulary(self):
-        client = api.get_current_client()
-        if client:
-            # Current user is a client contact. Load only this client
-            return DisplayList([(api.get_uid(client), api.get_title(client))])
-
-        # Current user is not a client contact. Load all active clients
-        query = dict(portal_type="Client", is_active=True)
-        clients = api.search(query, "portal_catalog")
-        clients = map(lambda cl: [api.get_uid(cl), api.get_title(cl)], clients)
-        clients.sort(lambda x, y: cmp(x[1].lower(), y[1].lower()))
-
-        # Lab personnel can set a Patient to be visible for all Clients
-        clients.insert(0, ['', ''])
-        return DisplayList(clients)
 
     def get_insurancecompanies(self):
         """

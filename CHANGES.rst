@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #134 ReferenceWidget for client searches in Add Patient form
 - #130 Allow to deactivate/activate Doctors
 
 **Changed**
