@@ -55,24 +55,6 @@ function HealthSiteView() {
                 });
         });
 
-        $("input[id=Client]").combogrid({
-            colModel: [{'columnName':'ClientUID','hidden':true},
-                       {'columnName':'ClientID','width':'20','label':_('Client ID')},
-                       {'columnName':'Title','width':'80','label':_('Title')}],
-            showOn: true,
-            width: '450px',
-            url: window.portal_url + "/getClients?_authenticator=" + $('input[name="_authenticator"]').val(),
-            showOn: true,
-            select: function( event, ui ) {
-                $(this).val(ui.item.ClientID);
-                $(this).change();
-                if($(".portaltype-batch").length > 0 && $(".template-base_edit").length > 0) {
-                    $(".jsClientTitle").remove();
-                    $("#archetypes-fieldname-Client").append("<span class='jsClientTitle'>"+ui.item.Title+"</span>");
-                }
-                return false;
-            }
-        });
 
         editdoctor_overlay = {
             subtype: 'ajax',
