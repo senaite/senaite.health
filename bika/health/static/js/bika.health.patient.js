@@ -687,13 +687,25 @@ function HealthPatientOverlayHandler() {
      * loader
      */
     that.onLoad = function(event) {
-
+        console.log("HealthPatientOverlayHandler: (Re)Loading JavaScript functions in order to link events to the overlay components...")
+        console.log("HealthPatientOverlayHandler: Removing Remarks and Menstrual Status")
         // Manually remove remarks
         event.getOverlay().find("#archetypes-fieldname-Remarks").remove();
 
         // Remove menstrual status widget to avoid my suicide
         // with a "500 service internal error"
         event.getOverlay().find("#archetypes-fieldname-MenstrualStatus").remove();
+
+        // Reload referencewidget
+        console.log("HealthPatientOverlayHandler: Loading Reference Widget JavScript")
+        referencewidget_lookups();
+        save_UID_check();
+        check_UID_check();
+        check_missing_UID();
+
+        console.log("HealthPatientOverlayHandler: Loading RecordsWidget JS")
+        recordswidget_lookups();
+        recordswidget_loadEventHandlers();
 
         // Address widget
         $.ajax({
