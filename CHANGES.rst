@@ -17,6 +17,7 @@ Changelog
 
 **Fixed**
 
+- #137 Client reference widget does not work in Add Patient overlay
 - #133 System clearing patient first name on editing patient
 - #132 Autofill Batch field in Sample Add form when Batch defined in request
 - #131 Autofill ClientPatientID field in Sample Add form when Patient defined
