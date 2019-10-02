@@ -44,6 +44,7 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
+    setup.runImportStepFromProfile(profile, 'rolemap')
     setup.runImportStepFromProfile(profile, 'workflow')
 
     apply_doctor_permissions_for_clients(portal, ut)
@@ -54,7 +55,7 @@ def upgrade(tool):
 
 def apply_doctor_permissions_for_clients(portal, ut):
     workflow_tool = api.get_tool("portal_workflow")
-    workflow = workflow_tool.getWorkflowById('bika_doctor_workflow')
+    workflow = workflow_tool.getWorkflowById('senaite_health_doctor_workflow')
     catalog = api.get_tool('portal_catalog')
 
     brains = catalog(portal_type='Doctor')
