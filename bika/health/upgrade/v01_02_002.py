@@ -52,7 +52,7 @@ def upgrade(tool):
     setup.runImportStepFromProfile(profile, 'rolemap')
     setup.runImportStepFromProfile(profile, 'workflow')
 
-    #apply_doctor_permissions_for_clients(portal, ut)
+    apply_doctor_permissions_for_clients(portal, ut)
 
     # IdentifierType is no longer provided by core, but this content type is
     # still used in health to provide additional identification criteria for
