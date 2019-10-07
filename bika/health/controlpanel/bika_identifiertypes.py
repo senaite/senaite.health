@@ -30,6 +30,7 @@ from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.folder.folder import ATFolder, ATFolderSchema
 from zope.interface.declarations import implements
 
+
 class IdentifierTypesView(BikaListingView):
     implements(IFolderContentsView, IViewView)
 
@@ -43,7 +44,6 @@ class IdentifierTypesView(BikaListingView):
                                  'icon': '++resource++bika.lims.images/add.png'}}
         self.title = self.context.translate(_("Identifier Types"))
         self.icon = self.portal_url + "/++resource++bika.health.images/identifiertype_big.png"
-        self.description = _("List of types of identifiers for multiple identifier records")
         self.show_sort_column = False
         self.show_select_row = False
         self.show_select_column = True
