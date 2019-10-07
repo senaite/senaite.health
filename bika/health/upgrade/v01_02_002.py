@@ -58,6 +58,7 @@ def upgrade(tool):
     # still used in health to provide additional identification criteria for
     # Patients (e.g. drive license, passport, etc.)
     # https://github.com/senaite/senaite.core/pull/1430
+    # https://github.com/senaite/senaite.health/pull/144
     restore_identifier_types(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))

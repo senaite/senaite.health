@@ -11,6 +11,8 @@ Changelog
 
 **Changed**
 
+- #144 Additional identifiers for Patients ported to senaite.health
+
 
 **Removed**
 
