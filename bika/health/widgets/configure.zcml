@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="senaite.health">
+
+  <!-- Table Analysis Specification  -->
+  <browser:page
+    for="bika.lims.interfaces.IAnalysisSpec"
+    name="table_analysis_specifications"
+    class=".analysisspecificationwidget.AnalysisSpecificationView"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+
+</configure>
