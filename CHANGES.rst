@@ -19,6 +19,7 @@ Changelog
 
 **Fixed**
 
+- #146 Move skin layer after the custom layer
 - #141 Unable to Deactivate Doctors
 - #137 Client reference widget does not work in Add Patient overlay
 - #133 System clearing patient first name on editing patient
