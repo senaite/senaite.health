@@ -85,12 +85,6 @@ def post_install(portal_setup):
     logger.info("SENAITE Health post-install handler [BEGIN]")
     context = portal_setup._getImportContext(DEFAULT_PROFILE_ID)
     portal = context.getSite()
-
-    # When installing senaite health together with core, health's skins are not
-    # set before core's, even if after-before is set in profiles/skins.xml
-    # Ensure health's skin layer(s) always gets priority over core's
-    portal_setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "skins")
-
     # Setup catalogs
     # TODO use upgrade.utils.setup_catalogs instead!
     setup_health_catalogs(portal)
@@ -118,6 +112,11 @@ def post_install(portal_setup):
 
     # Setup default ethnicities
     setup_ethnicities(portal)
+
+    # When installing senaite health together with core, health's skins are not
+    # set before core's, even if after-before is set in profiles/skins.xml
+    # Ensure health's skin layer(s) always gets priority over core's
+    portal_setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "skins")
 
     logger.info("SENAITE Health post-install handler [DONE]")
 
