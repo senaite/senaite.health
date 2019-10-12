@@ -11,6 +11,8 @@ Changelog
 
 **Changed**
 
+- #144 Additional identifiers for Patients ported to senaite.health
+
 
 **Removed**
 
@@ -18,6 +20,8 @@ Changelog
 **Fixed**
 
 - #124 Error trying to Edit Analysis Specifications
+- #147 Reindex content structure after install to fix missing icons
+- #146 Move skin layer after the custom layer
 - #141 Unable to Deactivate Doctors
 - #137 Client reference widget does not work in Add Patient overlay
 - #133 System clearing patient first name on editing patient

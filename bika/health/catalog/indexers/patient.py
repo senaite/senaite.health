@@ -33,7 +33,8 @@ def listing_searchable_text(instance):
         "getId",
         "getPrimaryReferrerID",
         "getPrimaryReferrerTitle",
-        "getClientPatientID"
+        "getClientPatientID",
+        "getPatientIdentifiersStr"
     ]
 
     def get_value(instance, func_name):

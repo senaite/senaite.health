@@ -91,6 +91,12 @@ class PatientsView(BikaListingView):
                 'replace_url': 'getPrimaryReferrerURL',
                 'toggle': True,
                 'sortable': False}),
+
+            ('getPatientIdentifiersStr', {
+                'title': _('Additional IDs'),
+                'attr': 'getPatientIdentifiersStr',
+                'toggle': False,
+                'sortable': False}),
         ))
 
         self.review_states = [
