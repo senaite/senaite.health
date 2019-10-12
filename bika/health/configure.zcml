@@ -36,6 +36,7 @@
   <include package=".static" />
   <include package=".subscribers" />
   <include package=".upgrade" />
+  <include package=".widgets" />
 
   <!-- TODO REMOVE obsolete module -->
   <include package=".obsolete" />

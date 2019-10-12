@@ -19,40 +19,43 @@
 # Some rights reserved, see README and LICENSE.
 
 from AccessControl import ClassSecurityInfo
+from Products.Archetypes.Registry import registerWidget
+from Products.CMFCore.utils import getToolByName
+from Products.validation import validation
+from Products.validation.interfaces.IValidator import IValidator
+from zope.interface import implements
+
+from bika.health import api
 from bika.health import bikaMessageFactory as _
 from bika.lims.browser.widgets.analysisspecificationwidget import \
     AnalysisSpecificationView as BaseView, \
     AnalysisSpecificationWidget as BaseWidget
-from Products.Archetypes.Registry import registerWidget
-from Products.CMFCore.utils import getToolByName
-from Products.validation.interfaces.IValidator import IValidator
-from Products.validation import validation
-from zope.interface import implements
-from bika.lims.utils import isnumber
 
 
 class AnalysisSpecificationView(BaseView):
 
-    def __init__(self, context, request, fieldvalue, allow_edit):
-        BaseView.__init__(self, context, request, fieldvalue, allow_edit)
+    def __init__(self, context, request):
+        super(AnalysisSpecificationView, self).__init__(context, request)
 
         self.columns['minpanic'] = {'title': _('Min panic'), 'sortable': False}
         self.columns['maxpanic'] = {'title': _('Max panic'), 'sortable': False}
         self.review_states[0]['columns'] += ['minpanic', 'maxpanic']
 
-    def folderitems(self):
-        items = BaseView.folderitems(self)
-        for i in range(len(items)):
-            keyword = items[i]['keyword']
-            if keyword in self.specsresults:
-                res = self.specsresults[keyword]
-                items[i]['minpanic'] = res.get('minpanic', '')
-                items[i]['maxpanic'] = res.get('maxpanic', '')
-            else:
-                items[i]['minpanic'] = ''
-                items[i]['maxpanic'] = ''
-            items[i]['allow_edit'] += ['minpanic', 'maxpanic']
-        return items
+    def folderitem(self, obj, item, index):
+        item = super(AnalysisSpecificationView, self).folderitem(obj, item, index)
+        obj = api.get_object(obj)
+        keyword = obj.getKeyword()
+        spec = self.specification.get(keyword, {})
+        item['minpanic'] = spec.get("minpanic", "")
+        item['maxpanic'] = spec.get("maxpanic", "")
+        return item
+
+    def get_editable_columns(self):
+        """Return editable fields
+        """
+        cols = super(AnalysisSpecificationView, self).get_editable_columns()
+        cols.extend(["minpanic", "maxpanic"])
+        return cols
 
 
 class AnalysisSpecificationWidget(BaseWidget):
@@ -61,35 +64,27 @@ class AnalysisSpecificationWidget(BaseWidget):
     security = ClassSecurityInfo()
 
     security.declarePublic('process_form')
-    def process_form(self, instance, field, form,
-                     empty_marker=None, emptyReturnsMarker=False):
+
+    def process_form(self, instance, field, form, empty_marker=None,
+                     emptyReturnsMarker=False):
+        """Return a list of dictionaries fir for AnalysisSpecsResultsField
+        consumption.
+        """
         values = BaseWidget.process_form(self, instance, field, form,
                                          empty_marker, emptyReturnsMarker)
-        keys = ['minpanic', 'maxpanic']
-        for i in range(len(values)):
-            for j in range(len(values[i])):
-                uid = values[i][j]['uid']
-                for key in keys:
-                    keyval = form[key][0].get(uid, '') if key in form else ''
-                    keyval = keyval if isnumber(keyval) else ''
-                    values[i][j][key] = keyval
-        return values
+        for value in values[0]:
+            uid = value["uid"]
+            value["minpanic"] = self._get_spec_value(form, uid, "minpanic")
+            value["maxpanic"] = self._get_spec_value(form, uid, "maxpanic")
+        return values[0], {}
 
-    security.declarePublic('AnalysisSpecificationResults')
-    def AnalysisSpecificationResults(self, field, allow_edit=False):
-        fieldvalue = getattr(field, field.accessor)()
-        view = AnalysisSpecificationView(self,
-                                            self.REQUEST,
-                                            fieldvalue=fieldvalue,
-                                            allow_edit=allow_edit)
-        return view.contents_table(table_only=True)
 
 registerWidget(AnalysisSpecificationWidget,
                title='Analysis Specification Results',
                description=('Analysis Specification Results'))
 
 
-class AnalysisSpecificationPanicValidator:
+class AnalysisSpecificationPanicValidator(object):
     implements(IValidator)
     name = "analysisspecs_panic_validator"
 
@@ -129,5 +124,6 @@ class AnalysisSpecificationPanicValidator:
                 return ts(_("Validation failed: Panic max value must be "
                             "greater than panic min value"))
         return True
+
 
 validation.register(AnalysisSpecificationPanicValidator())

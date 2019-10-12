@@ -19,6 +19,7 @@ Changelog
 
 **Fixed**
 
+- #124 Error trying to Edit Analysis Specifications
 - #147 Reindex content structure after install to fix missing icons
 - #146 Move skin layer after the custom layer
 - #141 Unable to Deactivate Doctors
