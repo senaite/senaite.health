@@ -74,6 +74,7 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
 
         return None
 
+
 class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
     """Adapter that returns the default value for field Patient in Sample form
     """
@@ -82,6 +83,11 @@ class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
     def __call__(self, context):
         if IPatient.providedBy(context):
             return context
+
+        if IBatch.providedBy(context):
+            patient = context.getField("Patient").get(context)
+            if patient:
+                return patient
 
         # Try with patient explicitly defined in request
         return self.get_object_from_request_field("Patient")
