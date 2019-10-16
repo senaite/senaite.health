@@ -102,6 +102,11 @@ class DoctorDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IDoctor.providedBy(context):
             return context
 
+        if IBatch.providedBy(context):
+            doctor = context.getField("Doctor").get(context)
+            if doctor:
+                return doctor
+
         # Try with doctor explicitly defined in request
         return self.get_object_from_request_field("Doctor")
 

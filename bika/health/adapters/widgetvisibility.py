@@ -51,3 +51,29 @@ class PatientFieldsVisibility(SenaiteATWidgetVisibility):
                     return "hidden"
 
         return default
+
+
+class DoctorFieldVisibility(SenaiteATWidgetVisibility):
+    """Handles Doctor field visibility in Sample add form and view
+    """
+
+    def __init__(self, context):
+        super(DoctorFieldVisibility, self).__init__(
+            context=context, sort=10, field_names=["Doctor"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        if mode == "add":
+            container = self.context.aq_parent
+
+            # Do not display the doctor field if the Sample is being created
+            # inside a Batch and the latter has a Doctor assigned. In such
+            # case, the batch assigned to the Batch will be used:
+            # See: adapters.addsample.DoctorDefaultFieldValue
+            if IBatch.providedBy(container):
+                doctor = container.getField("Doctor").get(container)
+                if doctor:
+                    return "hidden"
+
+        return default
+
+
