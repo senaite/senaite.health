@@ -20,7 +20,8 @@
 
 from bika.health.interfaces import IDoctor, IPatient
 from bika.lims import api
-from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient, IBatch
+from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient, \
+    IBatch, IAddSampleFieldFilter
 from zope.component import adapts
 
 
@@ -122,3 +123,28 @@ class BatchDefaultFieldValue(AddFormFieldDefaultValueAdapter):
 
         # Try with batch explicitly defined in request
         return self.get_object_from_request_field("Batch")
+
+
+class AddSampleClientFilter(object):
+    """Returns the additional filter queries to apply when the value for the
+    Client from Sample Add form changes
+    """
+    adapts(IAddSampleFieldFilter)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_info(self):
+        # Get the uid of the client/primary referrer
+        uid = api.get_uid(self.context)
+
+        filter_queries = {
+            # Allow to choose Patients from same Client only
+            "Patient": {
+                "getPrimaryReferrerUID": [uid, ""],
+            },
+            "ClientPatientID": {
+                "getPrimaryReferrerUID": [uid, ""],
+            }
+        }
+        return filter_queries

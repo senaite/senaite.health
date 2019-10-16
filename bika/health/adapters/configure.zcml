@@ -57,4 +57,12 @@
       name="Batch_default_value_hook"
     />
 
+    <adapter
+      factory=".addsample.AddSampleClientFilter"
+      for="bika.lims.interfaces.IClient"
+      provides="bika.lims.interfaces.IAddSampleFieldFilter"
+      name="senaite.health.addsample_client_filter"
+    />
+    AddSampleClientFilter
+
 </configure>
