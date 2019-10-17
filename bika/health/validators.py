@@ -73,7 +73,8 @@ class UniqueClientPatientIDValidator:
 
     def __call__(self, value, *args, **kwargs):
         # avoid the catalog query if the option is not selected
-        if not api.get_bika_setup().ClientPatientIDUnique:
+        setup = api.get_setup()
+        if not getattr(setup, "ClientPatientIDUnique", False):
             return True
         query = dict(getClientPatientID=value)
         patients = api.search(query, CATALOG_PATIENTS)
