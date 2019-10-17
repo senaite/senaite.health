@@ -51,26 +51,6 @@ class BatchListingViewAdapter(object):
         # Remove unnecessary columns
         self.hide_columns()
 
-        # Apply client filter, if necessary
-        client = api.get_current_client()
-        if client:
-            query = dict(getClientUID=api.get_uid(client))
-            self.listing.contentFilter.update(query)
-            for rv in self.listing.review_states:
-                if "contentFilter" not in rv:
-                    rv["contentFilter"] = {}
-                rv["contentFilter"].update(query)
-
-        # Render the Add button
-        self.listing.context_actions = {}
-        batches = api.get_portal().batches
-        if security.check_permission(AddBatch, batches):
-            url = api.get_url(batches)
-            self.listing.context_actions = {
-                _("Add"): {
-                    "url": "{}/createObject?type_name=Batch".format(url),
-                    "icon": "++resource++bika.lims.images/add.png"}
-            }
 
     def folder_item(self, obj, item, index):
         batch = api.get_object(obj)

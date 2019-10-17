@@ -19,6 +19,7 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
+from bika.lims.interfaces import IBatch
 
 
 class PatientFieldsVisibility(SenaiteATWidgetVisibility):
@@ -36,4 +37,43 @@ class PatientFieldsVisibility(SenaiteATWidgetVisibility):
     def isVisible(self, field, mode="view", default="visible"):
         if mode == "edit":
             return "invisible"
+
+        elif mode == "add":
+            container = self.context.aq_parent
+
+            # Do not display the Patient field if the Sample is being created
+            # inside a Batch and the latter has a Patient assigned. In such
+            # case, the patient assigned to the Batch will be used:
+            # See: adapters.addsample.PatientDefaultFieldValue
+            if IBatch.providedBy(container):
+                patient = container.getField("Patient").get(container)
+                if patient:
+                    return "hidden"
+
         return default
+
+
+class DoctorFieldVisibility(SenaiteATWidgetVisibility):
+    """Handles Doctor field visibility in Sample add form and view
+    """
+
+    def __init__(self, context):
+        super(DoctorFieldVisibility, self).__init__(
+            context=context, sort=10, field_names=["Doctor"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        if mode == "add":
+            container = self.context.aq_parent
+
+            # Do not display the doctor field if the Sample is being created
+            # inside a Batch and the latter has a Doctor assigned. In such
+            # case, the batch assigned to the Batch will be used:
+            # See: adapters.addsample.DoctorDefaultFieldValue
+            if IBatch.providedBy(container):
+                doctor = container.getField("Doctor").get(container)
+                if doctor:
+                    return "hidden"
+
+        return default
+
+

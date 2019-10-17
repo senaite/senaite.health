@@ -486,9 +486,7 @@ class BatchSchemaExtender(object):
                                 'AdditionalNotes',
                                 'Remarks',
                                 'PatientBirthDate',
-                                'BatchLabels',
-                                'InheritedObjects',
-                                'InheritedObjectsUI',]
+                                'BatchLabels',]
         return schematas
 
     def getFields(self):
@@ -510,7 +508,6 @@ class BatchSchemaModifier(object):
         schema['BatchLabels'].widget.visible = False
         schema['ClientBatchID'].widget.label = _("Client Case ID")
         schema['BatchDate'].widget.visible = False
-        schema['InheritedObjectsUI'].widget.visible = False
         schema['Doctor'].required = self.isCaseDoctorIsMandatory()
         return schema
 
