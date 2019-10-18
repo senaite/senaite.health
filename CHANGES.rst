@@ -15,7 +15,7 @@ Changelog
 
 
 **Removed**
-
+- getClientUID and getClientTitle indexers in Batch
 
 **Fixed**
 
