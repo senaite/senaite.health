@@ -20,18 +20,12 @@
 
 """ http://pypi.python.org/pypi/archetypes.schemaextender
 """
-from Products.Archetypes.public import *
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from bika.health import bikaMessageFactory as _
 from bika.lims.fields import *
 from bika.lims.interfaces import IClient
-from bika.health.widgets import *
-from plone.indexer.decorator import indexer
-from bika.health import bikaMessageFactory as _
-from zope.component import adapts, getAdapters
-from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
-
-@indexer(IClient)
-def getClientID(instance):
-    return instance.Schema()['ClientID'].get(instance)
+from zope.component import adapts
+from zope.interface import implements
 
 
 class ClientSchemaExtender(object):
