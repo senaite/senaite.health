@@ -33,7 +33,7 @@ class ajaxGetBatchInfo(BrowserView):
     def __call__(self):
         plone.protect.CheckAuthenticator(self.request)
         batch = self.context
-        client = batch.Schema()['Client'].get(batch)
+        client = batch.getClient()
         doctor = batch.Schema()['Doctor'].get(batch)
         patient = batch.Schema()['Patient'].get(batch)
 
