@@ -20,7 +20,6 @@
     <adapter factory=".batch.getDoctorID" name="getDoctorID" />
     <adapter factory=".batch.getDoctorUID" name="getDoctorUID" />
     <adapter factory=".batch.getDoctorTitle" name="getDoctorTitle" />
-    <adapter factory=".batch.getClientID" name="getClientID" />
     <adapter factory=".client.getClientID" name="getClientID" />
 
     <adapter factory=".analysis.AnalysisSchemaExtender" />
