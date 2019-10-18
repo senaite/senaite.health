@@ -15,7 +15,8 @@ Changelog
 
 
 **Removed**
-- getClientUID and getClientTitle indexers in Batch
+
+- #148 Removd getClientUID and getClientTitle indexers for Batch
 
 **Fixed**
 
