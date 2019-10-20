@@ -30,6 +30,10 @@ from bika.lims.utils import tmpID
 version = '1.2.2'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
 
+# List of javascripts to unregister
+JAVASCRIPTS_TO_REMOVE = [
+    "++resource++bika.health.js/bika.health.analysisrequest.add.js",
+]
 
 @upgradestep(PROJECTNAME, version)
 def upgrade(tool):
@@ -60,6 +64,9 @@ def upgrade(tool):
     # https://github.com/senaite/senaite.core/pull/1430
     # https://github.com/senaite/senaite.health/pull/144
     restore_identifier_types(portal)
+
+    # https://github.com/senaite/senaite.core/pull/1462
+    remove_stale_javascripts(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
@@ -142,3 +149,14 @@ def resolve_identifier_type(identifier_id):
     obj.unmarkCreationFlag()
     renameAfterCreation(obj)
     return obj
+
+
+def remove_stale_javascripts(portal):
+    """Removes stale javascripts
+    """
+    logger.info("Removing stale javascripts ...")
+    for js in JAVASCRIPTS_TO_REMOVE:
+        logger.info("Unregistering JS %s" % js)
+        portal.portal_javascripts.unregisterResource(js)
+
+    logger.info("Removing stale javascripts [DONE]")

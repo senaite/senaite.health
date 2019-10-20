@@ -18,11 +18,13 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from zope.component import adapts
+
 from bika.health.interfaces import IDoctor, IPatient
 from bika.lims import api
+from bika.lims.adapters.addsample import AddSampleObjectInfoAdapter
 from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient, \
-    IBatch, IAddSampleFieldFilter
-from zope.component import adapts
+    IBatch, IAddSampleFieldsFlush
 
 
 class AddFormFieldDefaultValueAdapter(object):
@@ -125,19 +127,13 @@ class BatchDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         return self.get_object_from_request_field("Batch")
 
 
-class AddSampleClientFilter(object):
+class AddSampleClientInfo(AddSampleObjectInfoAdapter):
     """Returns the additional filter queries to apply when the value for the
     Client from Sample Add form changes
     """
-    adapts(IAddSampleFieldFilter)
-
-    def __init__(self, context):
-        self.context = context
-
-    def get_info(self):
-        # Get the uid of the client/primary referrer
+    def get_object_info(self):
+        object_info = self.get_base_info()
         uid = api.get_uid(self.context)
-
         filter_queries = {
             # Allow to choose Patients from same Client only
             "Patient": {
@@ -147,4 +143,64 @@ class AddSampleClientFilter(object):
                 "getPrimaryReferrerUID": [uid, ""],
             }
         }
-        return filter_queries
+        object_info["filter_queries"] = filter_queries
+        return object_info
+
+
+class AddSampleBatchInfo(AddSampleObjectInfoAdapter):
+    """Returns the info metadata representation of a Batch object used in Add
+    Sample form
+    """
+    def get_object_info(self):
+        object_info = self.get_base_info()
+
+        # Default values for other fields when the Batch is selected
+        patient = self.context.getField("Patient").get(self.context)
+        doctor = self.context.getField("Doctor").get(self.context)
+        client = self.context.getClient()
+        field_values = {
+            "Patient": self.to_field_value(patient),
+            "Doctor": self.to_field_value(doctor),
+            "Client": self.to_field_value(client),
+        }
+        filter_queries = {}
+        if client:
+            # Allow to choose Patients from same Client only and apply
+            # generic filters when a client is selected too
+            uid = api.get_uid(client)
+            filter_queries = {
+                "Patient": {
+                    "getPrimaryReferrerUID": [uid, ""],
+                },
+                "ClientPatientID": {
+                    "getPrimaryReferrerUID": [uid, ""],
+                }
+            }
+        object_info["field_values"] = field_values
+        object_info["filter_queries"] = filter_queries
+        return object_info
+
+    def to_field_value(self, obj):
+        return {
+            "uid": obj and api.get_uid(obj) or "",
+            "title": obj and api.get_title(obj) or ""}
+
+
+class AddSampleFieldsFlush(object):
+    """Health-specific flush of fields for Sample Add form. When the value for
+    Client field changes, flush the fields "Patient", "Doctor" and "Batch"
+    """
+    adapts(IAddSampleFieldsFlush)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_flush_settings(self):
+        flush_settings = {
+            "Client": [
+                "Patient",
+                "Doctor",
+                "Batch",
+            ]
+        }
+        return flush_settings
