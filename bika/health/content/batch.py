@@ -125,24 +125,6 @@ def getDoctorTitle(instance):
     return value
 
 @indexer(IBatch)
-def getClientID(instance):
-    item = instance.Schema()['Client'].get(instance)
-    value = item and item.Schema()['ClientID'].get(item) or ''
-    return value
-
-@indexer(IBatch)
-def getClientUID(instance):
-    item = instance.Schema()['Client'].get(instance)
-    value = item and item.UID() or ''
-    return value
-
-@indexer(IBatch)
-def getClientTitle(instance):
-    item = instance.Schema()['Client'].get(instance)
-    value = item and item.Title() or ''
-    return value
-
-@indexer(IBatch)
 def getClientPatientID(instance):
     return ClientPatientIDGetter(instance)
 
