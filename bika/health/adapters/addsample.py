@@ -52,8 +52,9 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IClient.providedBy(context):
             return context
 
-        # Try with client object explicitly defined in request
-        client = self.get_object_from_request_field("Client")
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        client = batch and batch.getClient() or None
         if client:
             return client
 
@@ -69,13 +70,8 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if client:
             return client
 
-        # Try to get the client from selected Batch
-        batch = BatchDefaultFieldValue(self.request)(context)
-        client = batch and batch.getClient() or None
-        if client:
-            return client
-
-        return None
+        # Try with client object explicitly defined in request
+        return self.get_object_from_request_field("Client")
 
 
 class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
@@ -87,10 +83,11 @@ class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IPatient.providedBy(context):
             return context
 
-        if IBatch.providedBy(context):
-            patient = context.getField("Patient").get(context)
-            if patient:
-                return patient
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        patient = batch and batch.getField("Patient").get(context) or None
+        if patient:
+            return patient
 
         # Try with patient explicitly defined in request
         return self.get_object_from_request_field("Patient")
@@ -105,10 +102,11 @@ class DoctorDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IDoctor.providedBy(context):
             return context
 
-        if IBatch.providedBy(context):
-            doctor = context.getField("Doctor").get(context)
-            if doctor:
-                return doctor
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        doctor = batch and batch.getField("Doctor").get(context) or None
+        if doctor:
+            return doctor
 
         # Try with doctor explicitly defined in request
         return self.get_object_from_request_field("Doctor")
@@ -155,18 +153,26 @@ class AddSampleBatchInfo(AddSampleObjectInfoAdapter):
         object_info = self.get_base_info()
 
         # Default values for other fields when the Batch is selected
-        patient = self.context.getField("Patient").get(self.context)
         doctor = self.context.getField("Doctor").get(self.context)
         client = self.context.getClient()
         field_values = {
-            "Patient": self.to_field_value(patient),
             "Doctor": self.to_field_value(doctor),
             "Client": self.to_field_value(client),
         }
+        patient = self.context.getField("Patient").get(self.context)
+        if patient:
+            field_values.update({
+                "Patient": self.to_field_value(patient),
+                "ClientPatientID": {
+                    "uid": api.get_uid(patient),
+                    "title": patient.getClientPatientID() or api.get_id(patient),
+                }
+            })
+
+        # Allow to choose Patients from same Client only and apply
+        # generic filters when a client is selected too
         filter_queries = {}
         if client:
-            # Allow to choose Patients from same Client only and apply
-            # generic filters when a client is selected too
             uid = api.get_uid(client)
             filter_queries = {
                 "Patient": {
@@ -198,9 +204,10 @@ class AddSampleFieldsFlush(object):
     def get_flush_settings(self):
         flush_settings = {
             "Client": [
-                "Patient",
-                "Doctor",
                 "Batch",
+                "ClientPatientID",
+                "Doctor",
+                "Patient",
             ]
         }
         return flush_settings
