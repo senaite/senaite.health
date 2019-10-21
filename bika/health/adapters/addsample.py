@@ -20,11 +20,14 @@
 
 from zope.component import adapts
 
-from bika.health.interfaces import IDoctor, IPatient
+from bika.health.interfaces import IDoctor
+from bika.health.interfaces import IPatient
 from bika.lims import api
 from bika.lims.adapters.addsample import AddSampleObjectInfoAdapter
-from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient, \
-    IBatch, IAddSampleFieldsFlush
+from bika.lims.interfaces import IAddSampleFieldsFlush
+from bika.lims.interfaces import IBatch
+from bika.lims.interfaces import IClient
+from bika.lims.interfaces import IGetDefaultFieldValueARAddHook
 
 
 class AddFormFieldDefaultValueAdapter(object):
