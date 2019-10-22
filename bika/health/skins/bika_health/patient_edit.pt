@@ -12,7 +12,7 @@
             <input class="context"
                    type="submit"
                    name="form.button.new_batch"
-                   value="Save and create a Clinical Case"
+                   value="Save and create Clinical Case"
                    i18n:attributes="value"
                    tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
 
