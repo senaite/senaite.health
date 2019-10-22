@@ -166,21 +166,6 @@ class BatchSchemaExtender(object):
                 colModel = [{'columnName':'DoctorID','width':'20','label':_('Doctor ID')},
                             {'columnName':'Title','width':'80','label':_('Full Name')},
                             ],
-                add_button={
-                    'visible': True,
-                    'url': 'doctors/portal_factory/Doctor/new/edit',
-                    'return_fields': ['Firstname', 'Surname'],
-                    'js_controllers': ['#doctor-base-edit',],
-                    'overlay_handler': 'HealthDoctorOverlayHandler',
-                },
-                edit_button={
-                    'visible': True,
-                    # url with the root to create/edit a object.
-                    'url': 'doctors/portal_factory/Doctor',
-                    'return_fields': ['Firstname', 'Surname'],
-                    'js_controllers': ['#doctor-base-edit',],
-                    'overlay_handler': 'HealthDoctorOverlayHandler',
-                }
             ),
         ),
         # ExtComputedField('DoctorID',
@@ -225,21 +210,6 @@ class BatchSchemaExtender(object):
                      'align': 'left'},
                 ],
                 showOn=True,
-                add_button={
-                    'visible': True,
-                    'url': 'patients/portal_factory/Patient/new/edit',
-                    'return_fields': ['Firstname', 'Surname'],
-                    'js_controllers': ['#patient-base-edit',],
-                    'overlay_handler': 'HealthPatientOverlayHandler',
-                },
-                edit_button={
-                    'visible': True,
-                    # url with the root to create/edit a object.
-                    'url': 'patients/portal_factory/Patient',
-                    'return_fields': ['Firstname', 'Surname'],
-                    'js_controllers': ['#patient-base-edit',],
-                    'overlay_handler': 'HealthPatientOverlayHandler',
-                }
             ),
         ),
         # ExtComputedField('PatientID',

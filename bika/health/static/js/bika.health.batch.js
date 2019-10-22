@@ -185,8 +185,6 @@ function HealthBatchEditView() {
             $('#Patient').hide();
             $('#Client').hide();
             $('#ClientPatientID').hide();
-            $('a.add_patient').hide();
-            // $('a.edit_patient').hide();
             $('#Patient').after("<span id='Patient_label'>" + $("#Patient").val() + "</span>&nbsp;&nbsp;");
            //$('#Client').after("<span id='Client_label'>" + $("#Client").val() + "</span>");
             $('#ClientPatientID').after("<span id='ClientPatientID_label'>" + $("#ClientPatientID").val() + "</span>");
