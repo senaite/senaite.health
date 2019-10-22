@@ -37,12 +37,6 @@ window.bika.health.controllers =  {
     ".portaltype-patient":
         ['HealthPatientGlobalWidgetEditView'],
 
-    "div.overlay #patient-base-edit":
-        ['HealthPatientOverlayHandler'],
-
-    "div.overlay #doctor-base-edit":
-        ['HealthDoctorOverlayHandler']
-
 };
 
 window.bika.health.initialized = false;

@@ -33,6 +33,7 @@ profile = 'profile-{0}:default'.format(PROJECTNAME)
 # List of javascripts to unregister
 JAVASCRIPTS_TO_REMOVE = [
     "++resource++bika.health.js/bika.health.analysisrequest.add.js",
+    "++resource++bika.health.js/bika.health.doctor.js",
 ]
 
 @upgradestep(PROJECTNAME, version)

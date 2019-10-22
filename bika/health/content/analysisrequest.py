@@ -60,11 +60,6 @@ class AnalysisRequestSchemaExtender(object):
                 base_query={'is_active': True,},
                 minLength=3,
                 showOn=True,
-                add_button={
-                    'visible': True,
-                    'url': 'doctors/portal_factory/Doctor/new/edit',
-                    'return_fields': ['Firstname', 'Surname'],
-                }
             ),
         ),
 
@@ -104,13 +99,6 @@ class AnalysisRequestSchemaExtender(object):
                 ],
                 minLength=3,
                 showOn=True,
-                add_button={
-                    'visible': True,
-                    'url': 'patients/portal_factory/Patient/new/edit',
-                    'return_fields': ['Firstname', 'Surname'],
-                    'js_controllers': ['#patient-base-edit',],
-                    'overlay_handler': 'HealthPatientOverlayHandler',
-                }
             ),
         ),
 
