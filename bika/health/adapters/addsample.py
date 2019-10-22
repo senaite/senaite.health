@@ -18,10 +18,16 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.health.interfaces import IDoctor, IPatient
-from bika.lims import api
-from bika.lims.interfaces import IGetDefaultFieldValueARAddHook, IClient, IBatch
 from zope.component import adapts
+
+from bika.health.interfaces import IDoctor
+from bika.health.interfaces import IPatient
+from bika.lims import api
+from bika.lims.adapters.addsample import AddSampleObjectInfoAdapter
+from bika.lims.interfaces import IAddSampleFieldsFlush
+from bika.lims.interfaces import IBatch
+from bika.lims.interfaces import IClient
+from bika.lims.interfaces import IGetDefaultFieldValueARAddHook
 
 
 class AddFormFieldDefaultValueAdapter(object):
@@ -49,8 +55,9 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IClient.providedBy(context):
             return context
 
-        # Try with client object explicitly defined in request
-        client = self.get_object_from_request_field("Client")
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        client = batch and batch.getClient() or None
         if client:
             return client
 
@@ -66,13 +73,8 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if client:
             return client
 
-        # Try to get the client from selected Batch
-        batch = BatchDefaultFieldValue(self.request)(context)
-        client = batch and batch.getClient() or None
-        if client:
-            return client
-
-        return None
+        # Try with client object explicitly defined in request
+        return self.get_object_from_request_field("Client")
 
 
 class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
@@ -84,10 +86,11 @@ class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IPatient.providedBy(context):
             return context
 
-        if IBatch.providedBy(context):
-            patient = context.getField("Patient").get(context)
-            if patient:
-                return patient
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        patient = batch and batch.getField("Patient").get(context) or None
+        if patient:
+            return patient
 
         # Try with patient explicitly defined in request
         return self.get_object_from_request_field("Patient")
@@ -102,10 +105,11 @@ class DoctorDefaultFieldValue(AddFormFieldDefaultValueAdapter):
         if IDoctor.providedBy(context):
             return context
 
-        if IBatch.providedBy(context):
-            doctor = context.getField("Doctor").get(context)
-            if doctor:
-                return doctor
+        # Try to get the client from selected Batch
+        batch = BatchDefaultFieldValue(self.request)(context)
+        doctor = batch and batch.getField("Doctor").get(context) or None
+        if doctor:
+            return doctor
 
         # Try with doctor explicitly defined in request
         return self.get_object_from_request_field("Doctor")
@@ -122,3 +126,91 @@ class BatchDefaultFieldValue(AddFormFieldDefaultValueAdapter):
 
         # Try with batch explicitly defined in request
         return self.get_object_from_request_field("Batch")
+
+
+class AddSampleClientInfo(AddSampleObjectInfoAdapter):
+    """Returns the additional filter queries to apply when the value for the
+    Client from Sample Add form changes
+    """
+    def get_object_info(self):
+        object_info = self.get_base_info()
+        uid = api.get_uid(self.context)
+        filter_queries = {
+            # Allow to choose Patients from same Client only
+            "Patient": {
+                "getPrimaryReferrerUID": [uid, ""],
+            },
+            "ClientPatientID": {
+                "getPrimaryReferrerUID": [uid, ""],
+            }
+        }
+        object_info["filter_queries"] = filter_queries
+        return object_info
+
+
+class AddSampleBatchInfo(AddSampleObjectInfoAdapter):
+    """Returns the info metadata representation of a Batch object used in Add
+    Sample form
+    """
+    def get_object_info(self):
+        object_info = self.get_base_info()
+
+        # Default values for other fields when the Batch is selected
+        doctor = self.context.getField("Doctor").get(self.context)
+        client = self.context.getClient()
+        field_values = {
+            "Doctor": self.to_field_value(doctor),
+            "Client": self.to_field_value(client),
+        }
+        patient = self.context.getField("Patient").get(self.context)
+        if patient:
+            field_values.update({
+                "Patient": self.to_field_value(patient),
+                "ClientPatientID": {
+                    "uid": api.get_uid(patient),
+                    "title": patient.getClientPatientID() or api.get_id(patient),
+                }
+            })
+
+        # Allow to choose Patients from same Client only and apply
+        # generic filters when a client is selected too
+        filter_queries = {}
+        if client:
+            uid = api.get_uid(client)
+            filter_queries = {
+                "Patient": {
+                    "getPrimaryReferrerUID": [uid, ""],
+                },
+                "ClientPatientID": {
+                    "getPrimaryReferrerUID": [uid, ""],
+                }
+            }
+        object_info["field_values"] = field_values
+        object_info["filter_queries"] = filter_queries
+        return object_info
+
+    def to_field_value(self, obj):
+        return {
+            "uid": obj and api.get_uid(obj) or "",
+            "title": obj and api.get_title(obj) or ""}
+
+
+class AddSampleFieldsFlush(object):
+    """Health-specific flush of fields for Sample Add form. When the value for
+    Client field changes, flush the fields "Patient", "Doctor" and "Batch"
+    """
+    adapts(IAddSampleFieldsFlush)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_flush_settings(self):
+        flush_settings = {
+            "Client": [
+                "Batch",
+                "ClientPatientID",
+                "Doctor",
+                "Patient",
+            ]
+        }
+        return flush_settings

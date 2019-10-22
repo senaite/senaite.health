@@ -57,4 +57,25 @@
       name="Batch_default_value_hook"
     />
 
+    <adapter
+      factory=".addsample.AddSampleClientInfo"
+      for="bika.lims.interfaces.IClient"
+      provides="bika.lims.interfaces.IAddSampleObjectInfo"
+      name="senaite.health.addsample_client_info"
+    />
+
+    <adapter
+      factory=".addsample.AddSampleBatchInfo"
+      for="bika.lims.interfaces.IBatch"
+      provides="bika.lims.interfaces.IAddSampleObjectInfo"
+      name="senaite.health.addsample_batch_info"
+    />
+
+    <adapter
+      factory=".addsample.AddSampleFieldsFlush"
+      for="*"
+      provides="bika.lims.interfaces.IAddSampleFieldsFlush"
+      name="senaite.health.addsample_fields_flush"
+    />
+
 </configure>

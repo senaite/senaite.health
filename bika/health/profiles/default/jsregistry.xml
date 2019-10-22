@@ -2,17 +2,6 @@
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
 
   <javascript authenticated="True"
-              id="++resource++bika.health.js/bika.health.analysisrequest.add.js"
-              cacheable="True"
-              compression="safe"
-              conditionalcomment=""
-              cookable="True"
-              enabled="on"
-              expression=""
-              inline="False"
-              insert-after="*"/>
-
-  <javascript authenticated="True"
               id="++resource++bika.health.js/bika.health.batch.js"
               cacheable="True"
               compression="safe"
