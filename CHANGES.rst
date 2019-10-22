@@ -16,6 +16,7 @@ Changelog
 
 **Removed**
 
+- #150 Removed Add button next to Patient and Doctor fields from Add Sample form
 - #148 Removed getClientID, getClientUID, getClientTitle indexers for Batch
 
 **Fixed**
