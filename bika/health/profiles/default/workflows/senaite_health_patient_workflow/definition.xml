@@ -32,7 +32,18 @@
      <permission-role>Manager</permission-role>
      <permission-role>Owner</permission-role>
     </permission-map>
-    <permission-map name="Delete objects" acquired="False"/>
+    <permission-map name="Delete objects" acquired="False">
+      <!-- Same roles as those that have Modify Portal Content permission
+       This is necessary, cause Batches that are created inside Patient are
+       moved by ObjectModifyEvent to parent folder. This trick is used to
+       auto-fill the Patient in the Batch on creation
+       -->
+      <permission-role>LabClerk</permission-role>
+      <permission-role>LabManager</permission-role>
+      <permission-role>Manager</permission-role>
+      <permission-role>Owner</permission-role>
+    </permission-map>
+
     <permission-map name="List folder contents" acquired="False">
      <permission-role>Doctor</permission-role>
      <permission-role>LabClerk</permission-role>

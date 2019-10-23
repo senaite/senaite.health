@@ -52,7 +52,7 @@ def listing_searchable_text(instance):
 
     return " ".join(out_values)
 
-
+# TODO Remove Patient's client_uid indexer?
 @indexer(IPatient)
 def client_uid(instance):
     """Returns the uid of the Client assigned to the Patient, if any. Otherwise
@@ -64,6 +64,7 @@ def client_uid(instance):
     return "-1"
 
 
+# TODO Remove Patient's client_assigned indexer?
 @indexer(IPatient)
 def client_assigned(instance):
     """Returns whether the Patient belongs to a Client or not

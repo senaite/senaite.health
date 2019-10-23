@@ -65,6 +65,11 @@ def upgrade(tool):
     # https://github.com/senaite/senaite.health/pull/144
     restore_identifier_types(portal)
 
+    # Move Patients with client assigned to Client folder
+    # https://github.com/senaite/senaite.health/pull/152
+    update_patients_role_mappings(portal)
+    move_patients_to_clients(portal)
+
     # https://github.com/senaite/senaite.core/pull/1462
     remove_stale_javascripts(portal)
 
@@ -149,6 +154,71 @@ def resolve_identifier_type(identifier_id):
     obj.unmarkCreationFlag()
     renameAfterCreation(obj)
     return obj
+
+
+def update_patients_role_mappings(portal):
+    """Updates the role mappings for patients folder cause we've changed the
+    workflow bound to this type and we've added permission to Delete Objects
+    """
+    logger.info("Updating role mappings of patients folder ...")
+    wf_tool = api.get_tool("portal_workflow")
+    workflow = wf_tool.getWorkflowById("senaite_health_patients_workflow")
+    workflow.updateRoleMappingsFor(portal.patients)
+    portal.patients.reindexObject()
+    logger.info("Updating role mappings of patients folder [DONE]")
+
+
+def move_patients_to_clients(portal):
+    """
+    Moves patients with a Client assigned to the folder of the Client they
+    belong to.
+    """
+    logger.info("Moving Patients inside Clients...")
+
+    # Allow Patient content type inside Clients
+    portal_types = api.get_tool('portal_types')
+    client = getattr(portal_types, 'Client')
+    allowed_types = client.allowed_content_types
+    if 'Patient' not in allowed_types:
+        client.allowed_content_types = allowed_types + ('Patient',)
+
+    # Look through Patients and move them inside Clients
+    patients_folder = portal.patients
+    total = patients_folder.objectCount()
+    for num, (p_id, patient) in enumerate(patients_folder.items()):
+        if num and num % 100 == 0:
+            logger.info("Moving Patients inside Clients: {}/{}"
+                        .format(num, total))
+        client = patient.getField("PrimaryReferrer").get(patient)
+        if client:
+            # Try to find out the Client from the Batch(es) assigned to patient
+            batches = patient.getBatches()
+            clients = map(lambda batch: batch.getClient(), batches)
+            clients = list(set(filter(None, clients)))
+
+            if len(clients) > 1:
+                # Clinical Cases for this Patient belong to different clients,
+                # so this Patient must remain not bound to any Client
+                logger.warn("Patient with client assigned, but batches from "
+                            "others. Unassigning client: {} ({})"
+                            .format(p_id, api.get_title(client)))
+                patient.setClient(None)
+                patient.reindexObject()
+
+            elif clients and api.get_uid(clients[0]) != api.get_uid(client):
+                # Assigned client does not match with the ones from the batches
+                logger.warn("Patient with client assigned that does not match "
+                            "with the client from batches. Unassigning client: "
+                            "{} ({})".format(p_id, api.get_title(client)))
+                patient.setClient(None)
+                patient.reindexObject()
+
+            else:
+                # Move Patient inside the client
+                cp = patients_folder.manage_cutObjects(p_id)
+                client.manage_pasteObjects(cp)
+
+    logger.info("Moving Patients inside Clients [DONE]")
 
 
 def remove_stale_javascripts(portal):

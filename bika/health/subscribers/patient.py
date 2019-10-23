@@ -18,27 +18,28 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.lims import workflow as wf
 from bika.lims import api
 from bika.lims.api import security
 
 
-def ObjectInitializedEventHandler(patient, event):
-    """Actions to be done when a patient is created. If a client has been
-    assigned to the patient, this function assigns the role "Owner" for the
-    patient to all client contacts from the assigned Client.
-    """
-    assign_owners_for(patient)
-
-
 def ObjectModifiedEventHandler(patient, event):
-    """Actions to be done when a patient is modified. If a client has been
-    assigned to the patient, this function assigns the role "Owner" for the
-    patient to all client contacts from the assigned Client.
+    """Actions to be done when a patient is modified. Moves the Patient to
+    Client folder if assigned
     """
-    purge_owners_for(patient)
+    # If client is assigned, move the Patient to the Client's folder
+    # Note here we get the Client directly from the Schema, cause
+    # getPrimaryReferrer is overriden in Patient content type to always look to
+    # aq_parent in order to prevent inconsistencies (the PrimaryReferrer schema
+    # field is only used to allow the user to assign a Client to the Patient).
+    client = patient.getField("PrimaryReferrer").get(patient)
 
+    # Check if the Patient is being created inside the Client
+    if client and client.UID() != patient.aq_parent.UID():
+        # Move the Patient inside the client
+        cp = patient.aq_parent.manage_cutObjects(patient.id)
+        client.manage_pasteObjects(cp)
 
+# TODO: This is no longer needed!
 def assign_owners_for(patient):
     """Assign the role "Owner" to the contacts of the client assigned to the
     patient passed in, if any
