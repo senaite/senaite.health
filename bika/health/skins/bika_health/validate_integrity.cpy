@@ -8,6 +8,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 ##
+from bika.health.utils import handle_after_submit
 
 from Products.Archetypes import PloneMessageFactory as _
 from Products.Archetypes.utils import addStatusMessage
@@ -20,37 +21,12 @@ if errors:
     message = _(u'Please correct the indicated errors.')
     addStatusMessage(request, message, type='error')
     return state.set(status='failure', errors=errors)
+
 else:
     message = _(u'Changes saved.')
     stat = 'created'
 
-    # redirect to Patient's ARs view when saving a newly created patient
-    patient_redirection = ''
-    if context.portal_type == 'Patient':
-        patient_redirection = '/'.join(['/patients', context.getPatientID(), 'analysisrequests'])
-
-    # Redirection after saving edition forms
-    redirects = {'AetiologicAgent' : '/bika_setup/bika_aetiologicagents',
-                 'BatchLabel' : '/bika_setup/bika_batchlabels',
-                 'CaseOutcome': '/bika_setup/bika_caseoutcomes',
-                 'CaseSyndromicClassification' : '/bika_setup/bika_casesyndromicclassifications',
-                 'CaseStatus': '/bika_setup/bika_casestatuses',
-                 'Disease': '/bika_setup/bika_diseases',
-                 'Drug': '/bika_setup/bika_drugs',
-                 'DrugProhibition': '/bika_setup/bika_drugprohibitions',
-                 'Immunization': '/bika_setup/bika_immunizations',
-                 'Treatment': '/bika_setup/bika_treatments',
-                 'VaccionationCenter': '/bika_setup/bika_vaccionationcenters',
-                 'InsuranceCompany':  '/bika_setup/bika_insurancecompanies',
-                 'IdentifierType': '/bika_setup/bika_identifiertypes',
-                 'Symptom': '/bika_setup/bika_symptoms',
-                 'Patient': patient_redirection}
-
-    if context.portal_type in redirects:
-        redirect = 'redirect_to:string:${portal_url}' + redirects[context.portal_type]
-        state.setNextAction(redirect)
-    else:
-        stat = 'success'
-
+    # Handles actions from extra_buttons slot
+    handle_after_submit(context, request, state)
     addStatusMessage(request, message)
     return state.set(status=stat)

@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="senaite.health">
+  <body>
+    <metal:body define-macro="body">
+        <metal:default_body use-macro="here/edit_macros/macros/body">
+          <metal:block fill-slot="extra_buttons">
+
+            <!-- Save batch and redirect to Add Sample view -->
+            <input class="context"
+                   type="submit"
+                   name="form.button.new_sample"
+                   value="Save and create Sample"
+                   i18n:attributes="value"
+                   tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
+
+          </metal:block>
+        </metal:default_body>
+    </metal:body>
+  </body>
+</html>

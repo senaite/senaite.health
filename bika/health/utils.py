@@ -19,10 +19,15 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health import logger
+from bika.health.interfaces import IPatient
 from bika.lims import api
 from bika.lims.api import _marker
+from bika.lims.interfaces import IBatch
 from bika.lims.utils import render_html_attributes, to_utf8, to_unicode
 from zope.i18n import translate
+from Products.Archetypes.utils import addStatusMessage
+
+from bika.lims.utils import tmpID
 
 
 def get_obj_from_field(instance, fieldname, default=_marker):
@@ -105,3 +110,56 @@ def set_field_value(instance, field_name, value):
     if not field:
         api.fail("No field {} found for {}".format(field_name, repr(instance)))
     field.set(instance, value)
+
+
+def get_default_num_samples():
+    """Returns the num of Samples (Columns) to be displayed in Sample Add Form
+    """
+    ar_count = api.get_setup().getDefaultNumberOfARsToAdd()
+    return api.to_int(ar_count, 1)
+
+
+def handle_after_submit(context, request, state):
+    """Handles actions provided in extra_buttons slot from edit forms
+    """
+    if request.get("form.button.new_sample"):
+        # Redirect to Sample Add from Patient
+        next_url = api.get_url(context)
+        if IPatient.providedBy(context):
+            uid = context.UID()
+            client = context.getPrimaryReferrer()
+            folder = client or api.get_portal().analysisrequests
+            folder_url = api.get_url(folder)
+            ar_count = get_default_num_samples()
+            next_url = "{}/ar_add?Patient={}&ar_count={}".format(
+                folder_url, uid, ar_count)
+
+        # Redirect to Sample Add form from Batch
+        elif IBatch.providedBy(context):
+            ar_count = get_default_num_samples()
+            next_url = "{}/ar_add?ar_count={}".format(next_url, ar_count)
+
+        state.setNextAction('redirect_to:string:{}'.format(next_url))
+
+    elif request.get("form.button.new_batch"):
+        # Redirect to New Batch from Patient
+        next_url = api.get_url(context)
+        if IPatient.providedBy(context):
+            client = context.getPrimaryReferrer()
+            folder = client or api.get_portal().batches
+
+            # Create a temporary Batch
+            tmp_path = "portal_factory/Batch/{}".format(tmpID())
+            tmp_obj = folder.restrictedTraverse(tmp_path)
+
+            # Redirect to Batch's edit view with Patient's uid as a param
+            batch_url = api.get_url(tmp_obj)
+            uid = api.get_uid(context)
+            next_url = "{}/edit?Patient={}".format(batch_url, uid)
+
+        state.setNextAction('redirect_to:string:{}'.format(next_url))
+
+    elif IPatient.providedBy(context):
+        # Redirect to Patient's samples view
+        next_url = "{}/analysisrequests".format(api.get_url(context))
+        state.setNextAction('redirect_to:string:{}'.format(next_url))
