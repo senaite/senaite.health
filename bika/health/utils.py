@@ -127,7 +127,7 @@ def handle_after_submit(context, request, state):
         next_url = api.get_url(context)
         if IPatient.providedBy(context):
             uid = context.UID()
-            client = context.getClient()
+            client = context.getPrimaryReferrer()
             folder = client or api.get_portal().analysisrequests
             folder_url = api.get_url(folder)
             ar_count = get_default_num_samples()
@@ -145,7 +145,7 @@ def handle_after_submit(context, request, state):
         # Redirect to New Batch from Patient
         next_url = api.get_url(context)
         if IPatient.providedBy(context):
-            client = context.getClient()
+            client = context.getPrimaryReferrer()
             folder = client or api.get_portal().batches
 
             # Create a temporary Batch
