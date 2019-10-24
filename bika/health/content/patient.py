@@ -48,6 +48,7 @@ from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.browser.widgets.remarkswidget import RemarksWidget
 from bika.lims.catalog.analysisrequest_catalog import \
     CATALOG_ANALYSIS_REQUEST_LISTING
+from bika.lims.catalog.bika_catalog import BIKA_CATALOG
 from bika.lims.content.person import Person
 from bika.lims.interfaces import IClient
 
@@ -1124,12 +1125,14 @@ class Patient(Person):
         client = self.getClient()
         return client and api.get_title(client) or None
 
-    def getBatches(self):
+    def getBatches(self, full_objects=False):
         """Returns the Batches (Clinic Cases) this Patient is assigned to
         """
-        batches = self.getBackReferences("BatchPatient")
-        return batches or []
-
+        query = dict(portal_type="Batch", getPatientUID=api.get_uid(self))
+        batches = api.search(query, BIKA_CATALOG)
+        if full_objects:
+            batches = map(api.get_object_by_uid, batches)
+        return batches
 
     def SearchableText(self):
         """
