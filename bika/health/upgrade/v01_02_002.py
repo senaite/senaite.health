@@ -22,6 +22,7 @@ from Products.CMFPlone.utils import _createObjectByType
 from bika.health import logger, CATALOG_PATIENTS
 from bika.health.config import PROJECTNAME
 from bika.lims import api
+from bika.lims.catalog.bika_catalog import BIKA_CATALOG
 from bika.lims.idserver import renameAfterCreation
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
@@ -182,41 +183,67 @@ def move_patients_to_clients(portal):
     if 'Patient' not in allowed_types:
         client.allowed_content_types = allowed_types + ('Patient',)
 
+    # Map patient uids against batches' clients
+    patients_to_clients = dict()
+    query = dict(portal_type="Batch")
+    for batch_brain in api.search(query, BIKA_CATALOG):
+        client_id = batch_brain.getClientID
+        if not client_id:
+            continue
+        patient_uid = batch_brain.getPatientUID
+        if not patient_uid:
+            continue
+        client_ids = patients_to_clients.get(patient_uid, [])
+        client_ids.append(client_id)
+        patients_to_clients[patient_uid] = list(set(client_ids))
+
     # Look through Patients and move them inside Clients
+    clients_map = dict()
+    catalog = api.get_tool(CATALOG_PATIENTS)
     patients_folder = portal.patients
     total = patients_folder.objectCount()
     for num, (p_id, patient) in enumerate(patients_folder.items()):
         if num and num % 100 == 0:
             logger.info("Moving Patients inside Clients: {}/{}"
                         .format(num, total))
-        client = patient.getField("PrimaryReferrer").get(patient)
-        if client:
-            # Try to find out the Client from the Batch(es) assigned to patient
-            batches = patient.getBatches()
-            clients = map(lambda batch: batch.getClient(), batches)
-            clients = list(set(filter(None, clients)))
 
-            if len(clients) > 1:
+        client_uid = patient.getField("PrimaryReferrer").getRaw(patient)
+        if client_uid:
+            # Try to find out the Client from the Batch(es) assigned to patient
+            client_ids = patients_to_clients.get(api.get_uid(patient), [])
+            if len(client_ids) > 1:
                 # Clinical Cases for this Patient belong to different clients,
                 # so this Patient must remain not bound to any Client
                 logger.warn("Patient with client assigned, but batches from "
-                            "others. Unassigning client: {} ({})"
-                            .format(p_id, api.get_title(client)))
-                patient.setClient(None)
-                patient.reindexObject()
-
-            elif clients and api.get_uid(clients[0]) != api.get_uid(client):
-                # Assigned client does not match with the ones from the batches
-                logger.warn("Patient with client assigned that does not match "
-                            "with the client from batches. Unassigning client: "
-                            "{} ({})".format(p_id, api.get_title(client)))
+                            "others. Unassigning client from {}".format(p_id))
                 patient.setClient(None)
                 patient.reindexObject()
 
             else:
-                # Move Patient inside the client
-                cp = patients_folder.manage_cutObjects(p_id)
-                client.manage_pasteObjects(cp)
+                client = clients_map.get(client_uid, None)
+                if client is None:
+                    client = api.get_object_by_uid(client_uid)
+                    clients_map[client_uid] = client
+
+                if client_ids and client_ids[0] != client.getClientID():
+                    # Assigned client does not match with those from the batches
+                    logger.warn("Patient with client assigned that does not "
+                                "match with the client from batches. "
+                                "Unassigning client: {}".format(p_id))
+                    patient.setClient(None)
+                    patient.reindexObject()
+
+                else:
+                    # Move Patient inside the client
+                    # cp = patients_folder.manage_cutObjects(p_id)
+                    # client.manage_pasteObjects(cp)
+                    catalog.uncatalog_object(api.get_path(patient))
+                    patients_folder._delObject(p_id, suppress_events=True)
+                    client._setObject(p_id, patient, set_owner=0,
+                                      suppress_events=True)
+                    new_patient = client._getOb(p_id)
+                    new_patient.manage_changeOwnershipType(explicit=0)
+                    catalog.catalog_object(new_patient)
 
     logger.info("Moving Patients inside Clients [DONE]")
 
