@@ -19,16 +19,9 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health import logger
-from bika.health.catalog.patient_catalog import CATALOG_PATIENTS
 from bika.health.config import PROJECTNAME
-from bika.health.setuphandlers import setup_id_formatting, \
-    setup_content_actions, remove_action, setup_roles_permissions, \
-    setup_batches_ownership
-from bika.health.subscribers.patient import purge_owners_for
-from bika.health.upgrade.utils import setup_catalogs, del_index, del_column
-from bika.lims import api
 from bika.lims.upgrade import upgradestep
-from bika.lims.upgrade.utils import UpgradeUtils, commit_transaction
+from bika.lims.upgrade.utils import UpgradeUtils
 
 version = '1.2.1'
 profile = 'profile-{0}:default'.format(PROJECTNAME)

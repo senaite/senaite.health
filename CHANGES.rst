@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #151 Additional buttons in Batch and Patient add/edit views
 - #134 ReferenceWidget for client searches in Add Patient form
 - #130 Allow to deactivate/activate Doctors
 
@@ -16,6 +17,7 @@ Changelog
 
 **Removed**
 
+- #150 Removed Add button next to Patient and Doctor fields from Add Sample form
 - #148 Removed getClientID, getClientUID, getClientTitle indexers for Batch
 
 **Fixed**

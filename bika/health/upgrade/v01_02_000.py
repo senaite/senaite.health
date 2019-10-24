@@ -21,14 +21,18 @@
 from bika.health import logger
 from bika.health.catalog.patient_catalog import CATALOG_PATIENTS
 from bika.health.config import PROJECTNAME
-from bika.health.setuphandlers import setup_id_formatting, \
-    setup_content_actions, remove_action, setup_roles_permissions, \
-    setup_batches_ownership
+from bika.health.setuphandlers import remove_action
+from bika.health.setuphandlers import setup_content_actions
+from bika.health.setuphandlers import setup_id_formatting
+from bika.health.setuphandlers import setup_roles_permissions
 from bika.health.subscribers.patient import purge_owners_for
-from bika.health.upgrade.utils import setup_catalogs, del_index, del_column
+from bika.health.upgrade.utils import del_column
+from bika.health.upgrade.utils import del_index
+from bika.health.upgrade.utils import setup_catalogs
 from bika.lims import api
 from bika.lims.upgrade import upgradestep
-from bika.lims.upgrade.utils import UpgradeUtils, commit_transaction
+from bika.lims.upgrade.utils import UpgradeUtils
+from bika.lims.upgrade.utils import commit_transaction
 
 version = '1.2.0'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
@@ -108,9 +112,6 @@ def upgrade(tool):
 
     # Setup "Owner" roles for patients to client contacts
     setup_patients_ownership(portal)
-
-    # Setup "Owner" roles for batches to client contacts
-    setup_batches_ownership(portal)
 
     # Update workflows
     update_workflows(portal)
