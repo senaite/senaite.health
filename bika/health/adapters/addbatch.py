@@ -18,18 +18,16 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.lims import api
+from bika.health.adapters import AddFormFieldDefaultValueAdapter
+from bika.lims.interfaces import IGetDefaultFieldValueARAddHook
+from zope.component import adapts
 
 
-class AddFormFieldDefaultValueAdapter(object):
-    """Generic adapter for objects retrieval based on request uid and field name
+class PatientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
+    """Adapter that returns the default value for field Patient in Batch form
     """
+    adapts(IGetDefaultFieldValueARAddHook)
 
-    def __init__(self, request):
-        self.request = request
-
-    def get_object_from_request_field(self, field_name):
-        """Returns the object for the field_name specified in the request
-        """
-        uid = self.request.get(field_name)
-        return api.get_object_by_uid(uid, default=None)
+    def __call__(self, context):
+        # Try with patient explicitly defined in request
+        return self.get_object_from_request_field("Patient")

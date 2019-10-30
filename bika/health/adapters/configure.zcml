@@ -65,6 +65,14 @@
       name="Batch_default_value_hook"
     />
 
+    <!-- Default value for Patient field in Add Batch form -->
+    <adapter
+      factory=".addbatch.PatientDefaultFieldValue"
+      for="*"
+      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+      name = "Patient_batch_default_value_hook"
+    />
+
     <adapter
       factory=".addsample.AddSampleClientInfo"
       for="bika.lims.interfaces.IClient"
