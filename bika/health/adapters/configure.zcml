@@ -17,6 +17,14 @@
       name="DoctorFieldVisibility"
     />
 
+    <!-- Handles the visibility of Client field in Patient context-->
+    <adapter
+      factory=".widgetvisibility.PatientClientFieldVisibility"
+      provides="bika.lims.interfaces.IATWidgetVisibility"
+      for="bika.health.interfaces.IPatient"
+      name="PatientClientFieldVisibility"
+    />
+
     <!-- Default value for Client field in Add Sample form -->
     <adapter
       factory=".addsample.ClientDefaultFieldValue"

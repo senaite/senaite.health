@@ -11,35 +11,6 @@ function HealthPatientEditView() {
     // PUBLIC FUNCTIONS
     // ------------------------------------------------------------------------
 
-
-    /**
-     * Returns the referrer ClientUID if the current view referrer is a Client
-     * patients view. If the current view referrer is a Client's patient view,
-     * returns the Client UID. Otherwise, returns null
-     * @return clientuid or null
-     */
-    this.getClientUIDReferrer = function() {
-        // Force first to check if the referrer is a Patient Batches view. In
-        // that case, the refclientuid var will be set by the following method
-        var refclientuid = '';
-        if (document.referrer.search('/clients/') >= 0) {
-            clientid = document.referrer.split("clients")[1].split("/")[1];
-            $.ajax({
-                url: window.portal_url + "/clients/" + clientid + "/getClientInfo",
-                type: 'POST',
-                async: false,
-                data: {'_authenticator': $('input[name="_authenticator"]').val()},
-                dataType: "json",
-                success: function(data, textStatus, $XHR){
-                    if (data['ClientUID'] != '') {
-                        refclientuid = data['ClientUID'] != '' ? data['ClientUID'] : null;
-                    }
-                }
-            });
-        }
-        return refclientuid != '' ? refclientuid : null;
-    }
-
     /**
      * Entry-point method for PatientEditView
      */
@@ -69,11 +40,6 @@ function HealthPatientEditView() {
 
         if ($('#patient-base-edit')) {
             loadAnonymous();
-        }
-        rcuid = that.getClientUIDReferrer();
-        if (rcuid != null) {
-            // The user comes from the Client's Patients view
-            fillClient(rcuid);
         }
 
         loadEventHandlers();
@@ -434,11 +400,6 @@ function HealthPatientEditView() {
         console.log("Show field: "+field_id);
         var field = get_field(field_id);
         field.show();
-    }
-
-    function fillClient(uid) {
-        var name = $('#PrimaryReferrer option[value!="'+uid+'"]').remove();
-        $('#PrimaryReferrer').val(uid);
     }
 
     function fillInsuranceCompanyReferrer(rid){
