@@ -19,7 +19,10 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health.browser.batchfolder import BatchListingViewAdapter
+from bika.health.interfaces import IPatient
 from bika.lims import api
+from bika.lims import bikaMessageFactory as _
+from bika.lims.permissions import AddBatch
 
 
 class PatientBatchListingViewAdapter(BatchListingViewAdapter):
