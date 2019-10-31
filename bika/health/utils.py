@@ -122,6 +122,7 @@ def get_default_num_samples():
 def handle_after_submit(context, request, state):
     """Handles actions provided in extra_buttons slot from edit forms
     """
+    status_id = "created"
     if request.get("form.button.new_sample"):
         # Redirect to Sample Add from Patient
         next_url = api.get_url(context)
@@ -163,3 +164,6 @@ def handle_after_submit(context, request, state):
         # Redirect to Patient's samples view
         next_url = "{}/analysisrequests".format(api.get_url(context))
         state.setNextAction('redirect_to:string:{}'.format(next_url))
+    else:
+        status_id = "success"
+    return status_id
