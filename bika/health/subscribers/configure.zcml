@@ -8,4 +8,11 @@
          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".patient.ObjectModifiedEventHandler" />
 
+  <!-- Batch creation. Assign Patient field to a Batch automatically when
+   created inside a Patient -->
+  <subscriber
+    for="bika.lims.interfaces.IBatch
+         zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+    handler=".batch.ObjectCreatedEventHandler" />
+
 </configure>

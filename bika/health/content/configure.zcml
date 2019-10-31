@@ -1,10 +1,5 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five"
-    xmlns:cmf="http://namespaces.zope.org/cmf"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="senaite.health">
 
     <include package="archetypes.schemaextender" />
@@ -14,12 +9,6 @@
 
     <adapter factory=".batch.BatchSchemaExtender" />
     <adapter factory=".batch.BatchSchemaModifier" />
-    <adapter factory=".batch.getPatientID" name="getPatientID" />
-    <adapter factory=".batch.getPatientUID" name="getPatientUID" />
-    <adapter factory=".batch.getPatientTitle" name="getPatientTitle" />
-    <adapter factory=".batch.getDoctorID" name="getDoctorID" />
-    <adapter factory=".batch.getDoctorUID" name="getDoctorUID" />
-    <adapter factory=".batch.getDoctorTitle" name="getDoctorTitle" />
 
     <adapter factory=".analysis.AnalysisSchemaExtender" />
     <adapter factory=".analysisspec.AnalysisSpecSchemaModifier" />

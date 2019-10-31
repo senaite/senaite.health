@@ -17,4 +17,12 @@
   <adapter name="client_assigned" factory=".patient.client_assigned"/>
   <adapter name="listing_searchable_text" factory=".patient.listing_searchable_text"/>
 
+  <!-- Batch indexes -->
+  <adapter factory=".batch.getPatientID" name="getPatientID" />
+  <adapter factory=".batch.getPatientUID" name="getPatientUID" />
+  <adapter factory=".batch.getPatientTitle" name="getPatientTitle" />
+  <adapter factory=".batch.getDoctorID" name="getDoctorID" />
+  <adapter factory=".batch.getDoctorUID" name="getDoctorUID" />
+  <adapter factory=".batch.getDoctorTitle" name="getDoctorTitle" />
+
 </configure>

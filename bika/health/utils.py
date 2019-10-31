@@ -90,12 +90,12 @@ def get_field_value(instance, field_name, default=_marker):
     """Returns the value of a Schema field from the instance passed in
     """
     instance = api.get_object(instance)
-    field = instance.Schema() and instance.Schema().getField(field_name) or None
+    field = instance.getField(field_name) or None
     if not field:
         if default is not _marker:
             return default
         api.fail("No field {} found for {}".format(field_name, repr(instance)))
-    return instance.Schema().getField(field_name).get(instance)
+    return field.get(instance)
 
 
 def set_field_value(instance, field_name, value):
