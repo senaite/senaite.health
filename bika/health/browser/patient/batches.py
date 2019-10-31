@@ -44,3 +44,12 @@ class PatientBatchListingViewAdapter(BatchListingViewAdapter):
             if "contentFilter" not in rv:
                 rv["contentFilter"] = {}
             rv["contentFilter"].update(query)
+
+        url = api.get_url(self.context)
+        self.listing.context_actions = {
+            _("Add"): {
+                "url": "{}/createObject?type_name=Batch".format(url),
+                "permission": AddBatch,
+                "icon": "++resource++bika.lims.images/add.png"
+            }
+        }
