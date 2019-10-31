@@ -1,6 +1,7 @@
 include LICENSE
 include *.rst
 include *.md
+exclude MANIFEST.in
 recursive-exclude docs *
 recursive-include bika *
 recursive-exclude bika *.pyc
