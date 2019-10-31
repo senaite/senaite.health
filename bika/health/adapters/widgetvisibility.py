@@ -18,6 +18,7 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.health.interfaces import IPatient
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
 from bika.lims.interfaces import IBatch
 from bika.lims.interfaces import IClient
@@ -92,6 +93,28 @@ class PatientClientFieldVisibility(SenaiteATWidgetVisibility):
             # Do not display the Client field if the Patient is created
             # or edited inside a Client.
             if IClient.providedBy(container):
+                return "invisible"
+
+        return default
+
+
+class BatchClientFieldVisibility(SenaiteATWidgetVisibility):
+    """Handles the Client field visibility in Batch context
+    """
+
+    def __init__(self, context):
+        super(BatchClientFieldVisibility, self).__init__(
+            context=context, sort=10, field_names=["Client"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        if mode == "edit":
+            container = self.context.aq_parent
+
+            # Do not display the Client field if the Batch is created
+            # or edited inside a Client or Patient.
+            # Senaite Core is taking care of the visibility when the
+            # Batch is created or edited inside a Client
+            if IPatient.providedBy(container):
                 return "invisible"
 
         return default

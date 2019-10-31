@@ -25,6 +25,14 @@
       name="PatientClientFieldVisibility"
     />
 
+    <!-- Handles the visibility of Client field in Batch context-->
+    <adapter
+      factory=".widgetvisibility.BatchClientFieldVisibility"
+      provides="bika.lims.interfaces.IATWidgetVisibility"
+      for="bika.lims.interfaces.IBatch"
+      name="HealthBatchClientFieldVisibility"
+    />
+
     <!-- Default value for Client field in Add Sample form -->
     <adapter
       factory=".addsample.ClientDefaultFieldValue"
