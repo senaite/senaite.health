@@ -112,9 +112,9 @@ class BatchClientFieldVisibility(SenaiteATWidgetVisibility):
 
             # Do not display the Client field if the Batch is created
             # or edited inside a Client or Patient.
-            # Senaite Core is taking care of the visibility when the
-            # Batch is created or edited inside a Client
             if IPatient.providedBy(container):
+                return "invisible"
+            elif IClient.providedBy(container):
                 return "invisible"
 
         return default
