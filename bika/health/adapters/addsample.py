@@ -28,7 +28,20 @@ from bika.lims.interfaces import IAddSampleFieldsFlush
 from bika.lims.interfaces import IBatch
 from bika.lims.interfaces import IClient
 from bika.lims.interfaces import IGetDefaultFieldValueARAddHook
-from bika.health.adapters import AddFormFieldDefaultValueAdapter
+
+
+class AddFormFieldDefaultValueAdapter(object):
+    """Generic adapter for objects retrieval based on request uid and field name
+    """
+
+    def __init__(self, request):
+        self.request = request
+
+    def get_object_from_request_field(self, field_name):
+        """Returns the object for the field_name specified in the request
+        """
+        uid = self.request.get(field_name)
+        return api.get_object_by_uid(uid, default=None)
 
 
 class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
