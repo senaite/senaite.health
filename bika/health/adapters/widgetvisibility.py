@@ -118,3 +118,21 @@ class BatchClientFieldVisibility(SenaiteATWidgetVisibility):
                 return "invisible"
 
         return default
+
+
+class BatchPatientFieldsVisibility(SenaiteATWidgetVisibility):
+    """Handles the visibility of Patient and ClientPatientID fields
+     in a Batch context
+    """
+
+    def __init__(self, context):
+        super(BatchPatientFieldsVisibility, self).__init__(
+            context=context, sort=10, field_names=["Patient", "ClientPatientID"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        if mode == "edit":
+            container = self.context.aq_parent
+            if IPatient.providedBy(container):
+                return "invisible"
+
+        return default
