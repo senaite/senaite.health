@@ -17,9 +17,13 @@
 #
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
+
+import transaction
+from Products.Archetypes.config import UID_CATALOG
 from Products.CMFPlone.utils import _createObjectByType
 
-from bika.health import logger, CATALOG_PATIENTS
+from bika.health import CATALOG_PATIENTS
+from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.lims import api
 from bika.lims.catalog.bika_catalog import BIKA_CATALOG
@@ -177,6 +181,10 @@ def move_patients_to_clients(portal):
     """
     logger.info("Moving Patients inside Clients...")
 
+    # We'll need this to update workflow mappings just after the move
+    wf_tool = api.get_tool("portal_workflow")
+    workflow = wf_tool.getWorkflowById("senaite_health_patient_workflow")
+
     # Allow Patient content type inside Clients
     portal_types = api.get_tool('portal_types')
     client = getattr(portal_types, 'Client')
@@ -204,12 +212,15 @@ def move_patients_to_clients(portal):
     patients_folder = portal.patients
     total = patients_folder.objectCount()
     for num, (p_id, patient) in enumerate(patients_folder.items()):
-        if num and num % 100 == 0:
+        if num and num % 10 == 0:
             logger.info("Moving Patients inside Clients: {}/{}"
                         .format(num, total))
 
         client_uid = patient.getField("PrimaryReferrer").getRaw(patient)
         if client_uid:
+            # Update role mappings first (for workflow changes to take effect)
+            workflow.updateRoleMappingsFor(patient)
+
             # Try to find out the Client from the Batch(es) assigned to patient
             client_ids = patients_to_clients.get(api.get_uid(patient), [])
             if len(client_ids) > 1:
@@ -236,15 +247,18 @@ def move_patients_to_clients(portal):
 
                 else:
                     # Move Patient inside the client
-                    # cp = patients_folder.manage_cutObjects(p_id)
-                    # client.manage_pasteObjects(cp)
-                    catalog.uncatalog_object(api.get_path(patient))
-                    patients_folder._delObject(p_id, suppress_events=True)
-                    client._setObject(p_id, patient, set_owner=0,
-                                      suppress_events=True)
-                    new_patient = client._getOb(p_id)
-                    new_patient.manage_changeOwnershipType(explicit=0)
-                    catalog.catalog_object(new_patient)
+                    cp = patients_folder.manage_cutObjects(p_id)
+                    client.manage_pasteObjects(cp)
+
+                    #catalog.uncatalog_object(api.get_path(patient))
+                    #patients_folder._delObject(p_id, suppress_events=True)
+                    #client._setObject(p_id, patient, set_owner=0,
+                    #                  suppress_events=True)
+                    #new_patient = client._getOb(p_id)
+                    #new_patient.manage_changeOwnershipType(explicit=0)
+
+                    #workflow.updateRoleMappingsFor(api.get_object(new_patient))
+                    #catalog.catalog_object(new_patient)
 
     logger.info("Moving Patients inside Clients [DONE]")
 
