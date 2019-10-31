@@ -17,3 +17,19 @@
 #
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
+
+from bika.lims import api
+
+
+class AddFormFieldDefaultValueAdapter(object):
+    """Generic adapter for objects retrieval based on request uid and field name
+    """
+
+    def __init__(self, request):
+        self.request = request
+
+    def get_object_from_request_field(self, field_name):
+        """Returns the object for the field_name specified in the request
+        """
+        uid = self.request.get(field_name)
+        return api.get_object_by_uid(uid, default=None)

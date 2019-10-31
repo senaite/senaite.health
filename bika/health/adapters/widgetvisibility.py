@@ -20,17 +20,17 @@
 
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
 from bika.lims.interfaces import IBatch
+from bika.lims.interfaces import IClient
 
 
-class PatientFieldsVisibility(SenaiteATWidgetVisibility):
+class SamplePatientFieldsVisibility(SenaiteATWidgetVisibility):
     """
-    Handles "Batch", "Patient" and "ClientPatientID" fields visibility.
-    They are not editable, regardless of the current state of the Sample, except
-    when displayed in AR Add view. The reason is that all these fields, together
-    with Client field, are strongly related.
+    Handles "Batch", "Patient" and "ClientPatientID" fields visibility in Sample (Analysis Request) context. They are
+    not editable, regardless of the current state of the Sample, except when displayed in AR Add view. The reason is
+    that all these fields, together with Client field, are strongly related.
     """
     def __init__(self, context):
-        super(PatientFieldsVisibility, self).__init__(
+        super(SamplePatientFieldsVisibility, self).__init__(
             context=context, sort=10,
             field_names=["Batch", "Patient", "ClientPatientID", ])
 
@@ -77,3 +77,21 @@ class DoctorFieldVisibility(SenaiteATWidgetVisibility):
         return default
 
 
+class PatientClientFieldVisibility(SenaiteATWidgetVisibility):
+    """Handles the Client (PrimaryReferrer) field visibility in Patient context
+    """
+
+    def __init__(self, context):
+        super(PatientClientFieldVisibility, self).__init__(
+            context=context, sort=10, field_names=["PrimaryReferrer"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        if mode == "edit":
+            container = self.context.aq_parent
+
+            # Do not display the Client field if the Patient is created
+            # or edited inside a Client.
+            if IClient.providedBy(container):
+                return "invisible"
+
+        return default

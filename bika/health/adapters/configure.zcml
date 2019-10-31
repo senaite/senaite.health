@@ -3,10 +3,10 @@
     i18n_domain="senaite.health">
 
     <adapter
-      factory=".widgetvisibility.PatientFieldsVisibility"
+      factory=".widgetvisibility.SamplePatientFieldsVisibility"
       provides="bika.lims.interfaces.IATWidgetVisibility"
       for="bika.lims.interfaces.IAnalysisRequest"
-      name="PatientFieldsVisibility"
+      name="SamplePatientFieldsVisibility"
     />
 
     <!-- Handles the visibility of Doctor field -->
@@ -15,6 +15,14 @@
       provides="bika.lims.interfaces.IATWidgetVisibility"
       for="bika.lims.interfaces.IAnalysisRequest"
       name="DoctorFieldVisibility"
+    />
+
+    <!-- Handles the visibility of Client field in Patient context-->
+    <adapter
+      factory=".widgetvisibility.PatientClientFieldVisibility"
+      provides="bika.lims.interfaces.IATWidgetVisibility"
+      for="bika.health.interfaces.IPatient"
+      name="PatientClientFieldVisibility"
     />
 
     <!-- Default value for Client field in Add Sample form -->
