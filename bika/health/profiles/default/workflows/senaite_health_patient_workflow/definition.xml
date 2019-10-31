@@ -25,7 +25,6 @@
     <permission-map name="senaite.health: Transition: Deactivate Patient" acquired="True" />
 
     <permission-map name="Access contents information" acquired="False">
-     <permission-role>Client</permission-role>
      <permission-role>Doctor</permission-role>
      <permission-role>LabClerk</permission-role>
      <permission-role>LabManager</permission-role>
@@ -59,7 +58,6 @@
      <permission-role>Owner</permission-role>
     </permission-map>
     <permission-map name="View" acquired="False">
-     <permission-role>Client</permission-role>
      <permission-role>Doctor</permission-role>
      <permission-role>LabClerk</permission-role>
      <permission-role>LabManager</permission-role>
