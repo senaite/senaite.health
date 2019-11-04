@@ -146,11 +146,6 @@ class BatchSchemaExtender(object):
                   label=_('Onset Date'),
               ),
         ),
-        ExtStringField('PatientBirthDate',
-              widget=StringWidget(
-                  visible=False,
-              ),
-        ),
         ExtRecordsField('PatientAgeAtCaseOnsetDate',
             widget=SplittedDateWidget(
                 label=_('Patient Age at Case Onset Date'),
@@ -330,22 +325,13 @@ class BatchSchemaExtender(object):
                                 'BatchID',
                                 'ClientPatientID',
                                 'Patient',
-                                # 'PatientID',
-                                # 'PatientUID',
-                                # 'PatientTitle',
                                 'Client',
-                                # 'ClientID',
-                                # 'ClientUID',
-                                # 'ClientTitle',
                                 'ClientBatchID',
                                 'Doctor',
-                                # 'DoctorID',
-                                # 'DoctorUID',
-                                # 'DoctorTitle',
                                 'BatchDate',
                                 'OnsetDate',
-                                'PatientAgeAtCaseOnsetDate',
                                 'OnsetDateEstimated',
+                                'PatientAgeAtCaseOnsetDate',
                                 'HoursFasting',
                                 'PatientCondition',
                                 'BasalBodyTemperature',
@@ -358,7 +344,7 @@ class BatchSchemaExtender(object):
                                 'AdditionalNotes',
                                 'Remarks',
                                 'PatientBirthDate',
-                                'BatchLabels',]
+                                'BatchLabels', ]
         return schematas
 
     def getFields(self):
