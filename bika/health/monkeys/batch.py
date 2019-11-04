@@ -19,17 +19,22 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health.interfaces import IPatient
+from bika.lims.interfaces import IClient
 
 
-def ObjectCreatedEventHandler(batch, event):
-    """A Batch (ClientCase) can be created inside Patient context. This
-    function assign patient field automatically accordingly
+def getClient(self):
+    """Returns the Client from the Batch passed-in, if any
     """
-    if not batch.isTemporary():
-        return
+    # The schema's field Client is only used to allow the user to assign
+    # the batch to a client in edit form. The entered value is used in
+    # ObjectModifiedEventHandler to move the batch to the Client's folder,
+    # so the value stored in the Schema's is not used anymore
+    # See https://github.com/senaite/senaite.core/pull/1450
+    parent = self.aq_parent
+    if IClient.providedBy(parent):
+        return parent
 
-    parent = batch.getFolderWhenPortalFactory()
-    if IPatient.providedBy(parent):
-        # Assign the Patient to the Batch
-        batch.getField("Patient").set(batch, parent)
-        batch.getField("ClientPatientID").set(batch, parent)
+    elif IPatient.providedBy(parent):
+        return parent.getClient()
+
+    return None

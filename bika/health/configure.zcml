@@ -32,6 +32,7 @@
   <include package=".content" />
   <include package=".controlpanel" />
   <include package=".impress" />
+  <include package=".monkeys" />
   <include package=".setupdata" />
   <include package=".static" />
   <include package=".subscribers" />

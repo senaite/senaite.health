@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="senaite.health">
+
+  <!-- Batch's getClient. The creation of Batch might happen inside Patient
+   folder. In such case, the client is the patient's client -->
+  <monkey:patch
+    description=""
+    class="bika.lims.content.batch.Batch"
+    original="getClient"
+    replacement=".batch.getClient"
+  />
+
+</configure>
