@@ -60,11 +60,17 @@ class PatientFieldsVisibility(SenaiteATWidgetVisibility):
 
     def isVisible(self, field, mode="view", default="visible"):
         """Renders Patient and ClientPatientID fields as hidden if the current
-        mode is "edit" and the the container is a Patient
+        mode is "edit" and the the container is a Patient or if the Batch has
+        a Patient already assigned (do not allow the modification of Patient)
         """
         if mode == "edit":
             container = self.context.aq_parent
             if IPatient.providedBy(container):
+                return "readonly"
+
+            # Do not allow the edition of Patient if assigned already
+            patient = self.context.getField("Patient").get(self.context)
+            if patient:
                 return "readonly"
 
         return default
