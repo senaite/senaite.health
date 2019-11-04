@@ -146,17 +146,12 @@ def handle_after_submit(context, request, state):
         # Redirect to New Batch from Patient
         next_url = api.get_url(context)
         if IPatient.providedBy(context):
-            client = context.getPrimaryReferrer()
-            folder = client or api.get_portal().batches
-
-            # Create a temporary Batch
+            # Create temporary Batch inside Patient context (the case will be
+            # moved in client's folder later thanks to objectmodified event)
             tmp_path = "portal_factory/Batch/{}".format(tmpID())
-            tmp_obj = folder.restrictedTraverse(tmp_path)
-
-            # Redirect to Batch's edit view with Patient's uid as a param
+            tmp_obj = context.restrictedTraverse(tmp_path)
             batch_url = api.get_url(tmp_obj)
-            uid = api.get_uid(context)
-            next_url = "{}/edit?Patient={}".format(batch_url, uid)
+            next_url = "{}/edit".format(batch_url)
 
         state.setNextAction('redirect_to:string:{}'.format(next_url))
 
