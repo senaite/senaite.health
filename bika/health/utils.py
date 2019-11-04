@@ -148,10 +148,11 @@ def handle_after_submit(context, request, state):
         if IPatient.providedBy(context):
             # Create temporary Batch inside Patient context (the case will be
             # moved in client's folder later thanks to objectmodified event)
-            tmp_path = "portal_factory/Batch/{}".format(tmpID())
-            tmp_obj = context.restrictedTraverse(tmp_path)
-            batch_url = api.get_url(tmp_obj)
-            next_url = "{}/edit".format(batch_url)
+            next_url = "{}/createObject?type_name=Batch".format(next_url)
+            #tmp_path = "portal_factory/Batch/{}".format(tmpID())
+            #tmp_obj = context.restrictedTraverse(tmp_path)
+            #batch_url = api.get_url(tmp_obj)
+            #next_url = "{}/edit".format(batch_url)
 
         state.setNextAction('redirect_to:string:{}'.format(next_url))
 

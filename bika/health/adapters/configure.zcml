@@ -2,7 +2,10 @@
     xmlns="http://namespaces.zope.org/zope"
     i18n_domain="senaite.health">
 
-    <adapter
+  <!-- Package includes -->
+  <include package=".widgetvisibility" />
+
+  <adapter
       factory=".widgetvisibility.SamplePatientFieldsVisibility"
       provides="bika.lims.interfaces.IATWidgetVisibility"
       for="bika.lims.interfaces.IAnalysisRequest"
@@ -23,23 +26,6 @@
       provides="bika.lims.interfaces.IATWidgetVisibility"
       for="bika.health.interfaces.IPatient"
       name="PatientClientFieldVisibility"
-    />
-
-    <!-- Handles the visibility of Client field in Batch context-->
-    <adapter
-      factory=".widgetvisibility.BatchClientFieldVisibility"
-      provides="bika.lims.interfaces.IATWidgetVisibility"
-      for="bika.lims.interfaces.IBatch"
-      name="HealthBatchClientFieldVisibility"
-    />
-
-    <!-- Handles the visibility of Patient and ClientPatientID fields
-     in Batch context-->
-    <adapter
-      factory=".widgetvisibility.BatchPatientFieldsVisibility"
-      provides="bika.lims.interfaces.IATWidgetVisibility"
-      for="bika.lims.interfaces.IBatch"
-      name="BatchPatientFieldsVisibility"
     />
 
     <!-- Default value for Client field in Add Sample form -->

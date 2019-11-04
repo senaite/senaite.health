@@ -96,3 +96,4 @@ class PatientClientFieldVisibility(SenaiteATWidgetVisibility):
                 return "invisible"
 
         return default
+

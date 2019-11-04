@@ -169,12 +169,6 @@ function HealthBatchEditView() {
             $("body").append('<input type="hidden" name="PatientGender"/>');
         }
 
-        // Hide the client field in order to avoid cross-conflicts with Patient
-        // selection.
-        $('#Client').hide();
-        $('#archetypes-fieldname-Client .formQuestion span[class="required"]').hide();
-        $('#Client').after("<span id='Client_label'>" + $("#Client").val() + "</span>&nbsp;&nbsp;");
-
         rpuid = that.getPatientUIDReferrer();
         rcuid = that.getClientUIDReferrer();
 
@@ -182,13 +176,6 @@ function HealthBatchEditView() {
             // The form comes from a Patient view. Set the default patient and
             // disable the patient, CPID and client combos.
             that.fillPatient(rpuid);
-            $('#Patient').hide();
-            $('#Client').hide();
-            $('#ClientPatientID').hide();
-            $('#Patient').after("<span id='Patient_label'>" + $("#Patient").val() + "</span>&nbsp;&nbsp;");
-           //$('#Client').after("<span id='Client_label'>" + $("#Client").val() + "</span>");
-            $('#ClientPatientID').after("<span id='ClientPatientID_label'>" + $("#ClientPatientID").val() + "</span>");
-            $('#Patient_addbutton').hide();
 
         } else if (rcuid != null) {
             that.fillClient(rcuid);
@@ -252,20 +239,17 @@ function HealthBatchEditView() {
                         $('#Client').val(data['ClientTitle']);
                         $('#Client').attr('uid', data['ClientUID']);
                         $('#Client_uid').val(data['ClientUID']);
-                        $('#Client_label').text(data['ClientTitle']);
 
                         // Set Patient info
                         $('#Patient').val(data['PatientFullname']);
                         $('#Patient').attr('uid', data['PatientUID']);
                         $('#Patient').attr('pid', data['PatientID']);
                         $('#Patient_uid').val(data['PatientUID']);
-                        $('#Patient_label').text(data['PatientFullname']);
 
                         // Set CPID Info
                         $('#ClientPatientID').val(data['ClientPatientID']);
                         $('#ClientPatientID').attr('uid', data['PatientUID']);
                         $('#ClientPatientID_uid').attr('uid', data['PatientUID']);
-                        $('#ClientPatientID_label').text(data['ClientPatientID']);
 
                         // Set Patient's additional info
                         $('input[name="PatientBirthDate"]').val(data['PatientBirthDate']);
@@ -335,20 +319,17 @@ function HealthBatchEditView() {
             $('#Client').val('');
             $('#Client').attr('uid', '');
             $('#Client_uid').val('');
-            $('#Client_label').text('');
 
             // Set Patient info
             $('#Patient').val('');
             $('#Patient').attr('uid', '');
             $('#Patient').attr('pid', '');
             $('#Patient_uid').val('');
-            $('#Patient_label').text('');
 
             // Set CPID Info
             $('#ClientPatientID').val('');
             $('#ClientPatientID').attr('uid', '');
             $('#ClientPatientID_uid').attr('uid', '');
-            $('#ClientPatientID_label').text('');
 
             // Set Patient's additional info
             $('input[name="PatientBirthDate"]').val('');
