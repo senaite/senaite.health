@@ -343,7 +343,6 @@ class BatchSchemaExtender(object):
                                 'AetiologicAgents',
                                 'AdditionalNotes',
                                 'Remarks',
-                                'PatientBirthDate',
                                 'BatchLabels', ]
         return schematas
 
