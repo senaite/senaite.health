@@ -1,19 +1,4 @@
 /**
- * Controller class for Batch readonly view
- */
-function HealthBatchViewView() {
-
-    /**
-     * Entry-point method for BatchViewView
-     */
-    this.load = function() {
-
-        // These look silly in the edit screen under "Additional Notes"
-        $('div[id^="archetypes-fieldname-Remarks-"]').remove();
-    }
-}
-
-/**
  * Controller class for Batch edit/creation view
  */
 function HealthBatchEditView() {
@@ -157,10 +142,6 @@ function HealthBatchEditView() {
      * Entry-point method for BatchEditView
      */
     this.load = function() {
-
-        // These look silly in the edit screen under "Additional Notes"
-        $("#archetypes-fieldname-Remarks").remove();
-
         // Add missing fields
         if (!$('input[name="PatientBirthDate"]').length) {
             $("body").append('<input type="hidden" name="PatientBirthDate"/>');

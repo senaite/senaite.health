@@ -380,6 +380,7 @@ class BatchSchemaModifier(object):
         schema['BatchLabels'].widget.visible = False
         schema['ClientBatchID'].widget.label = _("Client Case ID")
         schema['BatchDate'].widget.visible = False
+        schema['Remarks'].widget.visible = False
         setup = api.get_setup()
         doctor_required = get_field_value(setup, "CaseDoctorIsMandatory",
                                           default=False)
