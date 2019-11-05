@@ -21,7 +21,20 @@
     factory=".patient.ClientFieldVisibility"
     provides="bika.lims.interfaces.IATWidgetVisibility"
     for="bika.health.interfaces.IPatient"
-    name="senaite_health_patient_ClientFieldVisibility"
-  />
+    name="senaite_health_patient_ClientFieldVisibility" />
+
+  <!-- Visibility of Doctor field in AnalysisRequest context -->
+  <adapter
+    factory=".analysisrequest.DoctorFieldVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="senaite_health_analysisrequest_DoctorFieldVisibility" />
+
+  <!-- Visibility of Patient-related fields in AnalysisRequest context -->
+  <adapter
+    factory=".analysisrequest.PatientFieldsVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="senaite_health_analysisrequest_PatientFieldsVisibility" />
 
 </configure>

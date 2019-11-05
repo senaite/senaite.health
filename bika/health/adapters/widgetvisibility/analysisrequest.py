@@ -17,39 +17,9 @@
 #
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
+from bika.health.interfaces import IPatient
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
 from bika.lims.interfaces import IBatch
-
-
-class SamplePatientFieldsVisibility(SenaiteATWidgetVisibility):
-    """
-    Handles "Batch", "Patient" and "ClientPatientID" fields visibility in Sample (Analysis Request) context. They are
-    not editable, regardless of the current state of the Sample, except when displayed in AR Add view. The reason is
-    that all these fields, together with Client field, are strongly related.
-    """
-    def __init__(self, context):
-        super(SamplePatientFieldsVisibility, self).__init__(
-            context=context, sort=10,
-            field_names=["Batch", "Patient", "ClientPatientID", ])
-
-    def isVisible(self, field, mode="view", default="visible"):
-        if mode == "edit":
-            return "invisible"
-
-        elif mode == "add":
-            container = self.context.aq_parent
-
-            # Do not display the Patient field if the Sample is being created
-            # inside a Batch and the latter has a Patient assigned. In such
-            # case, the patient assigned to the Batch will be used:
-            # See: adapters.addsample.PatientDefaultFieldValue
-            if IBatch.providedBy(container):
-                patient = container.getField("Patient").get(container)
-                if patient:
-                    return "hidden"
-
-        return default
 
 
 class DoctorFieldVisibility(SenaiteATWidgetVisibility):
@@ -71,6 +41,37 @@ class DoctorFieldVisibility(SenaiteATWidgetVisibility):
             if IBatch.providedBy(container):
                 doctor = container.getField("Doctor").get(container)
                 if doctor:
+                    return "hidden"
+
+        return default
+
+
+class PatientFieldsVisibility(SenaiteATWidgetVisibility):
+    """Handles "Batch", "Patient" and "ClientPatientID" fields visibility in
+    Sample (Analysis Request) context. They are not editable, regardless of the
+    current state of the Sample, except when displayed in AR Add view. The
+    reason is that all these fields, together with Client field, are strongly
+    related.
+    """
+    def __init__(self, context):
+        super(PatientFieldsVisibility, self).__init__(
+            context=context, sort=10,
+            field_names=["Batch", "Patient", "ClientPatientID", ])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        if mode == "edit":
+            return "invisible"
+
+        elif mode == "add":
+            container = self.context.aq_parent
+
+            # Do not display the Patient field if the Sample is being created
+            # inside a Batch and the latter has a Patient assigned. In such
+            # case, the patient assigned to the Batch will be used:
+            # See: adapters.addsample.PatientDefaultFieldValue
+            if IBatch.providedBy(container):
+                patient = container.getField("Patient").get(container)
+                if patient:
                     return "hidden"
 
         return default
