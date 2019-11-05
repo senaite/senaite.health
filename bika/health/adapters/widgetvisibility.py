@@ -18,10 +18,8 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.health.interfaces import IPatient
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
 from bika.lims.interfaces import IBatch
-from bika.lims.interfaces import IClient
 
 
 class SamplePatientFieldsVisibility(SenaiteATWidgetVisibility):
@@ -74,25 +72,5 @@ class DoctorFieldVisibility(SenaiteATWidgetVisibility):
                 doctor = container.getField("Doctor").get(container)
                 if doctor:
                     return "hidden"
-
-        return default
-
-
-class PatientClientFieldVisibility(SenaiteATWidgetVisibility):
-    """Handles the Client (PrimaryReferrer) field visibility in Patient context
-    """
-
-    def __init__(self, context):
-        super(PatientClientFieldVisibility, self).__init__(
-            context=context, sort=10, field_names=["PrimaryReferrer"])
-
-    def isVisible(self, field, mode="view", default="visible"):
-        if mode == "edit":
-            container = self.context.aq_parent
-
-            # Do not display the Client field if the Patient is created
-            # or edited inside a Client.
-            if IClient.providedBy(container):
-                return "invisible"
 
         return default

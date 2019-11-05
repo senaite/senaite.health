@@ -822,6 +822,7 @@ schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
 schema.moveField('ConsentSMS', after='PrimaryReferrer')
+schema.moveField('PrimaryReferrer', before='ClientPatientID')
 
 
 class Patient(Person):
