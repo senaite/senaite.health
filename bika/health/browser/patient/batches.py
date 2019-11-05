@@ -19,7 +19,10 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health.browser.batchfolder import BatchListingViewAdapter
+from bika.health.interfaces import IPatient
 from bika.lims import api
+from bika.lims import bikaMessageFactory as _
+from bika.lims.permissions import AddBatch
 
 
 class PatientBatchListingViewAdapter(BatchListingViewAdapter):
@@ -41,3 +44,12 @@ class PatientBatchListingViewAdapter(BatchListingViewAdapter):
             if "contentFilter" not in rv:
                 rv["contentFilter"] = {}
             rv["contentFilter"].update(query)
+
+        url = api.get_url(self.context)
+        self.listing.context_actions = {
+            _("Add"): {
+                "url": "{}/createObject?type_name=Batch".format(url),
+                "permission": AddBatch,
+                "icon": "++resource++bika.lims.images/add.png"
+            }
+        }

@@ -90,12 +90,12 @@ def get_field_value(instance, field_name, default=_marker):
     """Returns the value of a Schema field from the instance passed in
     """
     instance = api.get_object(instance)
-    field = instance.Schema() and instance.Schema().getField(field_name) or None
+    field = instance.getField(field_name) or None
     if not field:
         if default is not _marker:
             return default
         api.fail("No field {} found for {}".format(field_name, repr(instance)))
-    return instance.Schema().getField(field_name).get(instance)
+    return field.get(instance)
 
 
 def set_field_value(instance, field_name, value):
@@ -122,6 +122,7 @@ def get_default_num_samples():
 def handle_after_submit(context, request, state):
     """Handles actions provided in extra_buttons slot from edit forms
     """
+    status_id = "created"
     if request.get("form.button.new_sample"):
         # Redirect to Sample Add from Patient
         next_url = api.get_url(context)
@@ -145,17 +146,13 @@ def handle_after_submit(context, request, state):
         # Redirect to New Batch from Patient
         next_url = api.get_url(context)
         if IPatient.providedBy(context):
-            client = context.getPrimaryReferrer()
-            folder = client or api.get_portal().batches
-
-            # Create a temporary Batch
-            tmp_path = "portal_factory/Batch/{}".format(tmpID())
-            tmp_obj = folder.restrictedTraverse(tmp_path)
-
-            # Redirect to Batch's edit view with Patient's uid as a param
-            batch_url = api.get_url(tmp_obj)
-            uid = api.get_uid(context)
-            next_url = "{}/edit?Patient={}".format(batch_url, uid)
+            # Create temporary Batch inside Patient context (the case will be
+            # moved in client's folder later thanks to objectmodified event)
+            next_url = "{}/createObject?type_name=Batch".format(next_url)
+            #tmp_path = "portal_factory/Batch/{}".format(tmpID())
+            #tmp_obj = context.restrictedTraverse(tmp_path)
+            #batch_url = api.get_url(tmp_obj)
+            #next_url = "{}/edit".format(batch_url)
 
         state.setNextAction('redirect_to:string:{}'.format(next_url))
 
@@ -163,3 +160,6 @@ def handle_after_submit(context, request, state):
         # Redirect to Patient's samples view
         next_url = "{}/analysisrequests".format(api.get_url(context))
         state.setNextAction('redirect_to:string:{}'.format(next_url))
+    else:
+        status_id = "success"
+    return status_id

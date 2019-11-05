@@ -1,0 +1,41 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
+    i18n_domain="senaite.health">
+
+  <!-- Batch's getClient. The creation of Batch might happen inside Patient
+   folder. In such case, the client is the patient's client -->
+  <monkey:patch
+    description=""
+    class="bika.lims.content.batch.Batch"
+    original="getClient"
+    replacement=".batch.getClient"/>
+
+  <!-- TODO Remove for compatibility with senaite.core v1.3.3
+   Superseded by https://github.com/senaite/senaite.core/pull/1466
+  -->
+  <monkey:patch
+    description=""
+    class="Products.Archetypes.generator.macrowidget"
+    original="__call__"
+    replacement=".macrowidget.__call__" />
+
+  <!-- TODO Remove for compatibility with senaite.core v1.3.3
+   Superseded by https://github.com/senaite/senaite.core/pull/1467
+  -->
+  <monkey:patch
+    description=""
+    class="bika.lims.browser.batchfolder.BatchFolderContentsView"
+    original="before_render"
+    replacement=".batchfolder.before_render" />
+
+  <!-- TODO Remove for compatibility with senaite.core v1.3.3
+   Superseded by https://github.com/senaite/senaite.core/pull/1467
+  -->
+  <monkey:patch
+    description=""
+    class="bika.lims.browser.batchfolder.BatchFolderContentsView"
+    original="update"
+    replacement=".batchfolder.update" />
+
+</configure>

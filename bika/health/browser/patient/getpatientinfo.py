@@ -18,13 +18,13 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from Products.ZCTextIndex.ParseTree import ParseError
-from bika.lims.browser import BrowserView
-from Products.CMFCore.utils import getToolByName
-from bika.health.catalog import CATALOG_PATIENTS
-from bika.health import logger
-import plone
 import json
+
+import plone
+
+from bika.health.catalog import CATALOG_PATIENTS
+from bika.lims import api
+from bika.lims.browser import BrowserView
 
 
 class ajaxGetPatientInfo(BrowserView):
@@ -32,8 +32,6 @@ class ajaxGetPatientInfo(BrowserView):
     """
     def __call__(self):
         plone.protect.CheckAuthenticator(self.request)
-        PatientUID = self.request.get('PatientUID', '')
-        PatientID = self.request.get('PatientID', '')
         ret = {'PatientID': '',
                'PatientUID': '',
                'ClientPatientID': '',
@@ -46,34 +44,24 @@ class ajaxGetPatientInfo(BrowserView):
                'PatientGender': 'dk',
                'PatientMenstrualStatus': ''}
 
-        proxies = None
-        if PatientUID:
-            try:
-                bpc = getToolByName(
-                    self.context, CATALOG_PATIENTS)
-                proxies = bpc(UID=PatientUID)
-            except ParseError:
-                pass
-        elif PatientID:
-            logger.warn("Search of Patient by ID!!!")
-            try:
-                bpc = getToolByName(
-                    self.context, CATALOG_PATIENTS)
-                proxies = bpc(id=PatientID)
-            except ParseError:
-                pass
-
-        if not proxies:
+        uid = self.request.get('PatientUID', '')
+        if not uid:
             return json.dumps(ret)
-        patient = proxies[0]
-        ret = {'PatientID': patient.getPatientID,
-               'PatientUID': patient.UID,
-               'ClientPatientID': patient.getClientPatientID,
-               'ClientUID': patient.getPrimaryReferrerUID,
-               'ClientTitle': patient.getPrimaryReferrerTitle,
-               'ClientSysID': patient.getPrimaryReferrerID,
-               'PatientFullname': patient.Title,
-               'PatientBirthDate': self.ulocalized_time(patient.getBirthDate),
-               'PatientGender': patient.getGender,
-               'PatientMenstrualStatus': patient.getMenstrualStatus}
+
+        brains = api.search({"UID": uid}, CATALOG_PATIENTS)
+        if brains:
+            patient = brains[0]
+            ret = {
+                'PatientID': patient.getPatientID,
+                'PatientUID': patient.UID,
+                'ClientPatientID': patient.getClientPatientID,
+                'ClientUID': patient.getPrimaryReferrerUID,
+                'ClientTitle': patient.getPrimaryReferrerTitle,
+                'ClientSysID': patient.getPrimaryReferrerID,
+                'PatientFullname': patient.Title,
+                'PatientBirthDate': self.ulocalized_time(patient.getBirthDate),
+                'PatientGender': patient.getGender,
+                'PatientMenstrualStatus': patient.getMenstrualStatus
+            }
+
         return json.dumps(ret)

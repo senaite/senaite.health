@@ -2,80 +2,68 @@
     xmlns="http://namespaces.zope.org/zope"
     i18n_domain="senaite.health">
 
-    <adapter
-      factory=".widgetvisibility.PatientFieldsVisibility"
-      provides="bika.lims.interfaces.IATWidgetVisibility"
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="PatientFieldsVisibility"
-    />
+  <!-- Package includes -->
+  <include package=".widgetvisibility" />
 
-    <!-- Handles the visibility of Doctor field -->
-    <adapter
-      factory=".widgetvisibility.DoctorFieldVisibility"
-      provides="bika.lims.interfaces.IATWidgetVisibility"
-      for="bika.lims.interfaces.IAnalysisRequest"
-      name="DoctorFieldVisibility"
-    />
+  <!-- Default value for Client field in Add Sample form -->
+  <adapter
+    factory=".addsample.ClientDefaultFieldValue"
+    for="*"
+    provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+    name = "Client_default_value_hook" />
 
-    <!-- Default value for Client field in Add Sample form -->
-    <adapter
-      factory=".addsample.ClientDefaultFieldValue"
-      for="*"
-      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
-      name = "Client_default_value_hook"
-    />
+  <!-- Default value for Patient field in Add Sample form -->
+  <adapter
+    factory=".addsample.PatientDefaultFieldValue"
+    for="*"
+    provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+    name = "Patient_default_value_hook" />
 
-    <!-- Default value for Patient field in Add Sample form -->
-    <adapter
-      factory=".addsample.PatientDefaultFieldValue"
-      for="*"
-      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
-      name = "Patient_default_value_hook"
-    />
+  <!-- Default value for ClientPatientID field in Add Sample form -->
+  <adapter
+    factory=".addsample.PatientDefaultFieldValue"
+    for="*"
+    provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+    name = "ClientPatientID_default_value_hook" />
 
-    <!-- Default value for ClientPatientID field in Add Sample form -->
-    <adapter
-      factory=".addsample.PatientDefaultFieldValue"
-      for="*"
-      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
-      name = "ClientPatientID_default_value_hook"
-    />
+  <!-- Default value for Doctor field in Add Sample form -->
+  <adapter
+    factory=".addsample.DoctorDefaultFieldValue"
+    for="*"
+    provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+    name = "Doctor_default_value_hook" />
 
-    <!-- Default value for Doctor field in Add Sample form -->
-    <adapter
-      factory=".addsample.DoctorDefaultFieldValue"
-      for="*"
-      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
-      name = "Doctor_default_value_hook"
-    />
+  <!-- Default value for Batch (Case) field in Add Sample form -->
+  <adapter
+    factory=".addsample.BatchDefaultFieldValue"
+    for="*"
+    provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
+    name="Batch_default_value_hook" />
 
-    <!-- Default value for Batch (Case) field in Add Sample form -->
-    <adapter
-      factory=".addsample.BatchDefaultFieldValue"
-      for="*"
-      provides="bika.lims.interfaces.IGetDefaultFieldValueARAddHook"
-      name="Batch_default_value_hook"
-    />
+  <!-- Additional metadata for Client field in Add Sample form
+  Changes the default behavior of Add Sample when the Client is selected:
+  E.g. search filtering of other fields like Patient, default values for other
+  fields, etc.
+  -->
+  <adapter
+    factory=".addsample.AddSampleClientInfo"
+    for="bika.lims.interfaces.IClient"
+    provides="bika.lims.interfaces.IAddSampleObjectInfo"
+    name="senaite.health.addsample_client_info" />
 
-    <adapter
-      factory=".addsample.AddSampleClientInfo"
-      for="bika.lims.interfaces.IClient"
-      provides="bika.lims.interfaces.IAddSampleObjectInfo"
-      name="senaite.health.addsample_client_info"
-    />
+  <!-- Additional metadata for Batch field in Add Sample form -->
+  <adapter
+    factory=".addsample.AddSampleBatchInfo"
+    for="bika.lims.interfaces.IBatch"
+    provides="bika.lims.interfaces.IAddSampleObjectInfo"
+    name="senaite.health.addsample_batch_info" />
 
-    <adapter
-      factory=".addsample.AddSampleBatchInfo"
-      for="bika.lims.interfaces.IBatch"
-      provides="bika.lims.interfaces.IAddSampleObjectInfo"
-      name="senaite.health.addsample_batch_info"
-    />
-
-    <adapter
-      factory=".addsample.AddSampleFieldsFlush"
-      for="*"
-      provides="bika.lims.interfaces.IAddSampleFieldsFlush"
-      name="senaite.health.addsample_fields_flush"
-    />
+  <!-- Flushing of custom fields for Add Sample form -->
+  <adapter
+    factory=".addsample.AddSampleFieldsFlush"
+    for="*"
+    provides="bika.lims.interfaces.IAddSampleFieldsFlush"
+    name="senaite.health.addsample_fields_flush"
+  />
 
 </configure>

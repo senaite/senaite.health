@@ -21,6 +21,7 @@
 import collections
 
 from bika.health import bikaMessageFactory as _
+from bika.health.interfaces import IPatients
 from bika.health.utils import get_resource_url
 from bika.health.catalog import CATALOG_PATIENTS
 from bika.health.permissions import AddPatient
@@ -32,6 +33,7 @@ from bika.lims.utils import get_link
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface import implements
+from bika.lims.api.security import check_permission
 
 
 class PatientsView(BikaListingView):
@@ -120,34 +122,40 @@ class PatientsView(BikaListingView):
             },
         ]
 
-    def update(self):
-        """Called before the listings renders
+    def before_render(self):
+        """Before template render hook
         """
-        super(PatientsView, self).update()
+        super(PatientsView, self).before_render()
 
-        # Render the Add button. We need to do this here because patients live
-        # inside site.patients folder
-        self.context_actions = {}
-        patients = api.get_portal().patients
-        if security.check_permission(AddPatient, patients):
-            self.context_actions = {
-                _("Add"): {
-                    "url": "createObject?type_name=Patient",
-                    "icon": "++resource++bika.lims.images/add.png"}
+        if IPatients.providedBy(self.context):
+            self.request.set("disable_border", 1)
+
+        # By default, only users with AddPatient permissions for the current
+        # context can add patients.
+        self.context_actions = {
+            _("Add"): {
+                "url": "createObject?type_name=Patient",
+                "permission": AddPatient,
+                "icon": "++resource++bika.lims.images/add.png"
             }
+        }
 
-        # If the current user is a client contact, display those patients that
-        # belong to same client or that do not belong to any client
-        client = api.get_current_client()
-        if client:
-            query = dict(client_uid=[api.get_uid(client), "-1"])
-            # We add UID "-1" to also include Patients w/o Client assigned
-            self.contentFilter.update(query)
-            for rv in self.review_states:
-                rv["contentFilter"].update(query)
+        # If current user is a client contact and current context is not a
+        # Client, then modify the url for Add action so the Patient gets created
+        # inside the Client object to which the current user belongs. The
+        # reason is that Client contacts do not have privileges to create
+        # Patients inside portal/patients
+        if not IClient.providedBy(self.context):
+            # Get the client the current user belongs to
+            client = api.get_current_client()
+            if client and check_permission(AddPatient, client):
+                add_url = self.context_actions[_("Add")]["url"]
+                add_url = "{}/{}".format(api.get_url(client), add_url)
+                self.context_actions[_("Add")]["url"] = add_url
+                del(self.context_actions[_("Add")]["permission"])
 
-        # If the current context is a Client, remove the title column
-        if IClient.providedBy(self.context):
+        else:
+            # The current context is a Client, remove the title column
             self.remove_column('getPrimaryReferrerTitle')
 
     def folderitems(self, full_objects=False, classic=False):

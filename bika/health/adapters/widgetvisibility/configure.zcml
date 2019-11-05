@@ -1,0 +1,40 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="senaite.health">
+
+  <!-- Visibility of Client field in Batch context -->
+  <adapter
+    factory=".batch.ClientFieldVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.lims.interfaces.IBatch"
+    name="senaite_health_batch_ClientFieldVisibility" />
+
+  <!-- Visibility of Patient and ClientPatientID fields in Batch context-->
+  <adapter
+    factory=".batch.PatientFieldsVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.lims.interfaces.IBatch"
+    name="senaite_health_batch_PatientFieldsVisibility" />
+
+  <!-- Visibility of Client field in Patient context-->
+  <adapter
+    factory=".patient.ClientFieldVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.health.interfaces.IPatient"
+    name="senaite_health_patient_ClientFieldVisibility" />
+
+  <!-- Visibility of Doctor field in AnalysisRequest context -->
+  <adapter
+    factory=".analysisrequest.DoctorFieldVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="senaite_health_analysisrequest_DoctorFieldVisibility" />
+
+  <!-- Visibility of Patient-related fields in AnalysisRequest context -->
+  <adapter
+    factory=".analysisrequest.PatientFieldsVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.lims.interfaces.IAnalysisRequest"
+    name="senaite_health_analysisrequest_PatientFieldsVisibility" />
+
+</configure>

@@ -15,14 +15,8 @@ window.bika.health.controllers =  {
     "body":
         ['HealthSiteView'],
 
-    ".template-base_view.portaltype-batch":
-        ['HealthBatchViewView'],
-
     "#batch-base-edit":
-        ['HealthBatchEditView',
-         'HealthPatientEditView',
-         'HealthPatientPublicationPrefsEditView',
-         'HealthPatientGlobalWidgetEditView'],
+        ['HealthBatchEditView',],
 
     "#patient-base-edit":
         ['HealthPatientEditView',

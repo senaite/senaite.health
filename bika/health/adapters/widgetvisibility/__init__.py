@@ -17,21 +17,3 @@
 #
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
-from Products.Archetypes import atapi
-from plone.app.folder.folder import ATFolder
-from plone.app.folder.folder import ATFolderSchema
-from zope.interface.declarations import implements
-
-from bika.health.config import PROJECTNAME
-from bika.health.interfaces import IPatients
-
-schema = ATFolderSchema.copy()
-
-
-class Patients(ATFolder):
-    implements(IPatients)
-    displayContentsTab = False
-    schema = schema
-
-atapi.registerType(Patients, PROJECTNAME)

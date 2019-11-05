@@ -24,6 +24,8 @@ from Products.Archetypes.Registry import registerWidget
 from Products.CMFCore.utils import getToolByName
 import json
 
+from bika.health.interfaces import IPatient
+
 
 class PatientMenstrualStatusWidget(ATRecordsWidget):
     security = ClassSecurityInfo()
@@ -50,14 +52,8 @@ class PatientMenstrualStatusWidget(ATRecordsWidget):
         return json.dumps(val)
 
     def getPatientsGender(self):
-        gender = 'dk'
-        patientid = self.aq_parent.getPatientID()
-        if patientid:
-            bpc = getToolByName(self, 'bikahealth_catalog_patient_listing')
-            patient = bpc(portal_type='Patient', id=patientid)
-            gender = len(patient) > 0 \
-                        and patient[0].getObject().getGender() or 'dk'
-        return gender
+        patient = self.aq_parent
+        return IPatient.providedBy(patient) and patient.getGender() or "dk"
 
     def getMenstrualStatus(self):
 

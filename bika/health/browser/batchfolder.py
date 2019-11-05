@@ -23,9 +23,7 @@ import collections
 from bika.health import bikaMessageFactory as _
 from bika.health.utils import get_field_value
 from bika.lims import api
-from bika.lims.api import security
 from bika.lims.interfaces import IClient
-from bika.lims.permissions import AddBatch
 from bika.lims.utils import get_link
 from senaite.core.listing import utils
 from senaite.core.listing.interfaces import IListingView, IListingViewAdapter

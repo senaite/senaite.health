@@ -18,20 +18,25 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from Products.Archetypes import atapi
-from plone.app.folder.folder import ATFolder
-from plone.app.folder.folder import ATFolderSchema
-from zope.interface.declarations import implements
-
-from bika.health.config import PROJECTNAME
-from bika.health.interfaces import IPatients
-
-schema = ATFolderSchema.copy()
+from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
+from bika.lims.interfaces import IClient
 
 
-class Patients(ATFolder):
-    implements(IPatients)
-    displayContentsTab = False
-    schema = schema
+class ClientFieldVisibility(SenaiteATWidgetVisibility):
+    """Handles the Client (PrimaryReferrer) field visibility in Patient context
+    """
 
-atapi.registerType(Patients, PROJECTNAME)
+    def __init__(self, context):
+        super(ClientFieldVisibility, self).__init__(
+            context=context, field_names=["PrimaryReferrer"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        """Renders the PrimaryReferrer field (Client) as readonly when the
+        mode is "edit" and the container is a Client
+        """
+        if mode == "edit":
+            container = self.context.aq_parent
+            if IClient.providedBy(container):
+                return "readonly"
+
+        return default

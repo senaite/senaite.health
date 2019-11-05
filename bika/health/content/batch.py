@@ -18,47 +18,43 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-""" http://pypi.python.org/pypi/archetypes.schemaextender
-"""
-from Products.ATContentTypes.interface import IATDocument
+from Products.Archetypes import DisplayList
+from Products.Archetypes.Widget import BooleanWidget
+from Products.Archetypes.Widget import IntegerWidget
+from Products.Archetypes.Widget import MultiSelectionWidget
+from Products.Archetypes.Widget import StringWidget
+from Products.Archetypes.Widget import TextAreaWidget
 from Products.Archetypes.interfaces import IVocabulary
-from Products.Archetypes.public import *
-from Products.Archetypes.public import BooleanWidget
 from Products.Archetypes.references import HoldingReference
-from Products.CMFCore.interfaces import ISiteRoot
 from Products.CMFCore.utils import getToolByName
-from bika.lims.browser.widgets import RecordsWidget
-from archetypes.schemaextender.interfaces import ISchemaExtender
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import ISchemaModifier
-from bika.lims.fields import *
-from bika.lims.interfaces import IBatch
-from bika.lims.browser.widgets import DateTimeWidget
-from bika.lims.browser.widgets import ReferenceWidget
-from bika.health import bikaMessageFactory as _
-from bika.lims import bikaMessageFactory as _b
-from bika.health.widgets import *
-from plone.indexer.decorator import indexer
 from zope.component import adapts
 from zope.interface import implements
-from bika.health.widgets.casepatientconditionwidget import CasePatientConditionWidget
-try:
-    from zope.component.hooks import getSite
-except:
-    # Plone < 4.3
-    from zope.app.component.hooks import getSite
 
-class getCaseSyndromicClassification:
-    implements(IVocabulary)
-    def getDisplayList(self, instance):
-        """ return all case syndromic classifications """
-        bsc = getToolByName(instance, 'bika_setup_catalog')
-        ret = []
-        for p in bsc(portal_type = 'CaseSyndromicClassification',
-                      is_active = True,
-                      sort_on = 'sortable_title'):
-            ret.append((p.UID, p.Title))
-        return DisplayList(ret)
+from bika.health import bikaMessageFactory as _
+from bika.health.utils import get_field_value
+from bika.health.widgets import CaseBasalBodyTempWidget
+from bika.health.widgets import CaseMenstrualStatusWidget
+from bika.health.widgets import CaseSymptomsWidget
+from bika.health.widgets import SplittedDateWidget
+from bika.health.widgets.casepatientconditionwidget import \
+    CasePatientConditionWidget
+from bika.lims import api
+from bika.lims import bikaMessageFactory as _b
+from bika.lims.browser.widgets import DateTimeWidget
+from bika.lims.browser.widgets import RecordsWidget
+from bika.lims.browser.widgets import ReferenceWidget
+from bika.lims.fields import ExtBooleanField
+from bika.lims.fields import ExtDateTimeField
+from bika.lims.fields import ExtIntegerField
+from bika.lims.fields import ExtLinesField
+from bika.lims.fields import ExtRecordsField
+from bika.lims.fields import ExtReferenceField
+from bika.lims.fields import ExtStringField
+from bika.lims.fields import ExtTextField
+from bika.lims.interfaces import IBatch
+
 
 class getCaseStatus:
     implements(IVocabulary)
@@ -72,6 +68,7 @@ class getCaseStatus:
             ret.append((p.Title, p.Title))
         return DisplayList(ret)
 
+
 class getCaseOutcome:
     implements(IVocabulary)
     def getDisplayList(self, instance):
@@ -84,71 +81,12 @@ class getCaseOutcome:
             ret.append((p.Title, p.Title))
         return DisplayList(ret)
 
-@indexer(IBatch)
-def getPatientID(instance):
-    item = instance.Schema()['Patient'].get(instance)
-    value = item and item.getPatientID() or ''
-    return value
-
-@indexer(IBatch)
-def getPatientUID(instance):
-    item = instance.Schema()['Patient'].get(instance)
-    value = item and item.UID() or ''
-    return value
-
-@indexer(IBatch)
-def getPatientTitle(instance):
-    return PatientTitleGetter(instance)
-
-
-def PatientTitleGetter(obj):
-    item = obj.Schema()['Patient'].get(obj)
-    value = item and item.Title() or ''
-    return value
-
-@indexer(IBatch)
-def getDoctorID(instance):
-    item = instance.Schema()['Doctor'].get(instance)
-    value = item and item.Schema()['DoctorID'].get(item) or ''
-    return value
-
-@indexer(IBatch)
-def getDoctorUID(instance):
-    item = instance.Schema()['Doctor'].get(instance)
-    value = item and item.UID() or ''
-    return value
-
-@indexer(IBatch)
-def getDoctorTitle(instance):
-    item = instance.Schema()['Doctor'].get(instance)
-    value = item and item.Title() or ''
-    return value
-
-@indexer(IBatch)
-def getClientPatientID(instance):
-    return ClientPatientIDGetter(instance)
-
-
-def ClientPatientIDGetter(obj):
-    item = obj.Schema()['Patient'].get(obj)
-    value = item and item.getClientPatientID() or ''
-    return value
-
 
 class BatchSchemaExtender(object):
     adapts(IBatch)
     implements(IOrderableSchemaExtender)
 
     fields = [
-        # ExtComputedField('ClientID',
-        #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).ID() or None",
-        # ),
-        # ExtComputedField('ClientUID',
-        #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).UID() or None",
-        # ),
-        # ExtComputedField('ClientTitle',
-        #     expression="context.Schema()['Client'].get(context) and context.Schema()['Client'].get(context).Title() or None",
-        # ),
         ExtReferenceField('Doctor',
             required=1,
             multiValued=0,
@@ -168,17 +106,8 @@ class BatchSchemaExtender(object):
                             ],
             ),
         ),
-        # ExtComputedField('DoctorID',
-        #     expression="context.Schema()['Doctor'].get(context) and context.Schema()['Doctor'].get(context).ID() or None",
-        # ),
-        # ExtComputedField('DoctorUID',
-        #     expression="context.Schema()['Doctor'].get(context) and context.Schema()['Doctor'].get(context).UID() or None",
-        # ),
-        # ExtComputedField('DoctorTitle',
-        #     expression="context.Schema()['Doctor'].get(context) and context.Schema()['Doctor'].get(context).Title() or None",
-        # ),
         ExtReferenceField('Patient',
-            required = 1,
+            required=1,
             multiValued=0,
             allowed_types = ('Patient',),
             referenceClass = HoldingReference,
@@ -212,23 +141,9 @@ class BatchSchemaExtender(object):
                 showOn=True,
             ),
         ),
-        # ExtComputedField('PatientID',
-        #     expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).ID() or None",
-        # ),
-        # ExtComputedField('PatientUID',
-        #     expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).UID() or None",
-        # ),
-        # ExtComputedField('PatientTitle',
-        #     expression="context.Schema()['Patient'].get(context) and context.Schema()['Patient'].get(context).Title() or None",
-        # ),
         ExtDateTimeField('OnsetDate',
               widget=DateTimeWidget(
                   label=_('Onset Date'),
-              ),
-        ),
-        ExtStringField('PatientBirthDate',
-              widget=StringWidget(
-                  visible=False,
               ),
         ),
         ExtRecordsField('PatientAgeAtCaseOnsetDate',
@@ -410,22 +325,13 @@ class BatchSchemaExtender(object):
                                 'BatchID',
                                 'ClientPatientID',
                                 'Patient',
-                                # 'PatientID',
-                                # 'PatientUID',
-                                # 'PatientTitle',
                                 'Client',
-                                # 'ClientID',
-                                # 'ClientUID',
-                                # 'ClientTitle',
                                 'ClientBatchID',
                                 'Doctor',
-                                # 'DoctorID',
-                                # 'DoctorUID',
-                                # 'DoctorTitle',
                                 'BatchDate',
                                 'OnsetDate',
-                                'PatientAgeAtCaseOnsetDate',
                                 'OnsetDateEstimated',
+                                'PatientAgeAtCaseOnsetDate',
                                 'HoursFasting',
                                 'PatientCondition',
                                 'BasalBodyTemperature',
@@ -437,8 +343,7 @@ class BatchSchemaExtender(object):
                                 'AetiologicAgents',
                                 'AdditionalNotes',
                                 'Remarks',
-                                'PatientBirthDate',
-                                'BatchLabels',]
+                                'BatchLabels', ]
         return schematas
 
     def getFields(self):
@@ -460,33 +365,9 @@ class BatchSchemaModifier(object):
         schema['BatchLabels'].widget.visible = False
         schema['ClientBatchID'].widget.label = _("Client Case ID")
         schema['BatchDate'].widget.visible = False
-        schema['Doctor'].required = self.isCaseDoctorIsMandatory()
+        schema['Remarks'].widget.visible = False
+        setup = api.get_setup()
+        doctor_required = get_field_value(setup, "CaseDoctorIsMandatory",
+                                          default=False)
+        schema['Doctor'].required = doctor_required
         return schema
-
-    def isCaseDoctorIsMandatory(self):
-        """
-        Returns whether the Doctor field is mandatory or not in cases object.
-        :return: boolean
-        """
-        if hasattr(self.context, 'bika_setup'):
-            return self.context.bika_setup.CaseDoctorIsMandatory
-
-        # If this object is being created right now, then it doesn't have bika_setup, get bika_setup from site root.
-        plone = getSite()
-        if not plone:
-            plone = get_site_from_context(self.context)
-        return plone.bika_setup.CaseDoctorIsMandatory
-
-
-def get_site_from_context(context):
-    """
-    Sometimes getSite() method can return None, in that case we can find site root in parents of an object.
-    :param context: context to go through parents of, until we reach the site root
-    :return: site root
-    """
-    if not ISiteRoot.providedBy(context):
-        return context
-    else:
-        for item in context.aq_chain:
-            if ISiteRoot.providedBy(item):
-                return item

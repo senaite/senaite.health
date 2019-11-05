@@ -26,7 +26,10 @@ from Products.Archetypes import atapi
 from Products.Archetypes.public import *
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
+from zope.interface import implements
+
 from bika.health import bikaMessageFactory as _
+from bika.health import logger
 from bika.health.config import *
 from bika.health.interfaces import IPatient
 from bika.health.utils import translate_i18n as t
@@ -45,8 +48,9 @@ from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.browser.widgets.remarkswidget import RemarksWidget
 from bika.lims.catalog.analysisrequest_catalog import \
     CATALOG_ANALYSIS_REQUEST_LISTING
+from bika.lims.catalog.bika_catalog import BIKA_CATALOG
 from bika.lims.content.person import Person
-from zope.interface import implements
+from bika.lims.interfaces import IClient
 
 schema = Person.schema.copy() + Schema((
     StringField(
@@ -83,25 +87,25 @@ schema = Person.schema.copy() + Schema((
     ),
     ComputedField(
         'PrimaryReferrerID',
-        expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).getId() or None",
+        expression="context.getClientID()",
         widget=ComputedWidget(
         ),
     ),
     ComputedField(
         'PrimaryReferrerTitle',
-        expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).Title() or None",
+        expression="context.getClientTitle()",
         widget=ComputedWidget(
         ),
     ),
     ComputedField(
         'PrimaryReferrerUID',
-        expression="context.Schema()['PrimaryReferrer'].get(context) and context.Schema()['PrimaryReferrer'].get(context).UID() or None",
+        expression="context.getClientUID()",
         widget=ComputedWidget(
         ),
     ),
     ComputedField(
         'PrimaryReferrerURL',
-        expression="context.getPrimaryReferrer().absolute_url_path() if context.getPrimaryReferrer() else ''",
+        expression="context.getClientURL()",
         widget=ComputedWidget(
             visible=False
         ),
@@ -818,6 +822,7 @@ schema.moveField('AgeSplitted', after='BirthDateEstimated')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
 schema.moveField('ConsentSMS', after='PrimaryReferrer')
+schema.moveField('PrimaryReferrer', before='ClientPatientID')
 
 
 class Patient(Person):
@@ -1071,12 +1076,64 @@ class Patient(Person):
         """
         return self.objectValues('Multifile')
 
-    # TODO Replace "PrimaryReferrer" field from the Schema by "Client"
-    def getClient(self):
-        """Returns the client associated to this Patient, if any
+    def getPrimaryReferrer(self):
+        """Returns the client the current Patient is assigned to. Delegates the
+        action to function getClient.
+        NOTE: This is kept for backwards compatibility
         """
-        return self.getPrimaryReferrer() or None
+        logger.warn("Patient.getPrimaryReferrer: better use 'getClient'")
+        return self.getClient()
 
+    def getClient(self):
+        """Returns the client the current Patient is assigned to, if any
+        """
+        # The schema's field PrimaryReferrer is only used to allow the user to
+        # assign the patient to a client in edit form. The entered value is used
+        # in ObjectModifiedEventHandler to move the patient to the Client's
+        # folder, so the value stored in the Schema's is not used anymore
+        # See https://github.com/senaite/senaite.core/pull/152
+        client = self.aq_parent
+        if IClient.providedBy(client):
+            return client
+        return None
+
+    def setClient(self, value):
+        """Sets the client the current Patient has to be assigned to
+        """
+        self.setPrimaryReferrer(value)
+
+    def getClientID(self):
+        """Returns the ID of the client this Patient belongs to or None
+        """
+        client = self.getClient()
+        return client and api.get_id(client) or None
+
+    def getClientUID(self):
+        """Returns the UID of the client this Patient belongs to or None
+        """
+        client = self.getClient()
+        return client and api.get_uid(client) or None
+
+    def getClientURL(self):
+        """Returns the URL of the client this Patient belongs to or None
+        """
+        client = self.getClient()
+        return client and api.get_url(client) or None
+
+    def getClientTitle(self):
+        """Returns the title of the client this Patient belongs to or None
+        """
+        client = self.getClient()
+        return client and api.get_title(client) or None
+
+    def getBatches(self, full_objects=False):
+        """Returns the Batches (Clinic Cases) this Patient is assigned to
+        """
+        query = dict(portal_type="Batch", getPatientUID=api.get_uid(self))
+        batches = api.search(query, BIKA_CATALOG)
+        if full_objects:
+            batches = map(api.get_object_by_uid, batches)
+        return batches
 
     def SearchableText(self):
         """

@@ -24,9 +24,8 @@ if errors:
 
 else:
     message = _(u'Changes saved.')
-    stat = 'created'
 
     # Handles actions from extra_buttons slot
-    handle_after_submit(context, request, state)
+    stat = handle_after_submit(context, request, state)
     addStatusMessage(request, message)
     return state.set(status=stat)

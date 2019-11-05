@@ -18,20 +18,18 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from Products.Archetypes import atapi
-from plone.app.folder.folder import ATFolder
-from plone.app.folder.folder import ATFolderSchema
-from zope.interface.declarations import implements
-
-from bika.health.config import PROJECTNAME
-from bika.health.interfaces import IPatients
-
-schema = ATFolderSchema.copy()
+from bika.health.interfaces import IPatient
 
 
-class Patients(ATFolder):
-    implements(IPatients)
-    displayContentsTab = False
-    schema = schema
+def ObjectCreatedEventHandler(batch, event):
+    """A Batch (ClientCase) can be created inside Patient context. This
+    function assign patient field automatically accordingly
+    """
+    if not batch.isTemporary():
+        return
 
-atapi.registerType(Patients, PROJECTNAME)
+    parent = batch.getFolderWhenPortalFactory()
+    if IPatient.providedBy(parent):
+        # Assign the Patient to the Batch
+        batch.getField("Patient").set(batch, parent)
+        batch.getField("ClientPatientID").set(batch, parent)

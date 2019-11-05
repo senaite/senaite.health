@@ -12,6 +12,9 @@
   <!-- Workflow: bika_doctor_workflow -->
   <object name="senaite_health_doctor_workflow" meta_type="Workflow"/>
 
+  <!-- Workflow for base patients folder -->
+  <object name="senaite_health_patients_workflow" meta_type="Workflow"/>
+
   <!-- Workflow: bika_patient_workflow -->
   <object name="senaite_health_patient_workflow" meta_type="Workflow"/>
 
@@ -68,9 +71,6 @@
     <bound-workflow workflow_id="senaite_one_state_workflow"/>
   </type>
   <!-- Other folders and types -->
-  <type type_id="Patients">
-    <bound-workflow workflow_id="senaite_one_state_workflow"/>
-  </type>
   <type type_id="Doctors">
     <bound-workflow workflow_id="senaite_one_state_workflow"/>
   </type>
@@ -128,6 +128,9 @@
   <!-- *** BINDINGS TO SENAITE.HEALTH WORKFLOWS *** -->
   <type type_id="Doctor">
    <bound-workflow workflow_id="senaite_health_doctor_workflow"/>
+  </type>
+  <type type_id="Patients">
+    <bound-workflow workflow_id="senaite_health_patients_workflow"/>
   </type>
   <type type_id="Patient">
    <bound-workflow workflow_id="senaite_health_patient_workflow"/>
