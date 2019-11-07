@@ -18,9 +18,15 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-import transaction
-from Products.Archetypes.config import UID_CATALOG
+import time
+
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from OFS.event import ObjectWillBeMovedEvent
 from Products.CMFPlone.utils import _createObjectByType
+from zope.container.contained import notifyContainerModified
+from zope.event import notify
+from zope.lifecycleevent import ObjectMovedEvent
 
 from bika.health import CATALOG_PATIENTS
 from bika.health import logger
@@ -207,14 +213,18 @@ def move_patients_to_clients(portal):
         patients_to_clients[patient_uid] = list(set(client_ids))
 
     # Look through Patients and move them inside Clients
+    start = time.time()
     clients_map = dict()
-    catalog = api.get_tool(CATALOG_PATIENTS)
     patients_folder = portal.patients
+    patients_origin = aq_inner(patients_folder)
+
     total = patients_folder.objectCount()
     for num, (p_id, patient) in enumerate(patients_folder.items()):
-        if num and num % 10 == 0:
-            logger.info("Moving Patients inside Clients: {}/{}"
-                        .format(num, total))
+        if num and num % 100 == 0:
+            end = time.time()
+            logger.info("Moving Patients inside Clients: {}/{}: ({:.2f}s)"
+                        .format(num, total, (end-start)))
+            start = time.time()
 
         client_uid = patient.getField("PrimaryReferrer").getRaw(patient)
         if client_uid:
@@ -247,20 +257,51 @@ def move_patients_to_clients(portal):
 
                 else:
                     # Move Patient inside the client
-                    cp = patients_folder.manage_cutObjects(p_id)
-                    client.manage_pasteObjects(cp)
-
-                    #catalog.uncatalog_object(api.get_path(patient))
-                    #patients_folder._delObject(p_id, suppress_events=True)
-                    #client._setObject(p_id, patient, set_owner=0,
-                    #                  suppress_events=True)
-                    #new_patient = client._getOb(p_id)
-                    #new_patient.manage_changeOwnershipType(explicit=0)
-
-                    #workflow.updateRoleMappingsFor(api.get_object(new_patient))
-                    #catalog.catalog_object(new_patient)
+                    #cp = patients_folder.manage_cutObjects(p_id)
+                    #client.manage_pasteObjects(cp)
+                    move_patient(patient, patients_origin, client)
 
     logger.info("Moving Patients inside Clients [DONE]")
+
+
+def move_patient(ob, origin, destination):
+    """
+    This function has the same effect as:
+
+        id = obj.getId()
+        cp = origin.manage_cutObjects(id)
+        destination.manage_pasteObjects(cp)
+
+    but with slightly better performance. The code is mostly grabbed from
+    OFS.CopySupport.CopyContainer_pasteObjects, but optimized for our use case
+    to make the upgrade step faster
+    """
+    id = ob.getId()
+
+    # Notify the object will be copied to destination
+    ob._notifyOfCopyTo(destination, op=1)
+
+    # Notify that the object will be moved
+    #origin = aq_parent(aq_inner(ob))
+    notify(ObjectWillBeMovedEvent(ob, origin, id, destination, id))
+
+    # Effectively move the object from origin to destination
+    origin._delObject(id, suppress_events=True)
+    ob = aq_base(ob)
+    destination._setObject(id, ob, set_owner=0, suppress_events=True)
+    ob = destination._getOb(id)
+
+    # Since we used "suppress_events=True", we need to manually notify that the
+    # object has been moved and containers modified. This also makes the objects
+    # to be recatalogued
+    notify(ObjectMovedEvent(ob, origin, id, destination, id))
+    notifyContainerModified(origin)
+    notifyContainerModified(destination)
+
+    # Try to make ownership implicit if possible, so it acquires the permissions
+    # from the container (a Client)
+    ob.manage_changeOwnershipType(explicit=0)
+    return ob
 
 
 def remove_stale_javascripts(portal):
