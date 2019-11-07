@@ -6,7 +6,7 @@
 
 from setuptools import setup, find_packages
 
-version = '1.2.2'
+version = '1.2.3'
 
 setup(
     name='senaite.health',
