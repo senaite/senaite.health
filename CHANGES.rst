@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.2 (unreleased)
+1.2.2 (2019-11-07)
 ------------------
 
 **Added**
@@ -12,8 +12,9 @@ Changelog
 
 **Changed**
 
+- #152 Move Patient inside Client folder when client assigned
+- #149 Removed javascripts from Add Sample form. Use field adapters instead
 - #144 Additional identifiers for Patients ported to senaite.health
-
 
 **Removed**
 
@@ -22,17 +23,16 @@ Changelog
 
 **Fixed**
 
+- #143 AttributeError on Patient creation after add-on initially installed
 - #124 Error trying to Edit Analysis Specifications
 - #147 Reindex content structure after install to fix missing icons
 - #146 Move skin layer after the custom layer
+- #142 Client contacts cannot add cases
 - #141 Unable to Deactivate Doctors
 - #137 Client reference widget does not work in Add Patient overlay
 - #133 System clearing patient first name on editing patient
-- #132 Autofill Batch field in Sample Add form when Batch defined in request
-- #131 Autofill ClientPatientID field in Sample Add form when Patient defined
-
-**Security**
-
+- #132 Auto-fill Batch field in Sample Add form when Batch defined in request
+- #131 Auto-fill ClientPatientID field in Sample Add form when Patient defined
 
 
 1.2.1 (2019-07-01)
