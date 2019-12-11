@@ -9,6 +9,8 @@ Changelog
 
 **Changed**
 
+- #157 Changed Base Catalog Tool
+
 
 **Removed**
 
