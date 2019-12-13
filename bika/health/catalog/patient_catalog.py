@@ -20,7 +20,7 @@
 
 from App.class_init import InitializeClass
 from bika.health.interfaces import IBikaHealthCatalogPatientListing
-from bika.lims.catalog.bika_catalog_tool import BikaCatalogTool
+from bika.lims.catalog.base import BaseCatalog
 from bika.lims.catalog.catalog_basic_template import BASE_CATALOG_COLUMNS
 from bika.lims.catalog.catalog_basic_template import BASE_CATALOG_INDEXES
 from zope.interface import implements
@@ -74,14 +74,14 @@ patient_catalog_definition = {
 }
 
 
-class BikaHealthCatalogPatientListing(BikaCatalogTool):
+class BikaHealthCatalogPatientListing(BaseCatalog):
     """
     Catalog to list patients in BikaListing
     """
     implements(IBikaHealthCatalogPatientListing)
 
     def __init__(self):
-        BikaCatalogTool.__init__(
+        BaseCatalog.__init__(
             self, CATALOG_PATIENTS,
             "Senaite Health Catalog Patients",
             "BikaHealthCatalogPatientListing")
