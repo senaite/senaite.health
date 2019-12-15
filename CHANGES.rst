@@ -17,6 +17,8 @@ Changelog
 
 **Fixed**
 
+- #159 Ensure `Client` contents allow to hold `Patient` types
+
 
 **Security**
 
