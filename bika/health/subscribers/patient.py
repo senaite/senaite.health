@@ -35,9 +35,17 @@ def ObjectModifiedEventHandler(patient, event):
 
     # Check if the Patient is being created inside the Client
     if client and client.UID() != patient.aq_parent.UID():
+        # Ensure `Client` contents allow to hold `Patient` types
+        portal_types = api.get_tool("portal_types")
+        client_fti = portal_types.getTypeInfo("Client")
+        allowed_types = client_fti.allowed_content_types
+        if "Patient" not in allowed_types:
+            client_fti.allowed_content_types = allowed_types + ("Patient", )
+
         # Move the Patient inside the client
         cp = patient.aq_parent.manage_cutObjects(patient.id)
         client.manage_pasteObjects(cp)
+
 
 # TODO: This is no longer needed!
 def assign_owners_for(patient):
