@@ -17,6 +17,8 @@ Changelog
 
 **Fixed**
 
+- #158 Fix the filter query in the Add Sample Form
+
 
 **Security**
 

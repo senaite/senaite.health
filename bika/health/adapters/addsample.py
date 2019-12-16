@@ -138,10 +138,10 @@ class AddSampleClientInfo(AddSampleObjectInfoAdapter):
         filter_queries = {
             # Allow to choose Patients from same Client only
             "Patient": {
-                "getPrimaryReferrerUID": [uid, ""],
+                "getPrimaryReferrerUID": [uid, None],
             },
             "ClientPatientID": {
-                "getPrimaryReferrerUID": [uid, ""],
+                "getPrimaryReferrerUID": [uid, None],
             }
         }
         object_info["filter_queries"] = filter_queries
