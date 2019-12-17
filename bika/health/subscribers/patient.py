@@ -22,10 +22,24 @@ from bika.lims import api
 from bika.lims.api import security
 
 
+def ObjectCreatedEventHandler(patient, event):
+    # Ensure Clients can contain Patients. Doing this here we guarantee that
+    # Patients are allowed content types even if the types tool is reloaded in
+    # senaite.core due to an upgrade step
+    # https://github.com/senaite/senaite.health/pull/159
+    allow_patients_inside_clients()
+
+
 def ObjectModifiedEventHandler(patient, event):
     """Actions to be done when a patient is modified. Moves the Patient to
     Client folder if assigned
     """
+    # Ensure Clients can contain Patients. Doing this here we guarantee that
+    # Patients are allowed content types even if the types tool is reloaded in
+    # senaite.core due to an upgrade step
+    # https://github.com/senaite/senaite.health/pull/159
+    allow_patients_inside_clients()
+
     # If client is assigned, move the Patient to the Client's folder
     # Note here we get the Client directly from the Schema, cause
     # getPrimaryReferrer is overriden in Patient content type to always look to
@@ -35,16 +49,19 @@ def ObjectModifiedEventHandler(patient, event):
 
     # Check if the Patient is being created inside the Client
     if client and client.UID() != patient.aq_parent.UID():
-        # Ensure `Client` contents allow to hold `Patient` types
-        portal_types = api.get_tool("portal_types")
-        client_fti = portal_types.getTypeInfo("Client")
-        allowed_types = client_fti.allowed_content_types
-        if "Patient" not in allowed_types:
-            client_fti.allowed_content_types = allowed_types + ("Patient", )
-
         # Move the Patient inside the client
         cp = patient.aq_parent.manage_cutObjects(patient.id)
         client.manage_pasteObjects(cp)
+
+
+def allow_patients_inside_clients():
+    """Adds Patient content type to the list of allowed objects inside Client
+    """
+    portal_types = api.get_tool("portal_types")
+    client_fti = portal_types.getTypeInfo("Client")
+    allowed_types = client_fti.allowed_content_types
+    if "Patient" not in allowed_types:
+        client_fti.allowed_content_types = allowed_types + ("Patient", )
 
 
 # TODO: This is no longer needed!
