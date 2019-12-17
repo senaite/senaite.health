@@ -18,6 +18,7 @@ Changelog
 **Fixed**
 
 - #159 Ensure `Client` contents allow to hold `Patient` types
+- #158 Fix the filter query in the Add Sample Form
 
 
 **Security**
