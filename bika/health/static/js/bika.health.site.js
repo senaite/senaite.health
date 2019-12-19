@@ -6,28 +6,6 @@ function HealthSiteView() {
     var that = this;
 
     that.load = function() {
-        if ($('#email_popup').length) {
-            $("#email_popup").click(function(event){
-                event.preventDefault();
-                var dialog = $('<div></div>');
-                dialog
-                    .load(window.portal_url + "/email_popup",
-                        {'uid':$('input[name="email_popup_uid"]').val(),
-                         '_authenticator': $('input[name="_authenticator"]').val()}
-                    )
-                    .dialog({
-                        width:450,
-                        height:450,
-                        closeText: _("Close"),
-                        resizable:true,
-                        title: "<img src='" + window.portal_url + "/++resource++bika.lims.images/email.png'/>&nbsp;" + $(this).text()
-                    });
-            });
-            if ($('input[name="email_popup_uid"]').attr('autoshow')=='True') {
-                $('#email_popup').click();
-            }
-        }
-
         /* #HACK
          * https://github.com/bikalabs/Bika-LIMS/issues/928
          * Tricky and foolish stuff to override the hazardous icon in health.
