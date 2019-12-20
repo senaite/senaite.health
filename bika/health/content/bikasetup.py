@@ -42,16 +42,6 @@ class BikaSetupSchemaExtender(object):
                               "analysis result exceeding a panic level is "
                               "submitted"))
         ),
-        ExtBooleanField('AutoShowPanicAlertEmailPopup',
-            schemata="Analyses",
-            default=False,
-            widget=BooleanWidget(
-                label=_("Show client email pop-up when panic level"),
-                description=_("If enabled, shows automatically an email form "
-                              "pop-up for alerting the client about a panic "
-                              "level exceeded when Analysis Request view is "
-                              "loaded"))
-        ),
         ExtStringField('PatientConditionsHeightUnits',
             schemata="Cases",
             default=_("Feet/inches"),
