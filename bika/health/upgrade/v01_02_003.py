@@ -20,6 +20,7 @@
 
 from bika.health import logger
 from bika.health.config import PROJECTNAME
+from bika.health.setuphandlers import setup_panic_alerts
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
 
@@ -43,6 +44,7 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
+    setup_panic_alerts(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
