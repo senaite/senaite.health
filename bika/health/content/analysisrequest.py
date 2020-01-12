@@ -126,7 +126,7 @@ class AnalysisRequestSchemaExtender(object):
                          'secondary': 'disabled'},
                 catalog_name='bikahealth_catalog_patient_listing',
                 portal_types=('Patient',),
-                search_field='getClientPatientID',
+                search_fields=('getClientPatientID',),
                 base_query={'is_active': True,
                             'sort_limit': 50,
                             'sort_on': 'getClientPatientID',
