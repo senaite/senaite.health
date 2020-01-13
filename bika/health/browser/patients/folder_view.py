@@ -122,10 +122,10 @@ class PatientsView(BikaListingView):
             },
         ]
 
-    def before_render(self):
+    def update(self):
         """Before template render hook
         """
-        super(PatientsView, self).before_render()
+        super(PatientsView, self).update()
 
         if IPatients.providedBy(self.context):
             self.request.set("disable_border", 1)
