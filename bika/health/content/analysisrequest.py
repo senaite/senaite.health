@@ -102,16 +102,6 @@ class AnalysisRequestSchemaExtender(object):
             ),
         ),
 
-        ExtBooleanField(
-            'PanicEmailAlertToClientSent',
-            default=False,
-            widget=BooleanWidget(
-                visible={'edit': 'invisible',
-                         'view': 'invisible',
-                         'add': 'invisible'},
-            ),
-        ),
-
         ExtStringField(
             'ClientPatientID',
             searchable=True,
