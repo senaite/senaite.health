@@ -18,6 +18,7 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.health import DEFAULT_PROFILE_ID
 from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.lims.upgrade import upgradestep
@@ -43,6 +44,7 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
+    setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "skins")
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
