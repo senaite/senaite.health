@@ -18,14 +18,13 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from Products.Archetypes.Widget import BooleanWidget
-from archetypes.schemaextender.interfaces import ISchemaExtender,\
-    IOrderableSchemaExtender
-from bika.lims.fields import *
-from bika.health import bikaMessageFactory as _
-from bika.lims.interfaces import IBikaSetup
-from zope.component import adapts, getAdapters
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from zope.component import adapts
 from zope.interface import implements
+
+from bika.health import bikaMessageFactory as _
+from bika.lims.fields import *
+from bika.lims.interfaces import IBikaSetup
 
 
 class BikaSetupSchemaExtender(object):
@@ -33,15 +32,6 @@ class BikaSetupSchemaExtender(object):
     implements(IOrderableSchemaExtender)
 
     fields = [
-        ExtBooleanField('EnablePanicAlert',
-            schemata="Analyses",
-            default=False,
-            widget=BooleanWidget(
-                label=_("Enable panic levels alert"),
-                description=_("Alert labmanagers with an email when an "
-                              "analysis result exceeding a panic level is "
-                              "submitted"))
-        ),
         ExtStringField('PatientConditionsHeightUnits',
             schemata="Cases",
             default=_("Feet/inches"),
