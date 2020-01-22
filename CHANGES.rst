@@ -9,6 +9,7 @@ Changelog
 
 **Changed**
 
+- #163 Cannot override behavior of Patients folder when using `before_render`
 - #157 Changed Base Catalog Tool
 
 
@@ -17,6 +18,7 @@ Changelog
 
 **Fixed**
 
+- #162 Unable to search by Client Patient ID in Sample Add form
 - #159 Ensure `Client` contents allow to hold `Patient` types
 - #158 Fix the filter query in the Add Sample Form
 
