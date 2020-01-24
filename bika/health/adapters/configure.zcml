@@ -58,6 +58,13 @@
     provides="bika.lims.interfaces.IAddSampleObjectInfo"
     name="senaite.health.addsample_batch_info" />
 
+  <!-- Additional metadata for Patient field in Add Sample form -->
+  <adapter
+    factory=".addsample.AddSamplePatientInfo"
+    for="bika.health.interfaces.IPatient"
+    provides="bika.lims.interfaces.IAddSampleObjectInfo"
+    name="senaite.health.addsample_patient_info" />
+
   <!-- Flushing of custom fields for Add Sample form -->
   <adapter
     factory=".addsample.AddSampleFieldsFlush"
