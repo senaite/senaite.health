@@ -195,6 +195,29 @@ class AddSampleBatchInfo(AddSampleObjectInfoAdapter):
             "title": obj and api.get_title(obj) or ""}
 
 
+class AddSamplePatientInfo(AddSampleObjectInfoAdapter):
+    """Returns the info metadata representation of a Patient object used in Add
+    Sample form
+    """
+    def get_object_info(self):
+        object_info = self.get_base_info()
+
+        # Default values for other fields when the Patient is selected
+        patient = self.context
+        field_values = {
+            "Patient": {
+                "uid": api.get_uid(patient),
+                "title": patient.getFullname(),
+            },
+            "ClientPatientID": {
+                "uid": api.get_uid(patient),
+                "title": patient.getClientPatientID() or "",
+            }
+        }
+        object_info["field_values"] = field_values
+        return object_info
+
+
 class AddSampleFieldsFlush(object):
     """Health-specific flush of fields for Sample Add form. When the value for
     Client field changes, flush the fields "Patient", "Doctor" and "Batch"
@@ -211,6 +234,12 @@ class AddSampleFieldsFlush(object):
                 "ClientPatientID",
                 "Doctor",
                 "Patient",
+            ],
+            "ClientPatientID": [
+                "Patient",
+            ],
+            "Patient": [
+                "ClientPatientID",
             ]
         }
         return flush_settings
