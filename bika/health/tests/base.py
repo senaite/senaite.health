@@ -44,16 +44,19 @@ class SimpleTestLayer(PloneSandboxLayer):
         import archetypes.schemaextender
         import bika.lims
         import senaite.lims
+        import senaite.panic
         import bika.health
 
         self.loadZCML(package=archetypes.schemaextender)
         self.loadZCML(package=bika.lims)
         self.loadZCML(package=senaite.lims)
+        self.loadZCML(package=senaite.panic)
         self.loadZCML(package=bika.health)
 
         # Install product and call its initialize() function
         z2.installProduct(app, "bika.lims")
         z2.installProduct(app, "senaite.lims")
+        z2.installProduct(app, "senaite.panic")
         z2.installProduct(app, "bika.health")
 
     def setUpPloneSite(self, portal):

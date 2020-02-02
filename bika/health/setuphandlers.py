@@ -26,7 +26,9 @@ from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import getToolByName
+from plone import api as ploneapi
 
+from bika.health import bikaMessageFactory as _
 from bika.health import logger
 from bika.health.catalog import \
     getCatalogDefinitions as getCatalogDefinitionsHealth
@@ -122,6 +124,9 @@ def post_install(portal_setup):
     # set before core's, even if after-before is set in profiles/skins.xml
     # Ensure health's skin layer(s) always gets priority over core's
     portal_setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "skins")
+
+    # Setup default email body and subject for panic alerts
+    setup_panic_alerts(portal)
 
     logger.info("SENAITE Health post-install handler [DONE]")
 
@@ -438,3 +443,13 @@ def reindex_content_structure(portal):
             continue
         logger.info("Reindexing {}".format(repr(obj)))
         reindex(obj)
+
+
+def setup_panic_alerts(portal):
+    """Setups the template texts for panic alert email's subject and body
+    """
+    email_body = _(
+        "Some results from the Sample ${sample_id} exceeded the panic levels "
+        "that may indicate an imminent life-threatening condition:\n\n"
+        "${analyses}\n\n--\n${lab_address}")
+    ploneapi.portal.set_registry_record("senaite.panic.email_body", email_body)

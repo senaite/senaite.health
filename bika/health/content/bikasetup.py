@@ -18,14 +18,13 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from Products.Archetypes.Widget import BooleanWidget
-from archetypes.schemaextender.interfaces import ISchemaExtender,\
-    IOrderableSchemaExtender
-from bika.lims.fields import *
-from bika.health import bikaMessageFactory as _
-from bika.lims.interfaces import IBikaSetup
-from zope.component import adapts, getAdapters
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from zope.component import adapts
 from zope.interface import implements
+
+from bika.health import bikaMessageFactory as _
+from bika.lims.fields import *
+from bika.lims.interfaces import IBikaSetup
 
 
 class BikaSetupSchemaExtender(object):
@@ -33,25 +32,6 @@ class BikaSetupSchemaExtender(object):
     implements(IOrderableSchemaExtender)
 
     fields = [
-        ExtBooleanField('EnablePanicAlert',
-            schemata="Analyses",
-            default=False,
-            widget=BooleanWidget(
-                label=_("Enable panic levels alert"),
-                description=_("Alert labmanagers with an email when an "
-                              "analysis result exceeding a panic level is "
-                              "submitted"))
-        ),
-        ExtBooleanField('AutoShowPanicAlertEmailPopup',
-            schemata="Analyses",
-            default=False,
-            widget=BooleanWidget(
-                label=_("Show client email pop-up when panic level"),
-                description=_("If enabled, shows automatically an email form "
-                              "pop-up for alerting the client about a panic "
-                              "level exceeded when Analysis Request view is "
-                              "loaded"))
-        ),
         ExtStringField('PatientConditionsHeightUnits',
             schemata="Cases",
             default=_("Feet/inches"),
@@ -113,17 +93,6 @@ class BikaSetupSchemaExtender(object):
                                 "view or on Patient's 'Publication "
                                 "preferences' tab.")
                 )
-        ),
-        ExtBooleanField('EnableBikaAnalysisRequestRequestForm',
-            schemata="Analyses",
-            default=False,
-            widget=BooleanWidget(
-                label=_("Enable Bika's analysis request form."),
-                description=_("It enables the secondary analysis request form. This request has some characteristic "
-                              "features as allowing you to register more than one analysis request at the same time. "
-                              "It's useful if you are supposed to register a big amount of analysis request at the same "
-                              "time.")
-            )
         ),
         ExtBooleanField('CaseDoctorIsMandatory',
             schemata="Cases",

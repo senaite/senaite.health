@@ -18,18 +18,19 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+import os.path
+import transaction
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode, _createObjectByType
+from Products.CMFPlone.utils import _createObjectByType
+from pkg_resources import resource_filename
+from zope.interface import implements
+
 from bika.health import logger
-from Products.CMFCore.utils import getToolByName
 from bika.lims.exportimport.dataimport import SetupDataSetList as SDL
 from bika.lims.exportimport.setupdata import WorksheetImporter
 from bika.lims.idserver import renameAfterCreation
 from bika.lims.interfaces import ISetupDataSetList
 from bika.lims.utils import tmpID
-from pkg_resources import resource_filename
-from zope.interface import implements
-import transaction, os.path
 
 
 class SetupDataSetList(SDL):
@@ -380,62 +381,6 @@ class Patients(WorksheetImporter):
             else:
                 renameAfterCreation(obj)
 
-
-class Analysis_Specifications(WorksheetImporter):
-
-    def Import(self):
-        print "EOOO"
-        s_t = ''
-        c_t = 'lab'
-        bucket = {}
-        pc = getToolByName(self.context, 'portal_catalog')
-        bsc = getToolByName(self.context, 'bika_setup_catalog')
-        # collect up all values into the bucket
-        for row in self.get_rows(3):
-            c_t = row['Client_title'] if row['Client_title'] else 'lab'
-            if c_t not in bucket:
-                bucket[c_t] = {}
-            s_t = row['SampleType_title'] if row['SampleType_title'] else s_t
-            if s_t not in bucket[c_t]:
-                bucket[c_t][s_t] = []
-            service = bsc(portal_type='AnalysisService', title=row['service'])
-            if not service:
-                service = bsc(portal_type='AnalysisService',
-                              getKeyword=row['service'])
-            try:
-                service = service[0].getObject()
-                bucket[c_t][s_t].append({
-                'keyword': service.getKeyword(),
-                'min': row.get('min','0'),
-                'max': row.get('max','0'),
-                'minpanic': row.get('minpanic','0'),
-                'maxpanic': row.get('maxpanic','0'),
-                'error': row.get('error','0'),
-                })
-            except IndexError:
-                warning = "Error with service name %s on sheet %s. Service not uploaded."
-                logger.warning(warning, row.get('service', ''), self.sheetname)
-        # write objects.
-        for c_t in bucket:
-            if c_t == 'lab':
-                folder = self.context.bika_setup.bika_analysisspecs
-            else:
-                folder = pc(portal_type='Client', title=c_t)
-                if (not folder or len(folder) != 1):
-                    logger.warn("Client %s not found. Omiting client specifications." % c_t)
-                    continue
-                folder = folder[0].getObject()
-            for s_t in bucket[c_t]:
-                resultsrange = bucket[c_t][s_t]
-                sampletype = bsc(portal_type='SampleType', title=s_t)[0]
-                _id = folder.invokeFactory('AnalysisSpec', id=tmpID())
-                obj = folder[_id]
-                obj.edit(
-                    title=sampletype.Title,
-                    ResultsRange=resultsrange)
-                obj.setSampleType(sampletype.UID)
-                obj.unmarkCreationFlag()
-                renameAfterCreation(obj)
 
 class Insurance_Companies(WorksheetImporter):
 
