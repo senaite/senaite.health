@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #161 Compatibility with `senaite.panic` add-on
 - #166 Better handling of ClientPatientID and Patient fields in Add Sample
 
 **Changed**
