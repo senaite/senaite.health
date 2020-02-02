@@ -1,12 +1,13 @@
 # Translators:
 # Jordi Puiggené <jpuiggene@naralabs.com>, 2018
+# Piotr Turek <piotr.turek@borpol.com.pl>, 2020
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2019-11-07 17:10+0000\n"
 "PO-Revision-Date: 2018-10-14 15:05+0000\n"
-"Last-Translator: Jordi Puiggené <jpuiggene@naralabs.com>, 2018\n"
+"Last-Translator: Piotr Turek <piotr.turek@borpol.com.pl>, 2020\n"
 "Language-Team: Polish (https://www.transifex.com/senaite/teams/87046/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 
 #: bika/health/skins/bika_health/bika_health_widgets/splitteddatewidget.pt:29
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #: bika/health/content/aetiologicagent.py:41
 msgid "A list of aetiologic agent subtypes."
@@ -69,7 +70,7 @@ msgstr "Dodaj"
 
 #: bika/health/browser/patients/folder_view.py:98
 msgid "Additional IDs"
-msgstr ""
+msgstr "Dodatkowe identyfikatory"
 
 #: bika/health/controlpanel/bika_symptoms.py:51
 msgid "Additional Symptoms not covered by ICD codes, can be entered here."
@@ -85,7 +86,7 @@ msgstr "Uwagi dodoatkowe"
 
 #: bika/health/impress/reports/Default.pt:306
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: bika/health/controlpanel/bika_aetiologicagents.py:44
 #: bika/health/profiles/default/controlpanel.xml
@@ -94,7 +95,7 @@ msgstr "Czynniki Etiologiczne"
 
 #: bika/health/content/batch.py:239
 msgid "Aetiologic agent"
-msgstr ""
+msgstr "Czynnik Etiologiczny"
 
 #: bika/health/browser/patients/folder_view.py:82
 #: bika/health/content/patient.py:126
@@ -114,11 +115,11 @@ msgstr "Wszystko"
 #: bika/health/content/bikasetup.py:83
 #: bika/health/content/client.py:50
 msgid "Allow results distribution to Patients"
-msgstr ""
+msgstr "Zezwól na dystrybucję wyników wśród pacjentów"
 
 #: bika/health/content/patient.py:646
 msgid "Allow results distribution to this patient"
-msgstr ""
+msgstr "Zezwól na dystrybucję wyników do tego pacjenta"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:83
 msgid "Analysis Profiles"
@@ -134,11 +135,11 @@ msgstr ""
 
 #: bika/health/content/patient.py:628
 msgid "Anonymous"
-msgstr ""
+msgstr "Anonimowy"
 
 #: bika/health/content/symptom.py:43
 msgid "Applies to"
-msgstr ""
+msgstr "Dotyczy"
 
 #: bika/health/content/drug.py:60
 msgid "Appropriate doses and dosage"
@@ -150,7 +151,7 @@ msgstr "Azjatycki"
 
 #: bika/health/content/doctor.py:53
 msgid "Associate the doctor to a client. This doctor will not be accessible from other clients."
-msgstr ""
+msgstr "Skojarz lekarza z klientem. Ten lekarz nie będzie dostępny dla innych klientów."
 
 #: bika/health/impress/reports/Default.pt:607
 msgid "Attachment for"
@@ -266,7 +267,7 @@ msgstr "Zmiany zachowane."
 
 #: bika/health/content/symptom.py:51
 msgid "Check if patient can experience different stress  levels (none, mild, moderate, severe) of the symptom"
-msgstr ""
+msgstr "Sprawdź, czy u pacjenta występują różne poziomy stresu (brak, łagodny, umiarkowany, silny) dla objawu"
 
 #: bika/health/content/patient.py:569
 msgid "Citizenship"
@@ -299,17 +300,17 @@ msgstr ""
 #: bika/health/browser/batchfolder.py:113
 #: bika/health/browser/patients/folder_view.py:72
 msgid "Client PID"
-msgstr ""
+msgstr "Identyfikator PID jednostki zlecającej badanie"
 
 #: bika/health/content/analysisrequest.py:122
 #: bika/health/content/patient.py:621
 #: bika/health/impress/reports/Default.pt:354
 msgid "Client Patient ID"
-msgstr ""
+msgstr "Identyfikator ID Pacjenta jednostki zlecającej badanie"
 
 #: bika/health/content/bikasetup.py:142
 msgid "Client Patient ID must be unique"
-msgstr ""
+msgstr "Identyfikator ID Pacjenta Jednostki zlecającej badanie musi być wyjątkowy"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:56
 msgid "Client Reference"
@@ -326,7 +327,7 @@ msgstr "Jednostki zlecające badania"
 #: bika/health/content/batch.py:169
 #: bika/health/content/patient.py:463
 msgid "Code"
-msgstr ""
+msgstr "Kod"
 
 #: bika/health/content/immunization.py:94
 msgid "Collectives at risk"
@@ -334,11 +335,11 @@ msgstr "Grupy ryzyka"
 
 #: bika/health/controlpanel/bika_insurancecompanies.py:52
 msgid "Company Name"
-msgstr ""
+msgstr "Nazwa firmy"
 
 #: bika/health/content/patient.py:757
 msgid "Consent to SMS"
-msgstr ""
+msgstr "Zgoda na SMS"
 
 #: bika/health/content/treatment.py:101
 msgid "Conservative treatment"
@@ -380,23 +381,23 @@ msgstr ""
 
 #: bika/health/impress/reports/Default.pt:292
 msgid "Date of Birth"
-msgstr ""
+msgstr "Data urodzenia"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casebasalbodytempwidget.pt:20
 msgid "Day 1"
-msgstr ""
+msgstr "Dzień 1"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casebasalbodytempwidget.pt:31
 msgid "Day 2"
-msgstr ""
+msgstr "Dzień 2"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casebasalbodytempwidget.pt:42
 msgid "Day 3"
-msgstr ""
+msgstr "Dzień 3"
 
 #: bika/health/skins/bika_health/bika_health_widgets/splitteddatewidget.pt:59
 msgid "Days"
-msgstr ""
+msgstr "Dni"
 
 #: bika/health/profiles/default/workflows/senaite_health_doctor_workflow/definition.xml
 #: bika/health/profiles/default/workflows/senaite_health_patient_workflow/definition.xml
@@ -561,7 +562,7 @@ msgstr "Koniec"
 #: bika/health/controlpanel/bika_ethnicities.py:44
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Ethnicities"
-msgstr ""
+msgstr "Pochodzenie etniczne"
 
 #: bika/health/content/patient.py:547
 msgid "Ethnicity"
@@ -581,7 +582,7 @@ msgstr ""
 
 #: bika/health/ajax/ajaxhandler.py:74
 msgid "Failed ajax call: %s"
-msgstr ""
+msgstr "Nieudane wywołanie ajax: %s"
 
 #: bika/health/content/patient.py:583
 msgid "Fathers name"
@@ -599,7 +600,7 @@ msgstr "Cecha"
 
 #: bika/health/content/bikasetup.py:57
 msgid "Feet/inches"
-msgstr ""
+msgstr "Stopy/cale"
 
 #: bika/health/config.py:29
 msgid "Female"
@@ -607,19 +608,19 @@ msgstr "Żeńska"
 
 #: bika/health/browser/patient/files.py:75
 msgid "File"
-msgstr ""
+msgstr "Plik"
 
 #: bika/health/content/patient.py:656
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patient if this option is enabled"
-msgstr ""
+msgstr "Pliki z załącznikami do wyników, np. zdjęcia mikroskopowe będą dołączane do wiadomości e-mail do pacjenta, jeśli ta opcja jest włączona"
 
 #: bika/health/content/bikasetup.py:108
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patients if this option is enabled. This setting can be overriden either on 'Patient publication preferences' tab from Client view or on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "Pliki z załącznikami do wyników, np. zdjęcia mikroskopowe będą dołączane do wiadomości e-mail do pacjentów, jeśli ta opcja jest włączona. To ustawienie można zastąpić na karcie „Preferencje publikacji pacjenta” w widoku klienta lub na karcie „Preferencje publikacji” pacjenta."
 
 #: bika/health/content/client.py:72
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patients if this option is enabled. This setting can be overriden on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "Pliki z załącznikami do wyników, np. zdjęcia mikroskopowe będą dołączane do wiadomości e-mail do pacjentów, jeśli ta opcja jest włączona. To ustawienie można zastąpić na karcie „Preferencje publikacji” pacjenta."
 
 #: bika/health/impress/reports/Default.pt:614
 msgid "Filename:"
@@ -684,7 +685,7 @@ msgstr ""
 
 #: bika/health/configure.zcml:52
 msgid "Health Care extension for SENAITE"
-msgstr ""
+msgstr "Moduł rozszerzenia opieki zdrowotnej dla SENAITE"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casepatientconditionwidget.pt:20
 msgid "Height"
@@ -696,7 +697,7 @@ msgstr "Hiszpanie lub Latynosi"
 
 #: bika/health/browser/patient/historicresults.py:45
 msgid "Historic Results"
-msgstr ""
+msgstr "Wyniki historyczne"
 
 #: bika/health/content/batch.py:261
 msgid "Hours fasting"
@@ -717,7 +718,7 @@ msgstr "Identyfikator"
 
 #: bika/health/content/patient.py:182
 msgid "Identifier Type"
-msgstr "Typ Identyfikatora"
+msgstr "Typ dokumentu tożsamości"
 
 #: bika/health/controlpanel/bika_identifiertypes.py:45
 #: bika/health/profiles/default/controlpanel.xml

@@ -1,10 +1,12 @@
+# Translators:
+# Zhuo Song, 2020
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2019-11-07 17:10+0000\n"
 "PO-Revision-Date: 2018-10-14 15:05+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Zhuo Song, 2020\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/senaite/teams/87046/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,1062 +20,1062 @@ msgstr ""
 
 #: bika/health/content/aetiologicagent.py:41
 msgid "A list of aetiologic agent subtypes."
-msgstr ""
+msgstr "病原体亚型列表。"
 
 #: bika/health/content/patient.py:393
 msgid "A list of immunizations administered to the patient."
-msgstr ""
+msgstr "给予患者的免疫接种清单。"
 
 #: bika/health/content/patient.py:257
 msgid "A list of patient treatments and drugs administered."
-msgstr ""
+msgstr "患者治疗和药物清单。"
 
 #: bika/health/content/patient.py:456
 msgid "A list of places visited by the patient."
-msgstr ""
+msgstr "患者去过的地方的清单。"
 
 #: bika/health/browser/doctors/folder_view.py:69
 #: bika/health/browser/patients/folder_view.py:107
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:61
 msgid "Active"
-msgstr ""
+msgstr "活跃的"
 
 #: bika/health/content/immunization.py:131
 msgid "Active immunization"
-msgstr ""
+msgstr "主动免疫"
 
 #: bika/health/content/treatment.py:99
 msgid "Active treatment"
-msgstr ""
+msgstr "积极治疗"
 
 #: bika/health/browser/doctors/folder_view.py:81
 #: bika/health/browser/patient/batches.py:50
 #: bika/health/browser/patient/files.py:55
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 #: bika/health/browser/patients/folder_view.py:98
 msgid "Additional IDs"
-msgstr ""
+msgstr "附加ID"
 
 #: bika/health/controlpanel/bika_symptoms.py:51
 msgid "Additional Symptoms not covered by ICD codes, can be entered here."
-msgstr ""
+msgstr "可以在此处输入ICD代码未涵盖的其他症状。"
 
 #: bika/health/content/patient.py:190
 msgid "Additional identifiers"
-msgstr ""
+msgstr "附加标识符"
 
 #: bika/health/content/batch.py:209
 msgid "Additional notes"
-msgstr ""
+msgstr "补充说明"
 
 #: bika/health/controlpanel/bika_aetiologicagents.py:44
 msgid "Aetiologic Agents"
-msgstr ""
+msgstr "病原体"
 
 #: bika/health/content/batch.py:239
 msgid "Aetiologic agent"
-msgstr ""
+msgstr "病原体"
 
 #: bika/health/browser/patients/folder_view.py:82
 #: bika/health/content/patient.py:126
 msgid "Age"
-msgstr ""
+msgstr "年龄"
 
 #: bika/health/content/bikasetup.py:41
 msgid "Alert labmanagers with an email when an analysis result exceeding a panic level is submitted"
-msgstr ""
+msgstr "当提交的分析结果超出紧急程度时，通过电子邮件提醒实验室经理"
 
 #: bika/health/browser/doctors/folder_view.py:95
 #: bika/health/browser/patient/files.py:81
 #: bika/health/browser/patients/folder_view.py:119
 msgid "All"
-msgstr ""
+msgstr "所有的"
 
 #: bika/health/content/bikasetup.py:83
 #: bika/health/content/client.py:50
 msgid "Allow results distribution to Patients"
-msgstr ""
+msgstr "允许将结果分发给患者"
 
 #: bika/health/content/patient.py:646
 msgid "Allow results distribution to this patient"
-msgstr ""
+msgstr "允许将结果分发给该患者"
 
 #: bika/health/content/patient.py:628
 msgid "Anonymous"
-msgstr ""
+msgstr "匿名"
 
 #: bika/health/content/symptom.py:43
 msgid "Applies to"
-msgstr ""
+msgstr "适用于"
 
 #: bika/health/content/drug.py:60
 msgid "Appropriate doses and dosage"
-msgstr ""
+msgstr "适当的剂量和剂量"
 
 #: bika/health/config.py:35
 msgid "Asian"
-msgstr ""
+msgstr "亚洲人"
 
 #: bika/health/content/doctor.py:53
 msgid "Associate the doctor to a client. This doctor will not be accessible from other clients."
-msgstr ""
+msgstr "将该医生与某位客户联系起来。 其他客户将无法访问该医生。"
 
 #. Default: "Case"
 msgid "Batch"
-msgstr ""
+msgstr "批次"
 
 #. Default: "Case ID"
 msgid "Batch ID"
-msgstr ""
+msgstr "批次编码"
 
 #. Default: "Cases"
 msgid "Batches"
-msgstr ""
+msgstr "批次"
 
 #: bika/health/content/patient.py:136
 msgid "Birth date"
-msgstr ""
+msgstr "生日"
 
 #: bika/health/content/patient.py:144
 msgid "Birth date is estimated"
-msgstr ""
+msgstr "估计的生日"
 
 #: bika/health/content/patient.py:536
 msgid "Birth place"
-msgstr ""
+msgstr "出生地"
 
 #: bika/health/browser/patients/folder_view.py:87
 msgid "BirthDate"
-msgstr ""
+msgstr "生日"
 
 #: bika/health/config.py:36
 msgid "Black"
-msgstr ""
+msgstr "黑色"
 
 #: bika/health/config.py:45
 msgid "Both"
-msgstr ""
+msgstr "二者"
 
 #: bika/health/browser/doctors/folder_view.py:62
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:54
 msgid "Business Phone"
-msgstr ""
+msgstr "办公电话"
 
 #: bika/health/content/analysisrequest.py:93
 #: bika/health/content/batch.py:134
 msgid "CPID"
-msgstr ""
+msgstr "身份识别码"
 
 #: bika/health/content/analysisrequest.py:178
 msgid "Case"
-msgstr ""
+msgstr "病案"
 
 #: bika/health/browser/analysisrequests/view.py:49
 #: bika/health/browser/patient/analysisrequests.py:33
 msgid "Case ID"
-msgstr ""
+msgstr "病案编号"
 
 #: bika/health/controlpanel/bika_caseoutcomes.py:44
 msgid "Case Outcomes"
-msgstr ""
+msgstr "病案结果"
 
 #: bika/health/controlpanel/bika_casestatuses.py:44
 msgid "Case Statuses"
-msgstr ""
+msgstr "病案状态"
 
 #: bika/health/controlpanel/bika_casesyndromicclassifications.py:47
 msgid "Case Syndromic Classifications"
-msgstr ""
+msgstr "病案综合征分类"
 
 #: bika/health/content/batch.py:223
 msgid "Case outcome"
-msgstr ""
+msgstr "病案结果"
 
 #: bika/health/content/batch.py:216
 msgid "Case status"
-msgstr ""
+msgstr "病案状态"
 
 #: bika/health/browser/batchfolder.py:44
 msgid "Cases"
-msgstr ""
+msgstr "病案"
 
 #: bika/health/content/drug.py:38
 msgid "Category"
-msgstr ""
+msgstr "类别"
 
 #: bika/health/content/treatment.py:100
 msgid "Causal treatment"
-msgstr ""
+msgstr "因果治疗"
 
 #: bika/health/skins/bika_health/validate_integrity.cpy:26
 msgid "Changes saved."
-msgstr ""
+msgstr "更改已保存。"
 
 #: bika/health/content/symptom.py:51
 msgid "Check if patient can experience different stress  levels (none, mild, moderate, severe) of the symptom"
-msgstr ""
+msgstr "检查患者是否可以经历不同的压力水平（无，轻度，中度，重度）症状"
 
 #: bika/health/content/patient.py:569
 msgid "Citizenship"
-msgstr ""
+msgstr "国籍"
 
 #: bika/health/content/patient.py:590
 msgid "Civil status"
-msgstr ""
+msgstr "公民身份"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:56
 #: bika/health/content/doctor.py:56
 #: bika/health/content/patient.py:71
 msgid "Client"
-msgstr ""
+msgstr "客户"
 
 #: bika/health/content/batch.py:366
 msgid "Client Case ID"
-msgstr ""
+msgstr "客户病案编号"
 
 #. Default: "Client ID"
 msgid "Client ID"
-msgstr ""
+msgstr "客户编号"
 
 #: bika/health/browser/analysisrequests/view.py:55
 #: bika/health/browser/batchfolder.py:113
 #: bika/health/browser/patients/folder_view.py:72
 msgid "Client PID"
-msgstr ""
+msgstr "客户PID"
 
 #: bika/health/content/analysisrequest.py:122
 #: bika/health/content/patient.py:621
 msgid "Client Patient ID"
-msgstr ""
+msgstr "客户病人ID"
 
 #: bika/health/content/bikasetup.py:142
 msgid "Client Patient ID must be unique"
-msgstr ""
+msgstr "客户患者ID必须唯一"
 
 #. Default: "Clients"
 msgid "Clients"
-msgstr ""
+msgstr "客户"
 
 #: bika/health/content/batch.py:169
 #: bika/health/content/patient.py:463
 msgid "Code"
-msgstr ""
+msgstr "编码"
 
 #: bika/health/content/immunization.py:94
 msgid "Collectives at risk"
-msgstr ""
+msgstr "集体处于危险之中"
 
 #: bika/health/controlpanel/bika_insurancecompanies.py:52
 msgid "Company Name"
-msgstr ""
+msgstr "公司名"
 
 #: bika/health/content/patient.py:757
 msgid "Consent to SMS"
-msgstr ""
+msgstr "同意短信"
 
 #: bika/health/content/treatment.py:101
 msgid "Conservative treatment"
-msgstr ""
+msgstr "保守治疗"
 
 #: bika/health/content/patient.py:441
 msgid "Country"
-msgstr ""
+msgstr "国家"
 
 #: bika/health/content/patient.py:165
 msgid "Country and state"
-msgstr ""
+msgstr "国家和省市"
 
 #: bika/health/content/patient.py:378
 msgid "Date"
-msgstr ""
+msgstr "日期"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:70
 msgid "Default"
-msgstr ""
+msgstr "默认"
 
 #: bika/health/content/bikasetup.py:94
 #: bika/health/content/client.py:60
 msgid "Default publication preference for Patients"
-msgstr ""
+msgstr "患者的默认发布偏好"
 
 #: bika/health/content/batch.py:171
 #: bika/health/content/patient.py:203
 #: bika/health/controlpanel/bika_aetiologicagents.py:55
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: bika/health/controlpanel/bika_diseases.py:58
 msgid "Disease"
-msgstr ""
+msgstr "疾病"
 
 #: bika/health/controlpanel/bika_diseases.py:49
 msgid "Diseases"
-msgstr ""
+msgstr "疾病"
 
 #: bika/health/content/patient.py:83
 msgid "District"
-msgstr ""
+msgstr "区"
 
 #: bika/health/browser/analysisrequests/view.py:62
 #: bika/health/browser/batchfolder.py:122
 #: bika/health/content/analysisrequest.py:54
 msgid "Doctor"
-msgstr ""
+msgstr "医生"
 
 #: bika/health/browser/doctors/folder_view.py:46
 #: bika/health/content/batch.py:104
 #: bika/health/content/doctor.py:42
 msgid "Doctor ID"
-msgstr ""
+msgstr "医生编号"
 
 #: bika/health/content/bikasetup.py:132
 msgid "Doctor field is mandatory in cases"
-msgstr ""
+msgstr "在某些情况下必须填写医生字段"
 
 #: bika/health/browser/doctors/folder_view.py:40
 msgid "Doctors"
-msgstr ""
+msgstr "医生"
 
 #: bika/health/browser/patient/files.py:67
 msgid "Document ID"
-msgstr ""
+msgstr "文件编号"
 
 #: bika/health/browser/patient/files.py:71
 msgid "Document Location"
-msgstr ""
+msgstr "文件位置"
 
 #: bika/health/browser/patient/files.py:73
 msgid "Document Type"
-msgstr ""
+msgstr "文件类型"
 
 #: bika/health/browser/patient/files.py:69
 msgid "Document Version"
-msgstr ""
+msgstr "文件版本"
 
 #: bika/health/config.py:30
 msgid "Don't Know"
-msgstr ""
+msgstr "不知道"
 
 #: bika/health/browser/doctors/folder_view.py:89
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:70
 #: bika/health/controlpanel/bika_aetiologicagents.py:68
 msgid "Dormant"
-msgstr ""
+msgstr "休眠的"
 
 #: bika/health/content/patient.py:242
 #: bika/health/controlpanel/bika_drugs.py:58
 msgid "Drug"
-msgstr ""
+msgstr "药物"
 
 #: bika/health/controlpanel/bika_drugprohibitions.py:58
 msgid "Drug Prohibition"
-msgstr ""
+msgstr "用药禁忌"
 
 #: bika/health/content/patient.py:309
 msgid "Drug Prohibition Explanation"
-msgstr ""
+msgstr "用药禁忌说明"
 
 #: bika/health/controlpanel/bika_drugprohibitions.py:49
 msgid "Drug Prohibition Explanations"
-msgstr ""
+msgstr "用药禁忌说明"
 
 #. Default: "Indications"
 #: bika/health/content/drug.py:47
 msgid "Drug indications"
-msgstr ""
+msgstr "药物适应症"
 
 #. Default: "Posology"
 #: bika/health/content/drug.py:58
 msgid "Drug posology"
-msgstr ""
+msgstr "药物学"
 
 #. Default: "Preservation"
 #: bika/health/content/drug.py:80
 msgid "Drug preservation"
-msgstr ""
+msgstr "药物保存"
 
 #. Default: "Side effects"
 #: bika/health/content/drug.py:69
 msgid "Drug side effects"
-msgstr ""
+msgstr "药物副作用"
 
 #: bika/health/controlpanel/bika_drugs.py:49
 msgid "Drugs"
-msgstr ""
+msgstr "药物"
 
 #: bika/health/content/patient.py:375
 msgid "EPI Number"
-msgstr ""
+msgstr "EPI编号"
 
 #: bika/health/controlpanel/bika_insurancecompanies.py:54
 #: bika/health/controlpanel/bika_vaccinationcenters.py:63
 #: bika/health/obsolete/__init__.py:40
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: bika/health/browser/doctors/folder_view.py:60
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:53
 msgid "Email Address"
-msgstr ""
+msgstr "Email地址"
 
 #: bika/health/content/treatment.py:102
 msgid "Empirical treatment"
-msgstr ""
+msgstr "实证治疗"
 
 #: bika/health/content/bikasetup.py:121
 msgid "Enable Bika's analysis request form."
-msgstr ""
+msgstr "启用Bika的分析请求表。"
 
 #: bika/health/content/bikasetup.py:40
 msgid "Enable panic levels alert"
-msgstr ""
+msgstr "启用紧急级别警报"
 
 #: bika/health/content/patient.py:244
 msgid "End"
-msgstr ""
+msgstr "结束"
 
 #: bika/health/controlpanel/bika_ethnicities.py:44
 msgid "Ethnicities"
-msgstr ""
+msgstr "种族"
 
 #: bika/health/content/patient.py:547
 msgid "Ethnicity"
-msgstr ""
+msgstr "种族"
 
 #: bika/health/controlpanel/bika_ethnicities.py:53
 msgid "Ethnicity Name"
-msgstr ""
+msgstr "种族名称"
 
 #: bika/health/content/patient.py:548
 msgid "Ethnicity eg. Asian, African, etc."
-msgstr ""
+msgstr "种族，例如：亚洲，非洲等"
 
 #: bika/health/content/treatment.py:103
 msgid "Expectant/Symptomatic treatment"
-msgstr ""
+msgstr "预期/对症治疗"
 
 #: bika/health/ajax/ajaxhandler.py:74
 msgid "Failed ajax call: %s"
-msgstr ""
+msgstr "Ajax调用失败：%s"
 
 #: bika/health/content/patient.py:583
 msgid "Fathers name"
-msgstr ""
+msgstr "父亲的名字"
 
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:56
 #: bika/health/controlpanel/bika_insurancecompanies.py:58
 #: bika/health/controlpanel/bika_vaccinationcenters.py:67
 msgid "Fax"
-msgstr ""
+msgstr "传真"
 
 #: bika/health/content/patient.py:605
 msgid "Feature"
-msgstr ""
+msgstr "特征"
 
 #: bika/health/content/bikasetup.py:57
 msgid "Feet/inches"
-msgstr ""
+msgstr "英尺/英寸"
 
 #: bika/health/config.py:29
 msgid "Female"
-msgstr ""
+msgstr "女性"
 
 #: bika/health/browser/patient/files.py:75
 msgid "File"
-msgstr ""
+msgstr "文件"
 
 #: bika/health/content/patient.py:656
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patient if this option is enabled"
-msgstr ""
+msgstr "归档结果的附件，例如，显微镜照片，如果启用此选项，将包含在给患者的电子邮件中"
 
 #: bika/health/content/bikasetup.py:108
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patients if this option is enabled. This setting can be overriden either on 'Patient publication preferences' tab from Client view or on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "归档结果的附件，例如，如果启用此选项，则将在发送给患者的电子邮件中包含显微镜照片。 可以在“客户”视图的“患者发布偏好”选项卡上或“患者”的“发布偏好”选项卡上覆盖此设置。"
 
 #: bika/health/content/client.py:72
 msgid "File attachments to results, e.g. microscope photos, will be included in emails to patients if this option is enabled. This setting can be overriden on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "归档结果的附件，例如，如果启用此选项，则将在发送给患者的电子邮件中包含显微镜照片。 可以在患者的“发布偏好”标签上覆盖此设置。"
 
 #: bika/health/browser/doctors/folder_view.py:50
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:52
 #: bika/health/content/batch.py:105
 msgid "Full Name"
-msgstr ""
+msgstr "全名"
 
 #: bika/health/content/analysisrequest.py:97
 #: bika/health/content/batch.py:307
 msgid "Fullname"
-msgstr ""
+msgstr "全名"
 
 #: bika/health/browser/patients/folder_view.py:77
 #: bika/health/content/patient.py:120
 #: bika/health/controlpanel/bika_symptoms.py:63
 msgid "Gender"
-msgstr ""
+msgstr "性别"
 
 #: bika/health/content/immunization.py:66
 msgid "Geographical areas can be characterized as having high, intermediate or low levels of infection."
-msgstr ""
+msgstr "地理区域的特征是具有高，中或低水平的感染。"
 
 #: bika/health/content/immunization.py:65
 msgid "Geographical distribution"
-msgstr ""
+msgstr "地域分布"
 
 #: bika/health/content/patient.py:701
 msgid "Guarantor ID"
-msgstr ""
+msgstr "担保人编码"
 
 #: bika/health/content/patient.py:720
 msgid "Guarantor's First Name"
-msgstr ""
+msgstr "担保人的名"
 
 #: bika/health/content/patient.py:736
 msgid "Guarantor's Phone (business)"
-msgstr ""
+msgstr "担保人电话（办公）"
 
 #: bika/health/content/patient.py:743
 msgid "Guarantor's Phone (home)"
-msgstr ""
+msgstr "担保人电话（家庭电话）"
 
 #: bika/health/content/patient.py:750
 msgid "Guarantor's Phone (mobile)"
-msgstr ""
+msgstr "担保人电话（移动电话）"
 
 #: bika/health/content/patient.py:711
 msgid "Guarantor's Surname"
-msgstr ""
+msgstr "担保人的姓"
 
 #: bika/health/content/patient.py:729
 msgid "Guarantor's postal address"
-msgstr ""
+msgstr "担保人的邮政地址"
 
 #: bika/health/config.py:39
 msgid "Hispanic or Latino"
-msgstr ""
+msgstr "西班牙裔或拉丁裔"
 
 #: bika/health/browser/patient/historicresults.py:45
 msgid "Historic Results"
-msgstr ""
+msgstr "历史结果"
 
 #: bika/health/content/batch.py:261
 msgid "Hours fasting"
-msgstr ""
+msgstr "空腹小时"
 
 #: bika/health/content/disease.py:38
 msgid "ICD Code"
-msgstr ""
+msgstr "iCD代码"
 
 #: bika/health/content/patient.py:183
 msgid "Identifier"
-msgstr ""
+msgstr "识别码"
 
 #: bika/health/content/patient.py:182
 msgid "Identifier Type"
-msgstr ""
+msgstr "标识符类型"
 
 #: bika/health/controlpanel/bika_identifiertypes.py:45
 msgid "Identifier Types"
-msgstr ""
+msgstr "标识符类型"
 
 #: bika/health/content/patient.py:647
 msgid "If checked, results reports will also be sent to the Patient automatically."
-msgstr ""
+msgstr "如果选中，结果报告也将自动发送给患者。"
 
 #: bika/health/content/bikasetup.py:84
 msgid "If checked, results reports will also be sent to the Patient automatically. This setting can be overriden either on 'Patient publication preferences' tab from Client view or on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "如果选中，结果报告也将自动发送给患者。 可以在“客户”视图的“患者发布偏好”选项卡上或“患者”的“发布偏好”选项卡上覆盖此设置。"
 
 #: bika/health/content/client.py:51
 msgid "If checked, results reports will also be sent to the Patient automatically. This setting can be overriden either on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "如果选中，结果报告也将自动发送给患者。 可以在患者的“发布偏好”选项卡上覆盖此设置。"
 
 #: bika/health/content/patient.py:637
 msgid "If checked, settings will be inherited from the Client, so further changes in Client for this setting will be populated too."
-msgstr ""
+msgstr "如果选中，则设置将从客户端继承，因此客户端中也会对此设置进行进一步的更改。"
 
 #: bika/health/content/client.py:41
 msgid "If checked, the settings for results reports distribution to patients will be inherited from Bika Setup, so further changes in Bika Setup for this setting will be populated too."
-msgstr ""
+msgstr "如果选中，则从Bika Setup继承用于向患者分发结果报告的设置，因此也会在Bika Setup中对此设置进行进一步的更改。"
 
 #: bika/health/content/bikasetup.py:50
 msgid "If enabled, shows automatically an email form pop-up for alerting the client about a panic level exceeded when Analysis Request view is loaded"
-msgstr ""
+msgstr "如果启用，将自动显示一个电子邮件表单弹出窗口，用于在加载“分析请求”视图时提醒客户端超出了紧急级别"
 
 #: bika/health/content/patient.py:684
 msgid "If it is checked the invoices will be send to the insurance company. In this case the insurance number will be mandatory."
-msgstr ""
+msgstr "如果选中，发票将发送到保险公司。 在这种情况下，保险号将是强制性的。"
 
 #: bika/health/content/bikasetup.py:143
 msgid "If selected, Client Patient IDs will be forced to be unique"
-msgstr ""
+msgstr "如果选择，则客户患者ID将被强制为唯一"
 
 #: bika/health/content/patient.py:376
 #: bika/health/controlpanel/bika_immunizations.py:58
 msgid "Immunization"
-msgstr ""
+msgstr "免疫"
 
 #. Default: "Type"
 #: bika/health/content/immunization.py:38
 msgid "Immunization form"
-msgstr ""
+msgstr "免疫形式"
 
 #: bika/health/controlpanel/bika_immunizations.py:49
 msgid "Immunizations"
-msgstr ""
+msgstr "免疫"
 
 #: bika/health/browser/patients/folder_view.py:113
 msgid "Inactive"
-msgstr ""
+msgstr "不活跃"
 
 #: bika/health/content/bikasetup.py:73
 msgid "Inches"
-msgstr ""
+msgstr "英寸"
 
 #: bika/health/validators.py:52
 msgid "Incorrect data format in '${title}', should be YYYY-MM-DD"
-msgstr ""
+msgstr "'${title}'中的数据格式不正确，应为YYYY-MM-DD"
 
 #: bika/health/content/patient.py:636
 msgid "Inherit default settings"
-msgstr ""
+msgstr "继承默认设置"
 
 #: bika/health/content/client.py:40
 msgid "Inherit default settings for Patient results distribution"
-msgstr ""
+msgstr "继承患者结果分发的默认设置"
 
 #: bika/health/controlpanel/bika_insurancecompanies.py:43
 msgid "Insurance Companies"
-msgstr ""
+msgstr "保险公司"
 
 #: bika/health/content/patient.py:668
 msgid "Insurance Company"
-msgstr ""
+msgstr "保险公司"
 
 #: bika/health/content/patient.py:676
 msgid "Insurance Number"
-msgstr ""
+msgstr "保险号码"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:58
 msgid "Invoice Date"
-msgstr ""
+msgstr "发票日期"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:54
 msgid "Invoice Number"
-msgstr ""
+msgstr "发票号码"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:46
 msgid "Invoices"
-msgstr ""
+msgstr "发票"
 
 #: bika/health/config.py:50
 msgid "Irregular"
-msgstr ""
+msgstr "不规则"
 
 #: bika/health/content/bikasetup.py:122
 msgid "It enables the secondary analysis request form. This request has some characteristic features as allowing you to register more than one analysis request at the same time. It's useful if you are supposed to register a big amount of analysis request at the same time."
-msgstr ""
+msgstr "它启用了辅助分析请求表。 该请求具有一些特征，如允许您同时注册多个分析请求。 如果您应该同时注册大量分析请求，这将很有用。"
 
 #: bika/health/content/patient.py:320
 msgid "Known Patient allergies to keep information that can aid drug reaction interpretation"
-msgstr ""
+msgstr "已知的患者过敏反应可保留有助于药物反应解释的信息"
 
 #: bika/health/content/drug.py:71
 msgid "Known undesirable effects of the drug"
-msgstr ""
+msgstr "药物的已知不良作用"
 
 #: bika/health/content/bikasetup.py:65
 msgid "Lbs"
-msgstr ""
+msgstr "磅"
 
 #: bika/health/content/patient.py:442
 msgid "Location"
-msgstr ""
+msgstr "地点"
 
 #: bika/health/config.py:28
 msgid "Male"
-msgstr ""
+msgstr "男性"
 
 #: bika/health/content/analysisspec.py:50
 #: bika/health/widgets/analysisspecificationwidget.py:41
 msgid "Max panic"
-msgstr ""
+msgstr "紧急最大值"
 
 #: bika/health/content/analysisspec.py:49
 #: bika/health/widgets/analysisspecificationwidget.py:40
 msgid "Min panic"
-msgstr ""
+msgstr "紧急最小值"
 
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:55
 msgid "Mobile Phone"
-msgstr ""
+msgstr "手机"
 
 #: bika/health/browser/doctors/folder_view.py:64
 msgid "MobilePhone"
-msgstr ""
+msgstr "移动电话"
 
 #: bika/health/content/patient.py:576
 msgid "Mothers name"
-msgstr ""
+msgstr "母亲的名字"
 
 #: bika/health/controlpanel/bika_vaccinationcenters.py:61
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 #: bika/health/config.py:34
 msgid "Native American"
-msgstr ""
+msgstr "美洲原住民"
 
 #: bika/health/config.py:37
 msgid "Native Hawaiian or Other Pacific Islander"
-msgstr ""
+msgstr "夏威夷原住民或其他太平洋岛民"
 
 #: bika/health/config.py:51
 msgid "No menstrual cycle"
-msgstr ""
+msgstr "没有月经周期"
 
 #: bika/health/ajax/ajaxhandler.py:60
 msgid "No request id defined"
-msgstr ""
+msgstr "未定义请求ID"
 
 #: bika/health/content/treatment.py:79
 msgid "Objective clinical findings"
-msgstr ""
+msgstr "客观临床发现"
 
 #: bika/health/content/batch.py:172
 msgid "Onset"
-msgstr ""
+msgstr "发作"
 
 #: bika/health/browser/batchfolder.py:127
 #: bika/health/content/batch.py:146
 msgid "Onset Date"
-msgstr ""
+msgstr "发病日期"
 
 #: bika/health/content/batch.py:157
 msgid "Onset Date Estimated"
-msgstr ""
+msgstr "预计发病日期"
 
 #: bika/health/obsolete/__init__.py:41
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: bika/health/content/analysisrequest.py:89
 #: bika/health/content/batch.py:130
 msgid "PID"
-msgstr ""
+msgstr "PID"
 
 #: bika/health/content/treatment.py:104
 msgid "Palliative treatment"
-msgstr ""
+msgstr "姑息治疗"
 
 #: bika/health/ajax/client.py:49
 msgid "Parameter '%s' is missing"
-msgstr ""
+msgstr "参数'%s' 丢失"
 
 #: bika/health/content/immunization.py:132
 msgid "Passive immunization"
-msgstr ""
+msgstr "被动免疫"
 
 #: bika/health/browser/analysisrequests/view.py:59
 #: bika/health/browser/batchfolder.py:117
 #: bika/health/browser/insurancecompany/invoicefolder.py:63
 msgid "Patient"
-msgstr ""
+msgstr "患者"
 
 #: bika/health/content/batch.py:151
 msgid "Patient Age at Case Onset Date"
-msgstr ""
+msgstr "发病日期的患者年龄"
 
 #: bika/health/browser/patient/files.py:49
 msgid "Patient Files"
-msgstr ""
+msgstr "患者档案"
 
 #: bika/health/browser/analysisrequests/view.py:52
 #: bika/health/browser/batchfolder.py:109
 #: bika/health/browser/patients/folder_view.py:67
 msgid "Patient ID"
-msgstr ""
+msgstr "患者编号"
 
 #: bika/health/content/patient.py:191
 msgid "Patient additional identifiers"
-msgstr ""
+msgstr "患者附加标识符"
 
 #: bika/health/content/bikasetup.py:59
 msgid "Patient condition height units"
-msgstr ""
+msgstr "患者身高"
 
 #: bika/health/content/bikasetup.py:75
 msgid "Patient condition waist units"
-msgstr ""
+msgstr "患者腰围"
 
 #: bika/health/content/bikasetup.py:67
 msgid "Patient condition weight units"
-msgstr ""
+msgstr "患者体重"
 
 #: bika/health/content/patient.py:505
 msgid "Patient's past medical history."
-msgstr ""
+msgstr "患者过去的病史。"
 
 #: bika/health/browser/patients/folder_view.py:46
 msgid "Patients"
-msgstr ""
+msgstr "患者"
 
 #: bika/health/controlpanel/bika_insurancecompanies.py:56
 #: bika/health/controlpanel/bika_vaccinationcenters.py:65
 msgid "Phone"
-msgstr ""
+msgstr "电话"
 
 #: bika/health/content/patient.py:597
 msgid "Photo"
-msgstr ""
+msgstr "照片"
 
 #: bika/health/skins/bika_health/validate_integrity.cpy:21
 msgid "Please correct the indicated errors."
-msgstr ""
+msgstr "请更正指示的错误。"
 
 #: bika/health/content/immunization.py:112
 msgid "Prevention"
-msgstr ""
+msgstr "预防"
 
 #: bika/health/content/treatment.py:105
 msgid "Preventive/Prophylactic treatment"
-msgstr ""
+msgstr "预防/预防治疗"
 
 #: bika/health/browser/doctors/folder_view.py:54
 #: bika/health/browser/patients/folder_view.py:92
 msgid "Primary Referrer"
-msgstr ""
+msgstr "主要推荐人"
 
 #: bika/health/content/patient.py:81
 msgid "Province"
-msgstr ""
+msgstr "省"
 
 #: bika/health/content/batch.py:170
 msgid "Provisional diagnosis"
-msgstr ""
+msgstr "临时诊断"
 
 #: bika/health/content/treatment.py:106
 msgid "Rational treatment"
-msgstr ""
+msgstr "合理治疗"
 
 #: bika/health/config.py:49
 msgid "Regular"
-msgstr ""
+msgstr "定期"
 
 #: bika/health/content/immunization.py:56
 msgid "Relevant Facts"
-msgstr ""
+msgstr "相关事实"
 
 #: bika/health/content/aetiologicagent.py:36
 #: bika/health/content/insurancecompany.py:36
 #: bika/health/content/patient.py:224
 msgid "Remarks"
-msgstr ""
+msgstr "注释"
 
 #: bika/health/browser/analysis/resultoutofrange.py:114
 msgid "Result exceeded panic level"
-msgstr ""
+msgstr "超出紧急程度的结果"
 
 #: bika/health/browser/analysis/resultoutofrange.py:111
 msgid "Result in shoulder panic range"
-msgstr ""
+msgstr "导致紧急范围"
 
 #: bika/health/content/bikasetup.py:107
 #: bika/health/content/client.py:71
 #: bika/health/content/patient.py:655
 msgid "Results attachments permitted"
-msgstr ""
+msgstr "允许结果附件"
 
 #: bika/health/content/immunization.py:40
 msgid "Select a type of immunization. <br/>Active immunization entails the introduction of a foreign molecule into the body, which causes the body itself to generate immunity against the target. Vaccination is an active form of immunization<br/>Passive immunization is where pre-synthesized elements of the immune system are transferred to a person so that the body does not need to produce these elements itself. Currently, antibodies can be used for passive immunization"
-msgstr ""
+msgstr "选择一种免疫。 主动免疫需要将异物引入人体，这会导致人体自身产生针对靶标的免疫力。 疫苗接种是一种主动的免疫接种方式。被动免疫是指将免疫系统中预先合成的元素转移给人，这样人体就不需要自己产生这些元素了。 目前，抗体可用于被动免疫"
 
 #: bika/health/content/treatment.py:42
 msgid "Select a type of treatment."
-msgstr ""
+msgstr "选择一种治疗方式。"
 
 #: bika/health/content/bikasetup.py:95
 msgid "Select the preferred channels to be used for sending the results reports to Patients. This setting can be overriden either on 'Patient publication preferences' tab from Client view or on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "选择用于将结果报告发送给患者的首选渠道。 可以在“客户”视图的“患者发布偏好”选项卡上或“患者”的“发布偏好”选项卡上覆盖此设置。"
 
 #: bika/health/content/client.py:61
 msgid "Select the preferred channels to be used for sending the results reports to Patients. This setting can be overriden on Patient's 'Publication preferences' tab."
-msgstr ""
+msgstr "选择用于将结果报告发送给患者的首选渠道。 可以在患者的“发布偏好”标签上覆盖此设置。"
 
 #: bika/health/content/patient.py:683
 msgid "Send invoices to the insurance company."
-msgstr ""
+msgstr "将发票发送给保险公司。"
 
 #: bika/health/ajax/ajaxhandler.py:66
 msgid "Service '%s' not found for %s"
-msgstr ""
+msgstr "%s找不到服务'%s'"
 
 #: bika/health/ajax/ajaxhandler.py:63
 msgid "Service not defined"
-msgstr ""
+msgstr "服务未定义"
 
 #: bika/health/content/symptom.py:50
 msgid "Severity levels permitted"
-msgstr ""
+msgstr "允许的严重级别"
 
 #: bika/health/content/treatment.py:107
 msgid "Shock treatment"
-msgstr ""
+msgstr "休克治疗"
 
 #: bika/health/content/bikasetup.py:133
 msgid "Should the Doctor field be mandatory while creating a case?"
-msgstr ""
+msgstr "创建病案时，Doctor字段是否为必填字段？"
 
 #: bika/health/content/bikasetup.py:49
 msgid "Show client email pop-up when panic level"
-msgstr ""
+msgstr "出现紧急情况时显示客户端电子邮件弹出窗口"
 
 #: bika/health/content/treatment.py:108
 msgid "Specific treatment"
-msgstr ""
+msgstr "具体待遇"
 
 #: bika/health/content/patient.py:243
 msgid "Start"
-msgstr ""
+msgstr "开始"
 
 #: bika/health/content/treatment.py:70
 msgid "Subjective clinical findings"
-msgstr ""
+msgstr "主观临床发现"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:60
 msgid "Subtotal"
-msgstr ""
+msgstr "小计"
 
 #: bika/health/content/aetiologicagent.py:35
 #: bika/health/content/batch.py:241
 msgid "Subtype"
-msgstr ""
+msgstr "亚型"
 
 #: bika/health/content/treatment.py:109
 msgid "Supporting treatment"
-msgstr ""
+msgstr "配套治疗"
 
 #: bika/health/controlpanel/bika_symptoms.py:58
 msgid "Symptom"
-msgstr ""
+msgstr "症状"
 
 #: bika/health/content/immunization.py:85
 #: bika/health/controlpanel/bika_symptoms.py:49
 msgid "Symptoms"
-msgstr ""
+msgstr "病征"
 
 #: bika/health/content/drug.py:49
 msgid "Symptoms or the like for which the drug is suitable"
-msgstr ""
+msgstr "药物适合的症状等"
 
 #: bika/health/content/patient.py:702
 msgid "The ID number (Insurance Number) from the person whose contract cover the current patient."
-msgstr ""
+msgstr "合同涵盖当前患者的人员的ID号（保险号）。"
 
 #: bika/health/content/patient.py:693
 msgid "The patient and the guarantor are the same."
-msgstr ""
+msgstr "病人和担保人是相同的。"
 
 #: bika/health/content/patient.py:692
 msgid "The patient is the guarantor."
-msgstr ""
+msgstr "病人是保证人。"
 
 #: bika/health/content/batch.py:138
 #: bika/health/content/patient.py:79
 #: bika/health/controlpanel/bika_aetiologicagents.py:53
 msgid "Title"
-msgstr ""
+msgstr "标题"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:62
 msgid "Total"
-msgstr ""
+msgstr "总"
 
 #: bika/health/content/immunization.py:76
 msgid "Transmission"
-msgstr ""
+msgstr "传输"
 
 #: bika/health/content/immunization.py:103
 #: bika/health/controlpanel/bika_treatments.py:58
 msgid "Treatment"
-msgstr ""
+msgstr "治疗方法"
 
 #: bika/health/content/treatment.py:85
 msgid "Treatment Document"
-msgstr ""
+msgstr "治疗文档"
 
 #: bika/health/content/treatment.py:61
 msgid "Treatment care"
-msgstr ""
+msgstr "治疗护理"
 
 #. Default: "Procedure"
 #: bika/health/content/treatment.py:51
 msgid "Treatment procedure"
-msgstr ""
+msgstr "治疗程序"
 
 #. Default: "Type"
 #: bika/health/content/treatment.py:40
 msgid "Treatment type"
-msgstr ""
+msgstr "处理方式"
 
 #: bika/health/controlpanel/bika_treatments.py:49
 msgid "Treatments"
-msgstr ""
+msgstr "治疗方法"
 
 #. Default: "End date"
 #: bika/health/content/patient.py:440
 msgid "Trip End Date"
-msgstr ""
+msgstr "行程结束日期"
 
 #. Default: "Start date"
 #: bika/health/content/patient.py:439
 msgid "Trip Start Date"
-msgstr ""
+msgstr "行程开始日期"
 
 #: bika/health/content/bikasetup.py:60
 msgid "Use '/' symbol to allow multiple-units submission"
-msgstr ""
+msgstr "使用“ /”符号允许多单位提交"
 
 #: bika/health/browser/doctors/folder_view.py:58
 msgid "User Name"
-msgstr ""
+msgstr "用户名"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:61
 msgid "VAT"
-msgstr ""
+msgstr "加值税"
 
 #: bika/health/content/patient.py:377
 msgid "Vaccination Center"
-msgstr ""
+msgstr "疫苗接种中心"
 
 #: bika/health/controlpanel/bika_vaccinationcenters.py:52
 msgid "Vaccination Centers"
-msgstr ""
+msgstr "疫苗接种中心"
 
 #: bika/health/validators.py:91
 msgid "Validation failed: '${value}' is not unique"
-msgstr ""
+msgstr "验证失败：'${value}' 不是唯一的"
 
 #: bika/health/widgets/analysisspecificationwidget.py:124
 msgid "Validation failed: Panic max value must be greater than panic min value"
-msgstr ""
+msgstr "验证失败：紧急最大值必须大于紧急最小值"
 
 #: bika/health/widgets/analysisspecificationwidget.py:114
 msgid "Validation failed: Panic min value must be numeric"
-msgstr ""
+msgstr "验证失败：紧急最小值必须为数字"
 
 #: bika/health/config.py:38
 msgid "White"
-msgstr ""
+msgstr "白色"
 
 #: bika/health/browser/analysis/resultoutofrange.py:106
 msgid "maxpanic"
-msgstr ""
+msgstr "紧急最大值"
 
 #: bika/health/browser/analysis/resultoutofrange.py:105
 msgid "minpanic"
-msgstr ""
+msgstr "紧急最小值"
 
 #: bika/health/content/drug.py:82
 msgid "preservation"
-msgstr ""
+msgstr "保存"
