@@ -22,6 +22,7 @@ from bika.health import api
 from bika.health import DEFAULT_PROFILE_ID
 from bika.health import logger
 from bika.health.config import PROJECTNAME
+from bika.health.setuphandlers import allow_patients_inside_clients
 from bika.health.setuphandlers import setup_panic_alerts
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.upgrade import upgradestep
@@ -57,6 +58,10 @@ def upgrade(tool):
     # Update Sample's PanicEmailAlertSent field
     # https://github.com/senaite/senaite.health/pull/161
     update_sample_panic_alert_field(portal)
+
+    # Allow Patient content type inside Client
+    # Note: this should always be run if core's typestool is reimported
+    allow_patients_inside_clients(portal)
     
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True

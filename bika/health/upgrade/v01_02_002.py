@@ -31,6 +31,7 @@ from zope.lifecycleevent import ObjectMovedEvent
 from bika.health import CATALOG_PATIENTS
 from bika.health import logger
 from bika.health.config import PROJECTNAME
+from bika.health.setuphandlers import allow_patients_inside_clients
 from bika.lims import api
 from bika.lims.catalog.bika_catalog import BIKA_CATALOG
 from bika.lims.idserver import renameAfterCreation
@@ -192,11 +193,7 @@ def move_patients_to_clients(portal):
     workflow = wf_tool.getWorkflowById("senaite_health_patient_workflow")
 
     # Allow Patient content type inside Clients
-    portal_types = api.get_tool('portal_types')
-    client = getattr(portal_types, 'Client')
-    allowed_types = client.allowed_content_types
-    if 'Patient' not in allowed_types:
-        client.allowed_content_types = allowed_types + ('Patient',)
+    allow_patients_inside_clients(portal)
 
     # Map patient uids against batches' clients
     patients_to_clients = dict()
