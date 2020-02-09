@@ -117,6 +117,10 @@ def post_install(portal_setup):
     # Setup default ethnicities
     setup_ethnicities(portal)
 
+    # Allow patients inside clients
+    # Note: this should always be run if core's typestool is reimported
+    allow_patients_inside_clients(portal)
+
     # Reindex the top level folder in the portal and setup to fix missing icons
     reindex_content_structure(portal)
 
@@ -453,3 +457,13 @@ def setup_panic_alerts(portal):
         "that may indicate an imminent life-threatening condition:\n\n"
         "${analyses}\n\n--\n${lab_address}")
     ploneapi.portal.set_registry_record("senaite.panic.email_body", email_body)
+
+
+def allow_patients_inside_clients(portal):
+    """Allows Patient content type to be created inside Client
+    """
+    portal_types = api.get_tool('portal_types')
+    client = getattr(portal_types, 'Client')
+    allowed_types = client.allowed_content_types
+    if 'Patient' not in allowed_types:
+        client.allowed_content_types = allowed_types + ('Patient', )
