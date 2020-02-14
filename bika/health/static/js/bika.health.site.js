@@ -18,7 +18,5 @@ function HealthSiteView() {
         $("img[src$='bika.lims.images/client_big.png']").attr('src', window.portal_url + "/++resource++bika.health.images/client_big.png");
         $("img[src$='bika.lims.images/doctor.png']").attr('src', window.portal_url + "/++resource++bika.health.images/doctor.png");
         $("img[src$='bika.lims.images/doctor_big.png']").attr('src', window.portal_url + "/++resource++bika.health.images/doctor_big.png");
-        $("img[src$='bika.lims.images/supplyorder.png']").attr('src', window.portal_url + "/++resource++bika.health.images/supplyorder.png");
-        $("img[src$='bika.lims.images/supplyorder_big.png']").attr('src', window.portal_url + "/++resource++bika.health.images/supplyorder_big.png");
     }
 }
