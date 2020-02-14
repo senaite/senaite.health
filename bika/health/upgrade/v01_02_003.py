@@ -31,6 +31,27 @@ from bika.lims.upgrade.utils import UpgradeUtils
 version = '1.2.3'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
 
+# List of javascripts to unregister
+JAVASCRIPTS_TO_REMOVE = [
+    "++resource++bika.health.js/bika.health.analysisrequest.add.js",
+    "++resource++bika.health.js/bika.health.doctor.js",
+    "++resource++bika.health.js/bika.health.analysisrequest.ar_add_health_standard.js",
+    "++resource++bika.health.js/utils.js",
+    "++resource++bika.health.js/doctor.js",
+    "++resource++bika.health.js/client.js",
+    "++resource++bika.health.js/bika.health.analysisrequest_add.js",
+    "++resource++bika.health.js/bika.health.patient_edit.js",
+    "++resource++bika.health.js/bika.health.batch_view.js",
+    "++resource++bika.health.js/bika.health.batch_edit.js",
+    "++resource++bika.health.js/bika.health.bikasetup_edit.js",
+    "++resource++bika.health.js/bika.health.client_edit.js",
+]
+
+# List of css to unregister
+CSS_TO_REMOVE = [
+    "bika_health_standard_analysis_request.css",
+]
+
 
 @upgradestep(PROJECTNAME, version)
 def upgrade(tool):
@@ -62,7 +83,13 @@ def upgrade(tool):
     # Allow Patient content type inside Client
     # Note: this should always be run if core's typestool is reimported
     allow_patients_inside_clients(portal)
-    
+
+    # Remove stale javascripts
+    remove_stale_javascripts(portal)
+
+    # Remove stale css
+    remove_stale_css(portal)
+
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
 
@@ -86,3 +113,23 @@ def update_sample_panic_alert_field(portal):
             sample.setPanicEmailAlertSent(True)
 
     logger.info("Updating Sample's PanicEmailAlertSent field [DONE]")
+
+
+def remove_stale_javascripts(portal):
+    """Removes stale javascripts
+    """
+    logger.info("Removing stale javascripts ...")
+    for js in JAVASCRIPTS_TO_REMOVE:
+        logger.info("Unregistering JS %s" % js)
+        portal.portal_javascripts.unregisterResource(js)
+
+    logger.info("Removing stale javascripts [DONE]")
+
+
+def remove_stale_css(portal):
+    """Removes stale CSS
+    """
+    logger.info("Removing stale css ...")
+    for css in CSS_TO_REMOVE:
+        logger.info("Unregistering CSS %s" % css)
+        portal.portal_css.unregisterResource(css)

@@ -1,5 +1,4 @@
 /*<dtml-with base_properties>*/
-/*<dtml-with bika_listing>*/
 /*<dtml-with bika_health>*/
 <dtml-call "REQUEST.set('portal_url', portal_url())">
 */
@@ -93,6 +92,5 @@ div.cg-DivItem {
     text-align:left;
 }
 
-/* </dtml-with> */
 /* </dtml-with> */
 /* </dtml-with> */
