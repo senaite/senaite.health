@@ -30,8 +30,6 @@ def __call__(self, mode, instance, context=None):
     # before the generic macro, this lets other projects
     # create more partial widgets
     macro = getattr(self, 'macro_%s' % mode, self.macro)
-    if macro == "bika_widgets/referencewidget":
-        macro = "bika_health_widgets/referencewidget"
 
     # Now split the macro into optional parts using '|'
     # if the first part doesn't exist, the search continues
