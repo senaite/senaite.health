@@ -71,6 +71,9 @@ def upgrade(tool):
     # -------- ADD YOUR STUFF BELOW --------
     setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "skins")    
     setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "jsregistry")
+
+    # Install senaite.panic add-on if not yet installed
+    install_senaite_panic(portal)
     
     # Setup template text for panic level alert emails
     # https://github.com/senaite/senaite.health/pull/161
@@ -133,3 +136,18 @@ def remove_stale_css(portal):
     for css in CSS_TO_REMOVE:
         logger.info("Unregistering CSS %s" % css)
         portal.portal_css.unregisterResource(css)
+
+
+def install_senaite_panic(portal):
+    """Install the senaite.panic addon
+    """
+    qi = api.get_tool("portal_quickinstaller")
+    profile = "senaite.panic"
+    if profile not in qi.listInstallableProfiles():
+        logger.error("Profile '{}' not found. Forgot to run buildout?"
+                     .format(profile))
+        return
+    if qi.isProductInstalled(profile):
+        logger.info("'{}' is installed".format(profile))
+        return
+    qi.installProduct(profile)
