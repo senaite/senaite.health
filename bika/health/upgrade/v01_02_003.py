@@ -72,6 +72,9 @@ def upgrade(tool):
     # -------- ADD YOUR STUFF BELOW --------
     setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "skins")    
     setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "jsregistry")
+
+    # Install senaite.panic add-on if not yet installed
+    install_senaite_panic(portal)
     
     # Setup template text for panic level alert emails
     # https://github.com/senaite/senaite.health/pull/161
@@ -153,3 +156,17 @@ def fix_health_email_addresses(portal):
     portal_types = ["Patient"]
     fix_email_address(portal, portal_types=portal_types,
                       catalog_id=CATALOG_PATIENTS)
+
+def install_senaite_panic(portal):
+    """Install the senaite.panic addon
+    """
+    qi = api.get_tool("portal_quickinstaller")
+    profile = "senaite.panic"
+    if profile not in qi.listInstallableProfiles():
+        logger.error("Profile '{}' not found. Forgot to run buildout?"
+                     .format(profile))
+        return
+    if qi.isProductInstalled(profile):
+        logger.info("'{}' is installed".format(profile))
+        return
+    qi.installProduct(profile)
