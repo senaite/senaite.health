@@ -17,7 +17,7 @@
 #
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
+from bika.health import CATALOG_PATIENTS
 from bika.health import api
 from bika.health import DEFAULT_PROFILE_ID
 from bika.health import logger
@@ -27,6 +27,7 @@ from bika.health.setuphandlers import setup_panic_alerts
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
+from bika.lims.upgrade.v01_03_003 import fix_email_address
 
 version = '1.2.3'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
@@ -93,6 +94,10 @@ def upgrade(tool):
     # Remove stale css
     remove_stale_css(portal)
 
+    # Fix email addresses
+    # https://github.com/senaite/senaite.health/pulls/172
+    fix_health_email_addresses(portal)
+
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
 
@@ -137,6 +142,20 @@ def remove_stale_css(portal):
         logger.info("Unregistering CSS %s" % css)
         portal.portal_css.unregisterResource(css)
 
+
+def fix_health_email_addresses(portal):
+    """Validates the email address for portal types that inherit from Person.
+    The field did not have an email validator, causing some views to fail when
+    rendering the value while expecting a valid email address format
+    """
+    # Fix email address for portal types from portal_catalog
+    portal_types = ["VaccinationCenterContact", "Doctor"]
+    fix_email_address(portal, portal_types=portal_types)
+
+    # Fix email address for portal types from other catalogs
+    portal_types = ["Patient"]
+    fix_email_address(portal, portal_types=portal_types,
+                      catalog_id=CATALOG_PATIENTS)
 
 def install_senaite_panic(portal):
     """Install the senaite.panic addon

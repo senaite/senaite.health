@@ -17,9 +17,11 @@ Changelog
 
 **Removed**
 
+- #170 Removal of stale javascripts and css
 
 **Fixed**
 
+- #172 Fix sporadical errors when contacts do not have a valid email address
 - #168 Cannot create Patient inside Client (content type not allowed)
 - #162 Unable to search by Client Patient ID in Sample Add form
 - #159 Ensure `Client` contents allow to hold `Patient` types
