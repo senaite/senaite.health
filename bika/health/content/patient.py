@@ -1132,7 +1132,7 @@ class Patient(Person):
         query = dict(portal_type="Batch", getPatientUID=api.get_uid(self))
         batches = api.search(query, BIKA_CATALOG)
         if full_objects:
-            batches = map(api.get_object_by_uid, batches)
+            return map(api.get_object, batches)
         return batches
 
     def SearchableText(self):
