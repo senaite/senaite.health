@@ -51,7 +51,6 @@ CATALOG_COLUMNS = [
     "getPrimaryReferrerUID",
 
     # Columns without index counterpart
-    "getAgeSplittedStr",
     "getBirthDate",
     "getGender",
     "getMenstrualStatus",

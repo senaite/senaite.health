@@ -79,7 +79,7 @@ class PatientsView(BikaListingView):
                 'toggle': True,
                 'sortable': False}),
 
-            ('getAgeSplittedStr', {
+            ('age', {
                 'title': _('Age'),
                 'toggle': True,
                 'sortable': False}),
@@ -169,7 +169,7 @@ class PatientsView(BikaListingView):
         item['getBirthDate'] = self.ulocalized_time(dob)
 
         # Patient's current age
-        item["getAgeSplittedStr"] = get_age_ymd(dob)
+        item["age"] = get_age_ymd(dob)
 
         # make the columns patient title, patient ID and client patient ID
         # redirect to the Analysis Requests of the patient
