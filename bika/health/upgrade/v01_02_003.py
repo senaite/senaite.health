@@ -56,6 +56,7 @@ CSS_TO_REMOVE = [
 # Metadata from catalogs to remove
 METADATA_TO_REMOVE = [
     # AgeSplittedStr was only used in patients listing
+    # https://github.com/senaite/senaite.health/pull/180
     (CATALOG_PATIENTS, "getAgeSplittedStr"),
 ]
 

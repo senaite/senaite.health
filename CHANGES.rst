@@ -14,13 +14,13 @@ Changelog
 - #163 Cannot override behavior of Patients folder when using `before_render`
 - #157 Changed Base Catalog Tool
 
-
 **Removed**
 
 - #170 Removal of stale javascripts and css
 
 **Fixed**
 
+- #180 Fix Patient listings show wrong age
 - #172 Fix sporadical errors when contacts do not have a valid email address
 - #168 Cannot create Patient inside Client (content type not allowed)
 - #162 Unable to search by Client Patient ID in Sample Add form
