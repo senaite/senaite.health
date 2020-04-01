@@ -17,6 +17,7 @@
 #
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
+import itertools
 
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -25,8 +26,11 @@ from bika.health import bikaMessageFactory as _
 from zope.interface import implements
 from plone.app.layout.globals.interfaces import IViewView
 from Products.CMFPlone.i18nl10n import ulocalized_time
+from bika.lims import api
 import plone
 import json
+
+from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 
 
 class HistoricResultsView(BrowserView):
@@ -88,39 +92,46 @@ def get_historicresults(patient):
 
     rows = {}
     dates = []
-    uid = patient.UID()
-    states = ['verified', 'published']
 
     # Retrieve the AR IDs for the current patient
-    bc = getToolByName(patient, 'bika_catalog')
-    ars = [ar.id for ar
-           in bc(portal_type='AnalysisRequest', review_state=states)
-           if 'Patient' in ar.getObject().Schema()
-           and ar.getObject().Schema().getField('Patient').get(ar.getObject())
-           and ar.getObject().Schema().getField('Patient').get(ar.getObject()).UID() == uid]
+    query = {"portal_type": "AnalysisRequest",
+             "getPatientUID": api.get_uid(patient),
+             "review_state": ["verified", "published"],
+             "sort_on": "getDateSampled",
+             "sort_order": "descending"}
+    brains = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
+    samples = map(api.get_object, brains)
 
-    # Retrieve all the analyses, sorted by ResultCaptureDate DESC
-    bc = getToolByName(patient, 'bika_analysis_catalog')
-    analyses = [an.getObject() for an
-                in bc(portal_type='Analysis',
-                      getRequestID=ars,
-                      sort_on='getResultCaptureDate',
-                      sort_order='reverse')]
+    # Retrieve all analyses
+    analyses = map(lambda samp: samp.objectValues("Analysis"), samples)
+    analyses = list(itertools.chain.from_iterable(analyses))
 
     # Build the dictionary of rows
     for analysis in analyses:
-        ar = analysis.aq_parent
-        sampletype = ar.getSampleType()
-        row = rows.get(sampletype.UID()) if sampletype.UID() in rows.keys() \
-            else {'object': sampletype, 'analyses': {}}
-        anrow = row.get('analyses')
+        sample = analysis.aq_parent
+        sample_type = sample.getSampleType()
+        row = {
+            "object": sample_type,
+            "analyses": {},
+        }
+        sample_type_uid = api.get_uid(sample_type)
+        if sample_type_uid in rows:
+            row = rows.get(sample_type_uid)
+
+        anrow = row.get("analyses")
         service_uid = analysis.getServiceUID()
-        asdict = anrow.get(service_uid, {'object': analysis,
-                                         'title': analysis.Title(),
-                                         'keyword': analysis.getKeyword(),
-                                         'units': analysis.getUnit()})
+        asdict = {
+            "object": analysis,
+            "title": api.get_title(analysis),
+            "keyword": analysis.getKeyword(),
+            "units": analysis.getUnit(),
+        }
+        if service_uid in anrow:
+            asdict = anrow.get(service_uid)
+
         date = analysis.getResultCaptureDate() or analysis.created()
-        date = ulocalized_time(date, 1, None, patient, 'bika')
+        date = ulocalized_time(date, long_format=1)
+
         # If more than one analysis of the same type has been
         # performed in the same datetime, get only the last one
         if date not in asdict.keys():
@@ -132,9 +143,7 @@ def get_historicresults(patient):
             # sample type will be taken into consideration.
             # We assume specs from previous analyses are obsolete.
             if 'specs' not in asdict.keys():
-                spec = analysis.getAnalysisSpecs()                
-                spec = spec.getResultsRangeDict() if spec else {}
-                specs = spec.get(analysis.getKeyword(), {})
+                specs = analysis.getResultsRange()
                 if not specs.get('rangecomment', ''):
                     if specs.get('min', '') and specs.get('max', ''):
                         specs['rangecomment'] = '%s - %s' % \
@@ -155,7 +164,7 @@ def get_historicresults(patient):
                 dates.append(date)
         anrow[service_uid] = asdict
         row['analyses'] = anrow
-        rows[sampletype.UID()] = row
+        rows[sample_type_uid] = row
     dates.sort(reverse=False)
 
     return dates, rows

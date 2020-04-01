@@ -21,6 +21,7 @@ Changelog
 
 **Fixed**
 
+- #181 Patient historic results are not displayed
 - #172 Fix sporadical errors when contacts do not have a valid email address
 - #168 Cannot create Patient inside Client (content type not allowed)
 - #162 Unable to search by Client Patient ID in Sample Add form
