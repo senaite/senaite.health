@@ -18,16 +18,20 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from datetime import datetime
+
+from Products.ATContentTypes.utils import DT2dt
+from dateutil.relativedelta import relativedelta
+from zope.i18n import translate
+
 from bika.health import logger
 from bika.health.interfaces import IPatient
 from bika.lims import api
 from bika.lims.api import _marker
 from bika.lims.interfaces import IBatch
-from bika.lims.utils import render_html_attributes, to_utf8, to_unicode
-from zope.i18n import translate
-from Products.Archetypes.utils import addStatusMessage
-
-from bika.lims.utils import tmpID
+from bika.lims.utils import render_html_attributes
+from bika.lims.utils import to_unicode
+from bika.lims.utils import to_utf8
 
 
 def get_obj_from_field(instance, fieldname, default=_marker):
@@ -163,3 +167,53 @@ def handle_after_submit(context, request, state):
     else:
         status_id = "success"
     return status_id
+
+
+def get_age_ymd(birth_date, to_date=None):
+    """Returns the age at to_date if not None. Otherwise, current age
+    """
+    delta = get_relative_delta(birth_date, to_date)
+    return to_ymd(delta)
+
+
+def get_relative_delta(from_date, to_date=None):
+    """Returns the relative delta between two dates. If to_date is None,
+    compares the from_date with now
+    """
+    from_date = to_datetime(from_date)
+    if not from_date:
+        raise TypeError("Type not supported: from_date")
+
+    to_date = to_date or datetime.now()
+    to_date = to_datetime(to_date)
+    if not to_date:
+        raise TypeError("Type not supported: to_date")
+
+    return relativedelta(to_date, from_date)
+
+
+def to_datetime(date_value, default=None, tzinfo=None):
+    if isinstance(date_value, datetime):
+        return date_value
+
+    # Get the DateTime
+    date_value = api.to_date(date_value, default=None)
+    if not date_value:
+        if default is None:
+            return None
+        return to_datetime(default, tzinfo=tzinfo)
+
+    # Convert to datetime and strip
+    return DT2dt(date_value).replace(tzinfo=tzinfo)
+
+
+def to_ymd(delta):
+    """Returns a representation of a relative delta in ymd format
+    """
+    if not isinstance(delta, relativedelta):
+        raise TypeError("delta parameter must be a relative_delta")
+
+    ymd = list("ymd")
+    diff = map(str, (delta.years, delta.months, delta.days))
+    age = filter(lambda it: int(it[0]), zip(diff, ymd))
+    return " ".join(map("".join, age))
