@@ -107,7 +107,7 @@
 
                         <!-- Link to Sample ID -->
                         <div class="row">
-                          <div class="col-sm-4">
+                          <div class="col-md-4">
                             <a class="small"
                                tal:define="an_obj python: an_date['object'];
                                            sample python: an_obj.aq_parent;"
@@ -116,7 +116,7 @@
                           </div>
 
                           <!-- Result -->
-                          <div class="col-sm-8">
+                          <div class="col-md-8">
                             <span tal:define="result python: an_date.get('formattedresult', '')"
                                   tal:content="structure result"/>
                             <!-- Units -->
