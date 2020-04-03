@@ -155,8 +155,21 @@ jQuery(function($){
               .attr("stroke-width", "4px");
           });
 
+        // Place the legend for the series
         serie.append("text")
-          .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+          .datum(function(d) {
+            // Get the last non empty value for this serie
+            var last_val = 0;
+            for (var i = d.values.length - 1; i >= 0; i--) {
+              var val = d.values[i];
+              console.log(val);
+              if (!Number.isNaN(val.result)) {
+                last_val = val;
+                break;
+              }
+            }
+            return {name: d.name, value: last_val};
+          })
           .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.result) + ")"; })
           .attr("x", 10)
           .attr("dy", ".35em")
