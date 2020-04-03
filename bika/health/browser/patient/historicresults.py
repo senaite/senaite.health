@@ -96,7 +96,7 @@ def get_historicresults(patient):
     # Retrieve the AR IDs for the current patient
     query = {"portal_type": "AnalysisRequest",
              "getPatientUID": api.get_uid(patient),
-             #"review_state": ["verified", "published"],
+             "review_state": ["verified", "published"],
              "sort_on": "getDateSampled",
              "sort_order": "descending"}
     brains = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
