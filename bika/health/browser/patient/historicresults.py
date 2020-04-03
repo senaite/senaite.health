@@ -24,8 +24,6 @@ from datetime import datetime
 
 from Products.ATContentTypes.utils import DT2dt
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.layout.globals.interfaces import IViewView
-from zope.interface import implements
 
 from bika.health import bikaMessageFactory as _
 from bika.lims import api
