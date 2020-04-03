@@ -20,7 +20,6 @@
           overflow: hidden;
         }
         .chart-container {
-          display:none;
         }
         .axis path,
         .axis line {
@@ -54,9 +53,9 @@
           <div class="chart-options">
               <label for="interpolation">Interpolation</label>
               <select id="interpolation" name="interpolation">
-                  <option value="cardinal" selected>cardinal</option>
+                  <option value="linear" selected>linear</option>
+                  <option value="cardinal">cardinal</option>
                   <option value="basis">basis</option>
-                  <option value="linear">linear</option>
               </select>
           </div>
           <div id="chart"></div>

@@ -32,7 +32,6 @@ from bika.lims import api
 from bika.lims.api import to_date
 from bika.lims.api.analysis import get_formatted_interval
 from bika.lims.browser import BrowserView
-from bika.lims.browser import ulocalized_time
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 
 
@@ -134,7 +133,7 @@ def get_historicresults(patient):
 
         date = analysis.getResultCaptureDate() or analysis.created()
         date_time = DT2dt(to_date(date)).replace(tzinfo=None)
-        date_time = datetime.strftime(date_time, "%Y-%m-%d %H:%M:%S")
+        date_time = datetime.strftime(date_time, "%Y-%m-%d %H:%M")
 
         # If more than one analysis of the same type has been
         # performed in the same datetime, get only the last one
