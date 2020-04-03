@@ -36,8 +36,8 @@ from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 
 
 class HistoricResultsView(BrowserView):
-    implements(IViewView)
-
+    """Historic Results View
+    """
     template = ViewPageTemplateFile("historicresults.pt")
 
     def __init__(self, context, request):
