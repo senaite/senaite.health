@@ -20,13 +20,16 @@
 
 import itertools
 import json
+from datetime import datetime
 
+from Products.ATContentTypes.utils import DT2dt
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface import implements
 
 from bika.health import bikaMessageFactory as _
 from bika.lims import api
+from bika.lims.api import to_date
 from bika.lims.api.analysis import get_formatted_interval
 from bika.lims.browser import BrowserView
 from bika.lims.browser import ulocalized_time
@@ -130,14 +133,17 @@ def get_historicresults(patient):
             asdict = anrow.get(service_uid)
 
         date = analysis.getResultCaptureDate() or analysis.created()
-        date = ulocalized_time(date, long_format=1)
+        date_time = DT2dt(to_date(date)).replace(tzinfo=None)
+        date_time = datetime.strftime(date_time, "%Y-%m-%d %H:%M:%S")
 
         # If more than one analysis of the same type has been
         # performed in the same datetime, get only the last one
-        if date not in asdict.keys():
-            asdict[date] = {'object': analysis,
-                            'result': analysis.getResult(),
-                            'formattedresult': analysis.getFormattedResult()}
+        if date_time not in asdict.keys():
+            asdict[date_time] = {
+                "object": analysis,
+                "result": analysis.getResult(),
+                "formattedresult": analysis.getFormattedResult()
+            }
             # Get the specs
             # Only the specs applied to the last analysis for that
             # sample type will be taken into consideration.
@@ -146,14 +152,13 @@ def get_historicresults(patient):
                 specs = analysis.getResultsRange()
                 asdict["specs"] = get_formatted_interval(specs, "")
 
-            if date not in dates:
-                dates.append(date)
+            if date_time not in dates:
+                dates.append(date_time)
 
         anrow[service_uid] = asdict
         row['analyses'] = anrow
         rows[sample_type_uid] = row
     dates.sort(reverse=False)
-
     return dates, rows
 
 
@@ -170,8 +175,7 @@ class historicResultsJSON(BrowserView):
         dates, data = get_historicresults(self.context)
         datatable = []
         for andate in dates:
-            datarow = {'date': ulocalized_time(
-                andate, 1, None, self.context, 'bika')}
+            datarow = {'date': andate}
             for row in data.itervalues():
                 for anrow in row['analyses'].itervalues():
                     serie = anrow['title']
