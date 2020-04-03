@@ -63,10 +63,19 @@ jQuery(function($){
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        color.domain(
-          d3.keys(data[0])
-            .filter(function(key) { return key !== "date"; }));
+        // Extract the keys for series (data series might be unbalanced)
+        var keys = d3.set()
+        data.forEach(function(d) {
+          var row_keys = d3.keys(d);
+          row_keys.forEach(function(key) {
+            if (key !== "date") {
+              keys.add(key);
+            }
+          });
+        });
+        color.domain(keys.values());
 
+        // Apply valid format to date (x-axis)
         data.forEach(function(d) {
           d.date = parse_date(d.date);
         });
@@ -84,12 +93,12 @@ jQuery(function($){
         y.domain([
           d3.min(series, function(c) {
             return d3.min(c.values, function(v) {
-              return v.result;
+              return (typeof v === 'undefined') ? "" : v.result;
             });
           }),
           d3.max(series, function(c) {
             return d3.max(c.values, function(v) {
-              return v.result;
+              return (typeof v === 'undefined') ? "" : v.result;
             });
           })
         ]);
@@ -126,7 +135,15 @@ jQuery(function($){
         serie.append("path")
           .attr("class", "line")
           .attr("fill", "none")
-          .attr("d", function(d) { return line(d.values); })
+          .attr("d", function(d) {
+            var vals = d.values;
+            return line(
+              // Bail out empty values
+              vals.filter(function(value) {
+                  return !(Number.isNaN(value.result));
+              })
+            );
+          })
           .attr("stroke-width", "1.5px")
           .style("stroke", function(d) { return color(d.name); })
           .on("mouseout", function() {
@@ -152,6 +169,10 @@ jQuery(function($){
           vals = d.values;
           col = color(d.name);
           vals.forEach(function(v) {
+            // Do not create dots for empty values
+            if (Number.isNaN(v.result)) {
+              return;
+            }
             svg.append("circle")
               .attr("r", 3)
               .style("fill", col)

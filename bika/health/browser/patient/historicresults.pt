@@ -54,8 +54,8 @@
               <label for="interpolation">Interpolation</label>
               <select id="interpolation" name="interpolation">
                   <option value="linear" selected>linear</option>
-                  <option value="cardinal">cardinal</option>
                   <option value="basis">basis</option>
+                  <option value="cardinal">cardinal</option>
               </select>
           </div>
           <div id="chart"></div>

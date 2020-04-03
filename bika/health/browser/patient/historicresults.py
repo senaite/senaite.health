@@ -182,6 +182,8 @@ class historicResultsJSON(BrowserView):
             for row in data.itervalues():
                 for anrow in row['analyses'].itervalues():
                     serie = anrow['title']
+                    if "result" not in anrow.get(andate, {}):
+                        continue
                     datarow[serie] = anrow.get(andate, {}).get('result', '')
             datatable.append(datarow)
         return json.dumps(datatable)
