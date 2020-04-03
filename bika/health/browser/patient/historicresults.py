@@ -17,19 +17,19 @@
 #
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
-import itertools
 
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from bika.lims.browser import BrowserView
-from bika.health import bikaMessageFactory as _
-from zope.interface import implements
-from plone.app.layout.globals.interfaces import IViewView
-from Products.CMFPlone.i18nl10n import ulocalized_time
-from bika.lims import api
-import plone
+import itertools
 import json
 
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.app.layout.globals.interfaces import IViewView
+from zope.interface import implements
+
+from bika.health import bikaMessageFactory as _
+from bika.lims import api
+from bika.lims.api.analysis import get_formatted_interval
+from bika.lims.browser import BrowserView
+from bika.lims.browser import ulocalized_time
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
 
 
@@ -96,7 +96,7 @@ def get_historicresults(patient):
     # Retrieve the AR IDs for the current patient
     query = {"portal_type": "AnalysisRequest",
              "getPatientUID": api.get_uid(patient),
-             "review_state": ["verified", "published"],
+             #"review_state": ["verified", "published"],
              "sort_on": "getDateSampled",
              "sort_order": "descending"}
     brains = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
@@ -142,26 +142,13 @@ def get_historicresults(patient):
             # Only the specs applied to the last analysis for that
             # sample type will be taken into consideration.
             # We assume specs from previous analyses are obsolete.
-            if 'specs' not in asdict.keys():
+            if "specs" not in asdict.keys():
                 specs = analysis.getResultsRange()
-                if not specs.get('rangecomment', ''):
-                    if specs.get('min', '') and specs.get('max', ''):
-                        specs['rangecomment'] = '%s - %s' % \
-                            (specs.get('min'), specs.get('max'))
-                    elif specs.get('min', ''):
-                        specs['rangecomment'] = '> %s' % specs.get('min')
-                    elif specs.get('max', ''):
-                        specs['rangecomment'] = '< %s' % specs.get('max')
-
-                    if specs.get('error', '0') != '0' \
-                            and specs.get('rangecomment', ''):
-                        specs['rangecomment'] = ('%s (%s' %
-                                                 (specs.get('rangecomment'),
-                                                  specs.get('error'))) + '%)'
-                asdict['specs'] = specs
+                asdict["specs"] = get_formatted_interval(specs, "")
 
             if date not in dates:
                 dates.append(date)
+
         anrow[service_uid] = asdict
         row['analyses'] = anrow
         rows[sample_type_uid] = row

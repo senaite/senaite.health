@@ -5,11 +5,19 @@
     metal:use-macro="here/main_template/macros/master"
     i18n:domain="senaite.health">
 
-<metal:slot fill-slot="head_slot">
-    <style>
+  <head>
+    <metal:block fill-slot="javascript_head_slot">
+      <!-- Javascript that renders the D3js chart for historic results -->
+      <script tal:define="js string:${portal_url}/++resource++bika.health.js"
+              tal:attributes="src string:${js}/bika.health.historicresults.js"
+              type="text/javascript"></script>
+    </metal:block>
+
+    <metal:block fill-slot="style_slot">
+      <style>
         #chart {
             font-size:0.9em;
-            margin-bottom:15px;
+            overflow: hidden;
         }
         .axis path,
         .axis line {
@@ -17,244 +25,124 @@
           stroke: #000;
           shape-rendering: crispEdges;
         }
-
-        .x.axis path {
-          display: none;
+        .analysis-keyword {
+          font-size:0.8em;
+          color:#333;
         }
+      </style>
+    </metal:block>
+  </head>
 
-        .line {
-          fill: none;
-          stroke: steelblue;
-          stroke-width: 1.5px;
-        }
-        .chart-container {
-            border: 1px solid #CDCDCD;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-        .chart-options {
-            padding:10px;
-            background: #DDDDDD;
-        }
-    </style>
-    <script src="http://d3js.org/d3.v3.js"></script>
-    <script>
-        jQuery(function($){
-    $(document).ready(function(){
-
-        $('div.chart-container #interpolation').change(function(e) {
-            loadChart($(this).val());
-        });
-
-        loadChart('cardinal');
-
-
-        function loadChart(interpolation) {
-            if ($("#chart svg").length > 0) {
-                $("#chart").css('height', $("#chart").innerHeight());
-                $("#chart").css('width', $("#chart").innerWidth());
-            }
-            $("#chart").html("");
-
-            d3.json("historicjson", function(error, data) {
-                if (error || data.length < 2) {
-                    $(".chart-container").hide();
-                    return;
-                }
-                $(".chart-container").show();
-                var margin = {top: 20, right: 120, bottom: 30, left: 50},
-                    width = $('#chart').innerWidth() - margin.left - margin.right,
-                    height = 250 - margin.top - margin.bottom;
-
-                var parseDate = d3.time.format("%Y-%m-%d %H:%M %p").parse;
-
-                var x = d3.time.scale()
-                    .range([0, width]);
-
-                var y = d3.scale.linear()
-                    .range([height, 0]);
-
-                var color = d3.scale.category10();
-
-                var xAxis = d3.svg.axis()
-                    .scale(x)
-                    .orient("bottom");
-
-                var yAxis = d3.svg.axis()
-                    .scale(y)
-                    .orient("left");
-
-                var line = d3.svg.line()
-                    .interpolate(interpolation)
-                    .x(function(d) { return x(d.date); })
-                    .y(function(d) { return y(d.result); });
-
-                $('#chart').append('<svg></svg>');
-                var svg = d3.select("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                  .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-                color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
-                data.forEach(function(d) {
-                    d.date = parseDate(d.date);
-                });
-
-                var series = color.domain().map(function(name) {
-                    return {
-                      name: name,
-                      values: data.map(function(d) {
-                        return {date: d.date, result: +d[name]};
-                      })
-                    };
-                });
-
-                x.domain(d3.extent(data, function(d) { return d.date; }));
-
-                y.domain([
-                    d3.min(series, function(c) { return d3.min(c.values, function(v) { return v.result; }); }),
-                    d3.max(series, function(c) { return d3.max(c.values, function(v) { return v.result; }); })
-                ]);
-
-                svg.append("g")
-                  .attr("class", "x axis")
-                  .attr("transform", "translate(0," + height + ")")
-                  .call(xAxis);
-
-                svg.append("g")
-                  .attr("class", "y axis")
-                  .call(yAxis)
-                .append("text")
-                  .attr("transform", "rotate(-90)")
-                  .attr("y", 6)
-                  .attr("dy", ".71em")
-                  .style("text-anchor", "end")
-                  .text("Result");
-
-                var serie = svg.selectAll(".serie")
-                  .data(series)
-                .enter().append("g")
-                  .attr("class", "serie");
-
-                serie.append("path")
-                  .attr("class", "line")
-                  .attr("d", function(d) { return line(d.values); })
-                  .style("stroke", function(d) { return color(d.name); });
-
-                serie.append("text")
-                  .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-                  .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.result) + ")"; })
-                  .attr("x", 10)
-                  .attr("dy", ".35em")
-                  .text(function(d) { return d.name; });
-
-                series.forEach(function(d) {
-                    res = d.results;
-                    vals = d.values;
-                    col = color(d.name);
-                    vals.forEach(function(v) {
-                        svg.append("circle")
-                          .attr("r", 4)
-                          .style("fill", col)
-                          .attr("cx", x(v.date))
-                          .attr("cy", y(v.result))
-                       /* svg.append("text")
-                          .attr("x", x(v.date)-5)
-                          .attr("dy", y(v.result)-5)
-                          .text(parseFloat(v.result).toFixed(2))*/
-
-                    });
-                });
-            });
-
-        }
-    });
-});
-    </script>
-</metal:slot>
-<body>
+  <body>
     <metal:content-title fill-slot="content-title">
-        <h1>
-            <img tal:condition="view/icon | nothing"
-                 tal:attributes="src view/icon"/>
-            <span style="position:relative;top:-0.2em;"
-                  class="documentFirstHeading"
-                  tal:content="view/title"/>
-        </h1>
+      <h1>
+        <img tal:condition="view/icon | nothing"
+             tal:attributes="src view/icon"/>
+        <span class="documentFirstHeading" tal:content="view/title"/>
+      </h1>
     </metal:content-title>
 
-    <metal:content-description fill-slot="content-description">
-        <div class="documentDescription"
-             tal:content="structure view/description"
-             tal:condition="view/description"/>
-    </metal:content-description>
+    <metal:block fill-slot="content-description">
+      <div class="documentDescription"
+           tal:condition="view/description"
+           tal:content="structure view/description"></div>
+    </metal:block>
 
     <metal:content-core fill-slot="content-core">
-        <div class='chart-container'>
-            <div class='chart-options'>
-                <label for='interpolation'>Interpolation</label>
-                <select id='interpolation' name='interpolation'>
-                    <option value='cardinal' selected>cardinal</option>
-                    <option value='basis'>basis</option>
-                    <option value='linear'>linear</option>
-                </select>
-            </div>
-            <div id='chart'></div>
+
+      <!-- Chart container -->
+      <div class="chart-container">
+          <div class="chart-options">
+              <label for="interpolation">Interpolation</label>
+              <select id="interpolation" name="interpolation">
+                  <option value="cardinal" selected>cardinal</option>
+                  <option value="basis">basis</option>
+                  <option value="linear">linear</option>
+              </select>
+          </div>
+          <div id="chart"></div>
+      </div>
+
+      <!-- Table of historic results -->
+      <tal:historic_table define="dates python:view.get_dates()">
+        <div tal:condition="python:len(dates)!=0">
+          <table class=" table table-condensed small"
+              tal:define="rows python:view.get_rows();
+                          cols python:len(dates)+2;">
+            <thead>
+              <tr>
+                <th i18n:translate="">Test</th>
+                <tal:datecols repeat="date dates">
+                  <th tal:content="python:date" class="center"/>
+                </tal:datecols>
+                <th i18n:translate="">Units</th>
+              </tr>
+            </thead>
+
+            <tbody class="item-listing-body">
+              <!-- Group by sample types -->
+              <tal:sampletypes repeat="row python:rows.itervalues()">
+                <tr tal:define="sample_type python: row['object'];
+                                sample_type_title python: sample_type.Title()">
+                  <th tal:attributes="colspan python:cols;
+                                      cat python:sample_type_title"
+                      tal:content="python: sample_type_title"
+                      class="cat_header expanded"/>
+                </tr>
+
+                <!-- Generate as many rows as analyses for this sample type -->
+                <tal:analyses repeat="analysis python:row['analyses'].itervalues()">
+                  <tr tal:attributes="cat python:row['object'].Title()">
+                    <td>
+                      <span class="analysis-title"
+                            tal:content="python:analysis['title']"/>&nbsp;
+                      <span class="analysis-keyword"
+                            tal:content="python:'({})'.format(analysis['keyword'])"/>
+                    </td>
+
+                    <!-- Generate as many columns as dates -->
+                    <tal:rowdates repeat="date dates">
+
+                      <!-- There is an analysis with result for this date -->
+                      <td tal:define="an_date python: analysis.get(date, {})"
+                          tal:condition="python: an_date">
+
+                        <!-- Link to Sample ID -->
+                        <div class="col-sm-6">
+                          <a class="small"
+                             tal:define="an_obj python: an_date['object'];
+                                         sample python: an_obj.aq_parent;"
+                             tal:attributes="href python: sample.absolute_url()"
+                             tal:content="python: sample.id"/>
+                        </div>
+
+                        <!-- Result -->
+                        <div class="col-sm-6">
+                          <span tal:define="result python: an_date.get('formattedresult', '')"
+                                tal:content="structure result"/>
+                        </div>
+                      </td>
+
+                      <!-- There is no analysis with result for this date -->
+                      <td tal:define="an_date python: analysis.get(date, {})"
+                          tal:condition="python: not an_date"/>
+
+                    </tal:rowdates>
+
+                    <!-- Units -->
+                    <td tal:content="python:analysis['units']" />
+                  </tr>
+                </tal:analyses>
+              </tal:sampletypes>
+            </tbody>
+          </table>
         </div>
-        <tal:historictable define='dates python:view.get_dates()'>
-        <div class='bika-listing-table-container'
-             tal:condition='python:len(dates)!=0'>
-            <table tal:define="rows python:view.get_rows();
-                           cols python:len(dates)+3;"
-                   class='bika-listing-table'>
-                <thead>
-                    <tr>
-                        <th i18n:translate="">Test</th>
-                        <tal:datecols repeat="date dates">
-                        <th tal:content="python:date" class='center'></th>
-                        </tal:datecols>
-                        <th i18n:translate="">Units</th>
-                        <th i18n:translate="">Range</th>
-                    </tr>
-                </thead>
-                <tbody class='item-listing-body'>
-                    <tal:sampletypes repeat="row python:rows.itervalues()">
-                    <tr>
-                        <th tal:attributes="colspan python:cols;
-                                            cat python:row['object'].Title();"
-                            tal:content="python:row['object'].Title()"
-                            class="cat_header expanded"></th>
-                    </tr>
-                    <tal:analyses repeat="analysis python:row['analyses'].itervalues()">
-                    <tr tal:attributes="cat python:row['object'].Title()">
-                        <td>
-                            <span tal:content="python:analysis['title']"/>&nbsp;
-                            <span style="font-size:0.8em;color:#333;" tal:content="python:' ('+analysis['keyword']+')'"/>
-                        </td>
-                        <tal:rowdates repeat="date dates">
-			<td tal:condition="python:analysis.get(date,None)"> 
-			  <span tal:content="python:analysis.get(date,{}).get('formattedresult', '')" class='center'/> - 
-			  <a href="" tal:attributes="href python:analysis.get(date,{}).get('object','').aq_parent.absolute_url()">
-			    <span tal:content="python:analysis.get(date,{}).get('object','').aq_parent.id" class='center'/> 
-			  </a>
-			</td>
-			<td tal:condition="python:not analysis.get(date,None)"></td>
-                        </tal:rowdates>
-                        <td tal:content="python:analysis['units']"></td>
-                        <td tal:content="python:analysis['specs'].get('rangecomment','')"></td>
-                    </tr>
-                    </tal:analyses>
-                    </tal:sampletypes>
-                </tbody>
-            </table>
+        <div tal:condition="python:len(dates)==0">
+          <dl class="portalMessage">
+              <dd i18n:translate="">No historic results found</dd>
+          </dl>
         </div>
-        <div tal:condition='python:len(dates)==0'>
-            <dl class="portalMessage">
-                <dd i18n:translate="">No historic results found</dd>
-            </dl>
-        </div>
-        </tal:historictable>
+      </tal:historic_table>
     </metal:content-core>
-</body>
+  </body>
 </html>
