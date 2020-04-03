@@ -66,14 +66,13 @@
         <div tal:condition="python:len(dates)!=0">
           <table class=" table table-condensed small"
               tal:define="rows python:view.get_rows();
-                          cols python:len(dates)+2;">
+                          cols python:len(dates)+1;">
             <thead>
               <tr>
                 <th i18n:translate="">Test</th>
                 <tal:datecols repeat="date dates">
                   <th tal:content="python:date" class="center"/>
                 </tal:datecols>
-                <th i18n:translate="">Units</th>
               </tr>
             </thead>
 
@@ -92,9 +91,11 @@
                 <tal:analyses repeat="analysis python:row['analyses'].itervalues()">
                   <tr tal:attributes="cat python:row['object'].Title()">
                     <td>
-                      <span tal:content="python:analysis['title']"/>&nbsp;
+                      <!-- Test code/keyword -->
                       <span class="small"
-                            tal:content="python:'({})'.format(analysis['keyword'])"/>
+                            tal:content="python: analysis['keyword']"/>:&nbsp;
+                      <!-- Test name -->
+                      <span tal:content="python: analysis['title']"/>
                     </td>
 
                     <!-- Generate as many columns as dates -->
@@ -105,18 +106,25 @@
                           tal:condition="python: an_date">
 
                         <!-- Link to Sample ID -->
-                        <div class="col-sm-6">
-                          <a class="small"
-                             tal:define="an_obj python: an_date['object'];
-                                         sample python: an_obj.aq_parent;"
-                             tal:attributes="href python: sample.absolute_url()"
-                             tal:content="python: sample.id"/>
-                        </div>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            <a class="small"
+                               tal:define="an_obj python: an_date['object'];
+                                           sample python: an_obj.aq_parent;"
+                               tal:attributes="href python: sample.absolute_url()"
+                               tal:content="python: sample.id"/>
+                          </div>
 
-                        <!-- Result -->
-                        <div class="col-sm-6">
-                          <span tal:define="result python: an_date.get('formattedresult', '')"
-                                tal:content="structure result"/>
+                          <!-- Result -->
+                          <div class="col-sm-8">
+                            <span tal:define="result python: an_date.get('formattedresult', '')"
+                                  tal:content="structure result"/>
+                            <!-- Units -->
+                            <span
+                                tal:define="units python: analysis['units']"
+                                tal:condition="units"
+                                tal:content="structure python: ' {}'.format(units)"/>
+                          </div>
                         </div>
                       </td>
 
@@ -125,9 +133,6 @@
                           tal:condition="python: not an_date"/>
 
                     </tal:rowdates>
-
-                    <!-- Units -->
-                    <td tal:content="python:analysis['units']" />
                   </tr>
                 </tal:analyses>
               </tal:sampletypes>

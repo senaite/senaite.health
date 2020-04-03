@@ -27,10 +27,12 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from bika.health import bikaMessageFactory as _
 from bika.lims import api
+from bika.lims import to_utf8
 from bika.lims.api import to_date
 from bika.lims.api.analysis import get_formatted_interval
 from bika.lims.browser import BrowserView
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
+from bika.lims.utils import format_supsub
 
 
 class HistoricResultsView(BrowserView):
@@ -123,11 +125,15 @@ def get_historicresults(patient):
         asdict = {
             "object": analysis,
             "title": api.get_title(analysis),
-            "keyword": analysis.getKeyword(),
-            "units": analysis.getUnit(),
+            "keyword": to_utf8(analysis.getKeyword()),
         }
         if service_uid in anrow:
             asdict = anrow.get(service_uid)
+
+        if not anrow.get("units", None):
+            asdict.update({
+                "units": format_supsub(to_utf8(analysis.getUnit()))
+            })
 
         date = analysis.getResultCaptureDate() or analysis.created()
         date_time = DT2dt(to_date(date)).replace(tzinfo=None)
