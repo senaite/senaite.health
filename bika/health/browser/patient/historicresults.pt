@@ -16,18 +16,17 @@
     <metal:block fill-slot="style_slot">
       <style>
         #chart {
-            font-size:0.9em;
-            overflow: hidden;
+          font-size:0.9em;
+          overflow: hidden;
+        }
+        .chart-container {
+          display:none;
         }
         .axis path,
         .axis line {
           fill: none;
           stroke: #000;
           shape-rendering: crispEdges;
-        }
-        .analysis-keyword {
-          font-size:0.8em;
-          color:#333;
         }
       </style>
     </metal:block>
@@ -94,9 +93,8 @@
                 <tal:analyses repeat="analysis python:row['analyses'].itervalues()">
                   <tr tal:attributes="cat python:row['object'].Title()">
                     <td>
-                      <span class="analysis-title"
-                            tal:content="python:analysis['title']"/>&nbsp;
-                      <span class="analysis-keyword"
+                      <span tal:content="python:analysis['title']"/>&nbsp;
+                      <span class="small"
                             tal:content="python:'({})'.format(analysis['keyword'])"/>
                     </td>
 
