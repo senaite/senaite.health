@@ -24,8 +24,8 @@ setup(
         "Programming Language :: Python",
     ],
     keywords=['lims', 'lis', 'senaite', 'opensource', 'health'],
-    author='SENAITE Foundation',
-    author_email='support@senaite.com',
+    author="RIDING BYTES & NARALABS",
+    author_email="senaite@senaite.com",
     url='https://github.com/senaite/senaite.health',
     license='GPLv2',
     packages=find_packages(exclude=['ez_setup']),
@@ -34,8 +34,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "archetypes.schemaextender",
-        "senaite.lims>=1.3.1",
-        "senaite.lims<2.0.0",
+        "senaite.lims==1.3.3.1",
         "senaite.panic",
         # Python 2.7 compatibility
         #

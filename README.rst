@@ -143,7 +143,7 @@ Feedback and support
 License
 =======
 
-**SENAITE.HEALTH** Copyright (C) 2018-2019 Senaite Foundation
+**SENAITE.HEALTH** Copyright (C) 2018-2020 RIDING BYTES & NARALABS
 
 This software, henceforth "SENAITE.HEALTH" is an add-on for
 `Plone CMS <https://plone.org/>`_ and is a derivative work of BIKA HEALTH.

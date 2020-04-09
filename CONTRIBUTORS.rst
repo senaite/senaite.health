@@ -20,6 +20,7 @@ Translators
 
 - Lemoene Smit, lemoene@bikalabs.com, Afrikaans (af)
 - Jordi Puiggené, jpuiggene@naralabs.com, Catalan (ca)
+- trendspotter, j.podhorecky@volny.cz, Czech (cs)
 - limsgr, inactive+limsgr@transifex.com, Greek (el)
 - Jordi Puiggené, jpuiggene@naralabs.com, Spanish (es)
 - Pau Soliva, psoliva@naralabs.com, Spanish (es)

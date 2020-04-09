@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.3 (unreleased)
+1.2.3 (2020-04-09)
 ------------------
 
 **Added**
@@ -27,9 +27,6 @@ Changelog
 - #162 Unable to search by Client Patient ID in Sample Add form
 - #159 Ensure `Client` contents allow to hold `Patient` types
 - #158 Fix the filter query in the Add Sample Form
-
-
-**Security**
 
 
 1.2.2 (2019-11-07)

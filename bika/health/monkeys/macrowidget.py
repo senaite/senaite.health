@@ -15,11 +15,8 @@
 # this program; if not, write to the Free Software Foundation, Inc., 51
 # Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright 2018-2019 by it's authors.
+# Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
-# TODO Remove for compatibility with senaite.core v1.3.3
-# Superseded by https://github.com/senaite/senaite.core/pull/1466
 
 from AccessControl.unauthorized import Unauthorized
 
