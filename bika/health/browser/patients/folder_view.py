@@ -166,10 +166,8 @@ class PatientsView(BikaListingView):
     def folderitem(self, obj, item, index):
         # Date of Birth
         dob = obj.getBirthDate
-        item['getBirthDate'] = self.ulocalized_time(dob)
-
-        # Patient's current age
-        item["age"] = get_age_ymd(dob)
+        item['getBirthDate'] = dob and self.ulocalized_time(dob) or ""
+        item["age"] = dob and get_age_ymd(dob) or ""
 
         # make the columns patient title, patient ID and client patient ID
         # redirect to the Analysis Requests of the patient
