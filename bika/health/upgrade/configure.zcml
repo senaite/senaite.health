@@ -73,4 +73,11 @@
         handler="bika.health.upgrade.v01_02_003.upgrade"
         profile="bika.health:default"/>
 
+<genericsetup:upgradeStep
+        title="Upgrade to SENAITE Health 1.2.4"
+        source="1.2.3"
+        destination="1.2.4"
+        handler="bika.health.upgrade.v01_02_004.upgrade"
+        profile="bika.health:default"/>
+
 </configure>

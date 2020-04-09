@@ -1,6 +1,21 @@
 Changelog
 =========
 
+1.2.4 (unreleased)
+------------------
+
+**Added**
+
+
+**Changed**
+
+**Removed**
+
+**Fixed**
+
+**Security**
+
+
 1.2.3 (2020-04-09)
 ------------------
 

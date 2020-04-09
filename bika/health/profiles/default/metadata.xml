@@ -6,7 +6,7 @@
   dependencies before installing this add-on own profile.
 -->
 <metadata>
-  <version>1.2.3</version>
+  <version>1.2.4</version>
   <dependencies>
     <dependency>profile-senaite.lims:default</dependency>
     <dependency>profile-senaite.panic:default</dependency>

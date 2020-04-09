@@ -6,7 +6,7 @@
 
 from setuptools import setup, find_packages
 
-version = '1.2.3'
+version = '1.2.4'
 
 setup(
     name='senaite.health',
@@ -34,7 +34,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "archetypes.schemaextender",
-        "senaite.lims==1.3.3.1",
+        "senaite.lims>=1.3.3.1",
         "senaite.panic",
         # Python 2.7 compatibility
         #
