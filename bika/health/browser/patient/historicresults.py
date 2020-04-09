@@ -18,20 +18,26 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from Products.CMFCore.utils import getToolByName
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from bika.lims.browser import BrowserView
-from bika.health import bikaMessageFactory as _
-from zope.interface import implements
-from plone.app.layout.globals.interfaces import IViewView
-from Products.CMFPlone.i18nl10n import ulocalized_time
-import plone
+import itertools
 import json
+from datetime import datetime
+
+from Products.ATContentTypes.utils import DT2dt
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from bika.health import bikaMessageFactory as _
+from bika.lims import api
+from bika.lims import to_utf8
+from bika.lims.api import to_date
+from bika.lims.api.analysis import get_formatted_interval
+from bika.lims.browser import BrowserView
+from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
+from bika.lims.utils import format_supsub
 
 
 class HistoricResultsView(BrowserView):
-    implements(IViewView)
-
+    """Historic Results View
+    """
     template = ViewPageTemplateFile("historicresults.pt")
 
     def __init__(self, context, request):
@@ -88,76 +94,74 @@ def get_historicresults(patient):
 
     rows = {}
     dates = []
-    uid = patient.UID()
-    states = ['verified', 'published']
 
     # Retrieve the AR IDs for the current patient
-    bc = getToolByName(patient, 'bika_catalog')
-    ars = [ar.id for ar
-           in bc(portal_type='AnalysisRequest', review_state=states)
-           if 'Patient' in ar.getObject().Schema()
-           and ar.getObject().Schema().getField('Patient').get(ar.getObject())
-           and ar.getObject().Schema().getField('Patient').get(ar.getObject()).UID() == uid]
+    query = {"portal_type": "AnalysisRequest",
+             "getPatientUID": api.get_uid(patient),
+             "review_state": ["verified", "published"],
+             "sort_on": "getDateSampled",
+             "sort_order": "descending"}
+    brains = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
+    samples = map(api.get_object, brains)
 
-    # Retrieve all the analyses, sorted by ResultCaptureDate DESC
-    bc = getToolByName(patient, 'bika_analysis_catalog')
-    analyses = [an.getObject() for an
-                in bc(portal_type='Analysis',
-                      getRequestID=ars,
-                      sort_on='getResultCaptureDate',
-                      sort_order='reverse')]
+    # Retrieve all analyses
+    analyses = map(lambda samp: samp.objectValues("Analysis"), samples)
+    analyses = list(itertools.chain.from_iterable(analyses))
 
     # Build the dictionary of rows
     for analysis in analyses:
-        ar = analysis.aq_parent
-        sampletype = ar.getSampleType()
-        row = rows.get(sampletype.UID()) if sampletype.UID() in rows.keys() \
-            else {'object': sampletype, 'analyses': {}}
-        anrow = row.get('analyses')
+        sample = analysis.aq_parent
+        sample_type = sample.getSampleType()
+        row = {
+            "object": sample_type,
+            "analyses": {},
+        }
+        sample_type_uid = api.get_uid(sample_type)
+        if sample_type_uid in rows:
+            row = rows.get(sample_type_uid)
+
+        anrow = row.get("analyses")
         service_uid = analysis.getServiceUID()
-        asdict = anrow.get(service_uid, {'object': analysis,
-                                         'title': analysis.Title(),
-                                         'keyword': analysis.getKeyword(),
-                                         'units': analysis.getUnit()})
+        asdict = {
+            "object": analysis,
+            "title": api.get_title(analysis),
+            "keyword": to_utf8(analysis.getKeyword()),
+        }
+        if service_uid in anrow:
+            asdict = anrow.get(service_uid)
+
+        if not anrow.get("units", None):
+            asdict.update({
+                "units": format_supsub(to_utf8(analysis.getUnit()))
+            })
+
         date = analysis.getResultCaptureDate() or analysis.created()
-        date = ulocalized_time(date, 1, None, patient, 'bika')
+        date_time = DT2dt(to_date(date)).replace(tzinfo=None)
+        date_time = datetime.strftime(date_time, "%Y-%m-%d %H:%M")
+
         # If more than one analysis of the same type has been
         # performed in the same datetime, get only the last one
-        if date not in asdict.keys():
-            asdict[date] = {'object': analysis,
-                            'result': analysis.getResult(),
-                            'formattedresult': analysis.getFormattedResult()}
+        if date_time not in asdict.keys():
+            asdict[date_time] = {
+                "object": analysis,
+                "result": analysis.getResult(),
+                "formattedresult": analysis.getFormattedResult()
+            }
             # Get the specs
             # Only the specs applied to the last analysis for that
             # sample type will be taken into consideration.
             # We assume specs from previous analyses are obsolete.
-            if 'specs' not in asdict.keys():
-                spec = analysis.getAnalysisSpecs()                
-                spec = spec.getResultsRangeDict() if spec else {}
-                specs = spec.get(analysis.getKeyword(), {})
-                if not specs.get('rangecomment', ''):
-                    if specs.get('min', '') and specs.get('max', ''):
-                        specs['rangecomment'] = '%s - %s' % \
-                            (specs.get('min'), specs.get('max'))
-                    elif specs.get('min', ''):
-                        specs['rangecomment'] = '> %s' % specs.get('min')
-                    elif specs.get('max', ''):
-                        specs['rangecomment'] = '< %s' % specs.get('max')
+            if "specs" not in asdict.keys():
+                specs = analysis.getResultsRange()
+                asdict["specs"] = get_formatted_interval(specs, "")
 
-                    if specs.get('error', '0') != '0' \
-                            and specs.get('rangecomment', ''):
-                        specs['rangecomment'] = ('%s (%s' %
-                                                 (specs.get('rangecomment'),
-                                                  specs.get('error'))) + '%)'
-                asdict['specs'] = specs
+            if date_time not in dates:
+                dates.append(date_time)
 
-            if date not in dates:
-                dates.append(date)
         anrow[service_uid] = asdict
         row['analyses'] = anrow
-        rows[sampletype.UID()] = row
+        rows[sample_type_uid] = row
     dates.sort(reverse=False)
-
     return dates, rows
 
 
@@ -174,11 +178,12 @@ class historicResultsJSON(BrowserView):
         dates, data = get_historicresults(self.context)
         datatable = []
         for andate in dates:
-            datarow = {'date': ulocalized_time(
-                andate, 1, None, self.context, 'bika')}
+            datarow = {'date': andate}
             for row in data.itervalues():
                 for anrow in row['analyses'].itervalues():
                     serie = anrow['title']
+                    if "result" not in anrow.get(andate, {}):
+                        continue
                     datarow[serie] = anrow.get(andate, {}).get('result', '')
             datatable.append(datarow)
         return json.dumps(datatable)
