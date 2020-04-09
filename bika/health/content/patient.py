@@ -18,9 +18,6 @@
 # Copyright 2018-2019 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from datetime import datetime
-
-from Products.ATContentTypes.utils import DT2dt
 from Products.ATExtensions.ateapi import RecordsField
 from Products.Archetypes import atapi
 from Products.Archetypes.public import *
@@ -32,6 +29,7 @@ from bika.health import bikaMessageFactory as _
 from bika.health import logger
 from bika.health.config import *
 from bika.health.interfaces import IPatient
+from bika.health.utils import get_relative_delta
 from bika.health.utils import translate_i18n as t
 from bika.health.widgets import SplittedDateWidget
 from bika.health.widgets.patientmenstrualstatuswidget import \
@@ -149,13 +147,6 @@ schema = Person.schema.copy() + Schema((
         required=1,
         widget=SplittedDateWidget(
             label=_('Age'),
-        ),
-    ),
-    ComputedField(
-        'AgeSplittedStr',
-        expression="context.getAgeSplittedStr()",
-        widget=ComputedWidget(
-            visible=False
         ),
     ),
     AddressField(
@@ -923,64 +914,18 @@ class Patient(Person):
         return " ".join(ids)
 
     def getAgeSplitted(self):
-
-        if self.getBirthDate():
-            dob = DT2dt(self.getBirthDate()).replace(tzinfo=None)
-            now = datetime.today()
-
-            currentday = now.day
-            currentmonth = now.month
-            currentyear = now.year
-            birthday = dob.day
-            birthmonth = dob.month
-            birthyear = dob.year
-            ageday = currentday - birthday
-            agemonth = 0
-            ageyear = 0
-            months31days = [1, 3, 5, 7, 8, 10, 12]
-
-            if ageday < 0:
-                currentmonth -= 1
-                if currentmonth < 1:
-                    currentyear -= 1
-                    currentmonth = currentmonth + 12
-
-                dayspermonth = 30
-                if currentmonth in months31days:
-                    dayspermonth = 31
-                elif currentmonth == 2:
-                    dayspermonth = 28
-                    if(currentyear % 4 == 0
-                       and (currentyear % 100 > 0 or currentyear % 400 == 0)):
-                        dayspermonth += 1
-
-                ageday = ageday + dayspermonth
-
-            agemonth = currentmonth - birthmonth
-            if agemonth < 0:
-                currentyear -= 1
-                agemonth = agemonth + 12
-
-            ageyear = currentyear - birthyear
-
-            return [{'year': ageyear,
-                     'month': agemonth,
-                     'day': ageday}]
-        else:
-            return [{'year': '',
-                     'month': '',
-                     'day': ''}]
-
-    def getAge(self):
-        return self.getAgeSplitted()[0]['year']
-
-    def getAgeSplittedStr(self):
-        splitted = self.getAgeSplitted()[0]
-        arr = []
-        arr.append(splitted['year'] and str(splitted['year']) + 'y' or '')
-        arr.append(splitted['month'] and str(splitted['month']) + 'm' or '')
-        arr.append(splitted['day'] and str(splitted['day']) + 'd' or '')
-        return ' '.join(arr)
+        """Getter used for "AgeSplitted" schema field
+        """
+        data = {"year": "", "month": "", "day": ""}
+        dob = self.getBirthDate()
+        if dob:
+            delta = get_relative_delta(dob)
+            data.update({
+                "year": delta.year,
+                "month": delta.month,
+                "day": delta.day,
+            })
+        return [data]
 
     def getCountryState(self):
         return self.getField('CountryState').get(self) \

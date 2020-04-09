@@ -53,6 +53,13 @@ CSS_TO_REMOVE = [
     "bika_health_standard_analysis_request.css",
 ]
 
+# Metadata from catalogs to remove
+METADATA_TO_REMOVE = [
+    # AgeSplittedStr was only used in patients listing
+    # https://github.com/senaite/senaite.health/pull/180
+    (CATALOG_PATIENTS, "getAgeSplittedStr"),
+]
+
 
 @upgradestep(PROJECTNAME, version)
 def upgrade(tool):
@@ -97,6 +104,9 @@ def upgrade(tool):
     # Fix email addresses
     # https://github.com/senaite/senaite.health/pulls/172
     fix_health_email_addresses(portal)
+
+    # Remove stale catalog columns
+    remove_stale_metadata(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
@@ -157,6 +167,7 @@ def fix_health_email_addresses(portal):
     fix_email_address(portal, portal_types=portal_types,
                       catalog_id=CATALOG_PATIENTS)
 
+
 def install_senaite_panic(portal):
     """Install the senaite.panic addon
     """
@@ -170,3 +181,21 @@ def install_senaite_panic(portal):
         logger.info("'{}' is installed".format(profile))
         return
     qi.installProduct(profile)
+
+
+def remove_stale_metadata(portal):
+    logger.info("Removing stale metadata ...")
+    for catalog, column in METADATA_TO_REMOVE:
+        del_metadata(catalog, column)
+    logger.info("Removing stale metadata ... [DONE]")
+
+
+def del_metadata(catalog_id, column):
+    logger.info("Removing '{}' metadata from '{}' ..."
+                .format(column, catalog_id))
+    catalog = api.get_tool(catalog_id)
+    if column not in catalog.schema():
+        logger.info("Metadata '{}' not in catalog '{}' [SKIP]"
+                    .format(column, catalog_id))
+        return
+    catalog.delColumn(column)

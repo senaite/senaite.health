@@ -20,20 +20,21 @@
 
 import collections
 
-from bika.health import bikaMessageFactory as _
-from bika.health.interfaces import IPatients
-from bika.health.utils import get_resource_url
-from bika.health.catalog import CATALOG_PATIENTS
-from bika.health.permissions import AddPatient
-from bika.lims import api
-from bika.lims.api import security
-from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims.interfaces import IClient
-from bika.lims.utils import get_link
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
 from zope.interface import implements
+
+from bika.health import bikaMessageFactory as _
+from bika.health.catalog import CATALOG_PATIENTS
+from bika.health.interfaces import IPatients
+from bika.health.permissions import AddPatient
+from bika.health.utils import get_age_ymd
+from bika.health.utils import get_resource_url
+from bika.lims import api
 from bika.lims.api.security import check_permission
+from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.interfaces import IClient
+from bika.lims.utils import get_link
 
 
 class PatientsView(BikaListingView):
@@ -78,7 +79,7 @@ class PatientsView(BikaListingView):
                 'toggle': True,
                 'sortable': False}),
 
-            ('getAgeSplittedStr', {
+            ('age', {
                 'title': _('Age'),
                 'toggle': True,
                 'sortable': False}),
@@ -163,7 +164,13 @@ class PatientsView(BikaListingView):
         return BikaListingView.folderitems(self, classic=classic)
 
     def folderitem(self, obj, item, index):
-        item['getBirthDate'] = self.ulocalized_time(obj.getBirthDate)
+        # Date of Birth
+        dob = obj.getBirthDate
+        item['getBirthDate'] = self.ulocalized_time(dob)
+
+        # Patient's current age
+        item["age"] = get_age_ymd(dob)
+
         # make the columns patient title, patient ID and client patient ID
         # redirect to the Analysis Requests of the patient
         ars_url = "{}/{}".format(api.get_url(obj), "analysisrequests")
