@@ -19,6 +19,7 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health import bikaMessageFactory as _
+from bika.health.utils import is_internal_client
 from bika.lims import api
 from bika.lims.browser import BrowserView
 from bika.lims.browser.analysisrequest import AnalysisRequestsView as BaseView
@@ -39,10 +40,16 @@ class AnalysisRequestAddRedirectView(BrowserView):
     """
 
     def __call__(self):
-        base_folder = self.context.getPrimaryReferrer()
-        if not base_folder:
-            # Doctor w/o client assigned, just use analysisrequests folder
+        client = self.context.getClient()
+        if not client:
+            # Patient from the laboratory (no client assigned)
             base_folder = api.get_portal().analysisrequests
+        elif is_internal_client(client):
+            # Patient from an internal client, shared
+            base_folder = api.get_portal().analysisrequests
+        else:
+            # Patient from an external client, private
+            base_folder = client
 
         url = "{}/{}".format(api.get_url(base_folder), "ar_add")
         url = "{}?Patient={}".format(url, api.get_uid(self.context))
