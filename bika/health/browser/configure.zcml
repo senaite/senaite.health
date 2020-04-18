@@ -21,7 +21,7 @@
   <include package=".treatment"/>
   <include package=".vaccinationcenter"/>
   <include package=".vaccinationcentercontact"/>
-
+  <include package=".viewlets"/>
 
   <!-- Batches view with additional filters and columns -->
   <subscriber

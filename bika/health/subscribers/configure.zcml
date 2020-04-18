@@ -1,5 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           i18n_domain="senaite.core">
+           i18n_domain="senaite.health">
 
   <!-- Patient modification. If the patient has a client assigned, this event
    moves the Patient into the Client's folder -->

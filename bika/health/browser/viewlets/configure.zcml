@@ -1,0 +1,16 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           i18n_domain="senaite.health">
+
+  <!-- Viewlet that display a message stating whether the Patient is shared
+    among Internal Clients or rather is a private patient from a Client -->
+  <browser:viewlet
+    for="bika.health.interfaces.IPatient"
+    name="bika.health.patient_shared_viewlet"
+    class=".patient.PatientSharedViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContent"
+    template="templates/patient_shared_viewlet.pt"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"/>
+
+</configure>
