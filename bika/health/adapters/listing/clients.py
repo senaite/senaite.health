@@ -40,7 +40,7 @@ class ClientsListingViewAdapter(object):
         self.listing.title = self.context.translate(title)
 
         # Use the icon of the containing folder
-        icon = self.context.content_icon
+        icon = self.context.icon().replace(".png", "_big.png")
         self.listing.icon = "{}/{}".format(self.listing.portal_url, icon)
 
         # Display clients that belong to current folder only
