@@ -63,7 +63,7 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
 
         # Try to get the client from selected Patient
         patient = PatientDefaultFieldValue(self.request)(context)
-        client = patient and patient.getPrimaryReferrer() or None
+        client = patient and patient.getClient() or None
         if client:
             return client
 
