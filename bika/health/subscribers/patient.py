@@ -30,13 +30,22 @@ def ObjectModifiedEventHandler(patient, event):
     """
     move_to = patient.aq_parent
     container = patient.getField("PrimaryReferrer").get(patient)
+    if not container:
+        container = patient.getClient()
+        if container:
+            # The Patient is being created inside a Client folder, so the
+            # PrimaryReferrer field comes empty (the field is hidden when the
+            # Patient Add/Edit form is rendered inside a Client context)
+            patient.getField("PrimaryReferrer").set(patient, container)
 
     if not container:
-        # Patient belongs to the Lab.
-        # Patient is "lab private", only accessible by Lab Personnel
-        move_to = api.get_portal().patients
+        client = patient.getClient()
+        if not client:
+            # Patient belongs to the Lab.
+            # Patient is "lab private", only accessible by Lab Personnel
+            move_to = api.get_portal().patients
 
-    elif container:
+    else:
         # Check if the primary referrer is an Internal or an External Client
         external_clients = api.get_portal().clients
         internal_clients = api.get_portal().internal_clients

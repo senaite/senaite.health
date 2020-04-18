@@ -1021,31 +1021,21 @@ class Patient(Person):
         """
         return self.objectValues('Multifile')
 
-    def getPrimaryReferrer(self):
-        """Returns the client the current Patient is assigned to. Delegates the
-        action to function getClient.
-        NOTE: This is kept for backwards compatibility
-        """
-        logger.warn("Patient.getPrimaryReferrer: better use 'getClient'")
-        return self.getClient()
-
     def getClient(self):
         """Returns the client the current Patient is assigned to, if any
         """
-        # The schema's field PrimaryReferrer is only used to allow the user to
-        # assign the patient to a client in edit form. The entered value is used
-        # in ObjectModifiedEventHandler to move the patient to the Client's
-        # folder, so the value stored in the Schema's is not used anymore
-        # See https://github.com/senaite/senaite.core/pull/152
         client = self.aq_parent
         if IClient.providedBy(client):
+            # The Patient belongs to an External Client
             return client
-        return None
 
-    def setClient(self, value):
-        """Sets the client the current Patient has to be assigned to
-        """
-        self.setPrimaryReferrer(value)
+        referrer = self.getField("PrimaryReferrer").get(self)
+        if referrer:
+            # The Patient belongs to an Internal Client
+            return referrer
+
+        # The Patient belongs to the laboratory (no Client assigned)
+        return None
 
     def getClientID(self):
         """Returns the ID of the client this Patient belongs to or None

@@ -230,9 +230,7 @@ def move_patients_to_clients(portal):
                 # Clinical Cases for this Patient belong to different clients,
                 # so this Patient must remain not bound to any Client
                 logger.warn("Patient with client assigned, but batches from "
-                            "others. Unassigning client from {}".format(p_id))
-                patient.setClient(None)
-                patient.reindexObject()
+                            "others: {}".format(p_id))
 
             else:
                 client = clients_map.get(client_uid, None)
@@ -243,10 +241,8 @@ def move_patients_to_clients(portal):
                 if client_ids and client_ids[0] != client.getClientID():
                     # Assigned client does not match with those from the batches
                     logger.warn("Patient with client assigned that does not "
-                                "match with the client from batches. "
-                                "Unassigning client: {}".format(p_id))
-                    patient.setClient(None)
-                    patient.reindexObject()
+                                "match with the client from batches: {}"
+                                .format(p_id))
 
                 else:
                     # Move Patient inside the client
