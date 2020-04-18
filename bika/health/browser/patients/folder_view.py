@@ -58,6 +58,12 @@ class PatientsView(BikaListingView):
                               'sort_on': 'created',
                               'sort_order': 'descending'}
 
+        if IClient.providedBy(self.context):
+            # Display the Patients the belong to this Client only
+            self.contentFilter.update({
+                "getPrimaryReferrerUID": api.get_uid(self.context)
+            })
+
         self.columns = collections.OrderedDict((
             ("Title", {
                 "title": _("Patient"),
