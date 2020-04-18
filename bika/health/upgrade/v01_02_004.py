@@ -22,6 +22,8 @@ from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
+from bika.lims import api
+from Products.CMFPlone.utils import _createObjectByType
 
 version = '1.2.4'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
@@ -43,6 +45,18 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
+    setup_internal_clients(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
+
+
+def setup_internal_clients(portal):
+    obj_id = "internal_clients"
+    portal_type = "ClientFolder"
+    if obj_id not in portal:
+        logger.info("Creating object: {}/{}".format(
+            api.get_path(portal), obj_id, portal_type))
+        obj = _createObjectByType(portal_type, portal, obj_id)
+        obj.edit(title="Internal Clients")
+        obj.unmarkCreationFlag()
