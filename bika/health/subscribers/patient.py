@@ -18,6 +18,8 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.health import logger
+from bika.health.utils import move_obj
 from bika.lims import api
 from bika.lims.api import security
 
@@ -26,18 +28,38 @@ def ObjectModifiedEventHandler(patient, event):
     """Actions to be done when a patient is modified. Moves the Patient to
     Client folder if assigned
     """
-    # If client is assigned, move the Patient to the Client's folder
-    # Note here we get the Client directly from the Schema, cause
-    # getPrimaryReferrer is overriden in Patient content type to always look to
-    # aq_parent in order to prevent inconsistencies (the PrimaryReferrer schema
-    # field is only used to allow the user to assign a Client to the Patient).
-    client = patient.getField("PrimaryReferrer").get(patient)
+    move_to = patient.aq_parent
+    primary_referrer = patient.getField("PrimaryReferrer").get(patient)
 
-    # Check if the Patient is being created inside the Client
-    if client and client.UID() != patient.aq_parent.UID():
-        # Move the Patient inside the client
-        cp = patient.aq_parent.manage_cutObjects(patient.id)
-        client.manage_pasteObjects(cp)
+    if not primary_referrer:
+        # Patient belongs to the Lab.
+        # Patient is "lab private", only accessible by Lab Personnel
+        move_to = api.get_portal().patients
+
+    elif primary_referrer:
+        # Check if the primary referrer is an Internal or an External Client
+        external_clients = api.get_portal().clients
+        internal_clients = api.get_portal().internal_clients
+
+        if primary_referrer.aq_parent == internal_clients:
+            # Patient belongs to an Internal Client.
+            # Patient is "shared", accessible to Internal Clients, but not to
+            # External Clients
+            move_to = api.get_portal().patients
+
+        elif primary_referrer.aq_parent == external_clients:
+            # Patient belongs to an External Client.
+            # Patient is "private", accessible to users from same Client only
+            move_to = primary_referrer
+
+        else:
+            logger.error("Not a valid Primary Referrer for {}: {}".format(
+                api.get_id(patient), api.get_path(move_to)
+            ))
+
+    if move_to != patient.aq_parent:
+        # Move the patient
+        move_obj(patient, move_to)
 
 
 # TODO: This is no longer needed!
