@@ -29,28 +29,28 @@ def ObjectModifiedEventHandler(patient, event):
     Client folder if assigned
     """
     move_to = patient.aq_parent
-    primary_referrer = patient.getField("PrimaryReferrer").get(patient)
+    container = patient.getField("PrimaryReferrer").get(patient)
 
-    if not primary_referrer:
+    if not container:
         # Patient belongs to the Lab.
         # Patient is "lab private", only accessible by Lab Personnel
         move_to = api.get_portal().patients
 
-    elif primary_referrer:
+    elif container:
         # Check if the primary referrer is an Internal or an External Client
         external_clients = api.get_portal().clients
         internal_clients = api.get_portal().internal_clients
 
-        if primary_referrer.aq_parent == internal_clients:
+        if container.aq_parent == internal_clients:
             # Patient belongs to an Internal Client.
             # Patient is "shared", accessible to Internal Clients, but not to
             # External Clients
             move_to = api.get_portal().patients
 
-        elif primary_referrer.aq_parent == external_clients:
+        elif container.aq_parent == external_clients:
             # Patient belongs to an External Client.
             # Patient is "private", accessible to users from same Client only
-            move_to = primary_referrer
+            move_to = container
 
         else:
             logger.error("Not a valid Primary Referrer for {}: {}".format(
