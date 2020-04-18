@@ -20,9 +20,16 @@
 
 from datetime import datetime
 
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from OFS.event import ObjectWillBeMovedEvent
 from Products.ATContentTypes.utils import DT2dt
 from dateutil.relativedelta import relativedelta
+from zope.container.contained import notifyContainerModified
+from zope.event import notify
 from zope.i18n import translate
+from zope.lifecycleevent import ObjectMovedEvent
 
 from bika.health import logger
 from bika.health.interfaces import IPatient
@@ -217,3 +224,42 @@ def to_ymd(delta):
     diff = map(str, (delta.years, delta.months, delta.days))
     age = filter(lambda it: int(it[0]), zip(diff, ymd))
     return " ".join(map("".join, age))
+
+
+def move_obj(ob, destination):
+    """
+    This function has the same effect as:
+
+        id = obj.getId()
+        cp = origin.manage_cutObjects(id)
+        destination.manage_pasteObjects(cp)
+
+    but with slightly better performance and **without permission checks**. The
+    code is mostly grabbed from OFS.CopySupport.CopyContainer_pasteObjects
+    """
+    id = ob.getId()
+
+    # Notify the object will be copied to destination
+    ob._notifyOfCopyTo(destination, op=1)
+
+    # Notify that the object will be moved
+    origin = aq_parent(aq_inner(ob))
+    notify(ObjectWillBeMovedEvent(ob, origin, id, destination, id))
+
+    # Effectively move the object from origin to destination
+    origin._delObject(id, suppress_events=True)
+    ob = aq_base(ob)
+    destination._setObject(id, ob, set_owner=0, suppress_events=True)
+    ob = destination._getOb(id)
+
+    # Since we used "suppress_events=True", we need to manually notify that the
+    # object has been moved and containers modified. This also makes the objects
+    # to be re-catalogued
+    notify(ObjectMovedEvent(ob, origin, id, destination, id))
+    notifyContainerModified(origin)
+    notifyContainerModified(destination)
+
+    # Try to make ownership implicit if possible, so it acquires the permissions
+    # from the container
+    ob.manage_changeOwnershipType(explicit=0)
+    return ob
