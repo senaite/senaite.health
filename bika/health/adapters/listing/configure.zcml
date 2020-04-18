@@ -1,0 +1,11 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="senaite.health">
+
+  <subscriber
+    for="bika.lims.browser.clientfolder.ClientFolderContentsView
+         bika.lims.interfaces.IClientFolder"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory=".clients.ClientsListingViewAdapter" />
+
+</configure>
