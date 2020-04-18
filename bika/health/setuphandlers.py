@@ -26,6 +26,7 @@ from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import _createObjectByType
 from plone import api as ploneapi
 
 from bika.health import bikaMessageFactory as _
@@ -116,6 +117,9 @@ def post_install(portal_setup):
 
     # Setup default ethnicities
     setup_ethnicities(portal)
+
+    # Setup internal clients top-level folder
+    setup_internal_clients(portal)
 
     # Allow patients inside clients
     # Note: this should always be run if core's typestool is reimported
@@ -467,3 +471,18 @@ def allow_patients_inside_clients(portal):
     allowed_types = client.allowed_content_types
     if 'Patient' not in allowed_types:
         client.allowed_content_types = allowed_types + ('Patient', )
+
+
+def setup_internal_clients(portal):
+    """Setup a top-level Internal Clients folder. Internal Clients are stored
+    in this folder and Patients assigned to them will be stored in
+    /patients base folder
+    """
+    obj_id = "internal_clients"
+    portal_type = "ClientFolder"
+    if obj_id not in portal:
+        logger.info("Creating object: {}/{}".format(
+            api.get_path(portal), obj_id, portal_type))
+        obj = _createObjectByType(portal_type, portal, obj_id)
+        obj.edit(title="Internal Clients")
+        obj.unmarkCreationFlag()
