@@ -22,6 +22,7 @@ from zope.component import adapts
 
 from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
+from bika.health.utils import is_internal_client
 from bika.lims import api
 from bika.lims.adapters.addsample import AddSampleObjectInfoAdapter
 from bika.lims.interfaces import IAddSampleFieldsFlush
@@ -135,13 +136,20 @@ class AddSampleClientInfo(AddSampleObjectInfoAdapter):
     def get_object_info(self):
         object_info = self.get_base_info()
         uid = api.get_uid(self.context)
+
+        # External clients can only see their own Patients
+        client_uid = [uid]
+
+        if is_internal_client(self.context):
+            # Internal clients share Patients
+            client_uid.append(None)
+
         filter_queries = {
-            # Allow to choose Patients from same Client only
             "Patient": {
-                "getPrimaryReferrerUID": [uid, None],
+                "getPrimaryReferrerUID": client_uid,
             },
             "ClientPatientID": {
-                "getPrimaryReferrerUID": [uid, None],
+                "getPrimaryReferrerUID": client_uid,
             }
         }
         object_info["filter_queries"] = filter_queries
