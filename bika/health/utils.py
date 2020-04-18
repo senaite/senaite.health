@@ -36,6 +36,7 @@ from bika.health.interfaces import IPatient
 from bika.lims import api
 from bika.lims.api import _marker
 from bika.lims.interfaces import IBatch
+from bika.lims.interfaces import IClient
 from bika.lims.utils import render_html_attributes
 from bika.lims.utils import to_unicode
 from bika.lims.utils import to_utf8
@@ -263,3 +264,12 @@ def move_obj(ob, destination):
     # from the container
     ob.manage_changeOwnershipType(explicit=0)
     return ob
+
+
+def is_internal_client(client):
+    """Returns whether the client passed in is an internal client
+    """
+    if not IClient.providedBy(client):
+        raise TypeError("Type not supported")
+
+    return client.aq_parent == api.get_portal().internal_clients
