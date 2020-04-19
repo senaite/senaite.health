@@ -21,6 +21,8 @@
 from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import setup_internal_clients
+from bika.lims import api
+from bika.lims.setuphandlers import reindex_content_structure
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
 
@@ -45,8 +47,29 @@ def upgrade(tool):
 
     # -------- ADD YOUR STUFF BELOW --------
     setup_internal_clients(portal)
+    reindex_content_structure(portal)
+
+    # Hide Doctors from navigation bar
+    hide_doctors_from_navbar(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
 
 
+def hide_doctors_from_navbar(portal):
+    """Hide doctor items to be displayed in the navigation bar
+    """
+    logger.info("Hiding Doctors from navbar ...")
+
+    # Plone uses exclude_from_nav metadata column to know if the object
+    # has to be displayed in the navigation bar. This metadata column only
+    # exists in portal_catalog and while with other portal types this might
+    # not be required, this is necessary for Doctors, cause they are
+    # stored in portal_catalog
+    catalog = api.get_tool("portal_catalog")
+    for doctor in portal.doctors.objectValues():
+        # We don't need to reindex everything, but the metadata only. So we
+        # just use any index
+        catalog.reindexObject(doctor, idxs=["title"], update_metadata=1)
+
+    logger.info("Hiding Doctors from navbar [DONE]")

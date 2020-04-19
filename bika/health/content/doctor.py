@@ -71,6 +71,18 @@ class Doctor(Contact):
         """
         idserver.renameAfterCreation(self)
 
+    def exclude_from_nav(self):
+        """Returns True, to prevent Doctors to be displayed in the navbar
+        """
+        # Plone uses exclude_from_nav metadata column to know if the object
+        # has to be displayed in the navigation bar. This metadata column only
+        # exists in portal_catalog and while with other portal types this might
+        # not be required, this is necessary for Doctors, cause they are
+        # stored in portal_catalog
+        return True
+
+    getExcludeFromNav = exclude_from_nav
+
     def getSamples(self, full_objects=False):
         """
         Returns the Samples this Doctor is assigned to
