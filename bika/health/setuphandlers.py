@@ -36,6 +36,8 @@ from bika.health.catalog import \
 from bika.health.catalog import getCatalogExtensions
 from bika.health.config import DEFAULT_PROFILE_ID
 from bika.health.permissions import ViewPatients
+from bika.health.utils import add_permission_for_role
+from bika.health.utils import revoke_permission_for_role
 from bika.lims import api
 from bika.lims.catalog import \
     getCatalogDefinitions as getCatalogDefinitionsLIMS
@@ -166,33 +168,6 @@ def setup_roles_permissions(portal):
     analysis_requests = portal.analysisrequests
     add_permission_for_role(analysis_requests, AddAnalysisRequest, "Client")
     logger.info("Setup roles permissions [DONE]")
-
-
-def add_permission_for_role(folder, permission, role):
-    """Grants a permission to the given role and given folder
-    :param folder: the folder to which the permission for the role must apply
-    :param permission: the permission to be assigned
-    :param role: role to which the permission must be granted
-    :return True if succeed, otherwise, False
-    """
-    roles = filter(lambda perm: perm.get('selected') == 'SELECTED',
-                   folder.rolesOfPermission(permission))
-    roles = map(lambda perm_role: perm_role['name'], roles)
-    if role in roles:
-        # Nothing to do, the role has the permission granted already
-        logger.info(
-            "Role '{}' has permission {} for {} already".format(role,
-                                                                repr(permission),
-                                                                repr(folder)))
-        return False
-    roles.append(role)
-    acquire = folder.acquiredRolesAreUsedBy(permission) == 'CHECKED' and 1 or 0
-    folder.manage_permission(permission, roles=roles, acquire=acquire)
-    folder.reindexObject()
-    logger.info(
-        "Added permission {} to role '{}' for {}".format(repr(permission), role,
-                                                         repr(folder)))
-    return True
 
 
 def setup_ethnicities(portal):
@@ -478,6 +453,7 @@ def setup_internal_clients(portal):
     in this folder and Patients assigned to them will be stored in
     /patients base folder
     """
+    logger.info("Setup Internal Clients ...")
     obj_id = "internal_clients"
     portal_type = "ClientFolder"
     if obj_id not in portal:
@@ -486,3 +462,11 @@ def setup_internal_clients(portal):
         obj = _createObjectByType(portal_type, portal, obj_id)
         obj.edit(title="Internal Clients")
         obj.unmarkCreationFlag()
+
+    # We do not want Internal Clients folder to be visible to Clients
+    revoke_permission_for_role(portal.internal_clients, View, "Client")
+
+    # We do not want Clients folder to be visible to Clients
+    revoke_permission_for_role(portal.clients, View, "Client")
+
+    logger.info("Setup Internal Clients [DONE]")

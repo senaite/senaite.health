@@ -273,3 +273,74 @@ def is_internal_client(client):
         raise TypeError("Type not supported")
 
     return client.aq_parent == api.get_portal().internal_clients
+
+
+def get_all_granted_roles_for(folder, permission):
+    """Returns a list of roles that have granted access to the folder. If the
+    folder is acquire=1, it looks through all the hierarchy until acquire=0 to
+    grab all the roles that effectively (regardless of acquire) has permission
+    """
+    roles = filter(lambda perm: perm.get('selected') == 'SELECTED',
+                   folder.rolesOfPermission(permission))
+    roles = map(lambda prole: prole['name'], roles)
+    if api.is_portal(folder):
+        return roles
+
+    acquired = folder.acquiredRolesAreUsedBy(permission) == 'CHECKED' and 1 or 0
+    if acquired:
+        # Grab from the parent
+        parent_roles = get_all_granted_roles_for(folder.aq_parent, permission)
+        roles.extend(parent_roles)
+
+    return list(set(roles))
+
+
+def revoke_permission_for_role(folder, permission, role):
+    """Revokes a permission for a given role and folder. It handles acquire
+    gracefully
+    """
+    # Get all granted roles for this folder, regardless of acquire
+    granted_roles = get_all_granted_roles_for(folder, permission)
+
+    # Bail out the role from the list
+    to_grant = filter(lambda name: name != role, granted_roles)
+    if to_grant == granted_roles:
+        # Nothing to do, the role does not have permission granted
+        logger.info(
+            "Role '{}' does not have permission {} granted for '{}' [SKIP]"
+            .format(role, repr(permission), repr(folder))
+        )
+        return
+
+    # Is this permission acquired?
+    folder.manage_permission(permission, roles=to_grant, acquire=0)
+    folder.reindexObject()
+    logger.info("Revoked permission {} to role '{}' for '{}'"
+                .format(repr(permission), role, repr(folder)))
+
+
+def add_permission_for_role(folder, permission, role):
+    """Grants a permission to the given role and given folder
+    :param folder: the folder to which the permission for the role must apply
+    :param permission: the permission to be assigned
+    :param role: role to which the permission must be granted
+    :return True if succeed, otherwise, False
+    """
+    roles = filter(lambda perm: perm.get('selected') == 'SELECTED',
+                   folder.rolesOfPermission(permission))
+    roles = map(lambda perm_role: perm_role['name'], roles)
+    if role in roles:
+        # Nothing to do, the role has the permission granted already
+        logger.info(
+            "Role '{}' has permission {} for {} already".format(role,
+                                                                repr(permission),
+                                                                repr(folder)))
+        return False
+    roles.append(role)
+    acquire = folder.acquiredRolesAreUsedBy(permission) == 'CHECKED' and 1 or 0
+    folder.manage_permission(permission, roles=roles, acquire=acquire)
+    folder.reindexObject()
+    logger.info(
+        "Added permission {} to role '{}' for {}".format(repr(permission), role,
+                                                         repr(folder)))
+    return True
