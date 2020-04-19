@@ -463,6 +463,9 @@ def setup_internal_clients(portal):
         obj.edit(title="Internal Clients")
         obj.unmarkCreationFlag()
 
+    # Move internal_clients just below Clients
+    portal.moveObjectsToTop(ids=["clients", "internal_clients"])
+
     # We do not want Internal Clients folder to be visible to Clients
     revoke_permission_for_role(portal.internal_clients, View, "Client")
 
