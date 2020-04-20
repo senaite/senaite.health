@@ -123,6 +123,9 @@ def post_install(portal_setup):
     # Setup internal clients top-level folder
     setup_internal_clients(portal)
 
+    # Sort navigation bar
+    sort_nav_bar(portal)
+
     # Allow patients inside clients
     # Note: this should always be run if core's typestool is reimported
     allow_patients_inside_clients(portal)
@@ -463,7 +466,19 @@ def setup_internal_clients(portal):
         obj.edit(title="Internal Clients")
         obj.unmarkCreationFlag()
 
-    # Move internal_clients just below Clients
-    portal.moveObjectsToTop(ids=["clients", "internal_clients"])
-
     logger.info("Setup Internal Clients [DONE]")
+
+
+def sort_nav_bar(portal):
+    """Sort items in the navigation bar
+    """
+    logger.info("Sorting items from navigation bar ...")
+    sorted_ids = [
+        "clients",
+        "internal_clients",
+        "analysisrequests",
+        "batches",
+        "patients",
+        "doctors",
+    ]
+    portal.moveObjectsToTop(ids=sorted_ids)

@@ -21,6 +21,7 @@
 from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import setup_internal_clients
+from bika.health.setuphandlers import sort_nav_bar
 from bika.lims import api
 from bika.lims.setuphandlers import reindex_content_structure
 from bika.lims.upgrade import upgradestep
@@ -46,10 +47,17 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
+
+    # Setup internal clients top-level folder
     setup_internal_clients(portal)
+
+    # Sort navigation bar
+    sort_nav_bar(portal)
+
+    # Reindex the top level folder in the portal and setup to fix missing icons
     reindex_content_structure(portal)
 
-    # Hide Doctors from navigation bar
+    # Hide Doctor items from navigation bar
     hide_doctors_from_navbar(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
