@@ -20,10 +20,6 @@
 
 import collections
 
-from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.layout.globals.interfaces import IViewView
-from zope.interface import implements
-
 from bika.health import bikaMessageFactory as _
 from bika.health.catalog import CATALOG_PATIENTS
 from bika.health.interfaces import IPatients
@@ -40,7 +36,6 @@ from bika.lims.utils import get_link
 class PatientsView(BikaListingView):
     """Listing View for all Patients in the System
     """
-    implements(IFolderContentsView, IViewView)
 
     def __init__(self, context, request):
         super(PatientsView, self).__init__(context, request)
@@ -50,7 +45,6 @@ class PatientsView(BikaListingView):
         self.show_select_row = False
         self.show_select_column = True
         self.show_select_all_checkboxes = False
-        request.set("disable_border", 1)
 
         self.sort_on = "created"
         self.catalog = CATALOG_PATIENTS
@@ -135,6 +129,7 @@ class PatientsView(BikaListingView):
         super(PatientsView, self).update()
 
         if IPatients.providedBy(self.context):
+            # Top-level patients listing
             self.request.set("disable_border", 1)
 
         # By default, only users with AddPatient permissions for the current
