@@ -9,7 +9,7 @@
                 client_name python: view.get_client_name()">
 
     <div class="portlet-alert-item alert alert-info" tal:condition="shared">
-      <p class="title" i18n:translate="">
+      <p class="title">
         <tal:without_client condition="not:client_name">
           <span i18n:translate="">
             This Patient is shared among Internal Clients

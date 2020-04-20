@@ -13,4 +13,15 @@
     permission="zope2.View"
     layer="bika.health.interfaces.IBikaHealth"/>
 
+  <!-- Viewlet that display a message stating whether the Client is external
+   (Patients, Batches and Doctors are private) or if is internal (Patients,
+   Batches and Doctors are shared) -->
+  <browser:viewlet
+    for="bika.lims.interfaces.IClient"
+    name="bika.health.client_type_viewlet"
+    class=".client.ClientTypeViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContent"
+    template="templates/client_type_viewlet.pt"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"/>
 </configure>
