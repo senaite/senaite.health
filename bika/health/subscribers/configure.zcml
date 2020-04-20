@@ -27,6 +27,6 @@
   <subscriber
     for="bika.lims.interfaces.IBatch
          zope.lifecycleevent.interfaces.IObjectMovedEvent"
-    handler=".batch.ObjectAddedEventHandler" />
+    handler=".batch.ObjectMovedEventHandler" />
 
 </configure>
