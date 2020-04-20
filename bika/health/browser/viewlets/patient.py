@@ -11,6 +11,10 @@ class PatientSharedViewlet(ViewletBase):
     def is_visible(self):
         """Returns whether the viewlet must be visible or not
         """
+        if self.context.isTemporary():
+            # Temporary object, not yet created
+            return False
+
         logged_client = api.get_current_client()
         if not logged_client:
             # Current user is from Lab, display always
