@@ -25,16 +25,19 @@ from bika.lims.interfaces import IClient
 def getClient(self):
     """Returns the Client from the Batch passed-in, if any
     """
-    # The schema's field Client is only used to allow the user to assign
-    # the batch to a client in edit form. The entered value is used in
-    # ObjectModifiedEventHandler to move the batch to the Client's folder,
-    # so the value stored in the Schema's is not used anymore
-    # See https://github.com/senaite/senaite.core/pull/1450
     parent = self.aq_parent
     if IClient.providedBy(parent):
+        # The Batch belongs to an External Client
         return parent
 
     elif IPatient.providedBy(parent):
+        # The Batch belongs to a Patient
         return parent.getClient()
 
+    parent = self.getField("Client").get(self)
+    if parent:
+        # The Batch belongs to an Internal Client
+        return parent
+
+    # The Batch belongs to the laboratory (no Client assigned)
     return None

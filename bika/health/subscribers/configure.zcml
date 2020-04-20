@@ -1,8 +1,10 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            i18n_domain="senaite.health">
 
-  <!-- Patient modification. If the patient has a client assigned, this event
-   moves the Patient into the Client's folder -->
+  <!-- Patient modification. If the patient has an external client assigned,
+  this event moves the Patient into the Client's folder. If the assigned client
+  is internal or does not have a client assigned, the event moves the Patient
+  to the base /patients folder -->
   <subscriber
     for="bika.health.interfaces.IPatient
          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
@@ -14,5 +16,17 @@
     for="bika.lims.interfaces.IBatch
          zope.lifecycleevent.interfaces.IObjectCreatedEvent"
     handler=".batch.ObjectCreatedEventHandler" />
+
+  <!-- Batch moved.
+  We use an ObjectMovedEvent because ModifiedEvent for Batch is already present
+  in senaite.core and subscribers cannot be overriden. ObjectModifiedEvent from
+  senaite.core moves Batches to the Client's folder if the client is specified
+  in the Schema's field. In health we have to handle Batches for Internal
+  Clients, so this event is in charge to ensure the Batch always belong to the
+  parent folder depending on the client type -->
+  <subscriber
+    for="bika.lims.interfaces.IBatch
+         zope.lifecycleevent.interfaces.IObjectMovedEvent"
+    handler=".batch.ObjectAddedEventHandler" />
 
 </configure>
