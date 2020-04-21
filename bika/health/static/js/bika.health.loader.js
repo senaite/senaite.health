@@ -14,10 +14,10 @@ window.bika.health.controllers =  {
 
     "body":
         ['HealthSiteView'],
-
+/*
     "#batch-base-edit":
         ['HealthBatchEditView',],
-
+*/
     "#patient-base-edit":
         ['HealthPatientEditView',
          'HealthPatientPublicationPrefsEditView'],

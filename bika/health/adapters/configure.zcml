@@ -3,7 +3,8 @@
     i18n_domain="senaite.health">
 
   <!-- Package includes -->
-  <include package=".listing"/>
+  <include package=".listing" />
+  <include package=".referencewidget" />
   <include package=".widgetvisibility" />
 
   <!-- Default value for Client field in Add Sample form -->

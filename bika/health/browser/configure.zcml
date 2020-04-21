@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="senaite.health">
 
   <include package=".aetiologicagent"/>
@@ -29,5 +30,15 @@
          bika.lims.interfaces.IBatchFolder"
     provides="senaite.core.listing.interfaces.IListingViewAdapter"
     factory="bika.health.browser.batchfolder.BatchListingViewAdapter" />
+
+  <!-- Custom referencewidget_search for Health. Does the same as core's, but
+  implements a more specific interface, so health-specific adapters for
+  IReferenceWidgetVocabulary can be supported -->
+  <browser:page
+    for="*"
+    name="referencewidget_search"
+    class=".referencewidget.ajaxReferenceWidgetSearch"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth" />
 
 </configure>
