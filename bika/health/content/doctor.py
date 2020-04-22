@@ -34,6 +34,8 @@ from bika.lims.catalog.analysisrequest_catalog import \
 from bika.lims.content.contact import Contact
 from zope.interface import implements
 
+from bika.lims.interfaces import IClient
+
 schema = Contact.schema.copy() + Schema((
     StringField('DoctorID',
         required=1,
@@ -82,6 +84,22 @@ class Doctor(Contact):
         return True
 
     getExcludeFromNav = exclude_from_nav
+
+    def getClient(self):
+        """Returns the client the Doctor is assigned to, if any
+        """
+        client = self.aq_parent
+        if IClient.providedBy(client):
+            # The Doctor belongs to an External Client
+            return client
+
+        referrer = self.getField("PrimaryReferrer").get(self)
+        if referrer:
+            # The Doctor belongs to an Internal Client
+            return referrer
+
+        # The Doctor belongs to the laboratory (no Client assigned)
+        return None
 
     def getSamples(self, full_objects=False):
         """

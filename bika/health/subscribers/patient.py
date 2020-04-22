@@ -18,7 +18,6 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.health import logger
 from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
 from bika.lims import api
