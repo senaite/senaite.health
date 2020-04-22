@@ -275,6 +275,12 @@ def is_internal_client(client):
     return client.aq_parent == api.get_portal().internal_clients
 
 
+def is_external_client(client):
+    """Returns whether the client passed is an external client
+    """
+    return not is_internal_client(client)
+
+
 def get_all_granted_roles_for(folder, permission):
     """Returns a list of roles that have granted access to the folder. If the
     folder is acquire=1, it looks through all the hierarchy until acquire=0 to

@@ -20,19 +20,23 @@
 
 import collections
 
+from senaite.core.listing import utils
+from senaite.core.listing.interfaces import IListingView
+from senaite.core.listing.interfaces import IListingViewAdapter
+from zope.component import adapts
+from zope.interface import implements
+
 from bika.health import bikaMessageFactory as _
 from bika.health.utils import get_age_ymd
 from bika.health.utils import get_field_value
 from bika.health.utils import get_html_image
+from bika.health.utils import is_external_client
+from bika.health.utils import is_internal_client
 from bika.lims import AddBatch
 from bika.lims import api
 from bika.lims.interfaces import IClient
 from bika.lims.utils import get_image
 from bika.lims.utils import get_link
-from senaite.core.listing import utils
-from senaite.core.listing.interfaces import IListingView, IListingViewAdapter
-from zope.component import adapts
-from zope.interface import implements
 
 
 class BatchListingViewAdapter(object):
@@ -43,6 +47,8 @@ class BatchListingViewAdapter(object):
 
     # Order of priority of this subscriber adapter over others
     priority_order = 1
+
+    _external_logged = None
 
     def __init__(self, listing, context):
         self.listing = listing
@@ -102,14 +108,16 @@ class BatchListingViewAdapter(object):
                     img = get_image("exclamation.png", title=msg)
                     item["replace"]["PatientAgeOnsetDate"] = img
 
-        # Display a "shared" icon if the patient belongs to an internal client
-        if self.is_from_external(obj):
-            img = get_html_image("lock.png",
-                                 title=_("Private, from an external client"))
-        else:
-            img = get_html_image("share.png",
-                                 title=_("Shared, from an internal client"))
-        item["before"]["BatchID"] = img
+        # Display the internal/external icons, but only if the logged-in user
+        # does not belong to an external client
+        if not self.is_external_client_logged():
+            if self.is_from_external(obj):
+                img = get_html_image("lock.png",
+                                     title=_("Private, from an external client"))
+            else:
+                img = get_html_image("share.png",
+                                     title=_("Shared, from an internal client"))
+            item["before"]["BatchID"] = img
 
         return item
 
@@ -117,7 +125,7 @@ class BatchListingViewAdapter(object):
         """Returns whether the batch listing is displayed in IClient context
         or if the current user is a client contact
         """
-        return api.get_current_client() or IClient.providedBy(self.context)
+        return IClient.providedBy(self.context) or api.get_current_client()
 
     def hide_columns(self, column_ids):
         # Remove the columns from all review_states
@@ -174,6 +182,18 @@ class BatchListingViewAdapter(object):
         clients_path = api.get_path(api.get_portal().clients)
         obj_path = api.get_path(obj_or_brain)
         return clients_path in obj_path
+
+    def is_external_client_logged(self):
+        """Returns whether the current user belongs to an external client
+        """
+        if self._external_logged is None:
+            client = api.get_current_client()
+            if client and is_external_client(client):
+                self._external_logged = True
+            else:
+                self._external_logged = False
+
+        return self._external_logged
 
 
 class PatientBatchListingViewAdapter(BatchListingViewAdapter):
