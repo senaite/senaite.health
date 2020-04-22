@@ -31,6 +31,7 @@ from bika.lims import api
 from bika.lims.api.security import check_permission
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.interfaces import IClient
+from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 
 
@@ -169,7 +170,13 @@ class PatientsView(BikaListingView):
         # Date of Birth
         dob = obj.getBirthDate
         item['getBirthDate'] = dob and self.ulocalized_time(dob) or ""
-        item["age"] = dob and get_age_ymd(dob) or ""
+        try:
+            item["age"] = dob and get_age_ymd(dob) or ""
+        except:
+            # Wrong date??
+            msg = _("Date of Birth might be wrong")
+            img = get_image("exclamation.png", title=msg)
+            item["replace"]["age"] = img
 
         # make the columns patient title, patient ID and client patient ID
         # redirect to the Analysis Requests of the patient

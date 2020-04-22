@@ -99,8 +99,8 @@ class BatchListingViewAdapter(object):
                 except:
                     # Wrong date??
                     msg = _("Date of Birth or Case Onset Date are wrong")
-                    img = get_image("warning.png", title=msg)
-                    item["replace"]["PatientAgeOnsetDate"] = "??"
+                    img = get_image("exclamation.png", title=msg)
+                    item["replace"]["PatientAgeOnsetDate"] = img
 
         # Display a "shared" icon if the patient belongs to an internal client
         if self.is_from_external(obj):
