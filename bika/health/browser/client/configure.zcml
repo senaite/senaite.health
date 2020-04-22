@@ -2,13 +2,6 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser">
 
-  <!-- Batches view -->
-  <subscriber
-    for="bika.lims.browser.client.ClientBatchesView
-         bika.lims.interfaces.IClient"
-    provides="senaite.core.listing.interfaces.IListingViewAdapter"
-    factory="bika.health.browser.batchfolder.BatchListingViewAdapter" />
-
   <!-- Doctors view -->
   <browser:page
     for="bika.lims.interfaces.IClient"

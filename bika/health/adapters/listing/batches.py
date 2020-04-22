@@ -22,6 +22,7 @@ import collections
 
 from bika.health import bikaMessageFactory as _
 from bika.health.utils import get_field_value
+from bika.lims import AddBatch
 from bika.lims import api
 from bika.lims.interfaces import IClient
 from bika.lims.utils import get_link
@@ -32,6 +33,8 @@ from zope.interface import implements
 
 
 class BatchListingViewAdapter(object):
+    """Adapter for generic Batch listings
+    """
     adapts(IListingView)
     implements(IListingViewAdapter)
 
@@ -46,9 +49,14 @@ class BatchListingViewAdapter(object):
     def before_render(self):
         # Additional columns
         self.add_columns()
-        # Remove unnecessary columns
-        self.hide_columns()
 
+        # Remove unnecessary columns
+        hide = ["Title", "BatchDate", "Description", ]
+        if api.get_current_client():
+            # Hide client-specific columns
+            hide.extend(["Client", "ClientID"])
+
+        self.hide_columns(hide)
 
     def folder_item(self, obj, item, index):
         batch = api.get_object(obj)
@@ -87,17 +95,11 @@ class BatchListingViewAdapter(object):
         """
         return api.get_current_client() or IClient.providedBy(self.context)
 
-    def hide_columns(self):
-        # Columns to hide
-        hide = ["Title", "BatchDate", "Description",]
-        if api.get_current_client():
-            # Hide client-specific columns
-            hide.extend(["Client", "ClientID"])
-
+    def hide_columns(self, column_ids):
         # Remove the columns from all review_states
         for rv in self.listing.review_states:
             rv_columns = rv.get("columns", self.listing.columns.keys())
-            rv_columns = filter(lambda col: col not in hide, rv_columns)
+            rv_columns = filter(lambda col: col not in column_ids, rv_columns)
             rv["columns"] = rv_columns
 
     def add_columns(self):
@@ -137,3 +139,34 @@ class BatchListingViewAdapter(object):
                              column_values=column_values,
                              after=column_values["after"],
                              review_states=rv_keys)
+
+
+class PatientBatchListingViewAdapter(BatchListingViewAdapter):
+    """Adapter for Patient's Batch listings
+    """
+
+    def before_render(self):
+        """Called before the listing renders
+        """
+        super(PatientBatchListingViewAdapter, self).before_render()
+
+        # Remove unnecessary columns
+        hide = ["getPatientID", "getClientPatientID", "Patient", ]
+        self.hide_columns(hide)
+
+        # Filter by patient
+        query = dict(getPatientUID=api.get_uid(self.context))
+        self.listing.contentFilter.update(query)
+        for rv in self.listing.review_states:
+            if "contentFilter" not in rv:
+                rv["contentFilter"] = {}
+            rv["contentFilter"].update(query)
+
+        url = api.get_url(self.context)
+        self.listing.context_actions = {
+            _("Add"): {
+                "url": "{}/createObject?type_name=Batch".format(url),
+                "permission": AddBatch,
+                "icon": "++resource++bika.lims.images/add.png"
+            }
+        }

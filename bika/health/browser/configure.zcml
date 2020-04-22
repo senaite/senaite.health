@@ -24,13 +24,6 @@
   <include package=".vaccinationcentercontact"/>
   <include package=".viewlets"/>
 
-  <!-- Batches view with additional filters and columns -->
-  <subscriber
-    for="bika.lims.browser.batchfolder.BatchFolderContentsView
-         bika.lims.interfaces.IBatchFolder"
-    provides="senaite.core.listing.interfaces.IListingViewAdapter"
-    factory="bika.health.browser.batchfolder.BatchListingViewAdapter" />
-
   <!-- Custom referencewidget_search for Health. Does the same as core's, but
   implements a more specific interface, so health-specific adapters for
   IReferenceWidgetVocabulary can be supported -->
