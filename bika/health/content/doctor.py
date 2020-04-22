@@ -19,21 +19,23 @@
 # Some rights reserved, see README and LICENSE.
 
 from Products.Archetypes import atapi
+from Products.Archetypes.Field import ComputedField
+from Products.Archetypes.Widget import ComputedWidget
 from Products.Archetypes.public import ReferenceField
 from Products.Archetypes.public import Schema
-from Products.Archetypes.public import SelectionWidget
 from Products.Archetypes.public import StringField
 from Products.Archetypes.public import StringWidget
+from zope.interface import implements
+
 from bika.health import bikaMessageFactory as _
 from bika.health.config import *
 from bika.health.interfaces import IDoctor
 from bika.lims import api
 from bika.lims import idserver
+from bika.lims.browser.widgets import ReferenceWidget
 from bika.lims.catalog.analysisrequest_catalog import \
     CATALOG_ANALYSIS_REQUEST_LISTING
 from bika.lims.content.contact import Contact
-from zope.interface import implements
-
 from bika.lims.interfaces import IClient
 
 schema = Contact.schema.copy() + Schema((
@@ -46,16 +48,50 @@ schema = Contact.schema.copy() + Schema((
     ),
     ReferenceField(
         'PrimaryReferrer',
-        vocabulary='get_clients_vocabulary',
         allowed_types=('Client',),
         relationship='DoctorClient',
         required=0,
-        widget=SelectionWidget(
-            format='select',
-            description=_('Associate the doctor to a client. '
-                          'This doctor will not be accessible from '
-                          'other clients.'),
-            label=_('Client'),
+        widget=ReferenceWidget(
+            label=_("Client"),
+            size=30,
+            catalog_name="portal_catalog",
+            base_query={"is_active": True,
+                        "sort_limit": 30,
+                        "sort_on": "sortable_title",
+                        "sort_order": "ascending"},
+            colModel=[
+                {"columnName": "Title", "label": _("Title"),
+                 "width": "30", "align": "left"},
+                {"columnName": "getProvince", "label": _("Province"),
+                 "width": "30", "align": "left"},
+                {"columnName": "getDistrict", "label": _("District"),
+                 "width": "30", "align": "left"}],
+            showOn=True,
+        ),
+    ),
+    ComputedField(
+        'PrimaryReferrerID',
+        expression="context.getClientID()",
+        widget=ComputedWidget(
+        ),
+    ),
+    ComputedField(
+        'PrimaryReferrerTitle',
+        expression="context.getClientTitle()",
+        widget=ComputedWidget(
+        ),
+    ),
+    ComputedField(
+        'PrimaryReferrerUID',
+        expression="context.getClientUID()",
+        widget=ComputedWidget(
+        ),
+    ),
+    ComputedField(
+        'PrimaryReferrerURL',
+        expression="context.getClientURL()",
+        widget=ComputedWidget(
+            visible=False
         ),
     ),
 ))
@@ -101,85 +137,54 @@ class Doctor(Contact):
         # The Doctor belongs to the laboratory (no Client assigned)
         return None
 
-    def getSamples(self, full_objects=False):
+    def getClientID(self):
+        """Returns the ID of the client this Patient belongs to or None
         """
-        Returns the Samples this Doctor is assigned to
-        :return:
-        """
-        query = dict(portal_type="Sample", getDoctorUID=self.UID())
-        brains = api.search(query, "bika_catalog")
-        if full_objects:
-            return map(lambda brain: api.get_object(brain), brains)
-        return brains
+        client = self.getClient()
+        return client and api.get_id(client) or None
 
-    def getAnalysisRequests(self, full_objects=False):
+    def getClientUID(self):
+        """Returns the UID of the client this Doctor is assigned to or None
         """
-        Returns the Analysis Requests this Doctor is assigned to
-        :return:
+        client = self.getClient()
+        return client and api.get_uid(client) or None
+
+    def getClientURL(self):
+        """Returns the URL of the client this Doctor is assigned to or None
         """
-        query = dict(portal_type='AnalysisRequest', getDoctorUID=self.UID())
+        client = self.getClient()
+        return client and api.get_url(client) or None
+
+    def getClientTitle(self):
+        """Returns the title of the client this Doctor is assigned to or None
+        """
+        client = self.getClient()
+        return client and api.get_title(client) or None
+
+    def getSamples(self, **kwargs):
+        """Return samples this Doctor is associated to
+        """
+        catalog = api.get_tool(CATALOG_ANALYSIS_REQUEST_LISTING, context=self)
+        query = dict([(k, v) for k, v in kwargs.items()
+                      if k in catalog.indexes()])
+        query["getDoctorUID"] = api.get_uid(self)
         brains = api.search(query, CATALOG_ANALYSIS_REQUEST_LISTING)
-        if full_objects:
-            return map(lambda brain: api.get_object(brain), brains)
-        return brains
+        if not kwargs.get("full_objects", False):
+            return brains
+        return map(api.get_object, brains)
 
-    def getBatches(self, full_objects=False):
+    def getBatches(self, **kwargs):
         """
         Returns the Batches this Doctor is assigned to
-        :return:
         """
-        query = dict(portal_type='Batch', getDoctorUID=self.UID())
-        brains = api.search(query, 'bika_catalog')
-        if full_objects:
-            return map(lambda brain: api.get_object(brain), brains)
-        return brains
-
-    def get_clients_vocabulary(self):
-        """
-        Vocabulary list with clients
-        :return: A DisplayList object
-        """
-        if self.getBatches() or self.getAnalysisRequests():
-            # Allow to change the client if there are no ARs associated
-            client = self.getPrimaryReferrer()
-            if not client:
-                # Maybe all Batches and ARs assigned to this Doctor belong to
-                # the same Client.. If so, just assign this client by default
-                client_uids = map(lambda ar: ar.getClientUID,
-                                  self.getAnalysisRequests())
-                client_uids = list(set(client_uids))
-                if len(client_uids) > 1:
-                    # More than one client assigned!
-                    return DisplayList([('', '')])
-                clients = map(lambda batch: batch.getClient(),
-                              self.getBatches(full_objects=True))
-                client_uids += map(lambda client: api.get_uid(client), clients)
-                client_uids = list(set(client_uids))
-                if len(client_uids) > 1:
-                    # More than one client assigned!
-                    return DisplayList([('', '')])
-
-                client = api.get_object_by_uid(client_uids[0])
-
-            return DisplayList([(api.get_uid(client), client.Title())])
-
-        # If the current user is a client contact, do not display other clients
-        client = api.get_current_client()
-        if client:
-            return DisplayList([(api.get_uid(client), client.Title())])
-
-        # Search for clients
-        query = dict(portal_type='Client', is_active=True,
-                     sort_order='ascending', sort_on='title')
-        brains = api.search(query, 'portal_catalog')
-        clients = map(lambda brain: [api.get_uid(brain), brain.Title], brains)
-        clients.insert(0, ['', ''])
-        return DisplayList(clients)
-
-    def getPrimaryReferrerUID(self):
-        primary_referrer = self.getPrimaryReferrer()
-        if primary_referrer:
-            return primary_referrer.UID()
+        catalog = api.get_tool("bika_catalog")
+        query = dict([(k, v) for k, v in kwargs.items()
+                      if k in catalog.indexes()])
+        query["getDoctorUID"] = api.get_uid(self)
+        brains = api.search(query, "bika_catalog")
+        if not kwargs.get("full_objects", False):
+            return brains
+        return map(api.get_object, brains)
 
     def current_user_can_edit(self):
         """Returns true if the current user can edit this Doctor.

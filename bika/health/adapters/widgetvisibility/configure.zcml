@@ -23,6 +23,13 @@
     for="bika.health.interfaces.IPatient"
     name="senaite_health_patient_ClientFieldVisibility" />
 
+  <!-- Visibility of Client field in Doctor context-->
+  <adapter
+    factory=".doctor.ClientFieldVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.health.interfaces.IDoctor"
+    name="senaite_health_doctor_ClientFieldVisibility" />
+
   <!-- Visibility of Doctor field in AnalysisRequest context -->
   <adapter
     factory=".analysisrequest.DoctorFieldVisibility"

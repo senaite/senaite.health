@@ -27,4 +27,18 @@
     factory=".ClientAwareReferenceWidgetAdapter"
     provides=".IReferenceWidgetAdapter" />
 
+  <!-- For when objects are created inside Doctors folder -->
+  <adapter
+    for="bika.health.interfaces.IDoctors
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For when objects are created inside a Doctor -->
+  <adapter
+    for="bika.health.interfaces.IDoctor
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
 </configure>

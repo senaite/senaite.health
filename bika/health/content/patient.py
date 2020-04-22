@@ -26,7 +26,6 @@ from Products.CMFPlone.utils import safe_unicode
 from zope.interface import implements
 
 from bika.health import bikaMessageFactory as _
-from bika.health import logger
 from bika.health.config import *
 from bika.health.interfaces import IPatient
 from bika.health.utils import get_relative_delta
