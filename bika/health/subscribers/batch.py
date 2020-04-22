@@ -39,14 +39,52 @@ def ObjectCreatedEventHandler(batch, event):
         pid = parent.getClientPatientID()
         batch.getField("ClientPatientID").set(batch, pid)
 
+    elif IClient.providedBy(parent):
+        # Assign the client. When the Batch is being created inside a Client
+        # folder directly, the field Client is not visible (see adapter for
+        # widgetvisibility) and therefore, not considered in processForm
+        batch.getField("Client").set(batch, api.get_uid(parent))
 
-def ObjectMovedEventHandler(batch, event):
-    """Actions to be done when a Batch is added to a container. Moves the Batch
-    to Client folder if assigned
+
+def ObjectModifiedEventHandler(batch, event):
+    """Actions to be done when a Batch is modified. Moves the Batch to the
+    base Batches folder if the batch is assigned to an internal client. If
+    external client, it moves the Batch the Client folder
     """
-    if batch.isTemporary():
+    # Object being created
+    if batch.isTemporary() or batch.checkCreationFlag():
         return
 
+    # Move the Batch
+    move_batch(batch)
+
+
+def ObjectMovedEventHandler(batch, event):
+    """Actions to be done when a Batch is modified. Moves the Batch to the
+    base Batches folder if the batch is assigned to an internal client. If
+    external client, it moves the Batch the Client folder
+
+    This event is necessary because in senaite.core there is an ObjectMovedEvent
+    registered for type Batch already that always moves the Batch to the client
+    folder. Therefore we also need these event to "trap" when the object is
+    moved by core's ObjectModified event.
+    """
+    # Object being created
+    if batch.isTemporary() or batch.checkCreationFlag():
+        return
+
+    # Do nothing if only the title changes
+    if event.oldName != event.newName:
+        return
+
+    # Move the batch
+    move_batch(batch)
+
+
+def move_batch(batch):
+    """Moves the Batch to the base Batches folder if the batch is assigned to
+    an internal client. If external client, it moves the Batch the Client folder
+    """
     # We give priority to the assigned client over the Patient's client
     client = batch.getField("Client").get(batch)
     if not client:
@@ -75,6 +113,13 @@ def ObjectMovedEventHandler(batch, event):
         # Batch is "private", accessible to users from same client only
         move_to = client
 
-    if move_to != batch.aq_parent:
+    prev_parent = batch.aq_parent
+    if move_to != prev_parent:
         # Move the batch
         move_obj(batch, move_to)
+
+        # Assign the client. When the Batch is being created inside a Client
+        # folder directly, the field Client is not visible (see adapter for
+        # widgetvisibility) and therefore, not considered in processForm
+        if IClient.providedBy(prev_parent):
+            batch.getField("Client").set(batch, api.get_uid(prev_parent))

@@ -82,25 +82,39 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         ("Contact", "getParentUID"),
     ]
 
-    @property
-    def client(self):
+    def get_client_from_context_chain(self):
         """Returns the client the current context belongs to, by looking to
         the acquisition change only
         """
-        if not self._client:
-            for obj in chain(self.context):
-                if IClient.providedBy(obj):
-                    self._client = obj
-                    break
-        return self._client
+        for obj in chain(self.context):
+            if IClient.providedBy(obj):
+                return obj
+        return None
+
+    def get_client_from_query(self, query, purge=False):
+        """Resolves the client from the query passed-in
+        """
+        keys = ["getPrimaryReferrerUID", "getClientUID", "getParentUID", "UID"]
+        for key in keys:
+            uid = query.get(key)
+            if not api.is_uid(uid) or uid == "0":
+                continue
+            client = api.get_object_by_uid(uid)
+            if IClient.providedBy(client):
+                if purge:
+                    # Remove the key:value from the query
+                    del(query[key])
+                return client
+        return None
 
     def get_raw_query(self):
         """Returns the raw query to use for current search, based on the
         base query + update query
         """
+        query = super(ClientAwareReferenceWidgetAdapter, self).get_raw_query()
         logger.info("===============================================")
         logger.info("Custom client-aware reference widget vocabulary")
-        query = super(ClientAwareReferenceWidgetAdapter, self).get_raw_query()
+        logger.info(repr(query))
 
         # Get the portal types from the query
         portal_type = self.get_portal_type(query)
@@ -112,14 +126,20 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
             # The portal type is not client aware, do nothing
             return query
 
+        # Try to resolve the client from the query
+        client = self.get_client_from_query(query, purge=True)
+
+        # Resolve the client from the context chain
+        client = self.get_client_from_context_chain() or client
+
         # Resolve the criteria for filtering
         criteria = {}
 
         if portal_type in self.widely_shared_types:
             # The portal type can be shared widely (e.g. Sample Type)
-            if self.client:
+            if client:
                 # Items from client + items without client
-                criteria = self.resolve_query(portal_type, self.client, True)
+                criteria = self.resolve_query(portal_type, client, True)
 
             else:
                 # Items without client
@@ -127,15 +147,15 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
 
         elif portal_type in self.internally_shared_types:
             # The portal type can be shared among internal clients (e.g Batch)
-            if self.client and is_internal_client(self.client):
+            if client and is_internal_client(client):
                 # The client is internal. Can be shared
                 # Items from client + items without client
-                criteria = self.resolve_query(portal_type, self.client, True)
+                criteria = self.resolve_query(portal_type, client, True)
 
-            elif self.client:
+            elif client:
                 # The client is external. Cannot be shared
                 # Items from client
-                criteria = self.resolve_query(portal_type, self.client, False)
+                criteria = self.resolve_query(portal_type, client, False)
 
             else:
                 # Current context is outside a client
@@ -147,9 +167,9 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
             context_portal_type = api.get_portal_type(self.context)
             if context_portal_type in self.internally_shared_types:
                 # Current context can be shared internally (e.g. Batch)
-                if self.client:
+                if client:
                     # Current context is inside a client
-                    criteria = self.resolve_query(portal_type, self.client, False)
+                    criteria = self.resolve_query(portal_type, client, False)
                 else:
                     # Current context is outside a client
                     internal_clients = api.get_portal().internal_clients
@@ -162,13 +182,16 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
 
             elif context_portal_type in self.widely_shared_types:
                 # Current context can be shared widely (e.g Sample Type)
-                if self.client:
+                if client:
                     # Current context is inside a client
-                    criteria = self.resolve_query(portal_type, self.client, False)
+                    criteria = self.resolve_query(portal_type, client, False)
 
-        elif self.client:
+            elif client:
+                criteria = self.resolve_query(portal_type, client, False)
+
+        elif client:
             # Portal type is not shareable in any way (e.g Contact)
-            criteria = self.resolve_query(portal_type, self.client, False)
+            criteria = self.resolve_query(portal_type, client, False)
 
         query.update(criteria)
         logger.info(repr(query))

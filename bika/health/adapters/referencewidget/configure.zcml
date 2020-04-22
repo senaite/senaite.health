@@ -12,9 +12,17 @@
          zope.publisher.interfaces.browser.IBrowserRequest"
     factory=".ClientAwareReferenceWidgetAdapter"
     provides=".IReferenceWidgetAdapter" />
+
   <!-- For when objects are created inside a Client -->
   <adapter
     for="bika.lims.interfaces.IClient
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For when objects are created inside Batches folder -->
+  <adapter
+    for="bika.lims.interfaces.IBatchFolder
          zope.publisher.interfaces.browser.IBrowserRequest"
     factory=".ClientAwareReferenceWidgetAdapter"
     provides=".IReferenceWidgetAdapter" />

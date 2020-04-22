@@ -1,23 +1,35 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            i18n_domain="senaite.health">
 
-  <!-- Patient modification. If the patient has an external client assigned,
-  this event moves the Patient into the Client's folder. If the assigned client
-  is internal or does not have a client assigned, the event moves the Patient
-  to the base /patients folder -->
+  <!-- Patient modification
+  If the patient has an external client assigned, this event moves the Patient
+  into the Client's folder. If the assigned client is internal or does not have
+  a client assigned, it moves the Patient to the base /patients folder -->
   <subscriber
     for="bika.health.interfaces.IPatient
          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".patient.ObjectModifiedEventHandler" />
 
-  <!-- Batch creation. Assign Patient field to a Batch automatically when
-   created inside a Patient -->
+  <!-- Batch created
+  Assign value for Patient field when created inside a Patient -->
   <subscriber
     for="bika.lims.interfaces.IBatch
          zope.lifecycleevent.interfaces.IObjectCreatedEvent"
     handler=".batch.ObjectCreatedEventHandler" />
 
-  <!-- Batch moved.
+  <!-- Batch modified
+  If the batch belongs to an internal client, this event moves the Batch to the
+  base /batces folder. The event moves the Batch to the Client folder when the
+  client is external. Note there is an ObjectModified subscriber for IBatch in
+  senaite.core already. And we cannot guarantee the order in which the events
+  will be triggered. Therefore, there is the need to register another subscriber
+  for ObjectMovedEvent (see below) -->
+  <subscriber
+    for="bika.lims.interfaces.IBatch
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".batch.ObjectModifiedEventHandler" />
+
+  <!-- Batch moved
   We use an ObjectMovedEvent because ModifiedEvent for Batch is already present
   in senaite.core and subscribers cannot be overriden. ObjectModifiedEvent from
   senaite.core moves Batches to the Client's folder if the client is specified
