@@ -55,6 +55,10 @@ def ObjectModifiedEventHandler(batch, event):
     if batch.isTemporary() or batch.checkCreationFlag():
         return
 
+    if IPatient.providedBy(batch.aq_parent):
+        # Let core's default ObjectModifiedEvent deal with it
+        return
+
     # Move the Batch
     move_batch(batch)
 
