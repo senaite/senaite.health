@@ -20,6 +20,8 @@
 
 import collections
 
+from plone.memoize import view
+
 from bika.health import bikaMessageFactory as _
 from bika.health.catalog import CATALOG_PATIENTS
 from bika.health.interfaces import IPatients
@@ -27,6 +29,8 @@ from bika.health.permissions import AddPatient
 from bika.health.utils import get_age_ymd
 from bika.health.utils import get_html_image
 from bika.health.utils import get_resource_url
+from bika.health.utils import is_from_external
+from bika.health.utils import is_logged_user_from_external_client
 from bika.lims import api
 from bika.lims.api.security import check_permission
 from bika.lims.browser.bika_listing import BikaListingView
@@ -38,6 +42,8 @@ from bika.lims.utils import get_link
 class PatientsView(BikaListingView):
     """Listing View for all Patients in the System
     """
+
+    _external_logged = None
 
     def __init__(self, context, request):
         super(PatientsView, self).__init__(context, request)
@@ -134,6 +140,9 @@ class PatientsView(BikaListingView):
             # Top-level patients listing
             self.request.set("disable_border", 1)
 
+        elif "disable_border" in self.request:
+            del(self.request["disable_border"])
+
         # By default, only users with AddPatient permissions for the current
         # context can add patients.
         self.context_actions = {
@@ -186,20 +195,21 @@ class PatientsView(BikaListingView):
             if value:
                 item["replace"][column] = get_link(ars_url, value)
 
-        # Display a "shared" icon if the patient belongs to an internal client
-        if self.is_from_external(obj):
-            img = get_html_image("lock.png",
-                                 title=_("Private, from an external client"))
-        else:
-            img = get_html_image("share.png",
-                                 title=_("Shared, from an internal client"))
-        item["before"]["Title"] = img
+        # Display the internal/external icons, but only if the logged-in user
+        # does not belong to an external client
+        if not self.is_external_client_logged():
+            if is_from_external(obj):
+                img = get_html_image("lock.png",
+                                     title=_("Private, from an external client"))
+            else:
+                img = get_html_image("share.png",
+                                     title=_("Shared, from an internal client"))
+            item["before"]["Title"] = img
 
         return item
 
-    def is_from_external(self, obj_or_brain):
-        """Returns whether the object passed in belongs to an external client
+    @view.memoize
+    def is_external_client_logged(self):
+        """Returns whether the current user belongs to an external client
         """
-        clients_path = api.get_path(api.get_portal().clients)
-        obj_path = api.get_path(obj_or_brain)
-        return clients_path in obj_path
+        return is_logged_user_from_external_client()

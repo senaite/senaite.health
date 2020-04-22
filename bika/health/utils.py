@@ -281,6 +281,23 @@ def is_external_client(client):
     return not is_internal_client(client)
 
 
+def is_from_external(obj_or_brain):
+    """Returns whether the object passed in belongs to an external client
+    """
+    clients_path = api.get_path(api.get_portal().clients)
+    obj_path = api.get_path(obj_or_brain)
+    return clients_path in obj_path
+
+
+def is_logged_user_from_external_client():
+    """Returns whether the current user belongs to an external client
+    """
+    client = api.get_current_client()
+    if client and is_external_client(client):
+        return True
+    return False
+
+
 def get_all_granted_roles_for(folder, permission):
     """Returns a list of roles that have granted access to the folder. If the
     folder is acquire=1, it looks through all the hierarchy until acquire=0 to
