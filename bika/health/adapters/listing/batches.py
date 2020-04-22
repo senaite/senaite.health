@@ -21,10 +21,13 @@
 import collections
 
 from bika.health import bikaMessageFactory as _
+from bika.health.utils import get_age_ymd
 from bika.health.utils import get_field_value
+from bika.health.utils import get_html_image
 from bika.lims import AddBatch
 from bika.lims import api
 from bika.lims.interfaces import IClient
+from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 from senaite.core.listing import utils
 from senaite.core.listing.interfaces import IListingView, IListingViewAdapter
@@ -73,6 +76,7 @@ class BatchListingViewAdapter(object):
         item["Patient"] = ""
         item["getPatientID"] = ""
         item["getClientPatientID"] = ""
+        item["PatientAgeOnsetDate"] = ""
         patient = get_field_value(batch, "Patient", None)
         if patient:
             url = api.get_url(patient)
@@ -86,6 +90,26 @@ class BatchListingViewAdapter(object):
             pid_link = pid and get_link(url, pid) or ""
             item["getClientPatientID"] = pid or ""
             item["replace"]["getClientPatientID"] = pid_link
+
+            dob = patient.getBirthDate()
+            if onset and dob:
+                try:
+                    age_ymd = get_age_ymd(patient.getBirthDate(), onset)
+                    item["replace"]["PatientAgeOnsetDate"] = age_ymd
+                except:
+                    # Wrong date??
+                    msg = _("Date of Birth or Case Onset Date are wrong")
+                    img = get_image("warning.png", title=msg)
+                    item["replace"]["PatientAgeOnsetDate"] = "??"
+
+        # Display a "shared" icon if the patient belongs to an internal client
+        if self.is_from_external(obj):
+            img = get_html_image("lock.png",
+                                 title=_("Private, from an external client"))
+        else:
+            img = get_html_image("share.png",
+                                 title=_("Shared, from an internal client"))
+        item["before"]["BatchID"] = img
 
         return item
 
@@ -129,6 +153,10 @@ class BatchListingViewAdapter(object):
                 "title": _("Onset Date"),
                 "toggle": True,
                 "after": "Patient", }),
+            ("PatientAgeOnsetDate", {
+                "title": _("Patient Age"),
+                "sortable": False,
+                "after": "OnsetDate", }),
         ))
 
         # Add the columns
@@ -139,6 +167,13 @@ class BatchListingViewAdapter(object):
                              column_values=column_values,
                              after=column_values["after"],
                              review_states=rv_keys)
+
+    def is_from_external(self, obj_or_brain):
+        """Returns whether the object passed in belongs to an external client
+        """
+        clients_path = api.get_path(api.get_portal().clients)
+        obj_path = api.get_path(obj_or_brain)
+        return clients_path in obj_path
 
 
 class PatientBatchListingViewAdapter(BatchListingViewAdapter):
