@@ -3,6 +3,15 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="senaite.health">
 
+  <!-- Batches view. Use core's default, but with subscriber -->
+  <browser:page
+    for="bika.health.interfaces.IDoctor"
+    name="batches"
+    class="bika.lims.browser.batchfolder.BatchFolderContentsView"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"
+  />
+
   <browser:page
     for="bika.health.interfaces.IDoctor"
     name="analysisrequests"

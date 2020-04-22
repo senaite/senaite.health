@@ -213,3 +213,34 @@ class PatientBatchListingViewAdapter(BatchListingViewAdapter):
                 "icon": "++resource++bika.lims.images/add.png"
             }
         }
+
+
+class DoctorBatchListingViewAdapter(BatchListingViewAdapter):
+    """Adapter for Doctor's Batch listings
+    """
+
+    def before_render(self):
+        """Called before the listing renders
+        """
+        super(DoctorBatchListingViewAdapter, self).before_render()
+
+        # Remove unnecessary columns
+        hide = ["Doctor", ]
+        self.hide_columns(hide)
+
+        # Filter by doctor
+        query = dict(getDoctorUID=api.get_uid(self.context))
+        self.listing.contentFilter.update(query)
+        for rv in self.listing.review_states:
+            if "contentFilter" not in rv:
+                rv["contentFilter"] = {}
+            rv["contentFilter"].update(query)
+
+        url = api.get_url(self.context)
+        self.listing.context_actions = {
+            _("Add"): {
+                "url": "{}/createObject?type_name=Batch".format(url),
+                "permission": AddBatch,
+                "icon": "++resource++bika.lims.images/add.png"
+            }
+        }

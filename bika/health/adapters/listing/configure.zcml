@@ -28,4 +28,10 @@
     provides="senaite.core.listing.interfaces.IListingViewAdapter"
     factory=".batches.PatientBatchListingViewAdapter" />
 
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.health.interfaces.IDoctor"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory=".batches.DoctorBatchListingViewAdapter" />
+
 </configure>

@@ -60,6 +60,10 @@ def upgrade(tool):
     # Hide Doctor items from navigation bar
     hide_doctors_from_navbar(portal)
 
+    # Add batches action to Doctor
+    setup.runImportStepFromProfile(profile, "typeinfo")
+    sort_doctor_actions(portal)
+
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
 
@@ -81,3 +85,14 @@ def hide_doctors_from_navbar(portal):
         catalog.reindexObject(doctor, idxs=["title"], update_metadata=1)
 
     logger.info("Hiding Doctors from navbar [DONE]")
+
+
+def sort_doctor_actions(portal):
+    """Sorts the actions list for Doctor
+    """
+    pt = api.get_tool("portal_types")
+    type_info = pt.getTypeInfo("Doctor")
+    sorted_actions = ["view", "edit", "analysisrequests", "batches", "access"]
+    actions = type_info.listActions()
+    actions = sorted(actions, key=lambda act: sorted_actions.index(act.id))
+    type_info._actions = tuple(actions)
