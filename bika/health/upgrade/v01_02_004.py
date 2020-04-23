@@ -17,10 +17,11 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
+from bika.health import DEFAULT_PROFILE_ID
 from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import setup_internal_clients
+from bika.health.setuphandlers import setup_user_groups
 from bika.health.setuphandlers import sort_nav_bar
 from bika.lims import api
 from bika.lims.setuphandlers import reindex_content_structure
@@ -47,6 +48,12 @@ def upgrade(tool):
                                                    version))
 
     # -------- ADD YOUR STUFF BELOW --------
+    # Added action "batches" for Doctor type
+    setup.runImportStepFromProfile(profile, "typeinfo")
+    # Added InternalClient role
+    setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "rolemap")
+    # Added new state "shared" in patient_workflow
+    setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "workflow")
 
     # Setup internal clients top-level folder
     setup_internal_clients(portal)
@@ -61,8 +68,10 @@ def upgrade(tool):
     hide_doctors_from_navbar(portal)
 
     # Add batches action to Doctor
-    setup.runImportStepFromProfile(profile, "typeinfo")
     sort_doctor_actions(portal)
+
+    # Setup groups (new group "InternalClient")
+    setup_user_groups(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True

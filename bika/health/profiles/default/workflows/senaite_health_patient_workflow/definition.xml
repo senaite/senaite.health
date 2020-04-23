@@ -17,7 +17,7 @@
   <permission>senaite.core: Transition: Activate Patient</permission>
   <permission>senaite.core: Transition: Deactivate Patient</permission>
 
-  <!-- State: active -->
+  <!-- State: active (external client) -->
   <state state_id="active" title="Active" i18n:attributes="title">
     <exit-transition transition_id="deactivate" />
 
@@ -63,6 +63,60 @@
      <permission-role>LabManager</permission-role>
      <permission-role>Manager</permission-role>
      <permission-role>Owner</permission-role>
+    </permission-map>
+  </state>
+
+  <!-- State: shared (internal client) -->
+  <state state_id="shared" title="Active (Shared)" i18n:attributes="title">
+    <exit-transition transition_id="deactivate" />
+
+    <!-- Transition permissions -->
+    <permission-map name="senaite.health: Transition: Deactivate Patient" acquired="True" />
+
+    <permission-map name="Access contents information" acquired="False">
+     <permission-role>Doctor</permission-role>
+     <permission-role>LabClerk</permission-role>
+     <permission-role>LabManager</permission-role>
+     <permission-role>Manager</permission-role>
+     <permission-role>Owner</permission-role>
+     <permission-role>InternalClient</permission-role>
+    </permission-map>
+    <permission-map name="Delete objects" acquired="False">
+      <!-- Same roles as those that have Modify Portal Content permission
+       This is necessary, cause Batches that are created inside Patient are
+       moved by ObjectModifyEvent to parent folder. This trick is used to
+       auto-fill the Patient in the Batch on creation
+       -->
+      <permission-role>LabClerk</permission-role>
+      <permission-role>LabManager</permission-role>
+      <permission-role>Manager</permission-role>
+      <permission-role>Owner</permission-role>
+      <permission-role>InternalClient</permission-role>
+    </permission-map>
+
+    <permission-map name="List folder contents" acquired="False">
+     <permission-role>Doctor</permission-role>
+     <permission-role>LabClerk</permission-role>
+     <permission-role>LabManager</permission-role>
+     <permission-role>Manager</permission-role>
+     <permission-role>Owner</permission-role>
+     <permission-role>InternalClient</permission-role>
+    </permission-map>
+    <permission-map name="Modify portal content" acquired="False">
+     <permission-role>Doctor</permission-role>
+     <permission-role>LabClerk</permission-role>
+     <permission-role>LabManager</permission-role>
+     <permission-role>Manager</permission-role>
+     <permission-role>Owner</permission-role>
+     <permission-role>InternalClient</permission-role>
+    </permission-map>
+    <permission-map name="View" acquired="False">
+     <permission-role>Doctor</permission-role>
+     <permission-role>LabClerk</permission-role>
+     <permission-role>LabManager</permission-role>
+     <permission-role>Manager</permission-role>
+     <permission-role>Owner</permission-role>
+     <permission-role>InternalClient</permission-role>
     </permission-map>
   </state>
 

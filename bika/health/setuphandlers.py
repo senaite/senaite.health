@@ -37,7 +37,6 @@ from bika.health.catalog import getCatalogExtensions
 from bika.health.config import DEFAULT_PROFILE_ID
 from bika.health.permissions import ViewPatients
 from bika.health.utils import add_permission_for_role
-from bika.health.utils import revoke_permission_for_role
 from bika.lims import api
 from bika.lims.catalog import \
     getCatalogDefinitions as getCatalogDefinitionsLIMS
@@ -64,6 +63,7 @@ ROLES = [
 GROUPS = [
     # Tuple of (group_name, roles_group
     ("Doctors", ["Member", "Doctor"], ),
+    ("InternalClients", ["Member", "InternalClient", "Client"])
 ]
 
 ID_FORMATTING = [
