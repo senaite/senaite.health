@@ -27,12 +27,7 @@
     <permission-role>Manager</permission-role>
     <permission-role>LabManager</permission-role>
     <permission-role>LabClerk</permission-role>
-    <permission-role>Analyst</permission-role>
-    <permission-role>Sampler</permission-role>
-    <permission-role>Preserver</permission-role>
     <permission-role>Owner</permission-role>
-    <permission-role>Doctor</permission-role>
-    <permission-role>Client</permission-role>
    </permission-map>
    <permission-map name="Delete objects" acquired="False"/>
    <permission-map name="Modify portal content" acquired="False">
@@ -40,19 +35,43 @@
     <permission-role>LabManager</permission-role>
     <permission-role>LabClerk</permission-role>
     <permission-role>Owner</permission-role>
-    <permission-role>Doctor</permission-role>
-    <permission-role>Client</permission-role>
    </permission-map>
    <permission-map name="View" acquired="False">
     <permission-role>Manager</permission-role>
     <permission-role>LabManager</permission-role>
     <permission-role>LabClerk</permission-role>
-    <permission-role>Analyst</permission-role>
-    <permission-role>Sampler</permission-role>
-    <permission-role>Preserver</permission-role>
     <permission-role>Owner</permission-role>
-    <permission-role>Doctor</permission-role>
-    <permission-role>Client</permission-role>
+   </permission-map>
+  </state>
+
+  <!-- State: shared (internal client) -->
+  <state state_id="shared" title="Active (Shared)" i18n:attributes="title">
+    <exit-transition transition_id="deactivate" />
+
+    <!-- Transition permissions -->
+    <permission-map name="senaite.health: Transition: Deactivate Doctor" acquired="True" />
+
+   <permission-map name="Access contents information" acquired="False">
+    <permission-role>Manager</permission-role>
+    <permission-role>LabManager</permission-role>
+    <permission-role>LabClerk</permission-role>
+    <permission-role>Owner</permission-role>
+    <permission-role>InternalClient</permission-role>
+   </permission-map>
+   <permission-map name="Delete objects" acquired="False"/>
+   <permission-map name="Modify portal content" acquired="False">
+    <permission-role>Manager</permission-role>
+    <permission-role>LabManager</permission-role>
+    <permission-role>LabClerk</permission-role>
+    <permission-role>Owner</permission-role>
+    <permission-role>InternalClient</permission-role>
+   </permission-map>
+   <permission-map name="View" acquired="False">
+    <permission-role>Manager</permission-role>
+    <permission-role>LabManager</permission-role>
+    <permission-role>LabClerk</permission-role>
+    <permission-role>Owner</permission-role>
+    <permission-role>InternalClient</permission-role>
    </permission-map>
   </state>
 
@@ -68,12 +87,7 @@
      <permission-role>Manager</permission-role>
      <permission-role>LabManager</permission-role>
      <permission-role>LabClerk</permission-role>
-     <permission-role>Analyst</permission-role>
-     <permission-role>Sampler</permission-role>
-     <permission-role>Preserver</permission-role>
      <permission-role>Owner</permission-role>
-     <permission-role>Doctor</permission-role>
-     <permission-role>Client</permission-role>
      </permission-map>
     <permission-map name="Delete objects" acquired="False"/>
     <permission-map name="Modify portal content" acquired="False"/>

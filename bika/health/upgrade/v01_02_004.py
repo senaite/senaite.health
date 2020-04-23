@@ -20,13 +20,18 @@
 from bika.health import DEFAULT_PROFILE_ID
 from bika.health import logger
 from bika.health.config import PROJECTNAME
+from bika.health.setuphandlers import allow_doctors_inside_clients
+from bika.health.setuphandlers import allow_patients_inside_clients
 from bika.health.setuphandlers import setup_internal_clients
 from bika.health.setuphandlers import setup_user_groups
 from bika.health.setuphandlers import sort_nav_bar
+from bika.health.utils import is_internal_client
+from bika.health.utils import move_obj
 from bika.lims import api
 from bika.lims.setuphandlers import reindex_content_structure
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils
+from bika.lims.utils import changeWorkflowState
 
 version = '1.2.4'
 profile = 'profile-{0}:default'.format(PROJECTNAME)
@@ -52,7 +57,7 @@ def upgrade(tool):
     setup.runImportStepFromProfile(profile, "typeinfo")
     # Added InternalClient role
     setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "rolemap")
-    # Added new state "shared" in patient_workflow
+    # Added new state "shared" in patient_workflow, doctor_workflow
     setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "workflow")
 
     # Setup internal clients top-level folder
@@ -72,6 +77,13 @@ def upgrade(tool):
 
     # Setup groups (new group "InternalClient")
     setup_user_groups(portal)
+
+    # Allow Patients and Doctors inside Clients
+    allow_patients_inside_clients(portal)
+    allow_doctors_inside_clients(portal)
+
+    # Move doctors to clients
+    move_doctors_to_clients(portal)
 
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
@@ -105,3 +117,79 @@ def sort_doctor_actions(portal):
     actions = type_info.listActions()
     actions = sorted(actions, key=lambda act: sorted_actions.index(act.id))
     type_info._actions = tuple(actions)
+
+
+def move_doctors_to_clients(portal):
+    """Moves the doctors into their assigned Client, if any
+    """
+    logger.info("Moving Doctors inside Clients...")
+    map(move_doctor_to_client, portal.doctors.objectValues())
+    logger.info("Moving Doctors inside Clients [DONE]")
+
+
+def move_doctor_to_client(doctor):
+    """Moves a doctor to its assigned Client folder, if any
+    """
+    d_id = api.get_id(doctor)
+    logger.info("Moving doctor {}".format(d_id))
+
+    # Update role mappings first (for workflow changes to take effect)
+    wf_tool = api.get_tool("portal_workflow")
+    wf_id = "senaite_health_doctor_workflow"
+    workflow = wf_tool.getWorkflowById(wf_id)
+    workflow.updateRoleMappingsFor(doctor)
+
+    # Do nothing if the doctor is not from inside /doctors
+    portal = api.get_portal()
+    doctors_folder = portal.doctors
+    if doctor.aq_parent != doctors_folder:
+        # The Doctor does not belong to doctors folder
+        logger.warn("Doctor {} is not from /doctors folder".format(d_id))
+        return False
+
+    # Resolve the client
+    client = resolve_client_for_doctor(doctor)
+    if not client or is_internal_client(client):
+        # This doctor does not have a client assigned or an internal client, do
+        # not move anywhere and make it shared
+        status = api.get_review_status(doctor)
+        if status not in ["shared", "inactive"]:
+            changeWorkflowState(doctor, wf_id, "shared")
+        return False
+
+    # Move doctor inside the client
+    client_id = api.get_id(client)
+    logger.info("Moving doctor {} to {}".format(d_id, client_id))
+    move_obj(doctor, doctors_folder)
+
+    logger.info("Moving Doctors inside Clients [DONE]")
+
+
+def resolve_client_for_doctor(doctor):
+    # If the doctor has a client assigned already, return it directly. We
+    # consider that a patient with a client assigned this way has been processed
+    # already or does not require any further checks
+    client = doctor.getClient()
+    if client:
+        return client
+
+    # Try to infere the client from Samples or Batches
+    batches = doctor.getBatches(full_objects=True)
+    client_uids = map(lambda b: b.getClientUID(), batches)
+    client_uids.extend(map(lambda s: s.getClientUID, doctor.getSamples()))
+    client_uids = filter(None, list(set(client_uids)))
+    if not client_uids:
+        # This Doctor has no batch/sample assigned
+        return None
+
+    clients = map(api.get_object_by_uid, client_uids)
+    internals = map(is_internal_client, clients)
+    if all(internals):
+        # All clients are internal, keep this Doctor without Client
+        return None
+    else:
+        # OOps, we have a problem here. This Doctor is assigned to samples and
+        # batches that belong to different types of client!
+        logger.error("Doctor {} is assigned to clients from different types"
+                     .format(api.get_id(doctor), repr(clients)))
+        return None

@@ -130,6 +130,10 @@ def post_install(portal_setup):
     # Note: this should always be run if core's typestool is reimported
     allow_patients_inside_clients(portal)
 
+    # Allow doctors inside clients
+    # Note: this should always be run if core's typestool is reimported
+    allow_doctors_inside_clients(portal)
+
     # Reindex the top level folder in the portal and setup to fix missing icons
     reindex_content_structure(portal)
 
@@ -449,6 +453,16 @@ def allow_patients_inside_clients(portal):
     allowed_types = client.allowed_content_types
     if 'Patient' not in allowed_types:
         client.allowed_content_types = allowed_types + ('Patient', )
+
+
+def allow_doctors_inside_clients(portal):
+    """Allows Doctor content type to be created inside Client
+    """
+    portal_types = api.get_tool('portal_types')
+    client = getattr(portal_types, 'Client')
+    allowed_types = client.allowed_content_types
+    if 'Doctor' not in allowed_types:
+        client.allowed_content_types = allowed_types + ('Doctor', )
 
 
 def setup_internal_clients(portal):

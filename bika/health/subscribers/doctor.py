@@ -18,10 +18,12 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-
+from bika.health.interfaces import IDoctors
 from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
 from bika.lims import api
+from bika.lims.interfaces import IClient
+from bika.lims.utils import changeWorkflowState
 
 
 def ObjectModifiedEventHandler(doctor, event):
@@ -57,3 +59,11 @@ def ObjectModifiedEventHandler(doctor, event):
     if move_to != doctor.aq_parent:
         # Move the doctor
         move_obj(doctor, move_to)
+
+    # Apply the proper workflow state (active/shared)
+    wf_id = "senaite_health_doctor_workflow"
+    status = api.get_review_status(doctor)
+    if status not in ["shared", "inactive"] and IDoctors.providedBy(move_to):
+        changeWorkflowState(doctor, wf_id, "shared")
+    elif status not in ["active", "inactive"] and IClient.providedBy(move_to):
+        changeWorkflowState(doctor, wf_id, "active")
