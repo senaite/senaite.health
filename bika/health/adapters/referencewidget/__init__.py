@@ -80,6 +80,8 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         ("default", "getClientUID"),
         ("Client", "UID"),
         ("Contact", "getParentUID"),
+        ("Doctor", "getPrimaryReferrerUID"),
+        ("Patient", "getPrimaryReferrerUID")
     ]
 
     def get_client_from_context_chain(self):
@@ -222,6 +224,13 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         patients = api.get_portal().patients
         return {"path": {"query": api.get_path(patients),
                          "depth": 1}}
+
+    def resolve_query_for_doctor(self, client, share):
+        if client and not share:
+            return {"getPrimaryReferrerUID": api.get_uid(client)}
+        doctors = api.get_portal().doctors
+        return {"path": {"query": api.get_path(doctors),
+                         "dept": 1}}
 
     def get_filter_index(self, portal_type):
         indexes = dict(self.filter_indexes)
