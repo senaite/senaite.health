@@ -17,7 +17,7 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
+from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
 from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
@@ -38,6 +38,12 @@ def ObjectCreatedEventHandler(batch, event):
         batch.getField("Patient").set(batch, parent)
         pid = parent.getClientPatientID()
         batch.getField("ClientPatientID").set(batch, pid)
+
+    if IDoctor.providedBy(parent):
+        # Assign the Doctor to the Batch
+        batch.getField("Doctor").set(batch, parent)
+        if IClient.providedBy(parent.aq_parent):
+            batch.getField("Client").set(batch, parent.aq_parent)
 
 
 def ObjectModifiedEventHandler(batch, event):

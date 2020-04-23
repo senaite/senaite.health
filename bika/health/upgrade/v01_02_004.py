@@ -123,7 +123,9 @@ def move_doctors_to_clients(portal):
     """Moves the doctors into their assigned Client, if any
     """
     logger.info("Moving Doctors inside Clients...")
-    map(move_doctor_to_client, portal.doctors.objectValues())
+    query = {"portal_type": "Doctor"}
+    doctors = map(api.get_object, api.search(query, "portal_catalog"))
+    map(move_doctor_to_client, doctors)
     logger.info("Moving Doctors inside Clients [DONE]")
 
 
@@ -143,8 +145,7 @@ def move_doctor_to_client(doctor):
     portal = api.get_portal()
     doctors_folder = portal.doctors
     if doctor.aq_parent != doctors_folder:
-        # The Doctor does not belong to doctors folder
-        logger.warn("Doctor {} is not from /doctors folder".format(d_id))
+        # The Doctor does not belong to doctors folder, do nothing
         return False
 
     # Resolve the client
