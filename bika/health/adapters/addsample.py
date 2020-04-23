@@ -135,21 +135,35 @@ class AddSampleClientInfo(AddSampleObjectInfoAdapter):
     """
     def get_object_info(self):
         object_info = self.get_base_info()
-        uid = api.get_uid(self.context)
-
-        # External clients can only see their own Patients
-        client_uid = [uid]
 
         if is_internal_client(self.context):
-            # Internal clients share Patients
-            client_uid.append(None)
+            portal = api.get_portal()
+            patients_folder = portal.patients
+            doctors_folder = portal.doctors
+            batches_folder = portal.batches
+        else:
+            patients_folder = self.context
+            doctors_folder = self.context
+            batches_folder = self.context
 
         filter_queries = {
             "Patient": {
-                "getPrimaryReferrerUID": client_uid,
+                "path": {
+                    "query": api.get_path(patients_folder),
+                    "depth": 1,
+                }
             },
-            "ClientPatientID": {
-                "getPrimaryReferrerUID": client_uid,
+            "Doctor": {
+                "path": {
+                    "query": api.get_path(doctors_folder),
+                    "dept": 1,
+                }
+            },
+            "Batch": {
+                "path": {
+                    "query": api.get_path(batches_folder),
+                    "dept": 1,
+                }
             }
         }
         object_info["filter_queries"] = filter_queries

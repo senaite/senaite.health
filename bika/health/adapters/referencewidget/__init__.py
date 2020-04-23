@@ -56,7 +56,6 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         "AnalysisSpec",
         "ARTemplate",
         "SamplePoint",
-        "SampleType",
     ]
 
     # Types that are widely shared, regardless of the client type
@@ -65,7 +64,6 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         "AnalysisSpec",
         "ARTemplate",
         "SamplePoint",
-        "SampleType",
     ]
 
     # Types that are shared, but when client is internal only
@@ -81,7 +79,7 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         ("Client", "UID"),
         ("Contact", "getParentUID"),
         ("Doctor", "getPrimaryReferrerUID"),
-        ("Patient", "getPrimaryReferrerUID")
+        ("Patient", "getPrimaryReferrerUID"),
     ]
 
     def get_client_from_context_chain(self):
