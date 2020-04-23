@@ -173,7 +173,7 @@ function HealthBatchEditView() {
     }
 
     this.applyClientFilter = function(uid) {
-        uid_val = uid != null ? uid : "-1"
+        uid_val = uid != null ? uid : "-1";
         applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid_val);
         applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid_val);
         applyFilter($("#Doctor"), 'getPrimaryReferrerUID', uid_val);

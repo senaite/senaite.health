@@ -16,6 +16,13 @@
     for="bika.lims.interfaces.IBatch"
     name="senaite_health_batch_PatientFieldsVisibility" />
 
+  <!-- Visibility of Doctor field in Batch context -->
+  <adapter
+    factory=".batch.DoctorFieldVisibility"
+    provides="bika.lims.interfaces.IATWidgetVisibility"
+    for="bika.lims.interfaces.IBatch"
+    name="senaite_health_batch_DoctorFieldVisibility" />
+
   <!-- Visibility of Client field in Patient context-->
   <adapter
     factory=".patient.ClientFieldVisibility"

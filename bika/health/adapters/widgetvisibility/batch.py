@@ -29,7 +29,7 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
 
     def __init__(self, context):
         super(ClientFieldVisibility, self).__init__(
-            context=context, field_names=["Client", "Doctor"])
+            context=context, field_names=["Client"])
 
     def isVisible(self, field, mode="view", default="visible"):
         """Renders the Client field as hidden if the current mode is "edit" and
@@ -48,7 +48,9 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
                 return "readonly"
 
             elif IDoctor.providedBy(container):
-                return "readonly"
+                # Doctor can be assigned to a Client or not!
+                if container.getClient():
+                    return "readonly"
 
         return default
 
@@ -77,3 +79,26 @@ class PatientFieldsVisibility(SenaiteATWidgetVisibility):
                 return "readonly"
 
         return default
+
+
+class DoctorFieldVisibility(SenaiteATWidgetVisibility):
+    """Handles the Doctor field visibility in Batch context
+    """
+
+    def __init__(self, context):
+        super(DoctorFieldVisibility, self).__init__(
+            context=context, field_names=["Doctor"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        """Renders the Doctor field as hidden if the current mode is "edit" and
+        the container is a Doctor
+        """
+        if mode == "edit":
+            container = self.context.aq_parent
+            if IDoctor.providedBy(container):
+                # Doctor can be assigned to a Client or not!
+                if container.getClient():
+                    return "readonly"
+
+        return default
+
