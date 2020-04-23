@@ -177,6 +177,19 @@ function HealthBatchEditView() {
         return succeed;
     }
 
+    this.flushDoctor = function() {
+        // Flush doctor field
+        $('#Doctor').val('');
+        $('#Doctor').attr('uid', '');
+        $('#Doctor_uid').val('');
+    }
+
+    this.applyClientFilter = function(uid) {
+        applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid);
+        applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid);
+        applyFilter($("#Doctor"), 'getPrimaryReferrerUID', uid);
+    }
+
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
@@ -187,9 +200,12 @@ function HealthBatchEditView() {
     function loadEventHandlers() {
         $("#Client").bind("selected paste blur", function(){
             var uid = $(this).attr('uid');
-            that.fillClient(uid);
-            // Reset patient fields
+            // Flush Patient field
             that.fillPatient(null);
+            // Flush Doctor field
+            that.flushDoctor();
+            // Applies the filtering for other client-related fields
+            that.applyClientFilter(uid);
         });
 
         $("#Patient").bind("selected paste blur", function(){
