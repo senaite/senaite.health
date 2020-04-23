@@ -41,4 +41,11 @@
     factory=".ClientAwareReferenceWidgetAdapter"
     provides=".IReferenceWidgetAdapter" />
 
+  <!-- For when objects are created inside a Patient -->
+  <adapter
+    for="bika.health.interfaces.IPatient
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
 </configure>

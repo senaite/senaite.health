@@ -45,7 +45,7 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
                 return "readonly"
 
             elif IClient.providedBy(container):
-                return "invisible"
+                return "readonly"
 
         return default
 

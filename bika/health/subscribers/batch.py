@@ -22,8 +22,6 @@ from bika.health.interfaces import IPatient
 from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
 from bika.lims import api
-from bika.lims.exportimport.setupdata import Invoice_Batches
-from bika.lims.interfaces import IBatchFolder
 from bika.lims.interfaces import IClient
 
 
@@ -40,12 +38,6 @@ def ObjectCreatedEventHandler(batch, event):
         batch.getField("Patient").set(batch, parent)
         pid = parent.getClientPatientID()
         batch.getField("ClientPatientID").set(batch, pid)
-
-    elif IClient.providedBy(parent):
-        # Assign the client. When the Batch is being created inside a Client
-        # folder directly, the field Client is not visible (see adapter for
-        # widgetvisibility) and therefore, not considered in processForm
-        batch.getField("Client").set(batch, api.get_uid(parent))
 
 
 def ObjectModifiedEventHandler(batch, event):
