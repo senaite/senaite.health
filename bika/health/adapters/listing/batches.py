@@ -56,6 +56,10 @@ class BatchListingViewAdapter(object):
         self.title = self.context.translate(_("Cases"))
 
     def before_render(self):
+        # Rename columns BatchID and ClientBatchID
+        self.listing.columns["BatchID"]["title"] = _("Case ID")
+        self.listing.columns["ClientBatchID"]["title"] = _("Client Case ID")
+
         # Additional columns
         self.add_columns()
 
