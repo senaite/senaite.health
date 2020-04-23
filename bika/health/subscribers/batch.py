@@ -22,6 +22,8 @@ from bika.health.interfaces import IPatient
 from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
 from bika.lims import api
+from bika.lims.exportimport.setupdata import Invoice_Batches
+from bika.lims.interfaces import IBatchFolder
 from bika.lims.interfaces import IClient
 
 
@@ -55,8 +57,8 @@ def ObjectModifiedEventHandler(batch, event):
     if batch.isTemporary() or batch.checkCreationFlag():
         return
 
-    if IPatient.providedBy(batch.aq_parent):
-        # Let core's default ObjectModifiedEvent deal with it
+    if not IClient.providedBy(batch.aq_parent):
+        # Let core's default ObjectModifiedEvent deal with it first
         return
 
     # Move the Batch

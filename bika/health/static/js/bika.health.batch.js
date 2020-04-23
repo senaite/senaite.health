@@ -61,11 +61,9 @@ function HealthBatchEditView() {
             that.fillPatient(patient_uid);
         }
 
-        // If Client selected, apply search filters
-        var client_uid = that.getClientUID();
-        if (client_uid != null) {
-            that.fillClient(client_uid);
-        }
+        // Apply client search filters
+        var client_uid = that.getClientUID()
+        that.applyClientFilter(client_uid);
 
         // Load Event Handlers
         loadEventHandlers();
@@ -73,16 +71,6 @@ function HealthBatchEditView() {
         fillPatientAgeAtCaseOnsetDate();
         toggleMenstrualStatus();
         toggleSymptoms();
-    }
-
-    /**
-     * Apply filters for patients listing reference widget and doctors when
-     * client changes
-     */
-    this.fillClient = function(uid) {
-        applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid);
-        applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid);
-        applyFilter($("#Doctor"), 'getPrimaryReferrerUID', uid);
     }
 
     /**
@@ -185,9 +173,10 @@ function HealthBatchEditView() {
     }
 
     this.applyClientFilter = function(uid) {
-        applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid);
-        applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid);
-        applyFilter($("#Doctor"), 'getPrimaryReferrerUID', uid);
+        uid_val = uid != null ? uid : "-1"
+        applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid_val);
+        applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid_val);
+        applyFilter($("#Doctor"), 'getPrimaryReferrerUID', uid_val);
     }
 
     // ------------------------------------------------------------------------
@@ -199,7 +188,7 @@ function HealthBatchEditView() {
      */
     function loadEventHandlers() {
         $("#Client").bind("selected paste blur", function(){
-            var uid = $(this).attr('uid');
+            var uid = getElementAttr('#Client', 'uid');
             // Flush Patient field
             that.fillPatient(null);
             // Flush Doctor field
