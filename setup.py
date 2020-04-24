@@ -36,10 +36,6 @@ setup(
         "archetypes.schemaextender",
         "senaite.lims>=1.3.3.1",
         "senaite.panic",
-        # Python 2.7 compatibility
-        #
-        # https://pypi.org/project/zipp
-        "zipp<2.0.0",
     ],
     extras_require={
         'test': [
