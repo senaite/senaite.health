@@ -272,7 +272,7 @@ def is_internal_client(client):
     if not IClient.providedBy(client):
         raise TypeError("Type not supported")
 
-    return client.aq_parent == api.get_portal().internal_clients
+    return api.get_parent(client) == api.get_portal().internal_clients
 
 
 def is_external_client(client):

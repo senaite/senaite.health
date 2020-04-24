@@ -17,54 +17,44 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
-from bika.health.interfaces import IPatients
+
+from bika.health.subscribers import resolve_client
 from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
 from bika.lims import api
 from bika.lims.api import security
-from bika.lims.interfaces import IClient
 from bika.lims.utils import changeWorkflowState
+
+
+def ObjectCreatedEventHandler(patient, event):
+    """This event assigns the value for the PrimaryReferrer field for Patient
+    """
+    if patient.isTemporary():
+        # Only while object being created
+        client = resolve_client(patient, field_name="PrimaryReferrer")
+        patient.getField("PrimaryReferrer").set(patient, client)
 
 
 def ObjectModifiedEventHandler(patient, event):
     """Actions to be done when a patient is modified. Moves the Patient to
     Client folder if assigned
     """
-    client = patient.getField("PrimaryReferrer").get(patient)
-    if not client:
-        client = patient.getClient()
-        if client:
-            # The Patient is being created inside a Client folder, so the
-            # PrimaryReferrer field comes empty (the field is hidden when the
-            # Patient Add/Edit form is rendered inside a Client context)
-            patient.getField("PrimaryReferrer").set(patient, client)
-
-    if not client:
-        # Patient belongs to the Lab.
-        # Patient is "lab private", only accessible by Lab Personnel
-        move_to = api.get_portal().patients
-
-    elif is_internal_client(client):
-        # Patient belongs to an Internal Client.
-        # Patient is "shared", accessible to Internal Clients, but not to
-        # External Clients
-        move_to = api.get_portal().patients
-
-    else:
-        # Patient belongs to an External Client.
-        # Patient is "private", accessible to users from same Client only
-        move_to = client
-
-    if move_to != patient.aq_parent:
-        # Move the patient
-        move_obj(patient, move_to)
+    # Move the patient if it does not match with the actual Client
+    client = resolve_client(patient, field_name="PrimaryReferrer")
+    if client != patient.aq_parent:
+        patient = move_obj(patient, client)
 
     # Apply the proper workflow state (active/shared)
     wf_id = "senaite_health_patient_workflow"
     status = api.get_review_status(patient)
-    if status not in ["shared", "inactive"] and IPatients.providedBy(move_to):
+    internal = is_internal_client(client)
+
+    if internal and status not in ["shared", "inactive"]:
+        # Change to "shared" status, so all internal clients have access
         changeWorkflowState(patient, wf_id, "shared")
-    elif status not in ["active", "inactive"] and IClient.providedBy(move_to):
+
+    elif not internal and status not in ["active", "inactive"]:
+        # Change to "active" status, so only current client has access
         changeWorkflowState(patient, wf_id, "active")
 
 

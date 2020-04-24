@@ -62,6 +62,7 @@ schema = Person.schema.copy() + Schema((
     ),
     ReferenceField(
         'PrimaryReferrer',
+        required=1,
         allowed_types=('Client',),
         relationship='PatientClient',
         widget=ReferenceWidget(

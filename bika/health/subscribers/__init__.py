@@ -17,3 +17,29 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
+
+from bika.lims import api
+from bika.lims.interfaces import IClient
+from bika.lims.utils import chain
+
+
+def resolve_client(obj, field_name="PrimaryReferrer"):
+    """Tries to resolve the client for the given Patient
+    """
+    client = obj.getField(field_name).get(obj)
+    if client and IClient.providedBy(client):
+        return client
+
+    # Maybe the object is being created
+    if obj.isTemporary():
+        parent = obj.getFolderWhenPortalFactory()
+        if IClient.providedBy(parent):
+            return parent
+
+    # Try to get the Client from the acquisition chain
+    for parent in chain(obj):
+        if api.is_object(parent) and IClient.providedBy(parent):
+            return parent
+
+    # Cannot resolve
+    return None

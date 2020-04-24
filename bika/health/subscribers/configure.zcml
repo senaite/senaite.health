@@ -1,6 +1,14 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            i18n_domain="senaite.health">
 
+  <!-- Patient created
+   Assigns the value for PrimaryReferrer field when the Patient is created from
+   inside a Client folder -->
+  <subscriber
+    for="bika.health.interfaces.IPatient
+         zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+    handler=".patient.ObjectCreatedEventHandler" />
+
   <!-- Patient modified
   If the patient has an external client assigned, this event moves the Patient
   into the Client's folder. If the assigned client is internal or does not have
