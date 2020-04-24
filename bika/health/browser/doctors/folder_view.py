@@ -50,9 +50,9 @@ class DoctorsView(BikaListingView):
         self.show_select_column = True
         self.show_select_all_checkboxes = False
 
-        self.sort_on = "created"
+        self.sort_on = "getFullname"
         self.contentFilter = {"portal_type": "Doctor",
-                              "sort_on": "sortable_title",
+                              "sort_on": "getFullname",
                               "sort_order": "ascending"}
 
         if IClient.providedBy(self.context):
@@ -161,7 +161,10 @@ class DoctorsView(BikaListingView):
     def folderitem(self, obj, item, index):
         """Applies new properties to the item to be rendered
         """
-        doctor = api.get_object(obj)
+        try:
+            doctor = api.get_object(obj)
+        except:
+            return item
 
         # Replace client name with the link
         item['getPrimaryReferrer'] = ""

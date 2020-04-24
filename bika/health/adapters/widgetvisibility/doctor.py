@@ -18,10 +18,8 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.health.utils import is_from_external
-from bika.health.utils import is_internal_client
+from bika.lims import api
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
-from bika.lims.interfaces import IClient
 
 
 class ClientFieldVisibility(SenaiteATWidgetVisibility):
@@ -37,32 +35,13 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
         the Doctor has Batches or Samples assigned already
         """
         if mode == "edit":
-            container = self.context.aq_parent
-            if IClient.providedBy(container):
-                # This Doctor belongs to an external client
-                return "invisible"
+            client = self.context.getClient()
+            if client == api.get_parent(self.context):
+                # We are already inside the parent's context
+                return "hidden"
 
-            if self.context.getBatches() or self.context.getSamples():
-                # Maybe the Doctor does not have any Client assigned, so give
-                # the option to at least assign an internal client if all the
-                # samples and batches are from internal clients
-                client = self.context.getClient()
-                if not client or is_internal_client(client):
-                    # Try with Batches first
-                    ext = filter(is_from_external, self.context.getBatches())
-                    if ext:
-                        return "readonly"
-
-                    # Try with Samples
-                    ext = filter(is_from_external, self.context.getSamples())
-                    if ext:
-                        return "readonly"
-
-                    # Seems this Doctor does not have any Sample/Batch assigned
-                    # Allow to modify the Client
-                    return default
-
-                # Not inside a Client context. Display the client at least
+            elif client:
+                # We are in another context, read-only
                 return "readonly"
 
         return default

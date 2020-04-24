@@ -10,22 +10,29 @@
     handler=".patient.ObjectCreatedEventHandler" />
 
   <!-- Patient modified
-  If the patient has an external client assigned, this event moves the Patient
-  into the Client's folder. If the assigned client is internal or does not have
-  a client assigned, it moves the Patient to the base /patients folder -->
+   Moves the Patient inside its Client folder. If the client is internal, it
+   also transitions the Patient to shared status -->
   <subscriber
     for="bika.health.interfaces.IPatient
          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".patient.ObjectModifiedEventHandler" />
 
-  <!-- Doctor modified
-  If the doctor belongs to an external client, this event moves the Doctor to
-  the Client folder. This event moves the Doctor to the base /doctors folder
-  otherwise -->
+  <!-- Doctor created
+   Assigns the value for PrimaryReferrer field when the Doctor is created from
+   inside a Client folder -->
+  <subscriber
+    for="bika.health.interfaces.IDoctor
+         zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+    handler=".doctor.ObjectCreatedEventHandler" />
+
+  <!-- Doctor created
+   Moves the Doctor inside its Client folder. If the client is internal, it
+   also transitions the Doctor to shared status -->
   <subscriber
     for="bika.health.interfaces.IDoctor
          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".doctor.ObjectModifiedEventHandler" />
+
 
   <!-- Batch created
   Assign value for Patient field when created inside a Patient -->

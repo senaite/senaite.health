@@ -19,14 +19,13 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health.subscribers import resolve_client
-from bika.health.utils import is_internal_client
+from bika.health.subscribers import try_share
 from bika.health.utils import move_obj
-from bika.lims import api
-from bika.lims.utils import changeWorkflowState
 
 
 def ObjectCreatedEventHandler(patient, event):
-    """This event assigns the value for the PrimaryReferrer field for Patient
+    """Actions done when a patient is created. Automatically assigns the
+    value for "PrimaryReferrer" (Client) field
     """
     if patient.isTemporary():
         # Only while object being created
@@ -35,8 +34,8 @@ def ObjectCreatedEventHandler(patient, event):
 
 
 def ObjectModifiedEventHandler(patient, event):
-    """Actions to be done when a patient is modified. Moves the Patient to
-    Client folder if assigned
+    """Actions to be done when a patient is modified. Moves the Patient to the
+    Client folder and transitions to "shared" or "active" when necessary
     """
     # Move the patient if it does not match with the actual Client
     client = resolve_client(patient, field_name="PrimaryReferrer")
@@ -44,14 +43,4 @@ def ObjectModifiedEventHandler(patient, event):
         patient = move_obj(patient, client)
 
     # Apply the proper workflow state (active/shared)
-    wf_id = "senaite_health_patient_workflow"
-    status = api.get_review_status(patient)
-    internal = is_internal_client(client)
-
-    if internal and status not in ["shared", "inactive"]:
-        # Change to "shared" status, so all internal clients have access
-        changeWorkflowState(patient, wf_id, "shared")
-
-    elif not internal and status not in ["active", "inactive"]:
-        # Change to "active" status, so only current client has access
-        changeWorkflowState(patient, wf_id, "active")
+    try_share(patient, "senaite_health_patient_workflow")

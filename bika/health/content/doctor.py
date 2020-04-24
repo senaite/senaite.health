@@ -50,7 +50,7 @@ schema = Contact.schema.copy() + Schema((
         'PrimaryReferrer',
         allowed_types=('Client',),
         relationship='DoctorClient',
-        required=0,
+        required=1,
         widget=ReferenceWidget(
             label=_("Client"),
             size=30,
@@ -95,6 +95,9 @@ schema = Contact.schema.copy() + Schema((
         ),
     ),
 ))
+
+schema.moveField('PrimaryReferrer', before='Salutation')
+schema.moveField('DoctorID', before='Salutation')
 
 
 class Doctor(Contact):

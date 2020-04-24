@@ -18,12 +18,14 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.health.utils import is_internal_client
 from bika.lims import api
 from bika.lims.interfaces import IClient
 from bika.lims.utils import chain
+from bika.lims.utils import changeWorkflowState
 
 
-def resolve_client(obj, field_name="PrimaryReferrer"):
+def resolve_client(obj, field_name="Client"):
     """Tries to resolve the client for the given Patient
     """
     client = obj.getField(field_name).get(obj)
@@ -43,3 +45,18 @@ def resolve_client(obj, field_name="PrimaryReferrer"):
 
     # Cannot resolve
     return None
+
+
+def try_share(obj, wf_id):
+    """Returns whether the object passed-in is shareable by looking
+    at the type of client it belongs to
+    """
+    status = api.get_review_status(obj)
+    internal = is_internal_client(obj.getClient())
+    if internal and status not in ["shared", "inactive"]:
+        # Change to "shared" status, so all internal clients have access
+        changeWorkflowState(obj, wf_id, "shared")
+
+    elif not internal and status not in ["active", "inactive"]:
+        # Change to "active" status, so only current client has access
+        changeWorkflowState(obj, wf_id, "active")
