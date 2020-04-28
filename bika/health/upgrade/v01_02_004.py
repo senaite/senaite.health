@@ -17,6 +17,7 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
+from bika.health import CATALOG_PATIENTS
 from bika.health import DEFAULT_PROFILE_ID
 from bika.health import logger
 from bika.health.config import PROJECTNAME
@@ -24,8 +25,9 @@ from bika.health.setuphandlers import allow_doctors_inside_clients
 from bika.health.setuphandlers import allow_patients_inside_clients
 from bika.health.setuphandlers import setup_internal_clients
 from bika.health.setuphandlers import setup_user_groups
+from bika.health.setuphandlers import setup_workflows
 from bika.health.setuphandlers import sort_nav_bar
-from bika.health.subscribers import try_share
+from bika.health.subscribers import try_share_unshare
 from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
 from bika.lims import api
@@ -61,6 +63,9 @@ def upgrade(tool):
     # Added new state "shared" in patient_workflow, doctor_workflow
     setup.runImportStepFromProfile(DEFAULT_PROFILE_ID, "workflow")
 
+    # Setup custom workflows (Batch)
+    setup_workflows(portal)
+
     # Setup internal clients top-level folder
     setup_internal_clients(portal)
 
@@ -73,7 +78,7 @@ def upgrade(tool):
     # Hide Doctor items from navigation bar
     hide_doctors_from_navbar(portal)
 
-    # Add batches action to Doctor
+    # Add batches action in Doctor context
     sort_doctor_actions(portal)
 
     # Setup groups (new group "InternalClient")
@@ -148,9 +153,9 @@ def move_doctor_to_client(doctor):
         # Move doctor inside the client
         client_id = api.get_id(client)
         logger.info("Moving doctor {} to {}".format(d_id, client_id))
-        move_obj(doctor, client)
+        doctor = move_obj(doctor, client)
         # Try to share the doctor
-        try_share(doctor, "senaite_health_doctor_workflow")
+        try_share_unshare(doctor)
 
     logger.info("Moving Doctors inside Clients [DONE]")
 

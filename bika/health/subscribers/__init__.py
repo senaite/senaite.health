@@ -18,16 +18,24 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.health.interfaces import IDoctor
+from bika.health.interfaces import IPatient
 from bika.health.utils import is_internal_client
 from bika.lims import api
 from bika.lims.interfaces import IClient
 from bika.lims.utils import chain
-from bika.lims.utils import changeWorkflowState
+from bika.lims.workflow import doActionFor
 
 
-def resolve_client(obj, field_name="Client"):
-    """Tries to resolve the client for the given Patient
+def resolve_client(obj, field_name=None):
+    """Tries to resolve the client for the given obj
     """
+    if not field_name:
+        field_name = "Client"
+        if IPatient.providedBy(obj) or IDoctor.providedBy(obj):
+            field_name = "PrimaryReferrer"
+
+    # Try to get the client directly from the field
     client = obj.getField(field_name).get(obj)
     if client and IClient.providedBy(client):
         return client
@@ -35,28 +43,31 @@ def resolve_client(obj, field_name="Client"):
     # Maybe the object is being created
     if obj.isTemporary():
         parent = obj.getFolderWhenPortalFactory()
-        if IClient.providedBy(parent):
-            return parent
+    else:
+        parent = api.get_parent(obj)
 
     # Try to get the Client from the acquisition chain
-    for parent in chain(obj):
-        if api.is_object(parent) and IClient.providedBy(parent):
-            return parent
+    for container in chain(parent):
+        if api.is_object(container) and IClient.providedBy(container):
+            return container
 
     # Cannot resolve
     return None
 
 
-def try_share(obj, wf_id):
-    """Returns whether the object passed-in is shareable by looking
-    at the type of client it belongs to
+def try_share_unshare(obj):
+    """Tries to share or unshare the object based on the type of its client
     """
-    status = api.get_review_status(obj)
-    internal = is_internal_client(obj.getClient())
-    if internal and status not in ["shared", "inactive"]:
-        # Change to "shared" status, so all internal clients have access
-        changeWorkflowState(obj, wf_id, "shared")
+    client = resolve_client(obj)
+    if not IClient.providedBy(client):
+        # This object does not (yet) have a client assigned, do nothing
+        return
 
-    elif not internal and status not in ["active", "inactive"]:
-        # Change to "active" status, so only current client has access
-        changeWorkflowState(obj, wf_id, "active")
+    if is_internal_client(client):
+        # Try to share the obj. Note this transition will only take place if
+        # the guard for "share" evaluates to True.
+        doActionFor(obj, "share")
+    else:
+        # Try to unshare the obj. Note this transition will only take place
+        # if the guard for "share" evaluates to True.
+        doActionFor(obj, "unshare")

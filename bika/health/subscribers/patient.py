@@ -19,7 +19,7 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health.subscribers import resolve_client
-from bika.health.subscribers import try_share
+from bika.health.subscribers import try_share_unshare
 from bika.health.utils import move_obj
 
 
@@ -42,5 +42,5 @@ def ObjectModifiedEventHandler(patient, event):
     if client != patient.aq_parent:
         patient = move_obj(patient, client)
 
-    # Apply the proper workflow state (active/shared)
-    try_share(patient, "senaite_health_patient_workflow")
+    # Try to share/unshare the patient based on its type of Client
+    try_share_unshare(patient)

@@ -1024,17 +1024,14 @@ class Patient(Person):
     def getClient(self):
         """Returns the client the current Patient is assigned to, if any
         """
+        # The schema's field PrimaryReferrer is only used to allow the user to
+        # assign the patient to a client in edit form. The entered value is used
+        # in ObjectModifiedEventHandler to move the patient to the Client's
+        # folder, so the value stored in the Schema's is not used anymore
+        # See https://github.com/senaite/senaite.core/pull/152
         client = self.aq_parent
         if IClient.providedBy(client):
-            # The Patient belongs to an External Client
             return client
-
-        referrer = self.getField("PrimaryReferrer").get(self)
-        if referrer:
-            # The Patient belongs to an Internal Client
-            return referrer
-
-        # The Patient belongs to the laboratory (no Client assigned)
         return None
 
     def getClientID(self):

@@ -3,6 +3,7 @@
     i18n_domain="senaite.health">
 
   <!-- Package includes -->
+  <include package=".guards" />
   <include package=".listing" />
   <include package=".referencewidget" />
   <include package=".widgetvisibility" />

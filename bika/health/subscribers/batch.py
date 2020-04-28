@@ -17,113 +17,73 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
+
 from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
-from bika.health.utils import is_internal_client
-from bika.health.utils import move_obj
-from bika.lims import api
+from bika.health.subscribers import resolve_client
+from bika.health.subscribers import try_share_unshare
 from bika.lims.interfaces import IClient
 
 
-def ObjectCreatedEventHandler(batch, event):
-    """A Batch (ClientCase) can be created inside Patient context. This
-    function assign patient field automatically accordingly
+def ObjectCreatedEventHandler(case, event):
+    """Actions done when a Batch (Clinic Case) is created. Automatically assigns
+    value for "PrimaryReferrer" (Client), "Patient" and "Doctor" fields
     """
-    if not batch.isTemporary():
-        return
+    if case.isTemporary():
+        # Assign client
+        client = resolve_client(case, field_name="Client")
+        case.getField("Client").set(case, client)
 
-    parent = batch.getFolderWhenPortalFactory()
-    if IPatient.providedBy(parent):
-        # Assign the Patient to the Batch
-        batch.getField("Patient").set(batch, parent)
-        pid = parent.getClientPatientID()
-        batch.getField("ClientPatientID").set(batch, pid)
+        # Assign the Patient
+        parent = case.getFolderWhenPortalFactory()
+        if IPatient.providedBy(parent):
+            # Batch is being created inside a Patient
+            cpid = parent.getClientPatientID()
+            case.getField("Patient").set(case, parent)
+            case.getField("ClientPatientID").set(case, cpid)
 
-    if IDoctor.providedBy(parent):
-        # Assign the Doctor to the Batch
-        batch.getField("Doctor").set(batch, parent)
-        if IClient.providedBy(parent.aq_parent):
-            batch.getField("Client").set(batch, parent.aq_parent)
-
-
-def ObjectModifiedEventHandler(batch, event):
-    """Actions to be done when a Batch is modified. Moves the Batch to the
-    base Batches folder if the batch is assigned to an internal client. If
-    external client, it moves the Batch the Client folder
-    """
-    # Object being created
-    if batch.isTemporary() or batch.checkCreationFlag():
-        return
-
-    if not IClient.providedBy(batch.aq_parent):
-        # Let core's default ObjectModifiedEvent deal with it first
-        return
-
-    # Move the Batch
-    move_batch(batch)
+        elif IDoctor.providedBy(parent):
+            # Batch is being created inside a Doctor
+            case.getField("Doctor").set(case, parent)
 
 
-def ObjectMovedEventHandler(batch, event):
-    """Actions to be done when a Batch is modified. Moves the Batch to the
-    base Batches folder if the batch is assigned to an internal client. If
-    external client, it moves the Batch the Client folder
+def ObjectModifiedEventHandler(case, event):
+    """Actions to be done when a Batch is modified. Transitions the case to
+    "shared" or "open" when necessary
 
-    This event is necessary because in senaite.core there is an ObjectMovedEvent
-    registered for type Batch already that always moves the Batch to the client
-    folder. Therefore we also need these event to "trap" when the object is
-    moved by core's ObjectModified event.
+    There is an ObjectModifiedEventHandler registered at senaite.core already,
+    that always moves the Batch to the Client folder. Therfore, this handler
+    can be called "before" the call in "core" or "after" the call in core.
     """
     # Object being created
-    if batch.isTemporary() or batch.checkCreationFlag():
+    if case.isTemporary() or case.checkCreationFlag():
+        return
+
+    if not IClient.providedBy(case.aq_parent):
+        # Let core's default ObjectModifiedEvent deal with it, we will "trap"
+        # his modif later in ObjectMovedEventHandler
+        return
+
+    # Try to share/unshare the batch based on its type of Client
+    try_share_unshare(case)
+
+
+def ObjectMovedEventHandler(case, event):
+    """Actions to be done when a Batch is modified. Transitions the case to
+    "shared" or "active" when necessary
+
+    This event is necessary because in senaite.core there is an
+    ObjectModifiedEventHandler registered for type Batch already, that always
+    moves the Batch to the client folder. Therefore we also need these event to
+    "trap" when the object is moved to a Client by core's event.
+    """
+    # Object being created
+    if case.isTemporary() or case.checkCreationFlag():
         return
 
     # Do nothing if only the title changes
     if event.oldName != event.newName:
         return
 
-    # Move the batch
-    move_batch(batch)
-
-
-def move_batch(batch):
-    """Moves the Batch to the base Batches folder if the batch is assigned to
-    an internal client. If external client, it moves the Batch the Client folder
-    """
-    # We give priority to the assigned client over the Patient's client
-    client = batch.getField("Client").get(batch)
-    if not client:
-        parent = batch.aq_parent
-        if IClient.providedBy(parent):
-            # The Batch belongs to an external client
-            client = parent
-
-        elif IPatient.providedBy(parent):
-            # The Batch belongs to a Patient
-            client = parent.getClient()
-
-    if not client:
-        # Batch belongs to the Lab
-        # Batch is "lab private", only accessible by Lab Personnel
-        move_to = api.get_portal().batches
-
-    elif is_internal_client(client):
-        # Batch belongs to an Internal Client
-        # Batch is "shared", accessible to Internal Clients, but not to
-        # external clients
-        move_to = api.get_portal().batches
-
-    else:
-        # Batch belongs to an External Client.
-        # Batch is "private", accessible to users from same client only
-        move_to = client
-
-    prev_parent = batch.aq_parent
-    if move_to != prev_parent:
-        # Move the batch
-        move_obj(batch, move_to)
-
-        # Assign the client. When the Batch is being created inside a Client
-        # folder directly, the field Client is not visible (see adapter for
-        # widgetvisibility) and therefore, not considered in processForm
-        if IClient.providedBy(prev_parent):
-            batch.getField("Client").set(batch, api.get_uid(prev_parent))
+    # Try to share/unshare the batch based on its type of Client
+    try_share_unshare(case)

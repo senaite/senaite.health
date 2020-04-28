@@ -1,0 +1,26 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="senaite.health">
+
+  <!-- Guard handler for Patient context type -->
+  <adapter
+    for="bika.health.interfaces.IPatient"
+    provides="bika.lims.interfaces.IGuardAdapter"
+    name="senaite.health.patient_guard"
+    factory=".InternalClientAwareGuardAdapter"/>
+
+  <!-- Guard handler for Doctor context type -->
+  <adapter
+    for="bika.health.interfaces.IDoctor"
+    provides="bika.lims.interfaces.IGuardAdapter"
+    name="senaite.health.doctor_guard"
+    factory=".InternalClientAwareGuardAdapter"/>
+
+  <!-- Guard handler for Batch context type -->
+  <adapter
+    for="bika.lims.interfaces.IBatch"
+    provides="bika.lims.interfaces.IGuardAdapter"
+    name="senaite.health.batch_guard"
+    factory=".InternalClientAwareGuardAdapter"/>
+
+</configure>

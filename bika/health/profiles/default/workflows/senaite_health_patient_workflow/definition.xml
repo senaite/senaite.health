@@ -14,14 +14,20 @@
   <permission>View</permission>
 
   <!-- Senaite permissions for transitions (govern guards) -->
-  <permission>senaite.core: Transition: Activate Patient</permission>
-  <permission>senaite.core: Transition: Deactivate Patient</permission>
+  <permission>senaite.health: Transition: Activate Patient</permission>
+  <permission>senaite.health: Transition: Deactivate Patient</permission>
+  <permission>senaite.health: Transition: Share Patient</permission>
+  <permission>senaite.health: Transition: Unshare Patient</permission>
 
   <!-- State: active (external client) -->
   <state state_id="active" title="Active" i18n:attributes="title">
+
+    <!-- Possible transitions from this state -->
+    <exit-transition transition_id="share" />
     <exit-transition transition_id="deactivate" />
 
     <!-- Transition permissions -->
+    <permission-map name="senaite.health: Transition: Share Patient" acquired="True" />
     <permission-map name="senaite.health: Transition: Deactivate Patient" acquired="True" />
 
     <permission-map name="Access contents information" acquired="False">
@@ -67,10 +73,14 @@
   </state>
 
   <!-- State: shared (internal client) -->
-  <state state_id="shared" title="Active (Shared)" i18n:attributes="title">
+  <state state_id="shared" title="Active (shared)" i18n:attributes="title">
+
+    <!-- Possible transitions from this state -->
+    <exit-transition transition_id="unshare" />
     <exit-transition transition_id="deactivate" />
 
     <!-- Transition permissions -->
+    <permission-map name="senaite.health: Transition: Unshare Patient" acquired="True" />
     <permission-map name="senaite.health: Transition: Deactivate Patient" acquired="True" />
 
     <permission-map name="Access contents information" acquired="False">
@@ -122,6 +132,8 @@
 
   <!-- State: inactive -->
   <state state_id="inactive" title="Inactive" i18n:attributes="title">
+
+    <!-- Possible transitions from this state -->
     <exit-transition transition_id="activate" />
 
     <!-- Transition permissions -->
@@ -163,8 +175,26 @@
   <transition transition_id="deactivate" title="Deactivate" new_state="inactive" trigger="USER" before_script="" after_script="" i18n:attributes="title">
     <action url="" category="workflow" icon="">Deactivate</action>
     <guard>
-      <guard-permission>senaite.core: Transition: Deactivate Patient</guard-permission>
+      <guard-permission>senaite.health: Transition: Deactivate Patient</guard-permission>
       <guard-expression>python:here.guard_handler("deactivate")</guard-expression>
+    </guard>
+  </transition>
+
+  <!-- Transition: share -->
+  <transition transition_id="share" title="Share" new_state="shared" trigger="USER" before_script="" after_script="" i18n:attributes="title">
+    <action url="" category="workflow" icon="">Share</action>
+    <guard>
+      <guard-permission>senaite.health: Transition: Share Patient</guard-permission>
+      <guard-expression>python:here.guard_handler("share")</guard-expression>
+    </guard>
+  </transition>
+
+  <!-- Transition: unshare -->
+  <transition transition_id="unshare" title="Unshare" new_state="active" trigger="USER" before_script="" after_script="" i18n:attributes="title">
+    <action url="" category="workflow" icon="">Unshare</action>
+    <guard>
+      <guard-permission>senaite.health: Transition: Unshare Patient</guard-permission>
+      <guard-expression>python:here.guard_handler("unshare")</guard-expression>
     </guard>
   </transition>
 
