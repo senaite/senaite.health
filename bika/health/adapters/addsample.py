@@ -136,33 +136,33 @@ class AddSampleClientInfo(AddSampleObjectInfoAdapter):
     def get_object_info(self):
         object_info = self.get_base_info()
 
+        portal = api.get_portal()
         if is_internal_client(self.context):
-            portal = api.get_portal()
-            patients_folder = portal.patients
-            doctors_folder = portal.doctors
-            batches_folder = portal.batches
+            # Filter objects that belong to any internal client
+            base_folder = portal.internal_clients
+            depth = 2
         else:
-            patients_folder = self.context
-            doctors_folder = self.context
-            batches_folder = self.context
+            # Filter objects that belong to ths client only
+            base_folder = self.context
+            depth = 1
 
         filter_queries = {
             "Patient": {
                 "path": {
-                    "query": api.get_path(patients_folder),
-                    "depth": 1,
+                    "query": api.get_path(base_folder),
+                    "depth": depth,
                 }
             },
             "Doctor": {
                 "path": {
-                    "query": api.get_path(doctors_folder),
-                    "dept": 1,
+                    "query": api.get_path(base_folder),
+                    "dept": depth,
                 }
             },
             "Batch": {
                 "path": {
-                    "query": api.get_path(batches_folder),
-                    "dept": 1,
+                    "query": api.get_path(base_folder),
+                    "dept": depth,
                 }
             }
         }
@@ -201,10 +201,16 @@ class AddSampleBatchInfo(AddSampleObjectInfoAdapter):
             uid = api.get_uid(client)
             filter_queries = {
                 "Patient": {
-                    "getPrimaryReferrerUID": [uid, ""],
+                    "path": {
+                        "query": api.get_path(client),
+                        "dept": 1,
+                    }
                 },
                 "ClientPatientID": {
-                    "getPrimaryReferrerUID": [uid, ""],
+                    "path": {
+                        "query": api.get_path(client),
+                        "dept": 1,
+                    }
                 }
             }
         object_info["field_values"] = field_values
