@@ -136,37 +136,19 @@ class AddSampleClientInfo(AddSampleObjectInfoAdapter):
     def get_object_info(self):
         object_info = self.get_base_info()
 
-        portal = api.get_portal()
+        # Default filter: objects that belong to this client only
+        path = {"query": api.get_path(self.context), "depth": 1}
         if is_internal_client(self.context):
-            # Filter objects that belong to any internal client
-            base_folder = portal.internal_clients
-            depth = 2
-        else:
-            # Filter objects that belong to ths client only
-            base_folder = self.context
-            depth = 1
+            # Filter objects that belong to any of the internal clients
+            portal = api.get_portal()
+            path = {"query": api.get_path(portal.internal_clients), "depth": 2}
 
-        filter_queries = {
-            "Patient": {
-                "path": {
-                    "query": api.get_path(base_folder),
-                    "depth": depth,
-                }
-            },
-            "Doctor": {
-                "path": {
-                    "query": api.get_path(base_folder),
-                    "dept": depth,
-                }
-            },
-            "Batch": {
-                "path": {
-                    "query": api.get_path(base_folder),
-                    "dept": depth,
-                }
-            }
+        # Apply the filter to fields
+        object_info["filter_queries"] = {
+            "Patient": {"path": path},
+            "Doctor": {"path": path},
+            "Batch": {"path": path}
         }
-        object_info["filter_queries"] = filter_queries
         return object_info
 
 
