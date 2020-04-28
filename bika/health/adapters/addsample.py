@@ -180,20 +180,10 @@ class AddSampleBatchInfo(AddSampleObjectInfoAdapter):
         # generic filters when a client is selected too
         filter_queries = {}
         if client:
-            uid = api.get_uid(client)
+            query = {"query": api.get_path(client), "depth": 1}
             filter_queries = {
-                "Patient": {
-                    "path": {
-                        "query": api.get_path(client),
-                        "dept": 1,
-                    }
-                },
-                "ClientPatientID": {
-                    "path": {
-                        "query": api.get_path(client),
-                        "dept": 1,
-                    }
-                }
+                "Patient": {"path": query},
+                "ClientPatientID": {"path": query},
             }
         object_info["field_values"] = field_values
         object_info["filter_queries"] = filter_queries
