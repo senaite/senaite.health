@@ -20,6 +20,7 @@
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bika.lims import PMF as _p
+from bika.lims import api
 from bika.lims.browser import BrowserView
 
 
@@ -28,6 +29,35 @@ class ChronicConditionsView(BrowserView):
 
     def __call__(self):
         if 'submitted' in self.request:
-            self.context.setChronicConditions(self.request.form.get('ChronicConditions', ()))
-            self.context.plone_utils.addPortalMessage(_p("Changes saved"))
+
+            conditions = self.request.form.get("ChronicConditions")
+
+            # Check if all required items have been filled
+            valid = map(self.validate, conditions)
+            if all(valid):
+                # All chronic conditions are correct
+                self.context.setChronicConditions(conditions)
+                self.context.plone_utils.addPortalMessage(_p("Changes saved"))
+
+            elif valid:
+                # With at least one item, but not correct
+                self.context.plone_utils.addPortalMessage(
+                    _p("Please correct the indicated errors"), "error")
+
         return self.template()
+
+    def validate(self, condition):
+        """Returns True if all required values for the condition are valid
+        """
+        title = condition.get("Title")
+        title = title and title.strip()
+        if not title:
+            # Not a valid title
+            return False
+
+        onset = condition.get("Onset")
+        if not api.to_date(onset, default=None):
+            # Not a valid Onset date
+            return False
+
+        return True
