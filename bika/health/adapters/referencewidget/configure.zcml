@@ -48,4 +48,11 @@
     factory=".ClientAwareReferenceWidgetAdapter"
     provides=".IReferenceWidgetAdapter" />
 
+  <!-- For AnalysisRequest view (editable fields) -->
+  <adapter
+    for="bika.lims.interfaces.IAnalysisRequest
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
 </configure>
