@@ -23,6 +23,7 @@ from zope.component import adapts
 from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
 from bika.health.utils import is_internal_client
+from bika.health.utils import resolve_query_for_shareable
 from bika.lims import api
 from bika.lims.adapters.addsample import AddSampleObjectInfoAdapter
 from bika.lims.interfaces import IAddSampleFieldsFlush
@@ -136,19 +137,11 @@ class AddSampleClientInfo(AddSampleObjectInfoAdapter):
     def get_object_info(self):
         object_info = self.get_base_info()
 
-        # Default filter: objects that belong to this client only
-        path = {"query": api.get_path(self.context), "depth": 1}
-        if is_internal_client(self.context):
-            # Filter objects that belong to any of the internal clients
-            portal = api.get_portal()
-            path = {"query": api.get_path(portal.internal_clients), "depth": 2}
-
-        # Apply the filter to fields
-        object_info["filter_queries"] = {
-            "Patient": {"path": path},
-            "Doctor": {"path": path},
-            "Batch": {"path": path}
-        }
+        # Apply filter for shareable types
+        types = ["Patient", "Doctor", "Batch"]
+        resolver = resolve_query_for_shareable
+        filters = map(lambda st: (st, resolver(st, self.context)), types)
+        object_info["filter_queries"] = dict(filters)
         return object_info
 
 

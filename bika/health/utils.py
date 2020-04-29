@@ -37,6 +37,7 @@ from bika.lims import api
 from bika.lims.api import _marker
 from bika.lims.interfaces import IBatch
 from bika.lims.interfaces import IClient
+from bika.lims.utils import chain
 from bika.lims.utils import render_html_attributes
 from bika.lims.utils import to_unicode
 from bika.lims.utils import to_utf8
@@ -296,6 +297,51 @@ def is_logged_user_from_external_client():
     if client and is_external_client(client):
         return True
     return False
+
+
+def get_client_from_chain(obj):
+    """Returns the client the obj belongs to, if any, by looking to the
+    acquisition chain
+    """
+    for obj in chain(obj):
+        if IClient.providedBy(obj):
+            return obj
+    return None
+
+
+def is_shareable_type(portal_type):
+    """Returns whether the portal_type passed in is shareable among internal
+    clients
+    """
+    return portal_type in ["Patient", "Doctor", "Batch"]
+
+
+def resolve_query_for_shareable(portal_type, context=None):
+    """Resolves a query filter for the portal_type passed in and the context
+    for which the query has to be filtered by
+    """
+    # Resolve the client from the object, if possible
+    client = context and get_client_from_chain(context) or None
+
+    if client and is_internal_client(client):
+        # Client is internal and the portal type is "shareable", the query
+        # must display all items of this portal_type that are located
+        # inside any of the clients from "internal_clients" folder
+        folder = api.get_portal().internal_clients
+        return {
+            "path": {"query": api.get_path(folder), "depth": 2},
+            "portal_type": portal_type,
+        }
+
+    elif client:
+        # Client is external. Only the items that belong to this client
+        return {
+            "path": {"query": api.get_path(client), "depth": 1},
+            "portal_type": portal_type,
+        }
+
+    # We don't know neither the client nor the type of client
+    return {"portal_type": portal_type}
 
 
 def get_all_granted_roles_for(folder, permission):

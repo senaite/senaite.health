@@ -20,10 +20,10 @@
 
 from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
+from bika.health.utils import get_client_from_chain
 from bika.health.utils import is_internal_client
 from bika.lims import api
 from bika.lims.interfaces import IClient
-from bika.lims.utils import chain
 from bika.lims.workflow import doActionFor
 
 
@@ -46,13 +46,8 @@ def resolve_client(obj, field_name=None):
     else:
         parent = api.get_parent(obj)
 
-    # Try to get the Client from the acquisition chain
-    for container in chain(parent):
-        if api.is_object(container) and IClient.providedBy(container):
-            return container
-
-    # Cannot resolve
-    return None
+    # Get the Client from the acquisition chain, if any
+    return get_client_from_chain(parent)
 
 
 def try_share_unshare(obj):

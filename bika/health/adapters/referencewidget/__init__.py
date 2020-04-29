@@ -22,7 +22,9 @@ import six
 from zope.interface import implements
 
 from bika.health import logger
+from bika.health.utils import get_client_from_chain
 from bika.health.utils import is_internal_client
+from bika.health.utils import resolve_query_for_shareable
 from bika.lims import api
 from bika.lims.adapters.referencewidgetvocabulary import \
     DefaultReferenceWidgetVocabulary
@@ -78,18 +80,7 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         ("default", "getClientUID"),
         ("Client", "UID"),
         ("Contact", "getParentUID"),
-        ("Doctor", "getPrimaryReferrerUID"),
-        ("Patient", "getPrimaryReferrerUID"),
     ]
-
-    def get_client_from_context_chain(self):
-        """Returns the client the current context belongs to, by looking to
-        the acquisition change only
-        """
-        for obj in chain(self.context):
-            if IClient.providedBy(obj):
-                return obj
-        return None
 
     def get_client_from_query(self, query, purge=False):
         """Resolves the client from the query passed-in
@@ -130,48 +121,34 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         client = self.get_client_from_query(query, purge=True)
 
         # Resolve the client from the context chain
-        client = self.get_client_from_context_chain() or client
+        client = get_client_from_chain(self.context) or client
 
         # Resolve the criteria for filtering
         criteria = {}
 
         if portal_type in self.widely_shared_types:
-            # The portal type can be shared widely (e.g. Sample Type)
-            if client:
-                # Items from client + items without client
-                criteria = self.resolve_query(portal_type, client, True)
 
-            else:
-                # Items without client
-                criteria = self.resolve_query(portal_type, None, True)
+            # The portal type can be shared widely (e.g. Sample Type)
+            criteria = self.resolve_query(portal_type, client, True)
 
         elif portal_type in self.internally_shared_types:
+
             # The portal type can be shared among internal clients (e.g Batch)
-            if client and is_internal_client(client):
-                # The client is internal. Can be shared
-                # Items from client + items without client
-                criteria = self.resolve_query(portal_type, client, True)
-
-            elif client:
-                # The client is external. Cannot be shared
-                # Items from client
-                criteria = self.resolve_query(portal_type, client, False)
-
-            else:
-                # Current context is outside a client
-                # Items without client
-                criteria = self.resolve_query(portal_type, None, True)
+            criteria = resolve_query_for_shareable(portal_type, client)
 
         elif portal_type == "Client":
+
             # Special case, when the item to look for is a Client
             context_portal_type = api.get_portal_type(self.context)
             if context_portal_type in self.internally_shared_types:
+
                 # Current context can be shared internally (e.g. Batch)
                 if client:
-                    # Current context is inside a client
+                    # Display only the current Client in searches
                     criteria = self.resolve_query(portal_type, client, False)
+
                 else:
-                    # Current context is outside a client
+                    # Display all internal clients
                     internal_clients = api.get_portal().internal_clients
                     criteria = {
                         "path": {
@@ -180,13 +157,8 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
                         }
                     }
 
-            elif context_portal_type in self.widely_shared_types:
-                # Current context can be shared widely (e.g Sample Type)
-                if client:
-                    # Current context is inside a client
-                    criteria = self.resolve_query(portal_type, client, False)
-
-            elif client:
+            else:
+                # Display current client only (if client != None) or all them
                 criteria = self.resolve_query(portal_type, client, False)
 
         elif client:
@@ -199,11 +171,6 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         return query
 
     def resolve_query(self, portal_type, client, share):
-        func_name = "resolve_query_for_{}".format(portal_type.lower())
-        func = getattr(self, func_name, None)
-        if func:
-            return func(client, share)
-
         index = self.get_filter_index(portal_type)
         if not client:
             if share:
@@ -215,20 +182,6 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         if share:
             return {index: [uid, ""]}
         return {index: [uid]}
-
-    def resolve_query_for_patient(self, client, share):
-        if client and not share:
-            return {"getPrimaryReferrerUID": api.get_uid(client)}
-        patients = api.get_portal().patients
-        return {"path": {"query": api.get_path(patients),
-                         "depth": 1}}
-
-    def resolve_query_for_doctor(self, client, share):
-        if client and not share:
-            return {"getPrimaryReferrerUID": api.get_uid(client)}
-        doctors = api.get_portal().doctors
-        return {"path": {"query": api.get_path(doctors),
-                         "dept": 1}}
 
     def get_filter_index(self, portal_type):
         indexes = dict(self.filter_indexes)
