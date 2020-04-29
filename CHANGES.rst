@@ -6,12 +6,15 @@ Changelog
 
 **Added**
 
+- #183 Internal Clients functionality
 
 **Changed**
 
 **Removed**
 
 **Fixed**
+
+- #182 Prevent Traceback in patients listing when dob is not set
 
 **Security**
 
