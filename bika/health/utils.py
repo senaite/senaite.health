@@ -377,7 +377,7 @@ def get_client_aware_html_image(obj):
                          _("From an internal client, but not shared"))
     else:
         logger.warn("No client assigned for {}".format(repr(obj)))
-        icon_info = ("exclamation_red.png", _("Without client assigned"))
+        icon_info = ("exclamation_red.png", _("No client assigned"))
 
     return get_html_image(icon_info[0], title=icon_info[1])
 

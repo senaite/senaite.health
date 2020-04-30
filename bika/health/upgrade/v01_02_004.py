@@ -91,6 +91,9 @@ def upgrade(tool):
     # Move doctors to clients
     move_doctors_to_clients(portal)
 
+    # Update workflows for shareable objects (Patient, Doctor, Batch)
+    update_rolemappings_for_shareable(portal)
+
     logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True
 
@@ -188,3 +191,33 @@ def resolve_client_for_doctor(doctor):
         logger.error("Doctor {} is assigned to clients from different types"
                      .format(api.get_id(doctor), repr(clients)))
         return None
+
+
+def update_rolemappings_for_shareable(portal):
+    """Updates the workflow for shareable objects
+    """
+    logger.info("Updating role mappings for shareable objects ...")
+    wf = api.get_tool("portal_workflow")
+
+    def update_rolemappings_for(portal_type, catalog, workflow):
+        brains = api.search({"portal_type": portal_type}, catalog)
+        total = len(brains)
+        for num, brain in enumerate(brains):
+            if num and num % 100:
+                logger.info("Updating role mappings for {} {}/{}"
+                            .format(portal_type, num, total))
+            obj = api.get_object(brain)
+            workflow.updateRoleMappingsFor(obj)
+            obj.reindexObject(idxs=["allowedRolesAndUsers"])
+
+    # Patients
+    patient_wf = wf.getWorkflowById("senaite_health_patient_workflow")
+    update_rolemappings_for("Patient", CATALOG_PATIENTS, patient_wf)
+
+    # Doctors
+    doctor_wf = wf.getWorkflowById("senaite_health_doctor_workflow")
+    update_rolemappings_for("Doctor", "portal_catalog", doctor_wf)
+
+    # Batches
+    batch_wf = wf.getWorkflowById("senaite_batch_workflow")
+    update_rolemappings_for("Batch", "portal_catalog", batch_wf)
