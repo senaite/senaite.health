@@ -31,6 +31,7 @@ from zope.event import notify
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectMovedEvent
 
+from bika.health import bikaMessageFactory as _
 from bika.health import logger
 from bika.health.interfaces import IPatient
 from bika.lims import api
@@ -38,6 +39,7 @@ from bika.lims.api import _marker
 from bika.lims.interfaces import IBatch
 from bika.lims.interfaces import IClient
 from bika.lims.utils import chain
+from bika.lims.utils import get_image
 from bika.lims.utils import render_html_attributes
 from bika.lims.utils import to_unicode
 from bika.lims.utils import to_utf8
@@ -279,15 +281,32 @@ def is_internal_client(client):
 def is_external_client(client):
     """Returns whether the client passed is an external client
     """
-    return not is_internal_client(client)
+    if not IClient.providedBy(client):
+        raise TypeError("Type not supported")
+
+    return api.get_parent(client) == api.get_portal().clients
 
 
-def is_from_external(obj_or_brain):
+def is_from_external_client(obj_or_brain):
     """Returns whether the object passed in belongs to an external client
     """
-    clients_path = api.get_path(api.get_portal().clients)
+    clients = api.get_portal().clients
+    return is_contained_by(clients, obj_or_brain)
+
+
+def is_from_internal_client(obj_or_brain):
+    """Returns whether the object passed in belongs to an internal client
+    """
+    internals = api.get_portal().internal_clients
+    return is_contained_by(internals, obj_or_brain)
+
+
+def is_contained_by(container_obj_or_brain, obj_or_brain):
+    """Returns whether the container contains the obj passed in
+    """
+    base_path = api.get_path(container_obj_or_brain)
     obj_path = api.get_path(obj_or_brain)
-    return clients_path in obj_path
+    return base_path in obj_path
 
 
 def is_logged_user_from_external_client():
@@ -342,6 +361,22 @@ def resolve_query_for_shareable(portal_type, context=None):
 
     # We don't know neither the client nor the type of client
     return {"portal_type": portal_type}
+
+
+def get_client_aware_html_image(obj):
+    """Renders an icon based on the client the object belongs to
+    """
+    if is_from_external_client(obj):
+        icon_info = ("lock.png", _("Private, from an external client"))
+
+    elif is_from_internal_client(obj):
+        icon_info = ("share.png", _("Shared, from an internal client"))
+
+    else:
+        logger.warn("No client assigned for {}".format(repr(obj)))
+        icon_info = ("exclamation_red.png", _("Without client assigned"))
+
+    return get_html_image(icon_info[0], title=icon_info[1])
 
 
 def get_all_granted_roles_for(folder, permission):

@@ -28,9 +28,10 @@ from zope.interface import implements
 
 from bika.health import bikaMessageFactory as _
 from bika.health.utils import get_age_ymd
+from bika.health.utils import get_client_aware_html_image
 from bika.health.utils import get_field_value
 from bika.health.utils import get_html_image
-from bika.health.utils import is_from_external
+from bika.health.utils import is_from_external_client
 from bika.health.utils import is_logged_user_from_external_client
 from bika.lims import AddBatch
 from bika.lims import api
@@ -115,13 +116,7 @@ class BatchListingViewAdapter(object):
         # Display the internal/external icons, but only if the logged-in user
         # does not belong to an external client
         if not self.is_external_client_logged():
-            if is_from_external(obj):
-                img = get_html_image("lock.png",
-                                     title=_("Private, from an external client"))
-            else:
-                img = get_html_image("share.png",
-                                     title=_("Shared, from an internal client"))
-            item["before"]["BatchID"] = img
+            item["before"]["BatchID"] = get_client_aware_html_image(obj)
 
         return item
 

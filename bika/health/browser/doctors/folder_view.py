@@ -25,9 +25,8 @@ from plone.memoize import view
 from bika.health import bikaMessageFactory as _
 from bika.health.interfaces import IDoctors
 from bika.health.permissions import *
-from bika.health.utils import get_html_image
+from bika.health.utils import get_client_aware_html_image
 from bika.health.utils import get_resource_url
-from bika.health.utils import is_from_external
 from bika.health.utils import is_logged_user_from_external_client
 from bika.lims import api
 from bika.lims.api.security import check_permission
@@ -189,13 +188,7 @@ class DoctorsView(BikaListingView):
         # Display the internal/external icons, but only if the logged-in user
         # does not belong to an external client
         if not self.is_external_client_logged():
-            if is_from_external(obj):
-                img = get_html_image("lock.png",
-                                     title=_("Private, from an external client"))
-            else:
-                img = get_html_image("share.png",
-                                     title=_("Shared, from an internal client"))
-            item["before"]["getFullname"] = img
+            item["before"]["getFullname"] = get_client_aware_html_image(obj)
 
         return item
 
