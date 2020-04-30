@@ -29,11 +29,16 @@ class ChronicConditionsView(BrowserView):
 
     def __call__(self):
         if 'submitted' in self.request:
+            field_name = "ChronicConditions"
 
-            conditions = self.request.form.get("ChronicConditions")
+            # Get the field
+            field = self.context.getField(field_name)
 
-            # Check if all required items have been filled
-            valid = map(self.validate, conditions)
+            # Get the form values submitted for this field
+            conditions = self.request.form.get(field_name)
+
+            # Validate sub_field values
+            valid = map(lambda c: self.validate(field, c), conditions)
             if all(valid):
                 # All chronic conditions are correct
                 self.context.setChronicConditions(conditions)
@@ -46,18 +51,23 @@ class ChronicConditionsView(BrowserView):
 
         return self.template()
 
-    def validate(self, condition):
+    def validate(self, field, condition):
         """Returns True if all required values for the condition are valid
         """
-        title = condition.get("Title")
-        title = title and title.strip()
-        if not title:
-            # Not a valid title
-            return False
+        required = field.required_subfields
+        types = field.subfield_types
 
-        onset = condition.get("Onset")
-        if not api.to_date(onset, default=None):
-            # Not a valid Onset date
-            return False
+        for subfield in required:
+            typ = types.get(subfield) or ""
+            val = condition.get(subfield)
+            val = val and val.strip()
+            if "date" in typ:
+                if not api.to_date(val, default=None):
+                    # Not a valid date
+                    return False
+            elif not val:
+                # Not a valid value
+                return False
 
+        # All checks passed
         return True
