@@ -199,39 +199,26 @@ def update_rolemappings_for_shareable(portal):
     logger.info("Updating role mappings for shareable objects ...")
     wf = api.get_tool("portal_workflow")
 
-    def update_rolemappings_for(portal_type, catalog, workflow):
-        portal = api.get_portal()
-        #  Only objects that belong to an internal client can be shared and
-        #  there is no possibility to move objects from inside external clients
-        #  to internal clients. Also, internal clients have been introduced in
-        #  current version. Therefore, there is only the need to update the
-        #  role mappings for the objects that do not belong to any client.
-        #  We can assume pre-existing clients are external.
-        query = {"portal_type": portal_type,
-                 "path": {
-                     "query": api.get_path(portal),
-                     "depth": 2}
-                 }
-        brains = api.search(query, catalog)
-        total = len(brains)
-        for num, brain in enumerate(brains):
-            if num and num % 100:
+    def update_rolemappings_for(portal_type, folder, workflow):
+        objs = folder.objectValues(portal_type)
+        total = len(objs)
+        for num, obj in enumerate(objs):
+            if num and num % 100 == 0:
                 logger.info("Updating role mappings for {} {}/{}"
                             .format(portal_type, num, total))
-            obj = api.get_object(brain)
             workflow.updateRoleMappingsFor(obj)
             obj.reindexObject(idxs=["allowedRolesAndUsers"])
 
     # Patients
-    patient_wf = wf.getWorkflowById("senaite_health_patient_workflow")
-    update_rolemappings_for("Patient", CATALOG_PATIENTS, patient_wf)
+    wf = wf.getWorkflowById("senaite_health_patient_workflow")
+    update_rolemappings_for("Patient", portal.patients, wf)
 
     # Doctors
-    doctor_wf = wf.getWorkflowById("senaite_health_doctor_workflow")
-    update_rolemappings_for("Doctor", "portal_catalog", doctor_wf)
+    wf = wf.getWorkflowById("senaite_health_doctor_workflow")
+    update_rolemappings_for("Doctor", portal.doctors, wf)
 
     # Batches
-    batch_wf = wf.getWorkflowById("senaite_batch_workflow")
-    update_rolemappings_for("Batch", "portal_catalog", batch_wf)
+    wf = wf.getWorkflowById("senaite_batch_workflow")
+    update_rolemappings_for("Batch", portal.batches, wf)
 
     logger.info("Updating role mappings for shareable objects [DONE]")
