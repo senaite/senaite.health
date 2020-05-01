@@ -13,6 +13,8 @@ Changelog
 
 **Fixed**
 
+- #184 Required patient data can be omitted on save causing error on re-edit
+
 **Security**
 
 
