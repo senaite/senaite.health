@@ -15,6 +15,7 @@ Changelog
 **Fixed**
 
 - #182 Prevent Traceback in patients listing when dob is not set
+- #184 Required patient data can be omitted on save causing error on re-edit
 
 **Security**
 
