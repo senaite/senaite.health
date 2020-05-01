@@ -61,6 +61,12 @@ class BatchListingViewAdapter(object):
         self.listing.columns["BatchID"]["title"] = _("Case ID")
         self.listing.columns["ClientBatchID"]["title"] = _("Client Case ID")
 
+        # Change the contentFilter and transitions from review_states
+        for rv in self.listing.review_states:
+            if rv["id"] == "default":
+                rv["contentFilter"].update({"review_state": ["open", "shared"]})
+            rv["transitions"] = []
+
         # Additional columns
         self.add_columns()
 
