@@ -65,6 +65,9 @@ class BatchListingViewAdapter(object):
         for rv in self.listing.review_states:
             if rv["id"] == "default":
                 rv["contentFilter"].update({"review_state": ["open", "shared"]})
+
+            # TODO Remove after core's PR#1577 gets accepted
+            # https://github.com/senaite/senaite.core/pull/1577
             rv["transitions"] = []
 
         # Additional columns
