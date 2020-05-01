@@ -194,13 +194,25 @@ def resolve_client_for_doctor(doctor):
 
 
 def update_rolemappings_for_shareable(portal):
-    """Updates the workflow for shareable objects
+    """Updates the workflow for shareable objects.
     """
     logger.info("Updating role mappings for shareable objects ...")
     wf = api.get_tool("portal_workflow")
 
     def update_rolemappings_for(portal_type, catalog, workflow):
-        brains = api.search({"portal_type": portal_type}, catalog)
+        portal = api.get_portal()
+        #  Only objects that belong to an internal client can be shared and
+        #  there is no possibility to move objects from inside external clients
+        #  to internal clients. Also, internal clients have been introduced in
+        #  current version. Therefore, there is only the need to update the
+        #  role mappings for the objects that do not belong to any client.
+        #  We can assume pre-existing clients are external.
+        query = {"portal_type": portal_type,
+                 "path": {
+                     "query": api.get_path(portal),
+                     "depth": 2}
+                 }
+        brains = api.search(query, catalog)
         total = len(brains)
         for num, brain in enumerate(brains):
             if num and num % 100:
@@ -221,3 +233,5 @@ def update_rolemappings_for_shareable(portal):
     # Batches
     batch_wf = wf.getWorkflowById("senaite_batch_workflow")
     update_rolemappings_for("Batch", "portal_catalog", batch_wf)
+
+    logger.info("Updating role mappings for shareable objects [DONE]")
