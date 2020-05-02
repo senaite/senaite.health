@@ -31,7 +31,6 @@ from bika.health.utils import get_client_aware_html_image
 from bika.health.utils import get_client_from_chain
 from bika.health.utils import get_resource_url
 from bika.health.utils import is_from_external_client
-from bika.health.utils import is_from_internal_client
 from bika.lims import api
 from bika.lims.api.security import check_permission
 from bika.lims.browser.bika_listing import BikaListingView
