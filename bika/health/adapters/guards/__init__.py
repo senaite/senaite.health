@@ -41,5 +41,8 @@ class InternalClientAwareGuardAdapter(object):
             return False
 
         client = self.context.getClient()
+        if not client:
+            return False
+
         internal = is_internal_client(client)
         return internal
