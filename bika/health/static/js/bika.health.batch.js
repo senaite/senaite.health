@@ -94,11 +94,6 @@ function HealthBatchEditView() {
                 dataType: "json",
                 success: function(data, textStatus, $XHR){
                     if (data['PatientUID'] != '') {
-                        // Set Client info
-                        $('#Client').val(data['ClientTitle']);
-                        $('#Client').attr('uid', data['ClientUID']);
-                        $('#Client_uid').val(data['ClientUID']);
-
                         // Set Patient info
                         $('#Patient').val(data['PatientFullname']);
                         $('#Patient').attr('uid', data['PatientUID']);
@@ -173,7 +168,7 @@ function HealthBatchEditView() {
     }
 
     this.applyClientFilter = function(uid) {
-        uid_val = uid != null ? uid : "-1";
+        var uid_val = uid != null ? uid : "-1";
         applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid_val);
         applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid_val);
         applyFilter($("#Doctor"), 'getPrimaryReferrerUID', uid_val);
