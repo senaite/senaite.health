@@ -190,11 +190,8 @@ class BatchListingViewAdapter(object):
     def hide_columns(self, column_ids):
         """Hides columns from the listing
         """
-        # Remove the columns from all review_states
-        for rv in self.listing.review_states:
-            rv_columns = rv.get("columns", self.listing.columns.keys())
-            rv_columns = filter(lambda col: col not in column_ids, rv_columns)
-            rv["columns"] = rv_columns
+        for column_id in column_ids:
+            self.listing.columns[column_id]["toggle"] = False
 
     def add_columns(self):
         """Adds health-specific columns in the listing
