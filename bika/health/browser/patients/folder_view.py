@@ -28,12 +28,12 @@ from bika.health.interfaces import IPatients
 from bika.health.permissions import AddPatient
 from bika.health.utils import get_age_ymd
 from bika.health.utils import get_client_aware_html_image
+from bika.health.utils import get_client_from_chain
 from bika.health.utils import get_resource_url
-from bika.health.utils import is_logged_user_from_external_client
+from bika.health.utils import is_from_external_client
 from bika.lims import api
 from bika.lims.api.security import check_permission
 from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims.interfaces import IClient
 from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 
@@ -41,8 +41,6 @@ from bika.lims.utils import get_link
 class PatientsView(BikaListingView):
     """Listing View for all Patients in the System
     """
-
-    _external_logged = None
 
     def __init__(self, context, request):
         super(PatientsView, self).__init__(context, request)
@@ -59,11 +57,12 @@ class PatientsView(BikaListingView):
                               'sort_on': 'created',
                               'sort_order': 'descending'}
 
-        if IClient.providedBy(self.context):
+        client = self.get_client()
+        if client:
             # Display the Patients the belong to this Client only
-            self.contentFilter.update({
-                "getPrimaryReferrerUID": api.get_uid(self.context)
-            })
+            self.contentFilter["path"] = {
+                "query": api.get_path(client), "depth": 1
+            }
 
         self.columns = collections.OrderedDict((
             ("Title", {
@@ -142,6 +141,27 @@ class PatientsView(BikaListingView):
             },
         ]
 
+    @view.memoize
+    def get_client(self):
+        """Returns the client this context is from, if any
+        """
+        return get_client_from_chain(self.context)
+
+    @view.memoize
+    def get_user_client(self):
+        """Returns the client from current user, if any
+        """
+        return api.get_current_client()
+
+    @view.memoize
+    def is_external_user(self):
+        """Returns whether the current user belongs to an external client
+        """
+        client = self.get_user_client()
+        if not client:
+            return False
+        return is_from_external_client(client)
+
     def update(self):
         """Before template render hook
         """
@@ -164,22 +184,19 @@ class PatientsView(BikaListingView):
             }
         }
 
-        # If current user is a client contact and current context is not a
-        # Client, then modify the url for Add action so the Patient gets created
-        # inside the Client object to which the current user belongs. The
-        # reason is that Client contacts do not have privileges to create
-        # Patients inside portal/patients
-        if not IClient.providedBy(self.context):
-            # Get the client the current user belongs to
-            client = api.get_current_client()
-            if client and check_permission(AddPatient, client):
-                add_url = self.context_actions[_("Add")]["url"]
-                add_url = "{}/{}".format(api.get_url(client), add_url)
-                self.context_actions[_("Add")]["url"] = add_url
-                del(self.context_actions[_("Add")]["permission"])
+        # If current user is a client contact, then modify the url for Add
+        # action so the Patient gets created, inside the Client object to which
+        # the current user belongs. The reason is that the permission
+        # "AddPatient" for client contacts in base folders is not granted
+        client = self.get_user_client()
+        if client and check_permission(AddPatient, client):
+            add_url = self.context_actions[_("Add")]["url"]
+            add_url = "{}/{}".format(api.get_url(client), add_url)
+            self.context_actions[_("Add")]["url"] = add_url
+            del(self.context_actions[_("Add")]["permission"])
 
-        else:
-            # The current context is a Client, remove the title column
+        if self.get_client():
+            # The current context belongs to a Client, remove the title column
             self.remove_column('getPrimaryReferrerTitle')
 
     def folderitems(self, full_objects=False, classic=False):
@@ -208,16 +225,9 @@ class PatientsView(BikaListingView):
 
         # Display the internal/external icons, but only if the logged-in user
         # does not belong to an external client
-        if not self.is_external_client_logged():
-
+        if not self.is_external_user():
             # Renders an icon (shared/private/warn) next to the title of the
             # item based on the client
             item["before"]["Title"] = get_client_aware_html_image(obj)
 
         return item
-
-    @view.memoize
-    def is_external_client_logged(self):
-        """Returns whether the current user belongs to an external client
-        """
-        return is_logged_user_from_external_client()

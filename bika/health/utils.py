@@ -322,6 +322,9 @@ def get_client_from_chain(obj):
     """Returns the client the obj belongs to, if any, by looking to the
     acquisition chain
     """
+    if IClient.providedBy(obj):
+        return obj
+
     for obj in chain(obj):
         if IClient.providedBy(obj):
             return obj
