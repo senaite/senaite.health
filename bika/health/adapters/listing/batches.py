@@ -29,13 +29,12 @@ from zope.interface import implements
 from bika.health import bikaMessageFactory as _
 from bika.health.utils import get_age_ymd
 from bika.health.utils import get_client_aware_html_image
+from bika.health.utils import get_client_from_chain
 from bika.health.utils import get_field_value
-from bika.health.utils import get_html_image
 from bika.health.utils import is_from_external_client
 from bika.health.utils import is_logged_user_from_external_client
 from bika.lims import AddBatch
 from bika.lims import api
-from bika.lims.interfaces import IClient
 from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 
@@ -49,12 +48,39 @@ class BatchListingViewAdapter(object):
     # Order of priority of this subscriber adapter over others
     priority_order = 1
 
-    _external_logged = None
+    _is_in_client = None
+    _is_client_user = None
+    _is_external_user = None
 
     def __init__(self, listing, context):
         self.listing = listing
         self.context = context
         self.title = self.context.translate(_("Cases"))
+
+    @property
+    def is_external_user(self):
+        """Returns whether the current user belongs to an external client
+        """
+        if self._is_external_user is None:
+            self._is_external_user = is_logged_user_from_external_client()
+        return self._is_external_user
+
+    @property
+    def is_client_user(self):
+        """Returns whether the current user belongs to an internal client
+        """
+        if self._is_client_user is None:
+            self._is_client_user = api.get_current_client() and True or False
+        return self._is_client_user
+
+    @property
+    def is_in_client(self):
+        """Returns whether the current context is from inside a client
+        """
+        if self._is_in_client is None:
+            client = get_client_from_chain(self.context)
+            self._is_in_client = client and True or False
+        return self._is_in_client
 
     def before_render(self):
         # Rename columns BatchID and ClientBatchID
@@ -62,40 +88,21 @@ class BatchListingViewAdapter(object):
         self.listing.columns["ClientBatchID"]["title"] = _("Client Case ID")
 
         # Change the contentFilter and transitions from review_states
-        for rv in self.listing.review_states:
-            if rv["id"] == "default":
-                rv["contentFilter"].update({"review_state": ["open", "shared"]})
-
-            # TODO Remove after core's PR#1577 gets accepted
-            # https://github.com/senaite/senaite.core/pull/1577
-            rv["transitions"] = []
+        self.update_review_states()
 
         # Additional review_satuses
-        self.listing.review_states.insert(1, {
-            "id": "shared",
-            "title": _("Open (shared)"),
-            "contentFilter": {"review_state": "shared"},
-            "transitions": [],
-            "columns": self.listing.columns.keys(),
-        })
-        self.listing.review_states.insert(2, {
-            "id": "private",
-            "title": _("Open (private)"),
-            "contentFilter": {"review_state": "private"},
-            "transitions": [],
-            "columns": self.listing.columns.keys(),
-        })
+        self.add_review_states()
 
         # Additional columns
         self.add_columns()
 
         # Remove unnecessary columns
-        hide = ["Title", "BatchDate", "Description", ]
-        if api.get_current_client():
+        column_ids = ["Title", "BatchDate", "Description", ]
+        if self.is_client_user or self.is_in_client:
             # Hide client-specific columns
-            hide.extend(["Client", "ClientID"])
+            column_ids.extend(["Client", "ClientID"])
 
-        self.hide_columns(hide)
+        self.hide_columns(column_ids)
 
     def folder_item(self, obj, item, index):
         batch = api.get_object(obj)
@@ -140,18 +147,49 @@ class BatchListingViewAdapter(object):
 
         # Display the internal/external icons, but only if the logged-in user
         # does not belong to an external client
-        if not self.is_external_client_logged():
+        if not self.is_external_user:
             item["before"]["BatchID"] = get_client_aware_html_image(obj)
 
         return item
 
-    def is_client_context(self):
-        """Returns whether the batch listing is displayed in IClient context
-        or if the current user is a client contact
+    def update_review_states(self):
+        """Updates the contentFilter and transitions from review states
         """
-        return IClient.providedBy(self.context) or api.get_current_client()
+        for rv in self.listing.review_states:
+            if rv["id"] == "default":
+                rv["contentFilter"].update({"review_state": ["open", "shared"]})
+
+            # TODO Remove after core's PR#1577 gets accepted
+            # https://github.com/senaite/senaite.core/pull/1577
+            rv["transitions"] = []
+
+    def add_review_states(self):
+        if self.is_external_user:
+            # If the logged in user is external, there is no need to display
+            # shared/private filters, it might cause confusion
+            return
+
+        # Do not display the filters unless current context is not inside an
+        # external client
+        if not is_from_external_client(self.context):
+            self.listing.review_states.insert(1, {
+                "id": "shared",
+                "title": _("Open (shared)"),
+                "contentFilter": {"review_state": "shared"},
+                "transitions": [],
+                "columns": self.listing.columns.keys(),
+            })
+            self.listing.review_states.insert(2, {
+                "id": "private",
+                "title": _("Open (private)"),
+                "contentFilter": {"review_state": "private"},
+                "transitions": [],
+                "columns": self.listing.columns.keys(),
+            })
 
     def hide_columns(self, column_ids):
+        """Hides columns from the listing
+        """
         # Remove the columns from all review_states
         for rv in self.listing.review_states:
             rv_columns = rv.get("columns", self.listing.columns.keys())
@@ -161,19 +199,18 @@ class BatchListingViewAdapter(object):
     def add_columns(self):
         """Adds health-specific columns in the listing
         """
-        is_client_context = self.is_client_context()
         health_columns = collections.OrderedDict((
             ("getPatientID", {
                 "title": _("Patient ID"),
-                "toggle": is_client_context,
+                "toggle": True,
                 "after": "ClientBatchID", }),
             ("getClientPatientID", {
                 "title": _("Client PID"),
-                "toggle": is_client_context,
+                "toggle": True,
                 "after": "getPatientID", }),
             ("Patient", {
                 "title": _("Patient"),
-                "toggle": is_client_context,
+                "toggle": True,
                 "index": "getPatientTitle",
                 "after": "getClientPatientID", }),
             ("Doctor", {
@@ -199,13 +236,6 @@ class BatchListingViewAdapter(object):
                              column_values=column_values,
                              after=column_values["after"],
                              review_states=rv_keys)
-
-    def is_external_client_logged(self):
-        """Returns whether the current user belongs to an external client
-        """
-        if self._external_logged is None:
-            self._external_logged = is_logged_user_from_external_client()
-        return self._external_logged
 
 
 class PatientBatchListingViewAdapter(BatchListingViewAdapter):
