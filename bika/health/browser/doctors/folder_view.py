@@ -26,12 +26,12 @@ from bika.health import bikaMessageFactory as _
 from bika.health.interfaces import IDoctors
 from bika.health.permissions import *
 from bika.health.utils import get_client_aware_html_image
+from bika.health.utils import get_client_from_chain
 from bika.health.utils import get_resource_url
-from bika.health.utils import is_logged_user_from_external_client
+from bika.health.utils import is_from_external_client
 from bika.lims import api
 from bika.lims.api.security import check_permission
 from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims.interfaces import IClient
 from bika.lims.utils import get_email_link
 from bika.lims.utils import get_link
 
@@ -54,11 +54,12 @@ class DoctorsView(BikaListingView):
                               "sort_on": "getFullname",
                               "sort_order": "ascending"}
 
-        if IClient.providedBy(self.context):
+        client = self.get_client()
+        if client:
             # Display the Doctors that belong to this Client only
-            self.contentFilter.update({
-                "getPrimaryReferrerUID": api.get_uid(self.context)
-            })
+            self.contentFilter["path"] = {
+                "query": api.get_path(client), "depth": 1
+            }
 
         self.columns = OrderedDict((
             ("getFullname", {
@@ -108,18 +109,6 @@ class DoctorsView(BikaListingView):
                 "transitions": [],
                 "columns": self.columns.keys(),
             }, {
-                "id": "shared",
-                "title": _("Active (shared)"),
-                "contentFilter": {"review_state": "shared"},
-                "transitions": [],
-                "columns": self.columns.keys(),
-            }, {
-                "id": "private",
-                "title": _("Active (private)"),
-                "contentFilter": {"review_state": "active"},
-                "transitions": [],
-                "columns": self.columns.keys(),
-            }, {
                 "id": "inactive",
                 "title": _("Inactive"),
                 "contentFilter": {'is_active': False},
@@ -132,6 +121,47 @@ class DoctorsView(BikaListingView):
                 "columns": self.columns.keys(),
             },
         ]
+
+        if not self.is_external_user():
+            external = client and is_from_external_client(client)
+            if not external:
+                # Neither the client nor the current user are external
+                # Display share/private filters
+                self.review_states.insert(1, {
+                    "id": "shared",
+                    "title": _("Active (shared)"),
+                    "contentFilter": {"review_state": "shared"},
+                    "transitions": [],
+                    "columns": self.columns.keys(),
+                })
+                self.review_states.insert(2, {
+                    "id": "private",
+                    "title": _("Active (private)"),
+                    "contentFilter": {"review_state": "active"},
+                    "transitions": [],
+                    "columns": self.columns.keys(),
+                })
+
+    @view.memoize
+    def get_client(self):
+        """Returns the client this context is from, if any
+        """
+        return get_client_from_chain(self.context)
+
+    @view.memoize
+    def get_user_client(self):
+        """Returns the client from current user, if any
+        """
+        return api.get_current_client()
+
+    @view.memoize
+    def is_external_user(self):
+        """Returns whether the current user belongs to an external client
+        """
+        client = self.get_user_client()
+        if not client:
+            return False
+        return is_from_external_client(client)
 
     def update(self):
         """Before template render hook
@@ -158,14 +188,14 @@ class DoctorsView(BikaListingView):
         # If current user is a client contact and current context is not a
         # Client, then modify the url for Add action so the Doctor gets created
         # inside the Client object the current user belongs to
-        if not IClient.providedBy(self.context):
-            client = api.get_current_client()
-            if client and check_permission(AddDoctor, client):
-                add_url = self.context_actions[_("Add")]["url"]
-                add_url = "{}/{}".format(api.get_url(client), add_url)
-                self.context_actions[_("Add")]["url"] = add_url
-                del(self.context_actions[_("Add")]["permission"])
-        else:
+        client = self.get_user_client()
+        if client and check_permission(AddDoctor, client):
+            add_url = self.context_actions[_("Add")]["url"]
+            add_url = "{}/{}".format(api.get_url(client), add_url)
+            self.context_actions[_("Add")]["url"] = add_url
+            del(self.context_actions[_("Add")]["permission"])
+
+        if self.get_client():
             # The current context is a Client, remove the client column
             self.remove_column('getPrimaryReferrer')
 
@@ -199,13 +229,7 @@ class DoctorsView(BikaListingView):
 
         # Display the internal/external icons, but only if the logged-in user
         # does not belong to an external client
-        if not self.is_external_client_logged():
+        if not self.is_external_user():
             item["before"]["getFullname"] = get_client_aware_html_image(obj)
 
         return item
-
-    @view.memoize
-    def is_external_client_logged(self):
-        """Returns whether the current user belongs to an external client
-        """
-        return is_logged_user_from_external_client()

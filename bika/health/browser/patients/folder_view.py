@@ -131,9 +131,9 @@ class PatientsView(BikaListingView):
         ]
 
         if not self.is_external_user():
-            internal = client and is_from_internal_client(client) or False
-            if internal:
-                # Not an external user, and the client is internal.
+            external = client and is_from_external_client(client)
+            if not external:
+                # Neither the client nor the current user are external
                 # Display share/private filters
                 self.review_states.insert(1, {
                     "id": "shared",
