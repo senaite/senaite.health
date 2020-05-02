@@ -108,6 +108,18 @@ class DoctorsView(BikaListingView):
                 "transitions": [],
                 "columns": self.columns.keys(),
             }, {
+                "id": "shared",
+                "title": _("Active (shared)"),
+                "contentFilter": {"review_state": "shared"},
+                "transitions": [],
+                "columns": self.columns.keys(),
+            }, {
+                "id": "private",
+                "title": _("Active (private)"),
+                "contentFilter": {"review_state": "active"},
+                "transitions": [],
+                "columns": self.columns.keys(),
+            }, {
                 "id": "inactive",
                 "title": _("Inactive"),
                 "contentFilter": {'is_active': False},

@@ -70,6 +70,22 @@ class BatchListingViewAdapter(object):
             # https://github.com/senaite/senaite.core/pull/1577
             rv["transitions"] = []
 
+        # Additional review_satuses
+        self.listing.review_states.insert(1, {
+            "id": "shared",
+            "title": _("Open (shared)"),
+            "contentFilter": {"review_state": "shared"},
+            "transitions": [],
+            "columns": self.listing.columns.keys(),
+        })
+        self.listing.review_states.insert(2, {
+            "id": "private",
+            "title": _("Open (private)"),
+            "contentFilter": {"review_state": "private"},
+            "transitions": [],
+            "columns": self.listing.columns.keys(),
+        })
+
         # Additional columns
         self.add_columns()
 
