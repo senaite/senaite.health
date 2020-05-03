@@ -44,20 +44,20 @@
                             values python:values[0] if len(values) &gt; 0 else {};">
             <!-- Year -->
             <label tal:attributes="for python:fieldName+'_year';"  i18n:translate="">Years</label>:&nbsp;
-            <input type="text" size="4" maxlength="4" readonly="readonly"
+            <input type="text" size="4" maxlength="4"
                 tal:attributes="name python:fieldName+'_year';
                                 id python:fieldName+'_year';
                                 value python:values.get('year','');"/>&nbsp;
             <!-- Month -->
             <label tal:attributes="for python:fieldName+'_month';"  i18n:translate="">Months</label>:&nbsp;
-            <input type="text" size="2" maxlength="2" readonly="readonly"
+            <input type="text" size="2" maxlength="2"
                 tal:attributes="name python:fieldName+'_month';
                                 id python:fieldName+'_month';
                                 value python:values.get('month','');"/>&nbsp;
 
             <!-- Day -->
             <label tal:attributes="for python:fieldName+'_day';"  i18n:translate="">Days</label>:&nbsp;
-            <input type="text" size="2" maxlength="2" readonly="readonly"
+            <input type="text" size="2" maxlength="2"
                 tal:attributes="name python:fieldName+'_day';
                                 id python:fieldName+'_day';
                                 value python:values.get('day','');"/>&nbsp;
