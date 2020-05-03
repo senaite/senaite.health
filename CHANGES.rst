@@ -7,6 +7,7 @@ Changelog
 **Added**
 
 - #183 Internal Clients functionality
+- #187 Allow to introduce the Age instead of Date of Birth for Patient
 
 **Changed**
 
