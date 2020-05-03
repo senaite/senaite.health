@@ -921,9 +921,9 @@ class Patient(Person):
         if dob:
             delta = get_relative_delta(dob)
             data.update({
-                "year": delta.year,
-                "month": delta.month,
-                "day": delta.day,
+                "year": delta.years,
+                "month": delta.months,
+                "day": delta.days,
             })
         return [data]
 
