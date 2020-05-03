@@ -154,7 +154,7 @@ schema = Person.schema.copy() + Schema((
         widget=AddressWidget(
             searchable=True,
             label=_("Country and state"),
-            showLegend=True,
+            showLegend=False,
             showDistrict=True,
             showCopyFrom=False,
             showCity=False,
@@ -807,9 +807,9 @@ schema.moveField('InsuranceNumber', after='InsuranceCompany')
 schema.moveField('PatientIdentifiers', after='InsuranceNumber')
 schema.moveField('Gender', after='PatientIdentifiers')
 schema.moveField('Age', after='Gender')
-schema.moveField('BirthDate', after='Age')
-schema.moveField('BirthDateEstimated', after='BirthDate')
-schema.moveField('AgeSplitted', after='BirthDateEstimated')
+schema.moveField('BirthDateEstimated', after="Age")
+schema.moveField('BirthDate', after='BirthDateEstimated')
+schema.moveField('AgeSplitted', after='BirthDate')
 schema.moveField('CountryState', after='AgeSplitted')
 schema.moveField('MenstrualStatus', after='AgeSplitted')
 schema.moveField('ConsentSMS', after='PrimaryReferrer')
@@ -921,9 +921,9 @@ class Patient(Person):
         if dob:
             delta = get_relative_delta(dob)
             data.update({
-                "year": delta.year,
-                "month": delta.month,
-                "day": delta.day,
+                "year": delta.years,
+                "month": delta.months,
+                "day": delta.days,
             })
         return [data]
 
