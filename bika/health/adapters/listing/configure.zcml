@@ -1,0 +1,37 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="senaite.health">
+
+  <!-- Clients listing with additional icons internal/external -->
+  <subscriber
+    for="bika.lims.browser.clientfolder.ClientFolderContentsView
+         bika.lims.interfaces.IClientFolder"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory=".clients.ClientsListingViewAdapter" />
+
+  <!-- Batches listing with additional filters and columns -->
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.lims.interfaces.IBatchFolder"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory=".batches.BatchListingViewAdapter" />
+
+  <subscriber
+    for="bika.lims.browser.client.ClientBatchesView
+         bika.lims.interfaces.IClient"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory=".batches.BatchListingViewAdapter" />
+
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.health.interfaces.IPatient"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory=".batches.PatientBatchListingViewAdapter" />
+
+  <subscriber
+    for="bika.lims.browser.batchfolder.BatchFolderContentsView
+         bika.health.interfaces.IDoctor"
+    provides="senaite.core.listing.interfaces.IListingViewAdapter"
+    factory=".batches.DoctorBatchListingViewAdapter" />
+
+</configure>

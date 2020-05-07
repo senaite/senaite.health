@@ -26,6 +26,8 @@ from Products.CMFCore.permissions import AccessContentsInformation
 from Products.CMFCore.permissions import ListFolderContents
 from Products.CMFCore.permissions import View
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import _createObjectByType
+from Products.DCWorkflow.Guard import Guard
 from plone import api as ploneapi
 
 from bika.health import bikaMessageFactory as _
@@ -35,6 +37,7 @@ from bika.health.catalog import \
 from bika.health.catalog import getCatalogExtensions
 from bika.health.config import DEFAULT_PROFILE_ID
 from bika.health.permissions import ViewPatients
+from bika.health.utils import add_permission_for_role
 from bika.lims import api
 from bika.lims.catalog import \
     getCatalogDefinitions as getCatalogDefinitionsLIMS
@@ -61,6 +64,7 @@ ROLES = [
 GROUPS = [
     # Tuple of (group_name, roles_group
     ("Doctors", ["Member", "Doctor"], ),
+    ("InternalClients", ["Member", "InternalClient", "Client"])
 ]
 
 ID_FORMATTING = [
@@ -83,6 +87,56 @@ ID_FORMATTING = [
     }
 ]
 
+WORKFLOWS_TO_UPDATE = {
+    "senaite_batch_workflow": {
+        "states": {
+            "open": {
+                "transitions": ("share", ),
+                "preserve_transitions": True,
+            },
+            "shared": {
+                "title": _("Open (shared)"),
+                "description": "",
+                "transitions": ("unshare", "cancel", "close"),
+                "permissions_copy_from": "open",
+                "permissions": {
+                    AccessContentsInformation: (
+                        "Analyst", "LabClerk", "LabManager", "Manager", "Owner",
+                        "Preserver", "Publisher", "RegulatoryInspector",
+                        "Sampler", "SamplingCoordinator", "Verifier",
+                        "InternalClient"),
+                    View: (
+                        "Analyst", "LabClerk", "LabManager", "Manager", "Owner",
+                        "Preserver", "Publisher", "RegulatoryInspector",
+                        "Sampler", "SamplingCoordinator", "Verifier",
+                        "InternalClient"),
+                },
+            }
+        },
+        "transitions": {
+            "share": {
+                "title": _("Share"),
+                "new_state": "shared",
+                "guard": {
+                    "guard_permissions":
+                        "senaite.health: Transition: Share Batch",
+                    "guard_roles": "",
+                    "guard_expr": 'python:here.guard_handler("share")'
+                }
+            },
+            "unshare": {
+                "title": _("Unshare"),
+                "new_state": "activate",
+                "guard": {
+                    "guard_permissions":
+                        "senaite.health: Transition: Unshare Batch",
+                    "guard_roles": "",
+                    "guard_expr": 'python:here.guard_handler("unshare")'
+                }
+            },
+        }
+    }
+}
 
 def post_install(portal_setup):
     """Runs after the last import step of the *default* profile
@@ -117,9 +171,22 @@ def post_install(portal_setup):
     # Setup default ethnicities
     setup_ethnicities(portal)
 
+    # Setup custom workflow(s)
+    setup_workflows(portal)
+
+    # Setup internal clients top-level folder
+    setup_internal_clients(portal)
+
+    # Sort navigation bar
+    sort_nav_bar(portal)
+
     # Allow patients inside clients
     # Note: this should always be run if core's typestool is reimported
     allow_patients_inside_clients(portal)
+
+    # Allow doctors inside clients
+    # Note: this should always be run if core's typestool is reimported
+    allow_doctors_inside_clients(portal)
 
     # Reindex the top level folder in the portal and setup to fix missing icons
     reindex_content_structure(portal)
@@ -162,33 +229,6 @@ def setup_roles_permissions(portal):
     analysis_requests = portal.analysisrequests
     add_permission_for_role(analysis_requests, AddAnalysisRequest, "Client")
     logger.info("Setup roles permissions [DONE]")
-
-
-def add_permission_for_role(folder, permission, role):
-    """Grants a permission to the given role and given folder
-    :param folder: the folder to which the permission for the role must apply
-    :param permission: the permission to be assigned
-    :param role: role to which the permission must be granted
-    :return True if succeed, otherwise, False
-    """
-    roles = filter(lambda perm: perm.get('selected') == 'SELECTED',
-                   folder.rolesOfPermission(permission))
-    roles = map(lambda perm_role: perm_role['name'], roles)
-    if role in roles:
-        # Nothing to do, the role has the permission granted already
-        logger.info(
-            "Role '{}' has permission {} for {} already".format(role,
-                                                                repr(permission),
-                                                                repr(folder)))
-        return False
-    roles.append(role)
-    acquire = folder.acquiredRolesAreUsedBy(permission) == 'CHECKED' and 1 or 0
-    folder.manage_permission(permission, roles=roles, acquire=acquire)
-    folder.reindexObject()
-    logger.info(
-        "Added permission {} to role '{}' for {}".format(repr(permission), role,
-                                                         repr(folder)))
-    return True
 
 
 def setup_ethnicities(portal):
@@ -467,3 +507,151 @@ def allow_patients_inside_clients(portal):
     allowed_types = client.allowed_content_types
     if 'Patient' not in allowed_types:
         client.allowed_content_types = allowed_types + ('Patient', )
+
+
+def allow_doctors_inside_clients(portal):
+    """Allows Doctor content type to be created inside Client
+    """
+    portal_types = api.get_tool('portal_types')
+    client = getattr(portal_types, 'Client')
+    allowed_types = client.allowed_content_types
+    if 'Doctor' not in allowed_types:
+        client.allowed_content_types = allowed_types + ('Doctor', )
+
+
+def setup_internal_clients(portal):
+    """Setup a top-level Internal Clients folder. Internal Clients are stored
+    in this folder and Patients assigned to them will be stored in
+    /patients base folder
+    """
+    logger.info("Setup Internal Clients ...")
+    obj_id = "internal_clients"
+    portal_type = "ClientFolder"
+    if obj_id not in portal:
+        logger.info("Creating object: {}/{}".format(
+            api.get_path(portal), obj_id, portal_type))
+        obj = _createObjectByType(portal_type, portal, obj_id)
+        obj.edit(title="Internal Clients")
+        obj.unmarkCreationFlag()
+
+    logger.info("Setup Internal Clients [DONE]")
+
+
+def sort_nav_bar(portal):
+    """Sort items in the navigation bar
+    """
+    logger.info("Sorting items from navigation bar ...")
+    sorted_ids = [
+        "clients",
+        "internal_clients",
+        "analysisrequests",
+        "batches",
+        "patients",
+        "doctors",
+    ]
+    portal.moveObjectsToTop(ids=sorted_ids)
+
+
+def setup_workflows(portal):
+    """Setup workflows
+    """
+    logger.info("Setting up workflows ...")
+    for wf_id, settings in WORKFLOWS_TO_UPDATE.items():
+        update_workflow(wf_id, settings)
+    logger.info("Setting up workflows [DONE]")
+
+
+def update_workflow(workflow_id, settings):
+    logger.info("Updating workflow '{}' ...".format(workflow_id))
+    wf_tool = api.get_tool("portal_workflow")
+    workflow = wf_tool.getWorkflowById(workflow_id)
+    if not workflow:
+        logger.warn("Workflow '{}' not found [SKIP]".format(workflow_id))
+    states = settings.get("states", {})
+    for state_id, values in states.items():
+        update_workflow_state(workflow, state_id, values)
+
+    transitions = settings.get("transitions", {})
+    for transition_id, values in transitions.items():
+        update_workflow_transition(workflow, transition_id, values)
+
+
+def update_workflow_state(workflow, status_id, settings):
+    logger.info("Updating workflow '{}', status: '{}' ..."
+                .format(workflow.id, status_id))
+
+    # Create the status (if does not exist yet)
+    new_status = workflow.states.get(status_id)
+    if not new_status:
+        workflow.states.addState(status_id)
+        new_status = workflow.states.get(status_id)
+
+    # Set basic info (title, description, etc.)
+    new_status.title = settings.get("title", new_status.title)
+    new_status.description = settings.get("description", new_status.description)
+
+    # Set transitions
+    trans = settings.get("transitions", ())
+    if settings.get("preserve_transitions", False):
+        trans = tuple(set(new_status.transitions+trans))
+    new_status.transitions = trans
+
+    # Set permissions
+    update_workflow_state_permissions(workflow, new_status, settings)
+
+
+def update_workflow_state_permissions(workflow, status, settings):
+    # Copy permissions from another state?
+    permissions_copy_from = settings.get("permissions_copy_from", None)
+    if permissions_copy_from:
+        logger.info("Copying permissions from '{}' to '{}' ..."
+                    .format(permissions_copy_from, status.id))
+        copy_from_state = workflow.states.get(permissions_copy_from)
+        if not copy_from_state:
+            logger.info("State '{}' not found [SKIP]".format(copy_from_state))
+        else:
+            for perm_id in copy_from_state.permissions:
+                perm_info = copy_from_state.getPermissionInfo(perm_id)
+                acquired = perm_info.get("acquired", 1)
+                roles = perm_info.get("roles", acquired and [] or ())
+                logger.info("Setting permission '{}' (acquired={}): '{}'"
+                            .format(perm_id, repr(acquired), ', '.join(roles)))
+                status.setPermission(perm_id, acquired, roles)
+
+    # Override permissions
+    logger.info("Overriding permissions for '{}' ...".format(status.id))
+    state_permissions = settings.get('permissions', {})
+    if not state_permissions:
+        logger.info("No permissions set for '{}' [SKIP]".format(status.id))
+        return
+    for permission_id, roles in state_permissions.items():
+        state_roles = roles and roles or ()
+        if isinstance(state_roles, tuple):
+            acq = 0
+        else:
+            acq = 1
+        logger.info("Setting permission '{}' (acquired={}): '{}'"
+                    .format(permission_id, repr(acq), ', '.join(state_roles)))
+        status.setPermission(permission_id, acq, state_roles)
+
+
+def update_workflow_transition(workflow, transition_id, settings):
+    logger.info("Updating workflow '{}', transition: '{}'"
+                .format(workflow.id, transition_id))
+    if transition_id not in workflow.transitions:
+        workflow.transitions.addTransition(transition_id)
+    transition = workflow.transitions.get(transition_id)
+    transition.setProperties(
+        title=settings.get("title"),
+        new_state_id=settings.get("new_state"),
+        after_script_name=settings.get("after_script", ""),
+        actbox_name=settings.get("action", settings.get("title"))
+    )
+    guard = transition.guard or Guard()
+    guard_props = {"guard_permissions": "",
+                   "guard_roles": "",
+                   "guard_expr": ""}
+    guard_props = settings.get("guard", guard_props)
+    guard.changeFromProperties(guard_props)
+    transition.guard = guard
+

@@ -23,7 +23,7 @@ from Products.CMFCore import permissions
 from bika.health import logger
 from bika.health.config import PROJECTNAME as product
 from bika.health.permissions import AddDoctor
-from bika.health.setuphandlers import add_permission_for_role
+from bika.health.utils import add_permission_for_role
 from bika.lims import api
 from bika.lims.upgrade import upgradestep
 from bika.lims.upgrade.utils import UpgradeUtils

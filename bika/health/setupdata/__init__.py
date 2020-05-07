@@ -302,7 +302,6 @@ class Ethnicities(WorksheetImporter):
 class Patients(WorksheetImporter):
 
     def Import(self):
-        folder = self.context.patients
         rows = self.get_rows(3)
         for row in rows:
             if not row['Firstname'] or not row['PrimaryReferrer']:
@@ -323,8 +322,8 @@ class Patients(WorksheetImporter):
                 raise IndexError("Invalid ethnicity: '%s'" % row['Ethnicity'])
             ethnicity = ethnicity[0].getObject()
 
-            _id = folder.invokeFactory('Patient', id=tmpID())
-            obj = folder[_id]
+            _id = client.invokeFactory('Patient', id=tmpID())
+            obj = client[_id]
             obj.unmarkCreationFlag()
             renameAfterCreation(obj)
             Fullname = (row['Firstname'] + " " + row.get('Surname', '')).strip()

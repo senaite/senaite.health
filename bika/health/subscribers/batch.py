@@ -18,18 +18,72 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
+from bika.health.subscribers import resolve_client
+from bika.health.subscribers import try_share_unshare
+from bika.lims.interfaces import IClient
 
 
-def ObjectCreatedEventHandler(batch, event):
-    """A Batch (ClientCase) can be created inside Patient context. This
-    function assign patient field automatically accordingly
+def ObjectCreatedEventHandler(case, event):
+    """Actions done when a Batch (Clinic Case) is created. Automatically assigns
+    value for "PrimaryReferrer" (Client), "Patient" and "Doctor" fields
     """
-    if not batch.isTemporary():
+    if case.isTemporary():
+        # Assign client
+        client = resolve_client(case, field_name="Client")
+        case.getField("Client").set(case, client)
+
+        # Assign the Patient
+        parent = case.getFolderWhenPortalFactory()
+        if IPatient.providedBy(parent):
+            # Batch is being created inside a Patient
+            cpid = parent.getClientPatientID()
+            case.getField("Patient").set(case, parent)
+            case.getField("ClientPatientID").set(case, cpid)
+
+        elif IDoctor.providedBy(parent):
+            # Batch is being created inside a Doctor
+            case.getField("Doctor").set(case, parent)
+
+
+def ObjectModifiedEventHandler(case, event):
+    """Actions to be done when a Batch is modified. Transitions the case to
+    "shared" or "open" when necessary
+
+    There is an ObjectModifiedEventHandler registered at senaite.core already,
+    that always moves the Batch to the Client folder. Therfore, this handler
+    can be called "before" the call in "core" or "after" the call in core.
+    """
+    # Object being created
+    if case.isTemporary() or case.checkCreationFlag():
         return
 
-    parent = batch.getFolderWhenPortalFactory()
-    if IPatient.providedBy(parent):
-        # Assign the Patient to the Batch
-        batch.getField("Patient").set(batch, parent)
-        batch.getField("ClientPatientID").set(batch, parent)
+    if not IClient.providedBy(case.aq_parent):
+        # Let core's default ObjectModifiedEvent deal with it, we will "trap"
+        # his modif later in ObjectMovedEventHandler
+        return
+
+    # Try to share/unshare the batch based on its type of Client
+    try_share_unshare(case)
+
+
+def ObjectMovedEventHandler(case, event):
+    """Actions to be done when a Batch is modified. Transitions the case to
+    "shared" or "active" when necessary
+
+    This event is necessary because in senaite.core there is an
+    ObjectModifiedEventHandler registered for type Batch already, that always
+    moves the Batch to the client folder. Therefore we also need these event to
+    "trap" when the object is moved to a Client by core's event.
+    """
+    # Object being created
+    if case.isTemporary() or case.checkCreationFlag():
+        return
+
+    # Do nothing if only the title changes
+    if event.oldName != event.newName:
+        return
+
+    # Try to share/unshare the batch based on its type of Client
+    try_share_unshare(case)

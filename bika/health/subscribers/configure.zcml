@@ -1,18 +1,68 @@
 <configure xmlns="http://namespaces.zope.org/zope"
-           i18n_domain="senaite.core">
+           i18n_domain="senaite.health">
 
-  <!-- Patient modification. If the patient has a client assigned, this event
-   moves the Patient into the Client's folder -->
+  <!-- Patient created
+   Assigns the value for PrimaryReferrer field when the Patient is created from
+   inside a Client folder -->
+  <subscriber
+    for="bika.health.interfaces.IPatient
+         zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+    handler=".patient.ObjectCreatedEventHandler" />
+
+  <!-- Patient modified
+   Moves the Patient inside its Client folder. If the client is internal, it
+   also transitions the Patient to shared status -->
   <subscriber
     for="bika.health.interfaces.IPatient
          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     handler=".patient.ObjectModifiedEventHandler" />
 
-  <!-- Batch creation. Assign Patient field to a Batch automatically when
-   created inside a Patient -->
+  <!-- Doctor created
+   Assigns the value for PrimaryReferrer field when the Doctor is created from
+   inside a Client folder -->
+  <subscriber
+    for="bika.health.interfaces.IDoctor
+         zope.lifecycleevent.interfaces.IObjectCreatedEvent"
+    handler=".doctor.ObjectCreatedEventHandler" />
+
+  <!-- Doctor created
+   Moves the Doctor inside its Client folder. If the client is internal, it
+   also transitions the Doctor to shared status -->
+  <subscriber
+    for="bika.health.interfaces.IDoctor
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".doctor.ObjectModifiedEventHandler" />
+
+
+  <!-- Batch created
+  Assign value for Patient field when created inside a Patient -->
   <subscriber
     for="bika.lims.interfaces.IBatch
          zope.lifecycleevent.interfaces.IObjectCreatedEvent"
     handler=".batch.ObjectCreatedEventHandler" />
+
+  <!-- Batch modified
+  If the batch belongs to an internal client, this event moves the Batch to the
+  base /batces folder. The event moves the Batch to the Client folder when the
+  client is external. Note there is an ObjectModified subscriber for IBatch in
+  senaite.core already. And we cannot guarantee the order in which the events
+  will be triggered. Therefore, there is the need to register another subscriber
+  for ObjectMovedEvent (see below) -->
+  <subscriber
+    for="bika.lims.interfaces.IBatch
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".batch.ObjectModifiedEventHandler" />
+
+  <!-- Batch moved
+  We use an ObjectMovedEvent because ModifiedEvent for Batch is already present
+  in senaite.core and subscribers cannot be overriden. ObjectModifiedEvent from
+  senaite.core moves Batches to the Client's folder if the client is specified
+  in the Schema's field. In health we have to handle Batches for Internal
+  Clients, so this event is in charge to ensure the Batch always belong to the
+  parent folder depending on the client type -->
+  <subscriber
+    for="bika.lims.interfaces.IBatch
+         zope.lifecycleevent.interfaces.IObjectMovedEvent"
+    handler=".batch.ObjectMovedEventHandler" />
 
 </configure>

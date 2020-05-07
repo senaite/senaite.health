@@ -11,6 +11,14 @@
     original="getClient"
     replacement=".batch.getClient"/>
 
+  <!-- Contact's _linkUser -->
+  <monkey:patch
+    description=""
+    class="bika.lims.content.contact.Contact"
+    original="_linkUser"
+    replacement=".contact._linkUser"/>
+
+
   <!-- TODO Remove for compatibility with senaite.core v1.3.3
    Superseded by https://github.com/senaite/senaite.core/pull/1466
   -->

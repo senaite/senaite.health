@@ -22,6 +22,8 @@ from zope.component import adapts
 
 from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
+from bika.health.utils import is_internal_client
+from bika.health.utils import resolve_query_for_shareable
 from bika.lims import api
 from bika.lims.adapters.addsample import AddSampleObjectInfoAdapter
 from bika.lims.interfaces import IAddSampleFieldsFlush
@@ -63,7 +65,7 @@ class ClientDefaultFieldValue(AddFormFieldDefaultValueAdapter):
 
         # Try to get the client from selected Patient
         patient = PatientDefaultFieldValue(self.request)(context)
-        client = patient and patient.getPrimaryReferrer() or None
+        client = patient and patient.getClient() or None
         if client:
             return client
 
@@ -134,17 +136,12 @@ class AddSampleClientInfo(AddSampleObjectInfoAdapter):
     """
     def get_object_info(self):
         object_info = self.get_base_info()
-        uid = api.get_uid(self.context)
-        filter_queries = {
-            # Allow to choose Patients from same Client only
-            "Patient": {
-                "getPrimaryReferrerUID": [uid, None],
-            },
-            "ClientPatientID": {
-                "getPrimaryReferrerUID": [uid, None],
-            }
-        }
-        object_info["filter_queries"] = filter_queries
+
+        # Apply filter for shareable types
+        types = ["Patient", "Doctor", "Batch"]
+        resolver = resolve_query_for_shareable
+        filters = map(lambda st: (st, resolver(st, self.context)), types)
+        object_info["filter_queries"] = dict(filters)
         return object_info
 
 
@@ -176,14 +173,10 @@ class AddSampleBatchInfo(AddSampleObjectInfoAdapter):
         # generic filters when a client is selected too
         filter_queries = {}
         if client:
-            uid = api.get_uid(client)
+            query = {"query": api.get_path(client), "depth": 1}
             filter_queries = {
-                "Patient": {
-                    "getPrimaryReferrerUID": [uid, ""],
-                },
-                "ClientPatientID": {
-                    "getPrimaryReferrerUID": [uid, ""],
-                }
+                "Patient": {"path": query},
+                "ClientPatientID": {"path": query},
             }
         object_info["field_values"] = field_values
         object_info["filter_queries"] = filter_queries

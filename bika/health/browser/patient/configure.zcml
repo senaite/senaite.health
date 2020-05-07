@@ -12,15 +12,6 @@
     layer="bika.health.interfaces.IBikaHealth"
   />
 
-  <!-- Batches filtered by patient -->
-  <subscriber
-    for="bika.lims.browser.batchfolder.BatchFolderContentsView
-         bika.health.interfaces.IPatient"
-    provides="senaite.core.listing.interfaces.IListingViewAdapter"
-    factory="bika.health.browser.patient.batches.PatientBatchListingViewAdapter"
-  />
-
-
     <browser:page
       for="bika.health.interfaces.IPatient"
       name="analysisrequests"

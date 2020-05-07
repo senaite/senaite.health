@@ -26,7 +26,6 @@ from Products.CMFPlone.utils import safe_unicode
 from zope.interface import implements
 
 from bika.health import bikaMessageFactory as _
-from bika.health import logger
 from bika.health.config import *
 from bika.health.interfaces import IPatient
 from bika.health.utils import get_relative_delta
@@ -63,6 +62,7 @@ schema = Person.schema.copy() + Schema((
     ),
     ReferenceField(
         'PrimaryReferrer',
+        required=1,
         allowed_types=('Client',),
         relationship='PatientClient',
         widget=ReferenceWidget(
@@ -1021,14 +1021,6 @@ class Patient(Person):
         """
         return self.objectValues('Multifile')
 
-    def getPrimaryReferrer(self):
-        """Returns the client the current Patient is assigned to. Delegates the
-        action to function getClient.
-        NOTE: This is kept for backwards compatibility
-        """
-        logger.warn("Patient.getPrimaryReferrer: better use 'getClient'")
-        return self.getClient()
-
     def getClient(self):
         """Returns the client the current Patient is assigned to, if any
         """
@@ -1041,11 +1033,6 @@ class Patient(Person):
         if IClient.providedBy(client):
             return client
         return None
-
-    def setClient(self, value):
-        """Sets the client the current Patient has to be assigned to
-        """
-        self.setPrimaryReferrer(value)
 
     def getClientID(self):
         """Returns the ID of the client this Patient belongs to or None

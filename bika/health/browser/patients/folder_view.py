@@ -20,27 +20,27 @@
 
 import collections
 
-from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.layout.globals.interfaces import IViewView
-from zope.interface import implements
+from plone.memoize import view
 
 from bika.health import bikaMessageFactory as _
 from bika.health.catalog import CATALOG_PATIENTS
 from bika.health.interfaces import IPatients
 from bika.health.permissions import AddPatient
 from bika.health.utils import get_age_ymd
+from bika.health.utils import get_client_aware_html_image
+from bika.health.utils import get_client_from_chain
 from bika.health.utils import get_resource_url
+from bika.health.utils import is_from_external_client
 from bika.lims import api
 from bika.lims.api.security import check_permission
 from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims.interfaces import IClient
+from bika.lims.utils import get_image
 from bika.lims.utils import get_link
 
 
 class PatientsView(BikaListingView):
     """Listing View for all Patients in the System
     """
-    implements(IFolderContentsView, IViewView)
 
     def __init__(self, context, request):
         super(PatientsView, self).__init__(context, request)
@@ -50,13 +50,19 @@ class PatientsView(BikaListingView):
         self.show_select_row = False
         self.show_select_column = True
         self.show_select_all_checkboxes = False
-        request.set("disable_border", 1)
 
         self.sort_on = "created"
         self.catalog = CATALOG_PATIENTS
         self.contentFilter = {'portal_type': 'Patient',
                               'sort_on': 'created',
                               'sort_order': 'descending'}
+
+        client = self.get_client()
+        if client:
+            # Display the Patients the belong to this Client only
+            self.contentFilter["path"] = {
+                "query": api.get_path(client), "depth": 1
+            }
 
         self.columns = collections.OrderedDict((
             ("Title", {
@@ -123,13 +129,58 @@ class PatientsView(BikaListingView):
             },
         ]
 
+        if not self.is_external_user():
+            external = client and is_from_external_client(client)
+            if not external:
+                # Neither the client nor the current user are external
+                # Display share/private filters
+                self.review_states.insert(1, {
+                    "id": "shared",
+                    "title": _("Active (shared)"),
+                    "contentFilter": {"review_state": "shared"},
+                    "transitions": [],
+                    "columns": self.columns.keys(),
+                })
+                self.review_states.insert(2, {
+                    "id": "private",
+                    "title": _("Active (private)"),
+                    "contentFilter": {"review_state": "active"},
+                    "transitions": [],
+                    "columns": self.columns.keys(),
+                })
+
+    @view.memoize
+    def get_client(self):
+        """Returns the client this context is from, if any
+        """
+        return get_client_from_chain(self.context)
+
+    @view.memoize
+    def get_user_client(self):
+        """Returns the client from current user, if any
+        """
+        return api.get_current_client()
+
+    @view.memoize
+    def is_external_user(self):
+        """Returns whether the current user belongs to an external client
+        """
+        client = self.get_user_client()
+        if not client:
+            return False
+        return is_from_external_client(client)
+
     def update(self):
         """Before template render hook
         """
         super(PatientsView, self).update()
 
         if IPatients.providedBy(self.context):
+            # Top-level patients listing
             self.request.set("disable_border", 1)
+
+        elif "disable_border" in self.request:
+            del(self.request["disable_border"])
 
         # By default, only users with AddPatient permissions for the current
         # context can add patients.
@@ -141,22 +192,19 @@ class PatientsView(BikaListingView):
             }
         }
 
-        # If current user is a client contact and current context is not a
-        # Client, then modify the url for Add action so the Patient gets created
-        # inside the Client object to which the current user belongs. The
-        # reason is that Client contacts do not have privileges to create
-        # Patients inside portal/patients
-        if not IClient.providedBy(self.context):
-            # Get the client the current user belongs to
-            client = api.get_current_client()
-            if client and check_permission(AddPatient, client):
-                add_url = self.context_actions[_("Add")]["url"]
-                add_url = "{}/{}".format(api.get_url(client), add_url)
-                self.context_actions[_("Add")]["url"] = add_url
-                del(self.context_actions[_("Add")]["permission"])
+        # If current user is a client contact, then modify the url for Add
+        # action so the Patient gets created, inside the Client object to which
+        # the current user belongs. The reason is that the permission
+        # "AddPatient" for client contacts in base folders is not granted
+        client = self.get_user_client()
+        if client and check_permission(AddPatient, client):
+            add_url = self.context_actions[_("Add")]["url"]
+            add_url = "{}/{}".format(api.get_url(client), add_url)
+            self.context_actions[_("Add")]["url"] = add_url
+            del(self.context_actions[_("Add")]["permission"])
 
-        else:
-            # The current context is a Client, remove the title column
+        if self.get_client():
+            # The current context belongs to a Client, remove the title column
             self.remove_column('getPrimaryReferrerTitle')
 
     def folderitems(self, full_objects=False, classic=False):
@@ -167,7 +215,13 @@ class PatientsView(BikaListingView):
         # Date of Birth
         dob = obj.getBirthDate
         item['getBirthDate'] = dob and self.ulocalized_time(dob) or ""
-        item["age"] = dob and get_age_ymd(dob) or ""
+        try:
+            item["age"] = dob and get_age_ymd(dob) or ""
+        except:
+            # Wrong date??
+            msg = _("Date of Birth might be wrong")
+            img = get_image("exclamation.png", title=msg)
+            item["replace"]["age"] = img
 
         # make the columns patient title, patient ID and client patient ID
         # redirect to the Analysis Requests of the patient
@@ -176,4 +230,12 @@ class PatientsView(BikaListingView):
             value = getattr(obj, column, None)
             if value:
                 item["replace"][column] = get_link(ars_url, value)
+
+        # Display the internal/external icons, but only if the logged-in user
+        # does not belong to an external client
+        if not self.is_external_user():
+            # Renders an icon (shared/private/warn) next to the title of the
+            # item based on the client
+            item["before"]["Title"] = get_client_aware_html_image(obj)
+
         return item
