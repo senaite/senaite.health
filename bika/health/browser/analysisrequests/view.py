@@ -62,8 +62,7 @@ class AnalysisRequestsView(BaseView):
             'title': _('Doctor'),
         }
 
-    def folderitems(self, full_objects=False):
-        logger.info("*** Bika Health's folderitems ***")
+    def folderitems(self):
         pm = getToolByName(self.context, "portal_membership")
         member = pm.getAuthenticatedMember()
         # We will use this list for each element
@@ -84,8 +83,7 @@ class AnalysisRequestsView(BaseView):
                 rs['columns'].insert(i, 'getPatientID')
                 rs['columns'].insert(i, 'getPatientTitle')
                 rs['columns'].insert(i, 'getDoctorTitle')
-        return super(AnalysisRequestsView, self).folderitems(
-            full_objects=False, classic=False)
+        return super(AnalysisRequestsView, self).folderitems()
 
     @viewcache.memoize
     def get_brain(self, uid, catalog):
@@ -98,8 +96,7 @@ class AnalysisRequestsView(BaseView):
         return None
 
     def folderitem(self, obj, item, index):
-        item = super(AnalysisRequestsView, self)\
-            .folderitem(obj, item, index)
+        item = super(AnalysisRequestsView, self).folderitem(obj, item, index)
 
         url = '{}/analysisrequests'.format(obj.getPatientURL)
         item['getPatientID'] = obj.getPatientID

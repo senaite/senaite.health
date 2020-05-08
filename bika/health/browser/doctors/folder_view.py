@@ -202,21 +202,17 @@ class DoctorsView(BikaListingView):
     def folderitem(self, obj, item, index):
         """Applies new properties to the item to be rendered
         """
-        try:
-            doctor = api.get_object(obj)
-        except:
-            return item
-
+        obj = api.get_object(obj)
         # Replace client name with the link
         item['getPrimaryReferrer'] = ""
-        client = doctor.getClient()
+        client = obj.getClient()
         if client:
             client_link = get_link(api.get_url(client), api.get_title(client))
             item["replace"]["getPrimaryReferrer"] = client_link
 
         # Replace doctor's full name with a link
         fullname = obj.getFullname()
-        doctor_url = "{}/analysisrequests".format(api.get_url(doctor))
+        doctor_url = "{}/analysisrequests".format(api.get_url(obj))
         doctor_link = get_link(doctor_url, fullname)
         item["replace"]["getFullname"] = doctor_link
         doctor_link = get_link(doctor_url, obj.getDoctorID())

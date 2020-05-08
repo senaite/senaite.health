@@ -18,22 +18,21 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from AccessControl.SecurityInfo import ClassSecurityInfo
-from Products.ATContentTypes.content import schemata
-from Products.Archetypes import atapi
-from Products.Archetypes.ArchetypeTool import registerType
-from Products.CMFCore.utils import getToolByName
-from bika.lims.browser.bika_listing import BikaListingView
-from bika.health.config import PROJECTNAME
-from bika.lims import bikaMessageFactory as _b
-from bika.health import bikaMessageFactory as _
-from bika.lims.content.bikaschema import BikaFolderSchema
-from bika.health.interfaces import IDiseases
-from plone.app.layout.globals.interfaces import IViewView
 from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.folder.folder import ATFolder, ATFolderSchema
+from plone.app.folder.folder import ATFolder
+from plone.app.folder.folder import ATFolderSchema
+from plone.app.layout.globals.interfaces import IViewView
+from Products.Archetypes import atapi
+from Products.ATContentTypes.content import schemata
 from zope.interface.declarations import implements
-from operator import itemgetter
+
+from bika.health import bikaMessageFactory as _
+from bika.health.config import PROJECTNAME
+from bika.health.interfaces import IDiseases
+from bika.lims import api
+from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.utils import get_link
+
 
 class DiseasesView(BikaListingView):
     implements(IFolderContentsView, IViewView)
@@ -89,16 +88,12 @@ class DiseasesView(BikaListingView):
         # Don't allow any context actions on Diseases folder
         self.request.set("disable_border", 1)
 
-    def folderitems(self):
-        items = BikaListingView.folderitems(self)
-        for x in range(len(items)):
-            if not items[x].has_key('obj'): continue
-            obj = items[x]['obj']
-            items[x]['Description'] = obj.Description()
-            items[x]['replace']['Title'] = "<a href='%s'>%s</a>" % \
-                 (items[x]['url'], items[x]['Title'])
+    def folderitem(self, obj, item, index):
+        obj = api.get_object(obj)
+        item["Description"] = obj.Description()
+        item["replace"]["Title"] = get_link(item["url"], item["Title"])
+        return item
 
-        return items
 
 schema = ATFolderSchema.copy()
 class Diseases(ATFolder):

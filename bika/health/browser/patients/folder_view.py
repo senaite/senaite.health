@@ -207,10 +207,6 @@ class PatientsView(BikaListingView):
             # The current context belongs to a Client, remove the title column
             self.remove_column('getPrimaryReferrerTitle')
 
-    def folderitems(self, full_objects=False, classic=False):
-        # Force the folderitems to work with brains instead of objects
-        return BikaListingView.folderitems(self, classic=classic)
-
     def folderitem(self, obj, item, index):
         # Date of Birth
         dob = obj.getBirthDate
