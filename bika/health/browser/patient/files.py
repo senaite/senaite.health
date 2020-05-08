@@ -102,6 +102,7 @@ class PatientMultifileView(BikaListingView):
     def folderitem(self, obj, item, index):
         """Augment folder listing item with additional data
         """
+        obj = api.get_object(obj)
         url = item.get("url")
         title = item.get("DocumentID")
 

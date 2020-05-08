@@ -18,13 +18,16 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from plone.app.content.browser.interfaces import IFolderContentsView
 from Products.CMFCore.utils import getToolByName
+from zope.interface.declarations import implements
+
+from bika.lims import api
 from bika.lims import bikaMessageFactory as _
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.lims.permissions import ManageInvoices
 from bika.lims.utils import currency_format
-from plone.app.content.browser.interfaces import IFolderContentsView
-from zope.interface.declarations import implements
+from bika.lims.utils import get_link
 
 """ This file contains an invoice type folder to be used in insurance company's stuff.
 """
@@ -108,24 +111,13 @@ class InvoiceFolderView(BikaListingView):
                 if patient and patient.getInsuranceCompany() else None
         return icuid == self.context.UID()
 
-    def folderitems(self, full_objects=False):
-        """
-        :return: All the invoices related with the Insurance Company's clients.
-        """
+    def folderitem(self, obj, item, index):
+        obj = api.get_object(obj)
         currency = currency_format(self.context, 'en')
-        self.show_all = True
-        items = BikaListingView.folderitems(self, full_objects)
-        l = []
-        for item in items:
-            obj = item['obj']
-            number_link = "<a href='%s'>%s</a>" % (
-                item['url'], obj.getId()
-            )
-            item['replace']['id'] = number_link
-            item['client'] = obj.getClient().Title()
-            item['invoicedate'] = self.ulocalized_time(obj.getInvoiceDate())
-            item['subtotal'] = currency(obj.getSubtotal())
-            item['vatamount'] = currency(obj.getVATAmount())
-            item['total'] = currency(obj.getTotal())
-            l.append(item)
-        return l
+        item['replace']['id'] = get_link(item["url"], api.get_id(obj))
+        item['client'] = obj.getClient().Title()
+        item['invoicedate'] = self.ulocalized_time(obj.getInvoiceDate())
+        item['subtotal'] = currency(obj.getSubtotal())
+        item['vatamount'] = currency(obj.getVATAmount())
+        item['total'] = currency(obj.getTotal())
+        return item

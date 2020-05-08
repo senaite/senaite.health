@@ -125,6 +125,7 @@ class VaccinationCentersView(BikaListingView):
             the template
         :index: current index of the item
         """
+        obj = api.get_object(obj)
         name = obj.getName()
         url = api.get_url(obj)
 
