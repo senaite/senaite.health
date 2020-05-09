@@ -45,7 +45,7 @@ Installation
 ============
 
 Please follow the `installation instructions for SENAITE LIMS
-<https://github.com/senaite/senaite.lims#installation>`_ first.
+<https://www.senaite.com/docs/installation>`_ first.
 
 After SENAITE LIMS is installed, stop the instance and add `senaite.health`
 into the `eggs` list inside the `[buildout]` section of your `buildout.cfg`::
