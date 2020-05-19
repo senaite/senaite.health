@@ -1,0 +1,14 @@
+<div tal:omit-tag=""
+     tal:condition="python:view.is_visible()"
+     i18n:domain="senaite.health">
+
+  <div class="visualClear"></div>
+
+  <div id="portal-alert">
+    <div class="portlet-alert-item alert alert-warning">
+      <p class="title">
+        Internal clients share Patients, Clinical Cases and Doctors
+      </p>
+    </div>
+  </div>
+</div>

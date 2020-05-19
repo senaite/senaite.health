@@ -116,24 +116,17 @@ function HealthPatientEditView() {
      * Management of events and triggers
      */
     function loadEventHandlers() {
-        // Mod the Age if DOB is selected
-        if ($("#Age").length) {
-            $("#Age").live('change', function(){
-                if (parseInt($(this).val()) > 0) {
-                    var d = new Date();
-                    year = d.getFullYear() - $(this).val();
-                    var dob = year + "-01-01";
-                    $("#BirthDate").val(dob);
-                    calculateAge();
-                    $("#BirthDateEstimated").attr('checked', true);
-                } else {
-                    $("#BirthDate".val(""));
-                    calculateAge();
-                }
-            });
-        }
         $("#BirthDate").live('change', function(){
-            calculateAge();
+            var estimated = $("#BirthDateEstimated").is(":checked");
+            if (estimated == false) {
+              calculateAge();
+            }
+        });
+        $("input[id^='AgeSplitted_']").live('change', function(){
+            var estimated = $("#BirthDateEstimated").is(":checked");
+            if (estimated == true) {
+              calculateDoB();
+            }
         });
         $("#CountryState.country").live('change', function(){
             $("#PhysicalAddress.country").val($(this).val());
@@ -171,7 +164,61 @@ function HealthPatientEditView() {
         $("#PatientAsGuarantor").live('change',function() {
             hide_show_guarantor_fields();
         });
+        $("#BirthDateEstimated").live("change", function() {
+          toggle_dob_estimated();
+        });
+        toggle_dob_estimated();
         hide_show_guarantor_fields();
+    }
+
+    function toggle_dob_estimated() {
+      var estimated = $("#BirthDateEstimated").is(":checked");
+      if (estimated == true) {
+        // DoB estimated. AgeSplitted becomes required
+        $("#archetypes-fieldname-BirthDate").hide();
+        $("#archetypes-fieldname-AgeSplitted").show();
+        make_required("AgeSplitted");
+        make_unrequired("BirthDate");
+
+      } else {
+        // DoB not estimated. BirthDate becomes required
+        $("#archetypes-fieldname-BirthDate").show();
+        $("#archetypes-fieldname-AgeSplitted").hide();
+        make_required("BirthDate");
+        make_unrequired("AgeSplitted");
+      }
+    }
+
+    /**
+     * Returns whether the value passed in is an integer or not
+     */
+    function isInt(value) {
+      return !isNaN(value) &&
+             parseInt(Number(value)) == value &&
+             !isNaN(parseInt(value, 10));
+    }
+
+    /**
+     * Calculates the date of birth by using the values for Age
+     */
+    function calculateDoB() {
+      var years = $("#AgeSplitted_year").val();
+      var months = $("#AgeSplitted_month").val();
+      var days = $("#AgeSplitted_day").val();
+
+      years = isInt(years) ? parseInt(years) : 0;
+      months = isInt(months) ? parseInt(months) : 0;
+      days = isInt(days) ? parseInt(days) : 0;
+
+      // Calculate in millis (not accurate!)
+      total_days = (years * 365.2425) + (months * 30) + days
+      millis = total_days * 24 * 60 * 60 * 1000;
+      var dateOfBirth = "";
+      if (millis > 0) {
+        dateOfBirth = new Date(new Date().getTime() - millis);
+        dateOfBirth = dateOfBirth.toISOString().slice(0,10);
+      }
+      $("#BirthDate").val(dateOfBirth);
     }
 
     /**

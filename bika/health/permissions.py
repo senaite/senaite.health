@@ -34,9 +34,16 @@ AddVaccinationCenter = 'senaite.health: Add VaccinationCenter'
 # ======================
 TransitionActivatePatient = "senaite.health: Transition: Activate Patient"
 TransitionDeactivatePatient = "senaite.health: Transition: Deactivate Patient"
+TransitionSharePatient = "senaite.health: Transition: Share Patient"
+TransitionUnsharePatient = "senaite.health: Transition: Unshare Patient"
 
 TransitionActivateDoctor = "senaite.health: Transition: Activate Doctor"
 TransitionDeactivateDoctor = "senaite.health: Transition: Deactivate Doctor"
+TransitionShareDoctor = "senaite.health: Transition: Share Doctor"
+TransitionUnshareDoctor = "senaite.health: Transition: Unshare Doctor"
+
+TransitionShareBatch = "senaite.health: Transition: Share Batch"
+TransitionUnshareBatch = "senaite.health: Transition: Unshare Batch"
 
 
 # Behavioral permissions

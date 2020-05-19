@@ -1,0 +1,58 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="senaite.health">
+
+
+  <!-- ClientAwareReferenceWidgetAdapter
+  It handles client-aware objects and inject additional search criteria for
+  client-bound reference fields as required and in accordance with the type of
+  client (internal/external) -->
+  <adapter
+    for="bika.lims.interfaces.IBatch
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For when objects are created inside a Client -->
+  <adapter
+    for="bika.lims.interfaces.IClient
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For when objects are created inside Batches folder -->
+  <adapter
+    for="bika.lims.interfaces.IBatchFolder
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For when objects are created inside Doctors folder -->
+  <adapter
+    for="bika.health.interfaces.IDoctors
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For when objects are created inside a Doctor -->
+  <adapter
+    for="bika.health.interfaces.IDoctor
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For when objects are created inside a Patient -->
+  <adapter
+    for="bika.health.interfaces.IPatient
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+  <!-- For AnalysisRequest view (editable fields) -->
+  <adapter
+    for="bika.lims.interfaces.IAnalysisRequest
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".ClientAwareReferenceWidgetAdapter"
+    provides=".IReferenceWidgetAdapter" />
+
+</configure>

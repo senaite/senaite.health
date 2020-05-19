@@ -6,7 +6,8 @@
 
 from setuptools import setup, find_packages
 
-version = '1.2.3.1'
+
+version = '1.2.4'
 
 setup(
     name='senaite.health',
@@ -34,13 +35,17 @@ setup(
     zip_safe=False,
     install_requires=[
         "archetypes.schemaextender",
-        "senaite.lims>=1.3.3",
-        "senaite.lims<1.3.4"
+        "senaite.lims>=1.3.3.1",
         "senaite.panic",
-        # Python 2.7 compatibility
-        #
-        # https://pypi.org/project/zipp
-        "zipp<2.0.0",
+
+        # TO REMOVE when core 1.3.4 gets published
+        # These dependencies are required by Scrutinizer
+        # cssselect2 0.3.0 does not support Python 2.x anymore
+        'cssselect2<0.3.0',
+        # beautifulsoup4 4.9.0 requires 'soupsieve<2.0'
+        'soupsieve<2.0.0',
+        # dependency for jsonapi
+        'simplejson',
     ],
     extras_require={
         'test': [

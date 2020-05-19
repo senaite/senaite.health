@@ -17,7 +17,7 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
-
+from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
 from bika.lims.interfaces import IClient
@@ -38,14 +38,19 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
         if mode == "edit":
             container = self.context.aq_parent
 
-            # If the Batch is created or edited inside either Client or Patient,
-            # make Client field to be rendered, but hidden to prevent the error
-            # message "Patient is required, please correct".
+            # If the Batch is created or edited inside a Client, Patient or
+            # Doctor make Client field to be rendered, but hidden to prevent
+            # the error message "Patient is required, please correct".
             if IPatient.providedBy(container):
                 return "readonly"
 
             elif IClient.providedBy(container):
                 return "readonly"
+
+            elif IDoctor.providedBy(container):
+                # Doctor can be assigned to a Client or not!
+                if container.getClient():
+                    return "readonly"
 
         return default
 
@@ -56,7 +61,7 @@ class PatientFieldsVisibility(SenaiteATWidgetVisibility):
 
     def __init__(self, context):
         super(PatientFieldsVisibility, self).__init__(
-            context=context, sort=10, field_names=["Patient", "ClientPatientID"])
+            context=context, sort=10, field_names=["Patient"])
 
     def isVisible(self, field, mode="view", default="visible"):
         """Renders Patient and ClientPatientID fields as hidden if the current
@@ -74,3 +79,26 @@ class PatientFieldsVisibility(SenaiteATWidgetVisibility):
                 return "readonly"
 
         return default
+
+
+class DoctorFieldVisibility(SenaiteATWidgetVisibility):
+    """Handles the Doctor field visibility in Batch context
+    """
+
+    def __init__(self, context):
+        super(DoctorFieldVisibility, self).__init__(
+            context=context, field_names=["Doctor"])
+
+    def isVisible(self, field, mode="view", default="visible"):
+        """Renders the Doctor field as hidden if the current mode is "edit" and
+        the container is a Doctor
+        """
+        if mode == "edit":
+            container = self.context.aq_parent
+            if IDoctor.providedBy(container):
+                # Doctor can be assigned to a Client or not!
+                if container.getClient():
+                    return "readonly"
+
+        return default
+

@@ -81,6 +81,4 @@ class Doctors(ATFolder):
         items.sort(lambda x, y: cmp(x['title'].lower(), y['title'].lower()))
         return items
 
-schemata.finalizeATCTSchema(schema, folderish=True, moveDiscussion=False)
-
 registerType(Doctors, PROJECTNAME)

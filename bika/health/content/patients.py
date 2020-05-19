@@ -25,12 +25,13 @@ from zope.interface.declarations import implements
 
 from bika.health.config import PROJECTNAME
 from bika.health.interfaces import IPatients
+from bika.lims.interfaces import IHaveNoBreadCrumbs
 
 schema = ATFolderSchema.copy()
 
 
 class Patients(ATFolder):
-    implements(IPatients)
+    implements(IPatients, IHaveNoBreadCrumbs)
     displayContentsTab = False
     schema = schema
 

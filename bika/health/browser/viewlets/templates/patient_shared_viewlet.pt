@@ -1,0 +1,40 @@
+<div tal:omit-tag=""
+     tal:condition="python:view.is_visible()"
+     i18n:domain="senaite.health">
+
+  <div class="visualClear"></div>
+
+  <div id="portal-alert"
+    tal:define="shared      python: view.is_shared_patient();
+                client_name python: view.get_client_name()">
+
+    <div class="portlet-alert-item alert alert-info" tal:condition="shared">
+      <p class="title">
+        <tal:without_client condition="not:client_name">
+          <span i18n:translate="">
+            This Patient is shared among Internal Clients
+          </span>
+        </tal:without_client>
+
+        <tal:with_client condition="client_name">
+          <span i18n:translate="">
+            This Patient is shared among Internal Clients.
+          </span>
+          <span i18n:translate="">The owner is </span>
+          '<span tal:content="client_name"/>'
+        </tal:with_client>
+      </p>
+
+    </div>
+
+    <div class="portal-alert-item alert alert-warning" tal:condition="not:shared">
+      <p class="title">
+        <span i18n:translate="">
+          This Patient is private.
+        </span>
+        <span i18n:translate="">The owner is </span>
+        '<span tal:content="client_name"/>'
+      </p>
+    </div>
+  </div>
+</div>

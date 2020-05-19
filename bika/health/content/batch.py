@@ -142,9 +142,10 @@ class BatchSchemaExtender(object):
             ),
         ),
         ExtDateTimeField('OnsetDate',
-              widget=DateTimeWidget(
-                  label=_('Onset Date'),
-              ),
+            required = 1,
+            widget=DateTimeWidget(
+                label=_('Onset Date'),
+            ),
         ),
         ExtRecordsField('PatientAgeAtCaseOnsetDate',
             widget=SplittedDateWidget(
@@ -282,7 +283,7 @@ class BatchSchemaExtender(object):
             widget=ReferenceWidget(
                 label=_b("Client Patient ID"),
                 size=20,
-                visible={'edit': 'visible',
+                visible={'edit': 'invisible',
                          'view': 'visible',
                          'add': 'edit'},
                 catalog_name='bikahealth_catalog_patient_listing',
@@ -323,10 +324,10 @@ class BatchSchemaExtender(object):
                                 'title',
                                 'description',
                                 'BatchID',
-                                'ClientPatientID',
-                                'Patient',
                                 'Client',
                                 'ClientBatchID',
+                                'ClientPatientID',
+                                'Patient',
                                 'Doctor',
                                 'BatchDate',
                                 'OnsetDate',
@@ -370,4 +371,5 @@ class BatchSchemaModifier(object):
         doctor_required = get_field_value(setup, "CaseDoctorIsMandatory",
                                           default=False)
         schema['Doctor'].required = doctor_required
+        schema['Client'].required = True
         return schema

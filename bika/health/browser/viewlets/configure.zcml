@@ -1,0 +1,39 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           i18n_domain="senaite.health">
+
+  <!-- Viewlet that display a message stating whether the Patient is shared
+    among Internal Clients or rather is a private patient from a Client -->
+  <browser:viewlet
+    for="bika.health.interfaces.IPatient"
+    name="bika.health.patient_shared_viewlet"
+    class=".patient.PatientSharedViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContent"
+    template="templates/patient_shared_viewlet.pt"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"/>
+
+  <!-- Viewlet that display a message stating whether the Client is external
+   (Patients, Batches and Doctors are private) or if is internal (Patients,
+   Batches and Doctors are shared) -->
+  <browser:viewlet
+    for="bika.lims.interfaces.IClient"
+    name="bika.health.client_type_viewlet"
+    class=".client.ClientTypeViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContent"
+    template="templates/client_type_viewlet.pt"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"/>
+
+  <!-- Viewlet that displays a message stating that internal clients share
+    some resources -->
+  <browser:viewlet
+    for="bika.lims.interfaces.IClientFolder"
+    name="bika.health.internal_clients_viewlet"
+    class=".clients.InternalClientsViewlet"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+    template="templates/internal_clients_viewlet.pt"
+    permission="zope2.View"
+    layer="bika.health.interfaces.IBikaHealth"/>
+
+</configure>

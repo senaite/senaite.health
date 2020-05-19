@@ -16,6 +16,9 @@
     <role name="SamplingCoordinator"/>
     <role name="Verifier"/>
 
+    <!-- SENAITE HEALTH ROLES -->
+    <role name="InternalClient"/>
+
     <!-- PLONE ROLES -->
     <role name="Anonymous"/>
     <role name="Authenticated"/>
@@ -40,6 +43,7 @@
     </permission>
     <permission name="senaite.health: Add Doctor" acquire="False">
       <role name="Client" />
+      <role name="InternalClient" />
       <role name="LabClerk"/>
       <role name="LabManager"/>
       <role name="Manager"/>
@@ -77,6 +81,7 @@
     </permission>
     <permission name="senaite.health: Add Patient" acquire="False">
       <role name="Client" />
+      <role name="InternalClient" />
       <role name="LabClerk"/>
       <role name="LabManager"/>
       <role name="Manager"/>
@@ -114,6 +119,18 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
+    <permission name="senaite.health: Transition: Share Patient" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Transition: Unshare Patient" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
     <permission name="senaite.health: Transition: Activate Doctor" acquire="False">
       <role name="LabClerk"/>
       <role name="LabManager"/>
@@ -126,10 +143,35 @@
       <role name="Manager"/>
       <role name="Owner"/>
     </permission>
+    <permission name="senaite.health: Transition: Share Doctor" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Transition: Unshare Doctor" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Transition: Share Batch" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
+    <permission name="senaite.health: Transition: Unshare Batch" acquire="False">
+      <role name="LabClerk"/>
+      <role name="LabManager"/>
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>
 
     <!-- Behavioral Permissions -->
     <permission name="senaite.health: View Patients" acquire="False">
       <role name="Client"/>
+      <role name="InternalClient" />
       <role name="LabClerk"/>
       <role name="LabManager"/>
       <role name="Manager"/>

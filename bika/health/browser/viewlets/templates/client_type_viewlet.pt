@@ -1,0 +1,28 @@
+<div tal:omit-tag=""
+     tal:condition="python:view.is_visible()"
+     i18n:domain="senaite.health">
+
+  <div class="visualClear"></div>
+
+  <div id="portal-alert"
+    tal:define="internal python: view.is_internal();">
+
+    <div class="portlet-alert-item alert alert-warning" tal:condition="internal">
+      <p class="title">
+        <strong i18n:translate="">Internal Client</strong>:
+        <span i18n:translate="">
+          Patients, Clinical Cases and Doctors from internal clients are shared
+        </span>
+      </p>
+    </div>
+
+    <div class="portal-alert-item alert alert-info" tal:condition="not:internal">
+      <p class="title">
+        <strong i18n:translate="">External Client</strong>:
+        <span i18n:translate="">
+          Patients, Clinical Cases and Doctors from this client are private
+        </span>
+      </p>
+    </div>
+  </div>
+</div>

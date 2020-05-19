@@ -21,24 +21,20 @@
 import doctest
 from os.path import join
 
+import unittest2 as unittest
+from Testing import ZopeTestCase as ztc
 from pkg_resources import resource_listdir
 
-import unittest2 as unittest
-from bika.health.config import PROJECTNAME
+from bika.health import PROJECTNAME
 from bika.health.tests.base import SimpleTestCase
-from Testing import ZopeTestCase as ztc
 
-rst_filenames = [f for f in resource_listdir(PROJECTNAME, "tests/doctests")
-                 if f.endswith('.rst')]
-
-doctests = [join("doctests", filename) for filename in rst_filenames]
-
+# Option flags for doctests
 flags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE | doctest.REPORT_NDIFF
 
 
 def test_suite():
     suite = unittest.TestSuite()
-    for doctestfile in doctests:
+    for doctestfile in get_doctest_files():
         suite.addTests([
             ztc.ZopeDocFileSuite(
                 doctestfile,
@@ -47,3 +43,11 @@ def test_suite():
             )
         ])
     return suite
+
+
+def get_doctest_files():
+    """Returns a list with the doctest files
+    """
+    files = resource_listdir(PROJECTNAME, "tests/doctests")
+    files = filter(lambda file_name: file_name.endswith(".rst"), files)
+    return map(lambda file_name: join("doctests", file_name), files)

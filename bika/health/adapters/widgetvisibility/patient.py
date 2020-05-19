@@ -18,8 +18,8 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+from bika.lims import api
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
-from bika.lims.interfaces import IClient
 
 
 class ClientFieldVisibility(SenaiteATWidgetVisibility):
@@ -35,8 +35,12 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
         mode is "edit" and the container is a Client
         """
         if mode == "edit":
-            container = self.context.aq_parent
-            if IClient.providedBy(container):
+            client = self.context.getClient()
+            if client == api.get_parent(self.context):
+                # We are already inside the parent's context
+                return "hidden"
+            elif client:
+                # We are in another context, read-only
                 return "readonly"
 
         return default

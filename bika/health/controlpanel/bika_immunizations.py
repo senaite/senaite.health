@@ -23,6 +23,8 @@ from Products.ATContentTypes.content import schemata
 from Products.Archetypes import atapi
 from Products.Archetypes.ArchetypeTool import registerType
 from Products.CMFCore.utils import getToolByName
+
+from bika.lims import api
 from bika.lims.browser.bika_listing import BikaListingView
 from bika.health.config import PROJECTNAME
 from bika.lims import bikaMessageFactory as _b
@@ -34,6 +36,9 @@ from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.folder.folder import ATFolder, ATFolderSchema
 from zope.interface.declarations import implements
 from operator import itemgetter
+
+from bika.lims.utils import get_link
+
 
 class ImmunizationsView(BikaListingView):
     implements(IFolderContentsView, IViewView)
@@ -89,16 +94,12 @@ class ImmunizationsView(BikaListingView):
         # Don't allow any context actions on Immunizations folder
         self.request.set("disable_border", 1)
 
-    def folderitems(self):
-        items = BikaListingView.folderitems(self)
-        for x in range(len(items)):
-            if not items[x].has_key('obj'): continue
-            obj = items[x]['obj']
-            items[x]['Description'] = obj.Description()
-            items[x]['replace']['Title'] = "<a href='%s'>%s</a>" % \
-                 (items[x]['url'], items[x]['Title'])
+    def folderitem(self, obj, item, index):
+        obj = api.get_object(obj)
+        item["Description"] = obj.Description()
+        item["replace"]["Title"] = get_link(item["url"], item["Title"])
+        return item
 
-        return items
 
 schema = ATFolderSchema.copy()
 class Immunizations(ATFolder):

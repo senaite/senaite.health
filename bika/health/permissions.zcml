@@ -10,26 +10,33 @@
 
 # Add Permissions
 # ===============
-<permission id="senaite.health.premissions.AddAetiologicAgent" title="senaite.health: Add AetiologicAgent"/>
-<permission id="senaite.health.premissions.AddDoctor" title="senaite.health: Add Doctor"/>
-<permission id="senaite.health.premissions.AddDrug" title="senaite.health: Add Drug"/>
-<permission id="senaite.health.premissions.AddDrugProhibition" title="senaite.health: Add DrugProhibition"/>+
-<permission id="senaite.health.premissions.AddEthnicity" title="senaite.health: Add Ethnicity"/>
-<permission id="senaite.health.premissions.AddImunization" title="senaite.health: Add Immunization"/>
-<permission id="senaite.health.premissions.AddInsuranceCompany" title="senaite.health: Add InsuranceCompany"/>
+<permission id="senaite.health.permissions.AddAetiologicAgent" title="senaite.health: Add AetiologicAgent"/>
+<permission id="senaite.health.permissions.AddDoctor" title="senaite.health: Add Doctor"/>
+<permission id="senaite.health.permissions.AddDrug" title="senaite.health: Add Drug"/>
+<permission id="senaite.health.permissions.AddDrugProhibition" title="senaite.health: Add DrugProhibition"/>+
+<permission id="senaite.health.permissions.AddEthnicity" title="senaite.health: Add Ethnicity"/>
+<permission id="senaite.health.permissions.AddImunization" title="senaite.health: Add Immunization"/>
+<permission id="senaite.health.permissions.AddInsuranceCompany" title="senaite.health: Add InsuranceCompany"/>
 <permission id="senaite.health.permissions.AddPatient" title="senaite.health: Add Patient"/>
-<permission id="senaite.health.premissions.AddSymptom" title="senaite.health: Add Symptom"/>
-<permission id="senaite.health.premissions.AddTreatment" title="senaite.health: Add Treatment"/>
-<permission id="senaite.health.premissions.AddVaccinationCenter" title="senaite.health: Add VaccinationCenter"/>
+<permission id="senaite.health.permissions.AddSymptom" title="senaite.health: Add Symptom"/>
+<permission id="senaite.health.permissions.AddTreatment" title="senaite.health: Add Treatment"/>
+<permission id="senaite.health.permissions.AddVaccinationCenter" title="senaite.health: Add VaccinationCenter"/>
 
 
 # Transition Permissions
 # ======================
-<permission id="senaite.health.premissions.TransitionActivatePatient" title="senaite.health: Transition: Activate Patient"/>
-<permission id="senaite.health.premissions.TransitionDeactivatePatient" title="senaite.health: Transition: Deactivate Patient"/>
+<permission id="senaite.health.permissions.TransitionActivatePatient" title="senaite.health: Transition: Activate Patient"/>
+<permission id="senaite.health.permissions.TransitionDeactivatePatient" title="senaite.health: Transition: Deactivate Patient"/>
+<permission id="senaite.health.permissions.TransitionSharePatient" title="senaite.health: Transition: Share Patient"/>
+<permission id="senaite.health.permissions.TransitionUnsharePatient" title="senaite.health: Transition: Unshare Patient"/>
 
-<permission id="senaite.health.premissions.TransitionActivateDoctor" title="senaite.health: Transition: Activate Doctor"/>
-<permission id="senaite.health.premissions.TransitionDeactivateDoctor" title="senaite.health: Transition: Deactivate Doctor"/>
+<permission id="senaite.health.permissions.TransitionActivateDoctor" title="senaite.health: Transition: Activate Doctor"/>
+<permission id="senaite.health.permissions.TransitionDeactivateDoctor" title="senaite.health: Transition: Deactivate Doctor"/>
+<permission id="senaite.health.permissions.TransitionShareDoctor" title="senaite.health: Transition: Share Doctor"/>
+<permission id="senaite.health.permissions.TransitionUnshareDoctor" title="senaite.health: Transition: Unshare Doctor"/>
+
+<permission id="senaite.health.permissions.TransitionShareBatch" title="senaite.health: Transition: Share Batch"/>
+<permission id="senaite.health.permissions.TransitionUnshareBatch" title="senaite.health: Transition: Unshare Batch"/>
 
 
 # Behavioral permissions

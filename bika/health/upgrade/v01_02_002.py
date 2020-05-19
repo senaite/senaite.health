@@ -20,18 +20,14 @@
 
 import time
 
-from Acquisition import aq_base
 from Acquisition import aq_inner
-from OFS.event import ObjectWillBeMovedEvent
 from Products.CMFPlone.utils import _createObjectByType
-from zope.container.contained import notifyContainerModified
-from zope.event import notify
-from zope.lifecycleevent import ObjectMovedEvent
 
 from bika.health import CATALOG_PATIENTS
 from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import allow_patients_inside_clients
+from bika.health.utils import move_obj
 from bika.lims import api
 from bika.lims.catalog.bika_catalog import BIKA_CATALOG
 from bika.lims.idserver import renameAfterCreation
@@ -234,9 +230,7 @@ def move_patients_to_clients(portal):
                 # Clinical Cases for this Patient belong to different clients,
                 # so this Patient must remain not bound to any Client
                 logger.warn("Patient with client assigned, but batches from "
-                            "others. Unassigning client from {}".format(p_id))
-                patient.setClient(None)
-                patient.reindexObject()
+                            "others: {}".format(p_id))
 
             else:
                 client = clients_map.get(client_uid, None)
@@ -247,58 +241,16 @@ def move_patients_to_clients(portal):
                 if client_ids and client_ids[0] != client.getClientID():
                     # Assigned client does not match with those from the batches
                     logger.warn("Patient with client assigned that does not "
-                                "match with the client from batches. "
-                                "Unassigning client: {}".format(p_id))
-                    patient.setClient(None)
-                    patient.reindexObject()
+                                "match with the client from batches: {}"
+                                .format(p_id))
 
                 else:
                     # Move Patient inside the client
                     #cp = patients_folder.manage_cutObjects(p_id)
                     #client.manage_pasteObjects(cp)
-                    move_patient(patient, patients_origin, client)
+                    move_obj(patient, client)
 
     logger.info("Moving Patients inside Clients [DONE]")
-
-
-def move_patient(ob, origin, destination):
-    """
-    This function has the same effect as:
-
-        id = obj.getId()
-        cp = origin.manage_cutObjects(id)
-        destination.manage_pasteObjects(cp)
-
-    but with slightly better performance. The code is mostly grabbed from
-    OFS.CopySupport.CopyContainer_pasteObjects, but optimized for our use case
-    to make the upgrade step faster
-    """
-    id = ob.getId()
-
-    # Notify the object will be copied to destination
-    ob._notifyOfCopyTo(destination, op=1)
-
-    # Notify that the object will be moved
-    #origin = aq_parent(aq_inner(ob))
-    notify(ObjectWillBeMovedEvent(ob, origin, id, destination, id))
-
-    # Effectively move the object from origin to destination
-    origin._delObject(id, suppress_events=True)
-    ob = aq_base(ob)
-    destination._setObject(id, ob, set_owner=0, suppress_events=True)
-    ob = destination._getOb(id)
-
-    # Since we used "suppress_events=True", we need to manually notify that the
-    # object has been moved and containers modified. This also makes the objects
-    # to be recatalogued
-    notify(ObjectMovedEvent(ob, origin, id, destination, id))
-    notifyContainerModified(origin)
-    notifyContainerModified(destination)
-
-    # Try to make ownership implicit if possible, so it acquires the permissions
-    # from the container (a Client)
-    ob.manage_changeOwnershipType(explicit=0)
-    return ob
 
 
 def remove_stale_javascripts(portal):

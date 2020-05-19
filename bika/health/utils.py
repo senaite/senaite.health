@@ -20,15 +20,26 @@
 
 from datetime import datetime
 
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from OFS.event import ObjectWillBeMovedEvent
 from Products.ATContentTypes.utils import DT2dt
 from dateutil.relativedelta import relativedelta
+from zope.container.contained import notifyContainerModified
+from zope.event import notify
 from zope.i18n import translate
+from zope.lifecycleevent import ObjectMovedEvent
 
+from bika.health import bikaMessageFactory as _
 from bika.health import logger
 from bika.health.interfaces import IPatient
 from bika.lims import api
 from bika.lims.api import _marker
 from bika.lims.interfaces import IBatch
+from bika.lims.interfaces import IClient
+from bika.lims.utils import chain
+from bika.lims.utils import get_image
 from bika.lims.utils import render_html_attributes
 from bika.lims.utils import to_unicode
 from bika.lims.utils import to_utf8
@@ -217,3 +228,229 @@ def to_ymd(delta):
     diff = map(str, (delta.years, delta.months, delta.days))
     age = filter(lambda it: int(it[0]), zip(diff, ymd))
     return " ".join(map("".join, age))
+
+
+def move_obj(ob, destination):
+    """
+    This function has the same effect as:
+
+        id = obj.getId()
+        cp = origin.manage_cutObjects(id)
+        destination.manage_pasteObjects(cp)
+
+    but with slightly better performance and **without permission checks**. The
+    code is mostly grabbed from OFS.CopySupport.CopyContainer_pasteObjects
+    """
+    id = ob.getId()
+
+    # Notify the object will be copied to destination
+    ob._notifyOfCopyTo(destination, op=1)
+
+    # Notify that the object will be moved
+    origin = aq_parent(aq_inner(ob))
+    notify(ObjectWillBeMovedEvent(ob, origin, id, destination, id))
+
+    # Effectively move the object from origin to destination
+    origin._delObject(id, suppress_events=True)
+    ob = aq_base(ob)
+    destination._setObject(id, ob, set_owner=0, suppress_events=True)
+    ob = destination._getOb(id)
+
+    # Since we used "suppress_events=True", we need to manually notify that the
+    # object has been moved and containers modified. This also makes the objects
+    # to be re-catalogued
+    notify(ObjectMovedEvent(ob, origin, id, destination, id))
+    notifyContainerModified(origin)
+    notifyContainerModified(destination)
+
+    # Try to make ownership implicit if possible, so it acquires the permissions
+    # from the container
+    ob.manage_changeOwnershipType(explicit=0)
+    return ob
+
+
+def is_internal_client(client):
+    """Returns whether the client passed in is an internal client
+    """
+    if not IClient.providedBy(client):
+        raise TypeError("Type not supported")
+
+    return api.get_parent(client) == api.get_portal().internal_clients
+
+
+def is_external_client(client):
+    """Returns whether the client passed is an external client
+    """
+    if not IClient.providedBy(client):
+        raise TypeError("Type not supported")
+
+    return api.get_parent(client) == api.get_portal().clients
+
+
+def is_from_external_client(obj_or_brain):
+    """Returns whether the object passed in belongs to an external client
+    """
+    clients = api.get_portal().clients
+    return is_contained_by(clients, obj_or_brain)
+
+
+def is_from_internal_client(obj_or_brain):
+    """Returns whether the object passed in belongs to an internal client
+    """
+    internals = api.get_portal().internal_clients
+    return is_contained_by(internals, obj_or_brain)
+
+
+def is_contained_by(container_obj_or_brain, obj_or_brain):
+    """Returns whether the container contains the obj passed in
+    """
+    base_path = api.get_path(container_obj_or_brain)
+    obj_path = api.get_path(obj_or_brain)
+    return base_path in obj_path
+
+
+def is_logged_user_from_external_client():
+    """Returns whether the current user belongs to an external client
+    """
+    client = api.get_current_client()
+    if client and is_external_client(client):
+        return True
+    return False
+
+
+def get_client_from_chain(obj):
+    """Returns the client the obj belongs to, if any, by looking to the
+    acquisition chain
+    """
+    if IClient.providedBy(obj):
+        return obj
+
+    for obj in chain(obj):
+        if IClient.providedBy(obj):
+            return obj
+    return None
+
+
+def is_shareable_type(portal_type):
+    """Returns whether the portal_type passed in is shareable among internal
+    clients
+    """
+    return portal_type in ["Patient", "Doctor", "Batch"]
+
+
+def resolve_query_for_shareable(portal_type, context=None):
+    """Resolves a query filter for the portal_type passed in and the context
+    for which the query has to be filtered by
+    """
+    # Resolve the client from the object, if possible
+    client = context and get_client_from_chain(context) or None
+
+    if client and is_internal_client(client):
+        # Client is internal and the portal type is "shareable", the query
+        # must display all items of this portal_type that are located
+        # inside any of the clients from "internal_clients" folder
+        folder = api.get_portal().internal_clients
+        return {
+            "path": {"query": api.get_path(folder), "depth": 2},
+            "portal_type": portal_type,
+        }
+
+    elif client:
+        # Client is external. Only the items that belong to this client
+        return {
+            "path": {"query": api.get_path(client), "depth": 1},
+            "portal_type": portal_type,
+        }
+
+    # We don't know neither the client nor the type of client
+    return {"portal_type": portal_type}
+
+
+def get_client_aware_html_image(obj):
+    """Renders an icon based on the client the object belongs to
+    """
+    if is_from_external_client(obj):
+        icon_info = ("lock.png", _("Private, from an external client"))
+
+    elif is_from_internal_client(obj):
+        if api.get_review_status(obj) == "shared":
+            icon_info = ("share.png", _("Shared, from an internal client"))
+        else:
+            icon_info = ("share_lock.png",
+                         _("From an internal client, but not shared"))
+    else:
+        logger.warn("No client assigned for {}".format(repr(obj)))
+        icon_info = ("exclamation_red.png", _("No client assigned"))
+
+    return get_html_image(icon_info[0], title=icon_info[1])
+
+
+def get_all_granted_roles_for(folder, permission):
+    """Returns a list of roles that have granted access to the folder. If the
+    folder is acquire=1, it looks through all the hierarchy until acquire=0 to
+    grab all the roles that effectively (regardless of acquire) has permission
+    """
+    roles = filter(lambda perm: perm.get('selected') == 'SELECTED',
+                   folder.rolesOfPermission(permission))
+    roles = map(lambda prole: prole['name'], roles)
+    if api.is_portal(folder):
+        return roles
+
+    acquired = folder.acquiredRolesAreUsedBy(permission) == 'CHECKED' and 1 or 0
+    if acquired:
+        # Grab from the parent
+        parent_roles = get_all_granted_roles_for(folder.aq_parent, permission)
+        roles.extend(parent_roles)
+
+    return list(set(roles))
+
+
+def revoke_permission_for_role(folder, permission, role):
+    """Revokes a permission for a given role and folder. It handles acquire
+    gracefully
+    """
+    # Get all granted roles for this folder, regardless of acquire
+    granted_roles = get_all_granted_roles_for(folder, permission)
+
+    # Bail out the role from the list
+    to_grant = filter(lambda name: name != role, granted_roles)
+    if to_grant == granted_roles:
+        # Nothing to do, the role does not have permission granted
+        logger.info(
+            "Role '{}' does not have permission {} granted for '{}' [SKIP]"
+            .format(role, repr(permission), repr(folder))
+        )
+        return
+
+    # Is this permission acquired?
+    folder.manage_permission(permission, roles=to_grant, acquire=0)
+    folder.reindexObject()
+    logger.info("Revoked permission {} to role '{}' for '{}'"
+                .format(repr(permission), role, repr(folder)))
+
+
+def add_permission_for_role(folder, permission, role):
+    """Grants a permission to the given role and given folder
+    :param folder: the folder to which the permission for the role must apply
+    :param permission: the permission to be assigned
+    :param role: role to which the permission must be granted
+    :return True if succeed, otherwise, False
+    """
+    roles = filter(lambda perm: perm.get('selected') == 'SELECTED',
+                   folder.rolesOfPermission(permission))
+    roles = map(lambda perm_role: perm_role['name'], roles)
+    if role in roles:
+        # Nothing to do, the role has the permission granted already
+        logger.info(
+            "Role '{}' has permission {} for {} already".format(role,
+                                                                repr(permission),
+                                                                repr(folder)))
+        return False
+    roles.append(role)
+    acquire = folder.acquiredRolesAreUsedBy(permission) == 'CHECKED' and 1 or 0
+    folder.manage_permission(permission, roles=roles, acquire=acquire)
+    folder.reindexObject()
+    logger.info(
+        "Added permission {} to role '{}' for {}".format(repr(permission), role,
+                                                         repr(folder)))
+    return True

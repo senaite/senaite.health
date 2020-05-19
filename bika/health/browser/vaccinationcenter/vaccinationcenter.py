@@ -18,10 +18,13 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.lims.browser import BrowserView
-from bika.lims.browser.bika_listing import BikaListingView
-from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
+from bika.lims import api
+from bika.lims import bikaMessageFactory as _b
+from bika.lims.browser.bika_listing import BikaListingView
+from bika.lims.utils import get_email_link
+from bika.lims.utils import get_link
+
 
 class ContactsView(BikaListingView):
 
@@ -92,15 +95,10 @@ class ContactsView(BikaListingView):
         # Don't allow any context actions on Vaccination Centers folder
         self.request.set("disable_border", 1)
 
-    def folderitems(self):
-        items = BikaListingView.folderitems(self)
-        for x in range(len(items)):
-            if not items[x].has_key('obj'): continue
-
-            items[x]['replace']['getFullName'] = "<a href='%s'>%s</a>" % \
-                 (items[x]['url'], items[x]['obj'].getFullname())
-
-            items[x]['replace']['getEmailAddress'] = "<a href='mailto:%s'>%s</a>" % \
-                 (items[x]['getEmailAddress'], items[x]['obj'].getEmailAddress())
-
-        return items
+    def folderitem(self, obj, item, index):
+        obj = api.get_object(obj)
+        item["replace"].update({
+            "getFullName": get_link(item["url"], obj.getFullName()),
+            "getEmailAddress": get_email_link(obj.getEmailAddress())
+        })
+        return item

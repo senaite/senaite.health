@@ -61,11 +61,9 @@ function HealthBatchEditView() {
             that.fillPatient(patient_uid);
         }
 
-        // If Client selected, apply search filters
-        var client_uid = that.getClientUID();
-        if (client_uid != null) {
-            that.fillClient(client_uid);
-        }
+        // Apply client search filters
+        var client_uid = that.getClientUID()
+        that.applyClientFilter(client_uid);
 
         // Load Event Handlers
         loadEventHandlers();
@@ -73,19 +71,6 @@ function HealthBatchEditView() {
         fillPatientAgeAtCaseOnsetDate();
         toggleMenstrualStatus();
         toggleSymptoms();
-
-        // Advertisement for too hight/low Basal body temperature
-        basalBodyTemperatureControl();
-    }
-
-    /**
-     * Apply filters for patients listing reference widget and doctors when
-     * client changes
-     */
-    this.fillClient = function(uid) {
-        applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid);
-        applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid);
-        applyFilter($("#Doctor"), 'getPrimaryReferrerUID', [uid, null]);
     }
 
     /**
@@ -109,11 +94,6 @@ function HealthBatchEditView() {
                 dataType: "json",
                 success: function(data, textStatus, $XHR){
                     if (data['PatientUID'] != '') {
-                        // Set Client info
-                        $('#Client').val(data['ClientTitle']);
-                        $('#Client').attr('uid', data['ClientUID']);
-                        $('#Client_uid').val(data['ClientUID']);
-
                         // Set Patient info
                         $('#Patient').val(data['PatientFullname']);
                         $('#Patient').attr('uid', data['PatientUID']);
@@ -180,6 +160,20 @@ function HealthBatchEditView() {
         return succeed;
     }
 
+    this.flushDoctor = function() {
+        // Flush doctor field
+        $('#Doctor').val('');
+        $('#Doctor').attr('uid', '');
+        $('#Doctor_uid').val('');
+    }
+
+    this.applyClientFilter = function(uid) {
+        var uid_val = uid != null ? uid : "-1";
+        applyFilter($("#Patient"), 'getPrimaryReferrerUID', uid_val);
+        applyFilter($("#ClientPatientID"), 'getPrimaryReferrerUID', uid_val);
+        applyFilter($("#Doctor"), 'getPrimaryReferrerUID', uid_val);
+    }
+
     // ------------------------------------------------------------------------
     // PRIVATE FUNCTIONS
     // ------------------------------------------------------------------------
@@ -189,10 +183,13 @@ function HealthBatchEditView() {
      */
     function loadEventHandlers() {
         $("#Client").bind("selected paste blur", function(){
-            var uid = $(this).attr('uid');
-            that.fillClient(uid);
-            // Reset patient fields
+            var uid = getElementAttr('#Client', 'uid');
+            // Flush Patient field
             that.fillPatient(null);
+            // Flush Doctor field
+            that.flushDoctor();
+            // Applies the filtering for other client-related fields
+            that.applyClientFilter(uid);
         });
 
         $("#Patient").bind("selected paste blur", function(){
@@ -320,31 +317,9 @@ function HealthBatchEditView() {
                 agemonth = agemonth + 12;
             }
             ageyear = currentyear - birthyear;
-
-            $("#OnsetDate").next().remove(".warning");
-        }
-        else if (now < dob) {
-            $("#PatientAgeAtCaseOnsetDate_day").next().remove(".warning");
-            $("#OnsetDate").parent().append("<span class = 'warning'><img title='Onset Date must be bigger than Patients Birth Date' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
         }
         $("#PatientAgeAtCaseOnsetDate_year").val(ageyear);
         $("#PatientAgeAtCaseOnsetDate_month").val(agemonth);
         $("#PatientAgeAtCaseOnsetDate_day").val(ageday);
-    }
-
-    function basalBodyTemperatureControl() {
-    $( "[id^='BasalBodyTemperature-Day']" ).change(function() {
-        if ( parseInt($(this).val()) > 41 ) {
-        $(this).next().remove(".warning");
-        $(this).parent().append("<span class = 'warning'><img title='Very high temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
-        }
-        else if ( parseInt($(this).val()) < 32 ) {
-        $(this).next().remove(".warning");
-        $(this).parent().append("<span class = 'warning'><img title='Very low temperature' src='http://localhost:8080/Plone/++resource++bika.lims.images/warning.png'></span>");
-        }
-        else {
-        $(this).next().remove(".warning");
-        }
-    });
     }
 }
