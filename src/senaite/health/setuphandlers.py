@@ -1,8 +1,21 @@
 # -*- coding: utf-8 -*-
 
+from bika.health.setuphandlers import allow_doctors_inside_clients
+from bika.health.setuphandlers import allow_patients_inside_clients
+from bika.health.setuphandlers import reindex_content_structure
+from bika.health.setuphandlers import setup_content_actions
+from bika.health.setuphandlers import setup_ethnicities
+from bika.health.setuphandlers import setup_health_catalogs
+from bika.health.setuphandlers import setup_id_formatting
+from bika.health.setuphandlers import setup_internal_clients
+from bika.health.setuphandlers import setup_panic_alerts
+from bika.health.setuphandlers import setup_roles_permissions
+from bika.health.setuphandlers import setup_site_structure
+from bika.health.setuphandlers import setup_user_groups
+from bika.health.setuphandlers import setup_workflows
+from bika.health.setuphandlers import sort_nav_bar
 from senaite.health import logger
 from zope.interface import implementer
-from bika.lims.setuphandlers import reindex_content_structure
 
 try:
     from Products.CMFPlone.interfaces import INonInstallable
@@ -38,32 +51,61 @@ def install(context):
     _run_import_step(portal, "browserlayer")
     _run_import_step(portal, "rolemap")
     _run_import_step(portal, "toolset")  # catalogs
-    _run_import_step(portal, "catalog")
-    _run_import_step(portal, "workflow")
-
-    # Run required import steps
-    setup_content_types(portal)
-    setup_content_structure(portal)
-
-    # Run Installers
-
-    logger.info("SENAITE HEALTH install handler [DONE]")
-
-
-def setup_content_types(portal):
-    """Install AT content type information
-    """
-    logger.info("*** Install SENAITE HEALTH Content Types ***")
     _run_import_step(portal, "typeinfo")
     _run_import_step(portal, "factorytool")
-
-
-def setup_content_structure(portal):
-    """Install the base content structure
-    """
-    logger.info("*** Install SENAITE HEALTH Content Types ***")
+    _run_import_step(portal, "workflow")
     _run_import_step(portal, "content")
+
+    # Run Installers
+    setup_health_catalogs(portal)
+
+    # Setup portal permissions
+    setup_roles_permissions(portal)
+
+    # Setup user groups (e.g. Doctors)
+    setup_user_groups(portal)
+
+    # Setup site structure
+    setup_site_structure(context)
+
+    # Setup content actions
+    setup_content_actions(portal)
+
+    # Setup ID formatting for Health types
+    setup_id_formatting(portal)
+
+    # Setup default ethnicities
+    setup_ethnicities(portal)
+
+    # Setup custom workflow(s)
+    setup_workflows(portal)
+
+    # Setup internal clients top-level folder
+    setup_internal_clients(portal)
+
+    # Sort navigation bar
+    sort_nav_bar(portal)
+
+    # Allow patients inside clients
+    # Note: this should always be run if core's typestool is reimported
+    allow_patients_inside_clients(portal)
+
+    # Allow doctors inside clients
+    # Note: this should always be run if core's typestool is reimported
+    allow_doctors_inside_clients(portal)
+
+    # Reindex the top level folder in the portal and setup to fix missing icons
     reindex_content_structure(portal)
+
+    # When installing senaite health together with core, health's skins are not
+    # set before core's, even if after-before is set in profiles/skins.xml
+    # Ensure health's skin layer(s) always gets priority over core's
+    _run_import_step(portal, "skins")
+
+    # Setup default email body and subject for panic alerts
+    setup_panic_alerts(portal)
+
+    logger.info("SENAITE HEALTH install handler [DONE]")
 
 
 def _run_import_step(portal, name, profile="profile-bika.health:default"):
@@ -110,8 +152,5 @@ def post_install(portal_setup):
     profile_id = PROFILE_ID
     context = portal_setup._getImportContext(profile_id)
     portal = context.getSite()  # noqa
-
-    from bika.health.setuphandlers import post_install
-    post_install(portal_setup)
 
     logger.info("SENAITE HEALTH post install handler [DONE]")
