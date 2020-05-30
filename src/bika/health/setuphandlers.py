@@ -316,7 +316,6 @@ def setup_content_actions(portal):
         visible=True,
         icon_expr="string:${portal_url}/images/patient.png",
         link_target="",
-        description="",
         condition="")
 
     remove_action(client_type, "doctors")
@@ -329,7 +328,6 @@ def setup_content_actions(portal):
         visible=True,
         icon_expr="string:${portal_url}/images/doctor.png",
         link_target="",
-        description="",
         condition="")
     logger.info("Setup content actions [DONE]")
 
