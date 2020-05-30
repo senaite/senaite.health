@@ -317,7 +317,7 @@ class Patients(WorksheetImporter):
 
             # Getting an existing ethnicity
             bsc = getToolByName(self.context, 'bika_setup_catalog')
-            ethnicity = bsc(portal_type='Ethnicity', Title=row.get('Ethnicity', ''))
+            ethnicity = bsc(portal_type='Ethnicity', Title=row.get('Ethnicity', '') or 'Unknown')
             if len(ethnicity) == 0:
                 raise IndexError("Invalid ethnicity: '%s'" % row['Ethnicity'])
             ethnicity = ethnicity[0].getObject()

@@ -238,9 +238,12 @@ def setup_ethnicities(portal):
     logger.info("Setup default ethnicities ...")
     ethnicities = ['Native American', 'Asian', 'Black',
                    'Native Hawaiian or Other Pacific Islander', 'White',
-                   'Hispanic or Latino']
+                   'Hispanic or Latino', 'Unknown']
     folder = portal.bika_setup.bika_ethnicities
+    existing = map(api.get_title, folder.objectValues())
     for ethnicityName in ethnicities:
+        if ethnicityName in existing:
+            continue
         _id = folder.invokeFactory('Ethnicity', id=tmpID())
         obj = folder[_id]
         obj.edit(title=ethnicityName,
