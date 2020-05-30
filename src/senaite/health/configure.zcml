@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:cmf="http://namespaces.zope.org/cmf"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="senaite.health">
+
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <!-- Profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="SENAITE HEALTH"
+      directory="profiles/default"
+      description="SENAITE HEALTH Add-on"
+      pre_handler="senaite.health.setuphandlers.pre_install"
+      post_handler="senaite.health.setuphandlers.post_install"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <!-- Install Handler -->
+  <genericsetup:importStep
+      name="senaite.health.setuphandlers.install"
+      title="SENAITE HEALTH: Run Setup Handler"
+      description="Run install handler"
+      handler="senaite.health.setuphandlers.install">
+  </genericsetup:importStep>
+
+  <!-- Hidden Profiles -->
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="senaite.health-hiddenprofiles"
+      />
+  
+</configure>

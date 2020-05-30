@@ -44,7 +44,7 @@
   <!-- Installation profile -->
   <genericsetup:registerProfile
       name="default"
-      title="SENAITE Health"
+      title="SENAITE Health 1.x (do not install)"
       directory="profiles/default"
       description="Health Care extension for SENAITE"
       post_handler="bika.health.setuphandlers.post_install"

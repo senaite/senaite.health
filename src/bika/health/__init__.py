@@ -50,6 +50,7 @@ allow_module('bika.health.utils')
 
 
 def initialize(context):
+    logger.info("*** Initializing BIKA.HEALTH ***")
 
     from content.aetiologicagent import AetiologicAgent
     from content.caseoutcome import CaseOutcome
