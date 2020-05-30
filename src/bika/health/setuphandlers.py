@@ -160,7 +160,7 @@ def post_install(portal_setup):
     setup_site_structure(context)
 
     # Setup javascripts
-    setup_javascripts(portal)
+    # setup_javascripts(portal)
 
     # Setup content actions
     setup_content_actions(portal)
