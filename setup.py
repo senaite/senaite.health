@@ -2,15 +2,14 @@
 #
 # This file is part of SENAITE.HEALTH
 #
-# Copyright 2017-2019 by it's authors
+# Copyright 2017-2020 by it's authors
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
-
-version = '1.2.4'
+version = "2.0.0"
 
 setup(
-    name='senaite.health',
+    name="senaite.health",
     version=version,
     description="SENAITE Health",
     long_description=open("README.rst").read() + "\n" +
@@ -24,33 +23,24 @@ setup(
         "Framework :: Zope2",
         "Programming Language :: Python",
     ],
-    keywords=['lims', 'lis', 'senaite', 'opensource', 'health'],
+    keywords=["lims", "lis", "senaite", "opensource", "health"],
     author="RIDING BYTES & NARALABS",
     author_email="senaite@senaite.com",
-    url='https://github.com/senaite/senaite.health',
-    license='GPLv2',
-    packages=find_packages(exclude=['ez_setup']),
-    namespace_packages=['bika'],
+    url="https://github.com/senaite/senaite.health",
+    license="GPLv2",
+    package_dir={"": "src"},
+    packages=["bika", "bika.health", "senaite", "senaite.health"],
+    namespace_packages=["bika", "senaite"],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "archetypes.schemaextender",
-        "senaite.lims>=1.3.3.1",
+        "senaite.lims",
         "senaite.panic",
-
-        # TO REMOVE when core 1.3.4 gets published
-        # These dependencies are required by Scrutinizer
-        # cssselect2 0.3.0 does not support Python 2.x anymore
-        'cssselect2<0.3.0',
-        # beautifulsoup4 4.9.0 requires 'soupsieve<2.0'
-        'soupsieve<2.0.0',
-        # dependency for jsonapi
-        'simplejson',
     ],
     extras_require={
-        'test': [
-            'unittest2',
-            'plone.app.testing',
+        "test": [
+            "unittest2",
+            "plone.app.testing",
         ]
     },
     entry_points="""
