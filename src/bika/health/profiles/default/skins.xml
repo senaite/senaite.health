@@ -3,7 +3,7 @@
         meta_type="Plone Skins Tool"
         allow_any="False"
         cookie_persistence="False"
-        default_skin="Sunburst Theme"
+        default_skin="Plone Default"
         request_varname="plone_skin">
 
   <!-- Skins path -->
