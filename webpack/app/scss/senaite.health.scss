@@ -1,0 +1,12 @@
+@import "base.scss";
+
+a, .btn-link {
+    &.active, &.expanded {
+        background-color: $senaite-health-red;
+    }
+    &:hover {
+        color: $senaite-health-red;
+        opacity: 0.8;
+    }
+    color: $senaite-health-red;
+}

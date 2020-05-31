@@ -363,7 +363,7 @@ function HealthPatientEditView() {
                 make_required(required[i]);
             }
             // Set default values
-            $("#patient-base-edit #Firstname").val(_("AP"));
+            $("#patient-base-edit #Firstname").val(_t("AP"));
             var cpid = $("#patient-base-edit #ClientPatientID").val();
             if (cpid && cpid.length > 0) {
                 $("#patient-base-edit #Surname").val(cpid);

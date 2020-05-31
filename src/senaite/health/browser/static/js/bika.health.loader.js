@@ -1,8 +1,3 @@
-window.bika = window.bika || { lims: {} };
-window.bika.health={};
-window.jarn.i18n.loadCatalog("senaite.health");
-var _h = window.jarn.i18n.MessageFactory("senaite.health");
-
 /**
  * Dictionary of JS objects to be loaded at runtime.
  * The key is the DOM element to look for in the current page. The
@@ -10,6 +5,9 @@ var _h = window.jarn.i18n.MessageFactory("senaite.health");
  * page for the specified key. The loader initializes the JS objects
  * following the order of the dictionary.
  */
+window.bika = window.bika || { lims: {} };
+window.bika.health={};
+
 window.bika.health.controllers =  {
 
     "body":
@@ -54,10 +52,7 @@ window.bika.health.initialize = function() {
     }, 500);
 };
 
-(function( $ ) {
-$(document).ready(function(){
-
+document.addEventListener("DOMContentLoaded", () => {
     // Initializes bika.health.
     var length = window.bika.health.initialize();
 });
-}(jQuery));

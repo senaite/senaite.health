@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="senaite.health">
+
+  <!-- Static Resources Viewlet -->
+  <browser:viewlet
+      name="senaite.health.static"
+      manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+      class="senaite.core.browser.viewlets.resources.ResourcesViewlet"
+      permission="zope2.View"
+      template="../static/resources.pt"
+      layer="senaite.health.interfaces.ISenaiteHealth"
+      />
+
+</configure>

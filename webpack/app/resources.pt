@@ -1,0 +1,18 @@
+<!-- JS bundle -->
+<% for (let js in htmlWebpackPlugin.files.js) { %>
+<script tal:attributes="src <%= 'string:${view/site_url}/' + htmlWebpackPlugin.files.js[js] %>"></script>
+<% } %>
+
+<!-- CSS bundle -->
+<% for (let f in htmlWebpackPlugin.files.css) { %>
+<link href="#" rel="stylesheet" tal:attributes="href <%= 'string:${view/site_url}/' + htmlWebpackPlugin.files.css[f] %>" />
+<% } %>
+
+<!-- legacy senaite.health JS -->
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.health.static/js/bika.health.batch.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.health.static/js/bika.health.bikasetup.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.health.static/js/bika.health.client.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.health.static/js/bika.health.patient.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.health.static/js/bika.health.site.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.health.static/js/bika.health.loader.js"></script>
+<script tal:attributes="src string:${view/site_url}/++plone++senaite.health.static/js/bika.health.utils.js"></script>
