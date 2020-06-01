@@ -12,10 +12,4 @@
       layer="bika.health.interfaces.IBikaHealth"
       />
 
-  <browser:resourceDirectory
-      name="bika.health.js"
-      directory="js"
-      layer="bika.health.interfaces.IBikaHealth"
-      />
-
 </configure>
