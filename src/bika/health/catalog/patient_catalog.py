@@ -42,6 +42,7 @@ CATALOG_INDEXES = {
     # TODO Remove in favour of client_uid
     "getPrimaryReferrerUID": "FieldIndex",
     "listing_searchable_text": "TextIndexNG3",
+    "path": "ExtendedPathIndex",
 }
 
 CATALOG_COLUMNS = [
