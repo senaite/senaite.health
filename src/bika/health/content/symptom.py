@@ -19,53 +19,59 @@
 # Some rights reserved, see README and LICENSE.
 
 from AccessControl import ClassSecurityInfo
-from Products.ATExtensions.ateapi import RecordsField
-from DateTime import DateTime
-from Products.ATExtensions.ateapi import DateTimeField, DateTimeWidget
-from Products.Archetypes.public import *
-from Products.CMFCore.permissions import View, ModifyPortalContent
-from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
+from bika.health.config import GENDERS_APPLY
+from bika.health.config import PROJECTNAME
 from bika.lims.content.bikaschema import BikaSchema
-from bika.health.config import PROJECTNAME, GENDERS_APPLY
-from bika.lims.browser.widgets import RecordsWidget
-from zope.interface import implements
+from Products.Archetypes.public import BaseContent
+from Products.Archetypes.public import BooleanField
+from Products.Archetypes.public import BooleanWidget
+from Products.Archetypes.public import Schema
+from Products.Archetypes.public import SelectionWidget
+from Products.Archetypes.public import StringField
+from Products.Archetypes.public import registerType
 
 schema = BikaSchema.copy() + Schema((
 
-    StringField('Code'),
+    StringField("Code"),
 
-    StringField('Gender',
-            vocabulary=GENDERS_APPLY,
-            index='FieldIndex',
-            widget=SelectionWidget(
-                format='select',
-                label=_('Applies to'),
-            ),
+    StringField(
+        "Gender",
+        vocabulary=GENDERS_APPLY,
+        index="FieldIndex",
+        widget=SelectionWidget(
+            format="select",
+            label=_("Applies to"),
+        ),
     ),
 
-    BooleanField('SeverityAllowed',
-           default=False,
-           widget=BooleanWidget(
-               label=_("Severity levels permitted"),
-               description=_("Check if patient can experience different stress  levels (none, mild, moderate, severe) of the symptom"),
-           ),
+    BooleanField(
+        "SeverityAllowed",
+        default=False,
+        widget=BooleanWidget(
+            label=_("Severity levels permitted"),
+            description=_(
+                "Check if patient can experience different stress "
+                "levels (none, mild, moderate, severe) of the symptom"),
+        ),
     ),
 ))
 
-schema['description'].widget.visible = True
-schema['description'].schemata = 'default'
+schema["description"].widget.visible = True
+schema["description"].schemata = "default"
 
-schema.moveField('Code', before='title')
+schema.moveField("Code", before="title")
+
 
 class Symptom(BaseContent):
     security = ClassSecurityInfo()
     displayContentsTab = False
     schema = schema
-
     _at_rename_after_creation = True
+
     def _renameAfterCreation(self, check_auto_id=False):
         from bika.lims.idserver import renameAfterCreation
         renameAfterCreation(self)
+
 
 registerType(Symptom, PROJECTNAME)

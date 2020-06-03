@@ -18,20 +18,18 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
+import plone.app.iterate
 from bika.lims.exportimport.load_setup_data import LoadSetupData
-from plone.app.testing import (PLONE_FIXTURE, SITE_OWNER_NAME,
-                               FunctionalTesting, PloneSandboxLayer, login,
-                               logout)
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import FunctionalTesting
+from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import login
+from plone.app.testing import logout
 from plone.testing import z2
-
-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setuphandlers import setupPortalContent
 from Testing.makerequest import makerequest
-
-import Products.ATExtensions
-import collective.js.jqueryui
-import plone.app.iterate
 
 
 class BaseLayer(PloneSandboxLayer):
@@ -42,9 +40,7 @@ class BaseLayer(PloneSandboxLayer):
         import bika.health
         import archetypes.schemaextender
         # Load ZCML
-        self.loadZCML(package=Products.ATExtensions)
         self.loadZCML(package=plone.app.iterate)
-        self.loadZCML(package=collective.js.jqueryui)
         self.loadZCML(package=archetypes.schemaextender)
         self.loadZCML(package=bika.lims)
         self.loadZCML(package=bika.health)

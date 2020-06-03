@@ -19,41 +19,49 @@
 # Some rights reserved, see README and LICENSE.
 
 from AccessControl import ClassSecurityInfo
-from bika.lims import bikaMessageFactory as _b
 from bika.health import bikaMessageFactory as _
+from bika.health.config import PROJECTNAME
 from bika.lims.browser.widgets import RecordsWidget
 from bika.lims.content.bikaschema import BikaSchema
-from bika.health.config import PROJECTNAME
-from Products.Archetypes.public import *
-from Products.ATExtensions.ateapi import RecordsField
-from zope.interface import implements
+from Products.Archetypes.public import BaseContent
+from Products.Archetypes.public import Schema
+from Products.Archetypes.public import registerType
+from senaite.core.browser.fields.records import RecordsField
 
 schema = BikaSchema.copy() + Schema((
-    RecordsField('AetiologicAgentSubtypes',
-        type='aetiologicagentsubtypes',
-        subfields=('Subtype', 'SubtypeRemarks'),
-        subfield_labels={'Subtype':_('Subtype'),
-                         'SubtypeRemarks':_('Remarks')},
-        subfield_sizes={'Subtype':10,
-                        'SubtypeRemarks':25},
+
+    RecordsField(
+        "AetiologicAgentSubtypes",
+        type="aetiologicagentsubtypes",
+        subfields=("Subtype", "SubtypeRemarks"),
+        subfield_labels={
+            "Subtype": _("Subtype"),
+            "SubtypeRemarks": _("Remarks")},
+        subfield_sizes={
+            "Subtype": 10,
+            "SubtypeRemarks": 25,
+        },
         widget=RecordsWidget(
-                label='Subtypes',
+                label="Subtypes",
                 description=_("A list of aetiologic agent subtypes."),
-                visible = True,
+                visible=True,
         ),
     ),
 ))
-schema['description'].widget.visible = True
-schema['description'].schemata = 'default'
+
+schema["description"].widget.visible = True
+schema["description"].schemata = "default"
+
 
 class AetiologicAgent(BaseContent):
     security = ClassSecurityInfo()
     displayContentsTab = False
     schema = schema
-
     _at_rename_after_creation = True
+
     def _renameAfterCreation(self, check_auto_id=False):
         from bika.lims.idserver import renameAfterCreation
         renameAfterCreation(self)
+
 
 registerType(AetiologicAgent, PROJECTNAME)

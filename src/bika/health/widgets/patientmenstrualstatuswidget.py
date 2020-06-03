@@ -18,22 +18,21 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from AccessControl import ClassSecurityInfo
-from Products.ATExtensions.widget import RecordsWidget as ATRecordsWidget
-from Products.Archetypes.Registry import registerWidget
-from Products.CMFCore.utils import getToolByName
 import json
 
+from AccessControl import ClassSecurityInfo
 from bika.health.interfaces import IPatient
+from Products.Archetypes.Registry import registerWidget
+from senaite.core.browser.widgets.recordswidget import RecordsWidget
 
 
-class PatientMenstrualStatusWidget(ATRecordsWidget):
+class PatientMenstrualStatusWidget(RecordsWidget):
     security = ClassSecurityInfo()
-    _properties = ATRecordsWidget._properties.copy()
+    _properties = RecordsWidget._properties.copy()
     _properties.update({
-        'macro': "bika_health_widgets/patientmenstrualstatuswidget",
-        'helper_js': ("bika_health_widgets/patientmenstrualstatuswidget.js",),
-        'helper_css': ("bika_health_widgets/patientmenstrualstatuswidget.css",),
+        "macro": "bika_health_widgets/patientmenstrualstatuswidget",
+        "helper_js": ("bika_health_widgets/patientmenstrualstatuswidget.js"),
+        "helper_css": ("bika_health_widgets/patientmenstrualstatuswidget.css"),
     })
 
     def process_form(self, instance, field, form, empty_marker=None,
@@ -41,11 +40,12 @@ class PatientMenstrualStatusWidget(ATRecordsWidget):
         outvalues = []
         values = form.get(field.getName(), empty_marker)
         for value in values:
-            outvalues.append({'Hysterectomy': bool(value.get('Hysterectomy', False)),
-                              'HysterectomyYear': value.get('HysterectomyYear', ''),
-                              'OvariesRemoved': bool(value.get('OvariesRemoved', False)),
-                              'OvariesRemovedNum': int(value.get('OvariesRemovedNum', 0)),
-                              'OvariesRemovedYear': value.get('OvariesRemovedYear', '')})
+            outvalues.append({
+                "Hysterectomy": bool(value.get("Hysterectomy", False)),
+                "HysterectomyYear": value.get("HysterectomyYear", ""),
+                "OvariesRemoved": bool(value.get("OvariesRemoved", False)),
+                "OvariesRemovedNum": int(value.get("OvariesRemovedNum", 0)),
+                "OvariesRemovedYear": value.get("OvariesRemovedYear", "")})
         return outvalues, {}
 
     def jsondumps(self, val):
@@ -57,17 +57,18 @@ class PatientMenstrualStatusWidget(ATRecordsWidget):
 
     def getMenstrualStatus(self):
 
-        statuses = [{'Hysterectomy': False,
-                     'HysterectomyYear': '',
-                     'OvariesRemoved': False,
-                     'OvariesRemovedNum': 0,
-                     'OvariesRemovedYear': ''}]
+        statuses = [{
+            "Hysterectomy": False,
+            "HysterectomyYear": "",
+            "OvariesRemoved": False,
+            "OvariesRemovedNum": 0,
+            "OvariesRemovedYear": "",
+        }]
 
-        return len(self.aq_parent.getMenstrualStatus()) > 0 \
-                    and self.aq_parent.getMenstrualStatus() \
-                    or statuses
+        return len(self.aq_parent.getMenstrualStatus()) > 0 and self.aq_parent.getMenstrualStatus() or statuses
 
-registerWidget(PatientMenstrualStatusWidget,
-               title='PatientMenstrualStatusWidget',
-               description='Menstrual status information',
-               )
+
+registerWidget(
+    PatientMenstrualStatusWidget,
+    title="PatientMenstrualStatusWidget",
+    description="Menstrual status information")

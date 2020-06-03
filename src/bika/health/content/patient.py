@@ -18,15 +18,10 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from Products.ATExtensions.ateapi import RecordsField
-from Products.Archetypes import atapi
-from Products.Archetypes.public import *
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
-from zope.interface import implements
-
 from bika.health import bikaMessageFactory as _
-from bika.health.config import *
+from bika.health.config import ETHNICITIES
+from bika.health.config import GENDERS
+from bika.health.config import PROJECTNAME
 from bika.health.interfaces import IPatient
 from bika.health.utils import get_relative_delta
 from bika.health.utils import translate_i18n as t
@@ -48,23 +43,42 @@ from bika.lims.catalog.analysisrequest_catalog import \
 from bika.lims.catalog.bika_catalog import BIKA_CATALOG
 from bika.lims.content.person import Person
 from bika.lims.interfaces import IClient
+from Products.Archetypes import atapi
+from Products.Archetypes.public import BooleanField
+from Products.Archetypes.public import BooleanWidget
+from Products.Archetypes.public import ComputedField
+from Products.Archetypes.public import ComputedWidget
+from Products.Archetypes.public import DisplayList
+from Products.Archetypes.public import ImageField
+from Products.Archetypes.public import ImageWidget
+from Products.Archetypes.public import ReferenceField
+from Products.Archetypes.public import Schema
+from Products.Archetypes.public import SelectionWidget
+from Products.Archetypes.public import StringField
+from Products.Archetypes.public import StringWidget
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
+from senaite.core.browser.fields.records import RecordsField
+from zope.interface import implements
 
 schema = Person.schema.copy() + Schema((
+
     StringField(
-        'PatientID',
+        "PatientID",
         searchable=1,
         required=0,
         widget=StringWidget(
-            visible={'view': 'visible', 'edit': 'hidden'},
-            label=_('Patient ID'),
-            css='readonly-emphasize',
+            visible={"view": "visible", "edit": "hidden"},
+            label=_("Patient ID"),
+            css="readonly-emphasize",
         ),
     ),
+
     ReferenceField(
-        'PrimaryReferrer',
+        "PrimaryReferrer",
         required=1,
-        allowed_types=('Client',),
-        relationship='PatientClient',
+        allowed_types=("Client",),
+        relationship="PatientClient",
         widget=ReferenceWidget(
             label=_("Client"),
             size=30,
@@ -83,74 +97,84 @@ schema = Person.schema.copy() + Schema((
             showOn=True,
         ),
     ),
+
     ComputedField(
-        'PrimaryReferrerID',
+        "PrimaryReferrerID",
         expression="context.getClientID()",
         widget=ComputedWidget(
         ),
     ),
+
     ComputedField(
-        'PrimaryReferrerTitle',
+        "PrimaryReferrerTitle",
         expression="context.getClientTitle()",
         widget=ComputedWidget(
         ),
     ),
+
     ComputedField(
-        'PrimaryReferrerUID',
+        "PrimaryReferrerUID",
         expression="context.getClientUID()",
         widget=ComputedWidget(
         ),
     ),
+
     ComputedField(
-        'PrimaryReferrerURL',
+        "PrimaryReferrerURL",
         expression="context.getClientURL()",
         widget=ComputedWidget(
             visible=False
         ),
     ),
+
     StringField(
-        'Gender',
+        "Gender",
         vocabulary=GENDERS,
-        index='FieldIndex',
-        default='dk',
+        index="FieldIndex",
+        default="dk",
         widget=SelectionWidget(
-            format='select',
-            label=_('Gender'),
+            format="select",
+            label=_("Gender"),
         ),
     ),
+
     StringField(
-        'Age',
+        "Age",
         widget=StringWidget(
-            label=_('Age'),
+            label=_("Age"),
             visible=0,
             width=3,
         ),
     ),
+
     DateTimeField_bl(
-        'BirthDate',
+        "BirthDate",
         required=1,
-        validators=('isDateFormat',),
+        validators=("isDateFormat",),
         widget=DateTimeWidget_bl(
-            label=_('Birth date'),
+            label=_("Birth date"),
             datepicker_nofuture=1,
         ),
     ),
+
     BooleanField(
-        'BirthDateEstimated',
+        "BirthDateEstimated",
         default=False,
         widget=BooleanWidget(
-            label=_('Birth date is estimated'),
+            label=_("Birth date is estimated"),
         ),
     ),
+
     RecordsField(
-        'AgeSplitted',
+        "AgeSplitted",
         required=1,
         widget=SplittedDateWidget(
-            label=_('Age'),
+            label=_("Age"),
         ),
     ),
+
     AddressField(
-        'CountryState',
+        "CountryState",
         widget=AddressWidget(
             searchable=True,
             label=_("Country and state"),
@@ -162,465 +186,491 @@ schema = Person.schema.copy() + Schema((
             showAddress=False,
         ),
     ),
+
     RecordsField(
-        'PatientIdentifiers',
-        type='patientidentifiers',
+        "PatientIdentifiers",
+        type="patientidentifiers",
         subfields=(
-            'IdentifierType',
-            'Identifier'
+            "IdentifierType",
+            "Identifier"
         ),
         subfield_labels={
-            'IdentifierType': _('Identifier Type'),
-            'Identifier': _('Identifier')
+            "IdentifierType": _("Identifier Type"),
+            "Identifier": _("Identifier")
         },
         subfield_sizes={
-            'Identifier': 15,
-            'Identifier Type': 25
+            "Identifier": 15,
+            "Identifier Type": 25
         },
         widget=RecordsWidget(
-            label=_('Additional identifiers'),
-            description=_('Patient additional identifiers'),
+            label=_("Additional identifiers"),
+            description=_("Patient additional identifiers"),
             combogrid_options={
-                'IdentifierType': {
-                    'colModel': [
+                "IdentifierType": {
+                    "colModel": [
                         {
-                            'columnName': 'IdentifierType',
-                            'width': '30',
-                            'label': _('Title')
+                            "columnName": "IdentifierType",
+                            "width": "30",
+                            "label": _("Title")
                         },
                         {
-                            'columnName': 'Description',
-                            'width': '70',
-                            'label': _('Description')
+                            "columnName": "Description",
+                            "width": "70",
+                            "label": _("Description")
                         }
                     ],
-                    'url': 'getidentifiertypes',
-                    'showOn': True,
-                    'width': '550px'
+                    "url": "getidentifiertypes",
+                    "showOn": True,
+                    "width": "550px"
                 },
             },
         ),
     ),
+
     ComputedField(
-        'PatientIdentifiersStr',
+        "PatientIdentifiersStr",
         expression="context.getPatientIdentifiersStr()",
         widget=ComputedWidget(
             visible=False
         ),
     ),
+
     RemarksField(
-        'Remarks',
+        "Remarks",
         searchable=True,
         widget=RemarksWidget(
-            label=_('Remarks'),
+            label=_("Remarks"),
         ),
     ),
+
     RecordsField(
-        'TreatmentHistory',
-        type='treatmenthistory',
+        "TreatmentHistory",
+        type="treatmenthistory",
         subfields=(
-            'Treatment',
-            'Drug',
-            'Start',
-            'End'
+            "Treatment",
+            "Drug",
+            "Start",
+            "End"
         ),
         required_subfields=(
-            'Drug',
-            'Start',
-            'End'
+            "Drug",
+            "Start",
+            "End"
         ),
         subfield_labels={
-            'Drug': _('Drug'),
-            'Start': _('Start'),
-            'End': _('End')
+            "Drug": _("Drug"),
+            "Start": _("Start"),
+            "End": _("End")
         },
         subfield_sizes={
-            'Drug': 40,
-            'Start': 10,
-            'End': 10
+            "Drug": 40,
+            "Start": 10,
+            "End": 10
         },
         subfield_types={
-            'Start': 'datepicker_nofuture',
-            'End': 'datepicker'
+            "Start": "datepicker_nofuture",
+            "End": "datepicker"
         },
         widget=RecordsWidget(
-            label='Drug History',
-            description=_("A list of patient treatments and drugs administered."),
+            label="Drug History",
+            description=_(
+                "A list of patient treatments and drugs administered."),
             combogrid_options={
-                'Treatment': {
-                    'colModel': [
+                "Treatment": {
+                    "colModel": [
                         {
-                            'columnName': 'Treatment',
-                            'width': '30',
-                            'label': _('Title')
+                            "columnName": "Treatment",
+                            "width": "30",
+                            "label": _("Title")
                         },
                         {
-                            'columnName': 'Description',
-                            'width': '70',
-                            'label': _('Description')
+                            "columnName": "Description",
+                            "width": "70",
+                            "label": _("Description")
                         }
                     ],
-                    'url': 'gettreatments',
-                    'showOn': True,
-                    'width': '550px'
+                    "url": "gettreatments",
+                    "showOn": True,
+                    "width": "550px"
                 },
-                'Drug': {
-                    'colModel': [
+                "Drug": {
+                    "colModel": [
                         {
-                            'columnName': 'Drug',
-                            'width': '30',
-                            'label': _('Title')
+                            "columnName": "Drug",
+                            "width": "30",
+                            "label": _("Title")
                         },
                         {
-                            'columnName': 'Description',
-                            'width': '70',
-                            'label': _('Description')
+                            "columnName": "Description",
+                            "width": "70",
+                            "label": _("Description")
                         }
                     ],
-                    'url': 'getdrugs',
-                    'showOn': True,
-                    'width': '550px'
+                    "url": "getdrugs",
+                    "showOn": True,
+                    "width": "550px"
                 },
             },
         ),
     ),
+
     RecordsField(
-        'Allergies',
-        type='allergies',
+        "Allergies",
+        type="allergies",
         subfields=(
-            'DrugProhibition',
-            'Drug',
-            'Remarks'
+            "DrugProhibition",
+            "Drug",
+            "Remarks"
         ),
         required_subfields=(
-            'DrugProhibition',
-            'Drug'
+            "DrugProhibition",
+            "Drug"
         ),
         subfield_labels={
-            'DrugProhibition': _('Drug Prohibition Explanation'),
-            'Drug': _('Drug'),
-            'Remarks': _('Remarks')
+            "DrugProhibition": _("Drug Prohibition Explanation"),
+            "Drug": _("Drug"),
+            "Remarks": _("Remarks")
         },
         subfield_sizes={
-            'DrugProhibition': 30,
-            'Drug': 30,
-            'Remarks': 30
+            "DrugProhibition": 30,
+            "Drug": 30,
+            "Remarks": 30
         },
         widget=RecordsWidget(
-            label='Allergies',
-            description=_("Known Patient allergies to keep information that can aid drug reaction interpretation"),
+            label="Allergies",
+            description=_(
+                "Known Patient allergies to keep information that can aid "
+                "drug reaction interpretation"),
             combogrid_options={
-                'Drug': {
-                    'colModel': [
+                "Drug": {
+                    "colModel": [
                         {
-                            'columnName': 'Title',
-                            'width': '30',
-                            'label': _('Title')
+                            "columnName": "Title",
+                            "width": "30",
+                            "label": _("Title")
                         },
                         {
-                            'columnName': 'Description',
-                            'width': '70',
-                            'label': _('Description')
+                            "columnName": "Description",
+                            "width": "70",
+                            "label": _("Description")
                         }
                     ],
-                    'url': 'getdrugs',
-                    'showOn': True,
-                    'width': '550px'
+                    "url": "getdrugs",
+                    "showOn": True,
+                    "width": "550px"
                 },
-                'DrugProhibition': {
-                    'colModel': [
+                "DrugProhibition": {
+                    "colModel": [
                         {
-                            'columnName': 'DrugProhibition',
-                            'width': '30',
-                            'label': _('Title')
+                            "columnName": "DrugProhibition",
+                            "width": "30",
+                            "label": _("Title")
                         },
                         {
-                            'columnName': 'Description',
-                            'width': '70',
-                            'label': _('Description')
+                            "columnName": "Description",
+                            "width": "70",
+                            "label": _("Description")
                         }
                     ],
-                    'url': 'getdrugprohibitions',
-                    'showOn': True,
-                    'width': '550px'
+                    "url": "getdrugprohibitions",
+                    "showOn": True,
+                    "width": "550px"
                 },
             },
         ),
     ),
+
     RecordsField(
-        'ImmunizationHistory',
-        type='immunizationhistory',
+        "ImmunizationHistory",
+        type="immunizationhistory",
         subfields=(
-            'EPINumber',
-            'Immunization',
-            'VaccinationCenter',
-            'Date',
-            'Remarks'
+            "EPINumber",
+            "Immunization",
+            "VaccinationCenter",
+            "Date",
+            "Remarks"
         ),
         required_subfields=(
-            'EPINumber',
-            'Immunization',
-            'Date'
+            "EPINumber",
+            "Immunization",
+            "Date"
         ),
         subfield_labels={
-            'EPINumber': _('EPI Number'),
-            'Immunization': _('Immunization'),
-            'VaccinationCenter': _('Vaccination Center'),
-            'Date': _('Date'),
-            'Remarks': _('Remarks')
+            "EPINumber": _("EPI Number"),
+            "Immunization": _("Immunization"),
+            "VaccinationCenter": _("Vaccination Center"),
+            "Date": _("Date"),
+            "Remarks": _("Remarks")
         },
         subfield_sizes={
-            'EPINumber': 12,
-            'Immunization': 20,
-            'VaccinationCenter': 10,
-            'Date': 10,
-            'Remarks': 25
+            "EPINumber": 12,
+            "Immunization": 20,
+            "VaccinationCenter": 10,
+            "Date": 10,
+            "Remarks": 25
         },
         subfield_types={
-            'Date': 'datepicker_nofuture'
+            "Date": "datepicker_nofuture"
         },
         widget=RecordsWidget(
-            label='Immunization History',
-            description=_("A list of immunizations administered to the patient."),
+            label="Immunization History",
+            description=_(
+                "A list of immunizations administered to the patient."),
             combogrid_options={
-                'Immunization': {
-                    'colModel': [
+                "Immunization": {
+                    "colModel": [
                         {
-                            'columnName': 'Immunization',
-                            'width': '30',
-                            'label': _('Title')
+                            "columnName": "Immunization",
+                            "width": "30",
+                            "label": _("Title")
                         },
                         {
-                            'columnName': 'Description',
-                            'width': '70',
-                            'label': _('Description')
+                            "columnName": "Description",
+                            "width": "70",
+                            "label": _("Description")
                         }
                     ],
-                    'url': 'getimmunizations',
-                    'showOn': True,
-                    'width': '550px'
+                    "url": "getimmunizations",
+                    "showOn": True,
+                    "width": "550px"
                 },
-                'VaccinationCenter': {
-                    'colModel': [
+                "VaccinationCenter": {
+                    "colModel": [
                         {
-                            'columnName': 'VaccinationCenter',
-                            'width': '100',
-                            'label': _('Title')
+                            "columnName": "VaccinationCenter",
+                            "width": "100",
+                            "label": _("Title")
                         }
                     ],
-                    'url': 'getvaccinationcenters',
-                    'showOn': True,
-                    'width': '550px'
+                    "url": "getvaccinationcenters",
+                    "showOn": True,
+                    "width": "550px"
                 },
             },
         ),
     ),
+
     RecordsField(
-        'TravelHistory',
-        type='travelhistory',
+        "TravelHistory",
+        type="travelhistory",
         subfields=(
-            'TripStartDate',
-            'TripEndDate',
-            'Country',
-            'Location',
-            'Remarks'
+            "TripStartDate",
+            "TripEndDate",
+            "Country",
+            "Location",
+            "Remarks"
         ),
-        required_subfields='Country',
+        required_subfields="Country",
         subfield_labels={
-            'TripStartDate': _('Trip Start Date', 'Start date'),
-            'TripEndDate': _('Trip End Date', 'End date'),
-            'Country': _('Country'),
-            'Location': _('Location'),
-            'Remarks': _('Remarks')},
+            "TripStartDate": _("Trip Start Date", "Start date"),
+            "TripEndDate": _("Trip End Date", "End date"),
+            "Country": _("Country"),
+            "Location": _("Location"),
+            "Remarks": _("Remarks")},
         subfield_sizes={
-            'TripStartDate': 10,
-            'TripEndDate': 10,
-            'Country': 20,
-            'Location': 20,
-            'Remarks': 25},
+            "TripStartDate": 10,
+            "TripEndDate": 10,
+            "Country": 20,
+            "Location": 20,
+            "Remarks": 25},
         subfield_types={
-            'TripStartDate': 'datepicker_nofuture',
-            'TripEndDate': 'datepicker'
+            "TripStartDate": "datepicker_nofuture",
+            "TripEndDate": "datepicker"
         },
         widget=RecordsWidget(
-            label='Travel History',
+            label="Travel History",
             description=_("A list of places visited by the patient."),
             combogrid_options={
-                'Country': {
-                    'colModel': [
+                "Country": {
+                    "colModel": [
                         {
-                            'columnName': 'Code',
-                            'width': '15',
-                            'label': _('Code')
+                            "columnName": "Code",
+                            "width": "15",
+                            "label": _("Code")
                         },
                         {
-                            'columnName': 'Country',
-                            'width': '85',
-                            'label': _('Country')
+                            "columnName": "Country",
+                            "width": "85",
+                            "label": _("Country")
                         }
                     ],
-                    'url': 'getCountries',
-                    'showOn': True,
-                    'width': "450px",
+                    "url": "getCountries",
+                    "showOn": True,
+                    "width": "450px",
                 },
             },
         ),
     ),
+
     RecordsField(
-        'ChronicConditions',
-        type='chronicconditions',
+        "ChronicConditions",
+        type="chronicconditions",
         subfields=(
-            'Code',
-            'Title',
-            'Description',
-            'Onset',
-            'End'
+            "Code",
+            "Title",
+            "Description",
+            "Onset",
+            "End"
         ),
         required_subfields=(
-            'Title',
-            'Onset'
+            "Title",
+            "Onset"
         ),
         subfield_sizes={
-            'Code': 7,
-            'Title': 20,
-            'Description': 35,
-            'Onset': 10,
-            'End': 10
+            "Code": 7,
+            "Title": 20,
+            "Description": 35,
+            "Onset": 10,
+            "End": 10
         },
         subfield_types={
-            'Onset': 'datepicker_nofuture',
-            'End': 'datepicker'
+            "Onset": "datepicker_nofuture",
+            "End": "datepicker"
         },
         widget=RecordsWidget(
-            label='Past Medical History',
+            label="Past Medical History",
             description=_("Patient's past medical history."),
             combogrid_options={
-                'Title': {
-                    'colModel': [
+                "Title": {
+                    "colModel": [
                         {
-                            'columnName': 'Code',
-                            'width': '10',
-                            'label': _('Code')
+                            "columnName": "Code",
+                            "width": "10",
+                            "label": _("Code")
                         },
                         {
-                            'columnName': 'Title',
-                            'width': '30',
-                            'label': _('Title')
+                            "columnName": "Title",
+                            "width": "30",
+                            "label": _("Title")
                         },
                         {
-                            'columnName': 'Description',
-                            'width': '60',
-                            'label': _('Description')
+                            "columnName": "Description",
+                            "width": "60",
+                            "label": _("Description")
                         }
                     ],
-                    'url': 'getdiseases',
-                    'showOn': True,
-                    'width': "650px",
+                    "url": "getdiseases",
+                    "showOn": True,
+                    "width": "650px",
                 },
             },
         ),
     ),
+
     StringField(
-        'BirthPlace',
-        schemata='Personal',
+        "BirthPlace",
+        schemata="Personal",
         widget=StringWidget(
-            label=_('Birth place'),
+            label=_("Birth place"),
         ),
     ),
-    # TODO This field will be removed on release 319. We maintain this field on release 318
-    # because of the transference between string field and content type data.
+
+    # TODO This field will be removed on release 319. We maintain this field on
+    #      release 318 because of the transference between string field and
+    #      content type data.
     StringField(
-        'Ethnicity',
-        schemata='Personal',
-        index='FieldIndex',
+        "Ethnicity",
+        schemata="Personal",
+        index="FieldIndex",
         vocabulary=ETHNICITIES,
         widget=ReferenceWidget(
-            label=_('Ethnicity'),
+            label=_("Ethnicity"),
             description=_("Ethnicity eg. Asian, African, etc."),
             visible=False,
         ),
     ),
-    # TODO This field will change its name on v319 and it'll be called Ethnicity
+    # TODO This field will change its name on v319 and it"ll be called
+    #      Ethnicity
     ReferenceField(
-        'Ethnicity_Obj',
-        schemata='Personal',
-        vocabulary='getEthnicitiesVocabulary',
-        allowed_types=('Ethnicity',),
-        relationship='PatientEthnicity',
+        "Ethnicity_Obj",
+        schemata="Personal",
+        vocabulary="getEthnicitiesVocabulary",
+        allowed_types=("Ethnicity",),
+        relationship="PatientEthnicity",
         widget=SelectionWidget(
-            format='select',
-            label=_('Ethnicity'),
+            format="select",
+            label=_("Ethnicity"),
             description=_("Ethnicity eg. Asian, African, etc."),
         ),
     ),
+
     StringField(
-        'Citizenship',
-        schemata='Personal',
+        "Citizenship",
+        schemata="Personal",
         widget=StringWidget(
-            label=_('Citizenship'),
+            label=_("Citizenship"),
         ),
     ),
+
     StringField(
-        'MothersName',
-        schemata='Personal',
+        "MothersName",
+        schemata="Personal",
         widget=StringWidget(
-            label=_('Mothers name'),
+            label=_("Mothers name"),
         ),
     ),
+
     StringField(
-        'FathersName',
-        schemata='Personal',
+        "FathersName",
+        schemata="Personal",
         widget=StringWidget(
-            label=_('Fathers name'),
+            label=_("Fathers name"),
         ),
     ),
+
     StringField(
-        'CivilStatus',
-        schemata='Personal',
+        "CivilStatus",
+        schemata="Personal",
         widget=StringWidget(
-            label=_('Civil status'),
+            label=_("Civil status"),
         ),
     ),
+
     ImageField(
-        'Photo',
-        schemata='Identification',
+        "Photo",
+        schemata="Identification",
         widget=ImageWidget(
-            label=_('Photo'),
+            label=_("Photo"),
         ),
     ),
+
     ImageField(
-        'Feature',
-        schemata='Identification',
+        "Feature",
+        schemata="Identification",
         multiValue=1,
         widget=ImageWidget(
-            label=_('Feature'),
+            label=_("Feature"),
         ),
     ),
+
     RecordsField(
-        'MenstrualStatus',
-        type='menstrualstatus',
+        "MenstrualStatus",
+        type="menstrualstatus",
         widget=PatientMenstrualStatusWidget(
-            label='Menstrual status',
+            label="Menstrual status",
         ),
     ),
+
     StringField(
-        'ClientPatientID',
+        "ClientPatientID",
         searchable=1,
-        validators=('unique_client_patient_ID_validator',),
+        validators=("unique_client_patient_ID_validator",),
         required=1,
         widget=StringWidget(
-            label=_('Client Patient ID'),
+            label=_("Client Patient ID"),
         ),
     ),
+
     BooleanField(
-        'Anonymous',
+        "Anonymous",
         default=False,
         widget=BooleanWidget(
             label=_("Anonymous")
         ),
     ),
+
     BooleanField(
-        'DefaultResultsDistribution',
+        "DefaultResultsDistribution",
         schemata="Publication preference",
         default=True,
         widget=BooleanWidget(
@@ -629,8 +679,9 @@ schema = Person.schema.copy() + Schema((
                           "the Client, so further changes in Client for this "
                           "setting will be populated too."))
     ),
+
     BooleanField(
-        'AllowResultsDistribution',
+        "AllowResultsDistribution",
         schemata="Publication preference",
         default=False,
         widget=BooleanWidget(
@@ -638,146 +689,168 @@ schema = Person.schema.copy() + Schema((
             description=_("If checked, results reports will also be sent "
                           "to the Patient automatically."))
     ),
+
     BooleanField(
-        'PublicationAttachmentsPermitted',
+        "PublicationAttachmentsPermitted",
         default=False,
-        schemata='Publication preference',
+        schemata="Publication preference",
         widget=BooleanWidget(
             label=_("Results attachments permitted"),
             description=_("File attachments to results, e.g. microscope "
                           "photos, will be included in emails to patient "
                           "if this option is enabled"))
     ),
+
     ReferenceField(
-        'InsuranceCompany',
-        vocabulary='get_insurancecompanies',
-        allowed_types=('InsuranceCompany',),
-        relationship='InsuranceCompany',
+        "InsuranceCompany",
+        vocabulary="get_insurancecompanies",
+        allowed_types=("InsuranceCompany",),
+        relationship="InsuranceCompany",
         required=False,
         widget=SelectionWidget(
-            format='select',
-            label=_('Insurance Company'),
+            format="select",
+            label=_("Insurance Company"),
             ),
         ),
+
     StringField(
-        'InsuranceNumber',
+        "InsuranceNumber",
         searchable=1,
         required=0,
         widget=StringWidget(
-            label=_('Insurance Number'),
+            label=_("Insurance Number"),
         ),
     ),
+
     BooleanField(
-        'InvoiceToInsuranceCompany',
+        "InvoiceToInsuranceCompany",
         default=False,
         widget=BooleanWidget(
             label=_("Send invoices to the insurance company."),
-            description=_("If it is checked the invoices will be send to the insurance company."
-                          " In this case the insurance number will be mandatory."))
+            description=_(
+                "If it is checked the invoices will be send to the insurance "
+                "company. In this case the insurance number will be "
+                "mandatory."))
     ),
+
     BooleanField(
-        'PatientAsGuarantor',
-        schemata='Insurance',
+        "PatientAsGuarantor",
+        schemata="Insurance",
         default=True,
         widget=BooleanWidget(
             label=_("The patient is the guarantor."),
             description=_("The patient and the guarantor are the same."))
     ),
+
     StringField(
-        'GuarantorID',
+        "GuarantorID",
         searchable=1,
-        schemata='Insurance',
+        schemata="Insurance",
         required=0,
         widget=StringWidget(
-            label=_('Guarantor ID'),
-            description=_("The ID number (Insurance Number) from the person whose contract cover the current patient.")
+            label=_("Guarantor ID"),
+            description=_(
+                "The ID number (Insurance Number) from the person whose "
+                "contract cover the current patient.")
         ),
     ),
+
     StringField(
-        'GuarantorSurname',
+        "GuarantorSurname",
         searchable=1,
-        schemata='Insurance',
+        schemata="Insurance",
         required=0,
         widget=StringWidget(
             label=_("Guarantor's Surname"),
         ),
     ),
+
     StringField(
-        'GuarantorFirstname',
+        "GuarantorFirstname",
         searchable=1,
-        schemata='Insurance',
+        schemata="Insurance",
         required=0,
         widget=StringWidget(
             label=_("Guarantor's First Name"),
         ),
     ),
+
     AddressField(
-        'GuarantorPostalAddress',
+        "GuarantorPostalAddress",
         searchable=1,
-        schemata='Insurance',
+        schemata="Insurance",
         required=0,
         widget=AddressWidget(
             label=_("Guarantor's postal address"),
         ),
     ),
+
     StringField(
-        'GuarantorBusinessPhone',
-        schemata='Insurance',
+        "GuarantorBusinessPhone",
+        schemata="Insurance",
         widget=StringWidget(
             label=_("Guarantor's Phone (business)"),
         ),
     ),
+
     StringField(
-        'GuarantorHomePhone',
-        schemata='Insurance',
+        "GuarantorHomePhone",
+        schemata="Insurance",
         widget=StringWidget(
             label=_("Guarantor's Phone (home)"),
         ),
     ),
+
     StringField(
-        'GuarantorMobilePhone',
-        schemata='Insurance',
+        "GuarantorMobilePhone",
+        schemata="Insurance",
         widget=StringWidget(
             label=_("Guarantor's Phone (mobile)"),
         ),
     ),
+
     BooleanField(
-        'ConsentSMS',
+        "ConsentSMS",
         default=False,
         widget=BooleanWidget(
-            label=_('Consent to SMS'),
+            label=_("Consent to SMS"),
         ),
     ),
+
     ComputedField(
-        'NumberOfSamples',
+        "NumberOfSamples",
         expression="len(context.getSamples())",
         widget=ComputedWidget(
             visible=False
         ),
     ),
+
     ComputedField(
-        'NumberOfSamplesCancelled',
+        "NumberOfSamplesCancelled",
         expression="len(context.getSamplesCancelled())",
         widget=ComputedWidget(
             visible=False
         ),
     ),
+
     ComputedField(
-        'NumberOfSamplesOngoing',
+        "NumberOfSamplesOngoing",
         expression="len(context.getSamplesOngoing())",
         widget=ComputedWidget(
             visible=False
         ),
     ),
+
     ComputedField(
-        'NumberOfSamplesPublished',
+        "NumberOfSamplesPublished",
         expression="len(context.getSamplesPublished())",
         widget=ComputedWidget(
             visible=False
         ),
     ),
+
     ComputedField(
-        'RatioOfSamplesOngoing',
+        "RatioOfSamplesOngoing",
         expression="context.getNumberOfSamplesOngoingRatio()",
         widget=ComputedWidget(
             visible=False
@@ -785,35 +858,35 @@ schema = Person.schema.copy() + Schema((
     ),
 ))
 
-schema['JobTitle'].widget.visible = False
-schema['Department'].widget.visible = False
-schema['BusinessPhone'].widget.visible = False
-schema['BusinessFax'].widget.visible = False
-# Don't make title required - it will be computed from the Person's Fullname
-schema['title'].required = 0
-schema['title'].widget.visible = False
-schema['EmailAddress'].schemata = 'Personal'
-schema['HomePhone'].schemata = 'Personal'
-schema['MobilePhone'].schemata = 'Personal'
-schema['InsuranceCompany'].schemata = 'Insurance'
-schema['InsuranceNumber'].schemata = 'Insurance'
-schema['InvoiceToInsuranceCompany'].schemata = 'Insurance'
-schema.moveField('PrimaryReferrer', after='Surname')
-schema.moveField('PatientID', before='title')
-schema.moveField('ClientPatientID', after='PatientID')
-schema.moveField('Anonymous', before='ClientPatientID')
-schema.moveField('InsuranceCompany', after='PrimaryReferrer')
-schema.moveField('InsuranceNumber', after='InsuranceCompany')
-schema.moveField('PatientIdentifiers', after='InsuranceNumber')
-schema.moveField('Gender', after='PatientIdentifiers')
-schema.moveField('Age', after='Gender')
-schema.moveField('BirthDateEstimated', after="Age")
-schema.moveField('BirthDate', after='BirthDateEstimated')
-schema.moveField('AgeSplitted', after='BirthDate')
-schema.moveField('CountryState', after='AgeSplitted')
-schema.moveField('MenstrualStatus', after='AgeSplitted')
-schema.moveField('ConsentSMS', after='PrimaryReferrer')
-schema.moveField('PrimaryReferrer', before='ClientPatientID')
+schema["JobTitle"].widget.visible = False
+schema["Department"].widget.visible = False
+schema["BusinessPhone"].widget.visible = False
+schema["BusinessFax"].widget.visible = False
+# Don"t make title required - it will be computed from the Person"s Fullname
+schema["title"].required = 0
+schema["title"].widget.visible = False
+schema["EmailAddress"].schemata = "Personal"
+schema["HomePhone"].schemata = "Personal"
+schema["MobilePhone"].schemata = "Personal"
+schema["InsuranceCompany"].schemata = "Insurance"
+schema["InsuranceNumber"].schemata = "Insurance"
+schema["InvoiceToInsuranceCompany"].schemata = "Insurance"
+schema.moveField("PrimaryReferrer", after="Surname")
+schema.moveField("PatientID", before="title")
+schema.moveField("ClientPatientID", after="PatientID")
+schema.moveField("Anonymous", before="ClientPatientID")
+schema.moveField("InsuranceCompany", after="PrimaryReferrer")
+schema.moveField("InsuranceNumber", after="InsuranceCompany")
+schema.moveField("PatientIdentifiers", after="InsuranceNumber")
+schema.moveField("Gender", after="PatientIdentifiers")
+schema.moveField("Age", after="Gender")
+schema.moveField("BirthDateEstimated", after="Age")
+schema.moveField("BirthDate", after="BirthDateEstimated")
+schema.moveField("AgeSplitted", after="BirthDate")
+schema.moveField("CountryState", after="AgeSplitted")
+schema.moveField("MenstrualStatus", after="AgeSplitted")
+schema.moveField("ConsentSMS", after="PrimaryReferrer")
+schema.moveField("PrimaryReferrer", before="ClientPatientID")
 
 
 class Patient(Person):
@@ -933,64 +1006,63 @@ class Patient(Person):
             else self.getPhysicalAddress()
 
     def getGuarantorID(self):
-        """
-        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
-        the current patient fields.
-        :return: The guarantor ID (insurance number) from
+        """If the patient is the guarantor, all the fields related with the
+        guarantor are going to have the same value as the current patient
+        fields. :return: The guarantor ID (insurance number) from
         """
         return self.getInsuranceNumber() if self.getPatientAsGuarantor() else self.getField('GuarantorID').get(self)
 
     def getGuarantorSurname(self):
-        """
-        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
-        the current patient fields.
+        """If the patient is the guarantor, all the fields related with the
+        guarantor are going to have the same value as the current patient
+        fields.
         """
         return self.getSurname() if self.getPatientAsGuarantor() else self.getField('GuarantorSurname').get(self)
 
     def getGuarantorFirstname(self):
-        """
-        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
-        the current patient fields.
+        """If the patient is the guarantor, all the fields related with the
+        guarantor are going to have the same value as the current patient
+        fields.
         """
         return self.getFirstname() if self.getPatientAsGuarantor() else self.getField('GuarantorFirstname').get(self)
 
     def getGuarantorPostalAddress(self):
-        """
-        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
-        the current patient fields.
+        """If the patient is the guarantor, all the fields related with the
+        guarantor are going to have the same value as the current patient
+        fields.
         """
         return self.getPostalAddress() \
             if self.getPatientAsGuarantor() \
             else self.getField('GuarantorPostalAddress').get(self)
 
     def getGuarantorBusinessPhone(self):
-        """
-        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
-        the current patient fields.
+        """If the patient is the guarantor, all the fields related with the
+        guarantor are going to have the same value as the current patient
+        fields.
         """
         return self.getBusinessPhone() \
             if self.getPatientAsGuarantor() \
             else self.getField('GuarantorBusinessPhone').get(self)
 
     def getGuarantorHomePhone(self):
-        """
-        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
-        the current patient fields.
+        """If the patient is the guarantor, all the fields related with the
+        guarantor are going to have the same value as the current patient
+        fields.
         """
         return self.getHomePhone() if self.getPatientAsGuarantor() else self.getField('GuarantorHomePhone').get(self)
 
     def getGuarantorMobilePhone(self):
-        """
-        If the patient is the guarantor, all the fields related with the guarantor are going to have the same value as
-        the current patient fields.
+        """If the patient is the guarantor, all the fields related with the
+        guarantor are going to have the same value as the current patient
+        fields.
         """
         return self.getMobilePhone() \
             if self.getPatientAsGuarantor() \
             else self.getField('GuarantorMobilePhone').get(self)
 
     def getEthnicitiesVocabulary(self, instance=None):
-        """
-        Obtain all the ethnicities registered in the system and returns them as a list
+        """Obtain all the ethnicities registered in the system and returns them
+        as a list
         """
         bsc = getToolByName(self, 'bika_setup_catalog')
         items = [(c.UID, c.Title)
@@ -1002,11 +1074,12 @@ class Patient(Person):
 
     # TODO This function will will be removed on v319
     def getEthnicity(self):
-        """
-        This function exists because we are changing the construction of ethnicities. Until now, ethnicities options were
-        hand-coded but now they are a new content type. So we need to pass all patient's ethnicity values, but to do
-        such thing, we need to create new ethnicity types on upgrade step and edit patient ethnicity field to relate them
-        with its corresponding ethnicity content type.
+        """This function exists because we are changing the construction of
+        ethnicities. Until now, ethnicities options were hand-coded but now
+        they are a new content type. So we need to pass all patient's ethnicity
+        values, but to do such thing, we need to create new ethnicity types on
+        upgrade step and edit patient ethnicity field to relate them with its
+        corresponding ethnicity content type.
         :return:
         """
         return self.getEthnicity_Obj()
@@ -1025,9 +1098,10 @@ class Patient(Person):
         """Returns the client the current Patient is assigned to, if any
         """
         # The schema's field PrimaryReferrer is only used to allow the user to
-        # assign the patient to a client in edit form. The entered value is used
-        # in ObjectModifiedEventHandler to move the patient to the Client's
-        # folder, so the value stored in the Schema's is not used anymore
+        # assign the patient to a client in edit form. The entered value is
+        # used in ObjectModifiedEventHandler to move the patient to the
+        # Client's folder, so the value stored in the Schema's is not used
+        # anymore
         # See https://github.com/senaite/senaite.core/pull/152
         client = self.aq_parent
         if IClient.providedBy(client):
@@ -1081,8 +1155,12 @@ class Patient(Person):
 
         # plain text fields we index from ourself,
         # a list of accessor methods of the class
-        plain_text_fields = ("Title", "getFullname", "getId",
-                             "getPrimaryReferrerID", "getPrimaryReferrerTitle", "getClientPatientID")
+        plain_text_fields = ("Title",
+                             "getFullname",
+                             "getId",
+                             "getPrimaryReferrerID",
+                             "getPrimaryReferrerTitle",
+                             "getClientPatientID")
 
         def read(accessor):
             """
@@ -1091,7 +1169,7 @@ class Patient(Person):
             """
             try:
                 value = accessor()
-            except:
+            except Exception:
                 value = ""
 
             if value is None:

@@ -18,12 +18,17 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-"""Generic field extensions"""
-
-from Products.Archetypes.public import *
 from archetypes.schemaextender.field import ExtensionField
-from Products.ATExtensions.ateapi import RecordField, RecordsField
-from Products.ATExtensions.ateapi import DateTimeField
+from Products.Archetypes.public import BooleanField
+from Products.Archetypes.public import ComputedField
+from Products.Archetypes.public import IntegerField
+from Products.Archetypes.public import LinesField
+from Products.Archetypes.public import ReferenceField
+from Products.Archetypes.public import StringField
+from Products.Archetypes.public import TextField
+from senaite.core.browser.fields.datetime import DateTimeField
+from senaite.core.browser.fields.record import RecordField
+from senaite.core.browser.fields.records import RecordsField
 
 
 class field_getter:
@@ -34,7 +39,8 @@ class field_getter:
         self.fieldname = fieldname
 
     def __call__(self):
-        return self.context.Schema()[self.fieldname].getAccessor(self.context)()
+        return self.context.Schema()[self.fieldname].getAccessor(
+            self.context)()
 
 
 class field_setter:
@@ -45,7 +51,8 @@ class field_setter:
         self.fieldname = fieldname
 
     def __call__(self, value):
-        return self.context.Schema()[self.fieldname].getMutator(self.context)(value)
+        return self.context.Schema()[self.fieldname].getMutator(
+            self.context)(value)
 
 
 class ExtBooleanField(ExtensionField, BooleanField):
@@ -63,8 +70,10 @@ class ExtDateTimeField(ExtensionField, DateTimeField):
 class ExtIntegerField(ExtensionField, IntegerField):
     "Field extender"
 
+
 class ExtLinesField(ExtensionField, LinesField):
     "Field extender"
+
 
 class ExtRecordField(ExtensionField, RecordField):
     "Field extender"
