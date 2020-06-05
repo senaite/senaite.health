@@ -19,18 +19,19 @@
 # Some rights reserved, see README and LICENSE.
 
 import os.path
-import transaction
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import _createObjectByType
-from pkg_resources import resource_filename
-from zope.interface import implements
 
+from pkg_resources import resource_filename
+
+import transaction
 from bika.health import logger
-from bika.lims.exportimport.dataimport import SetupDataSetList as SDL
-from bika.lims.exportimport.setupdata import WorksheetImporter
 from bika.lims.idserver import renameAfterCreation
 from bika.lims.interfaces import ISetupDataSetList
 from bika.lims.utils import tmpID
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import _createObjectByType
+from senaite.core.exportimport.dataimport import SetupDataSetList as SDL
+from senaite.core.exportimport.setupdata import WorksheetImporter
+from zope.interface import implements
 
 
 class SetupDataSetList(SDL):

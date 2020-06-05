@@ -19,7 +19,6 @@
 # Some rights reserved, see README and LICENSE.
 
 import plone.app.iterate
-from bika.lims.exportimport.load_setup_data import LoadSetupData
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import FunctionalTesting
@@ -29,6 +28,7 @@ from plone.app.testing import logout
 from plone.testing import z2
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setuphandlers import setupPortalContent
+from senaite.core.exportimport.load_setup_data import LoadSetupData
 from Testing.makerequest import makerequest
 
 
