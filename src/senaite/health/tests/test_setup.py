@@ -18,24 +18,25 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.health.tests.base import SimpleTestCase
+from Products.CMFPlone.utils import get_installer
+from senaite.health.tests.base import BaseTestCase
 
 
-class TestSetup(SimpleTestCase):
+class TestSetup(BaseTestCase):
     """Test Setup
     """
 
     def test_is_senaite_core_installed(self):
-        qi = self.portal.portal_quickinstaller
-        self.assertTrue(qi.isProductInstalled("bika.lims"))
+        qi = get_installer(self.portal)
+        self.assertTrue(qi.is_product_installed("senaite.core"))
 
     def test_is_senaite_lims_installed(self):
-        qi = self.portal.portal_quickinstaller
-        self.assertTrue(qi.isProductInstalled("senaite.lims"))
+        qi = get_installer(self.portal)
+        self.assertTrue(qi.is_product_installed("senaite.lims"))
 
     def test_is_senaite_health_installed(self):
-        qi = self.portal.portal_quickinstaller
-        self.assertTrue(qi.isProductInstalled("bika.health"))
+        qi = get_installer(self.portal)
+        self.assertTrue(qi.is_product_installed("senaite.health"))
 
 
 def test_suite():

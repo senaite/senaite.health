@@ -21,12 +21,12 @@
 import doctest
 from os.path import join
 
-import unittest2 as unittest
-from Testing import ZopeTestCase as ztc
 from pkg_resources import resource_listdir
 
-from bika.health import PROJECTNAME
-from bika.health.tests.base import SimpleTestCase
+import unittest2 as unittest
+from senaite.health.config import PROJECTNAME
+from senaite.health.tests.base import BaseTestCase
+from Testing import ZopeTestCase as ztc
 
 # Option flags for doctests
 flags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE | doctest.REPORT_NDIFF
@@ -38,7 +38,7 @@ def test_suite():
         suite.addTests([
             ztc.ZopeDocFileSuite(
                 doctestfile,
-                test_class=SimpleTestCase,
+                test_class=BaseTestCase,
                 optionflags=flags
             )
         ])
