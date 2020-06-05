@@ -34,3 +34,12 @@ tags
 buildout-cache
 atlassian-*.xml
 node_modules
+
+src/senaite.core.listing/
+src/senaite.core.spotlight/
+src/senaite.core.supermodel/
+src/senaite.core/
+src/senaite.impress/
+src/senaite.jsonapi/
+src/senaite.lims/
+src/senaite.panic/
