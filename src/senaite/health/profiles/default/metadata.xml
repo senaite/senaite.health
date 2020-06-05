@@ -2,5 +2,7 @@
 <metadata>
   <version>2.0.0</version>
   <dependencies>
+    <dependency>profile-senaite.lims:default</dependency>
+    <dependency>profile-senaite.panic:default</dependency>
   </dependencies>
 </metadata>
