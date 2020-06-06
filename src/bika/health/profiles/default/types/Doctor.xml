@@ -6,7 +6,7 @@
         purge="True">
  <property name="title" i18n:translate="">Doctor</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/doctor.png</property>
+ <property name="content_icon">senaite_theme/icon/doctor</property>
  <property name="content_meta_type">Doctor</property>
  <property name="product">bika.health</property>
  <property name="factory">addDoctor</property>

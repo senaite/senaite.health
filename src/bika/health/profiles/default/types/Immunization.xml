@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Immunization</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/immunization.png</property>
+ <property name="content_icon">senaite_theme/icon/immunization</property>
  <property name="content_meta_type">Immunization</property>
  <property name="product">bika.health</property>
  <property name="factory">addImmunization</property>

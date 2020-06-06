@@ -6,7 +6,7 @@
     <property name="description"
               i18n:translate="">The ethnicity of the patient</property>
     <property name="content_meta_type">Ethnicity</property>
-    <property name="content_icon">++resource++bika.health.images/ethnicity.png</property>
+    <property name="content_icon">senaite_theme/icon/ethnicity</property>
     <property name="product">bika.health</property>
     <property name="factory">addEthnicity</property>
     <property name="global_allow">True</property>

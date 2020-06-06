@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Contact</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/vaccinationcenter_contact.png</property>
+ <property name="content_icon">senaite_theme/icon/vaccinationcenter_contact</property>
  <property name="content_meta_type">VaccinationCenterContact</property>
  <property name="product">bika.health</property>
  <property name="factory">addVaccinationCenterContact</property>

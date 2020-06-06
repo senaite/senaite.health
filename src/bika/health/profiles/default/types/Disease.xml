@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Disease</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/disease.png</property>
+ <property name="content_icon">senaite_theme/icon/disease</property>
  <property name="content_meta_type">Disease</property>
  <property name="product">bika.health</property>
  <property name="factory">addDisease</property>

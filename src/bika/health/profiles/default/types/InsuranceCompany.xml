@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Insurance company</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/insurance_company.png</property>
+ <property name="content_icon">senaite_theme/icon/insurance_company</property>
  <property name="content_meta_type">Insurance Company</property>
  <property name="product">bika.health</property>
  <property name="factory">addInsuranceCompany</property>

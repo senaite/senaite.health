@@ -7,7 +7,7 @@
 
   <property name="title" i18n:translate="">Vaccination centers</property>
   <property name="description"></property>
-  <property name="content_icon">++resource++bika.health.images/vaccinationcenter.png</property>
+  <property name="content_icon">senaite_theme/icon/vaccinationcenter</property>
   <property name="content_meta_type">VaccinationCenters</property>
   <property name="product">bika.health</property>
   <property name="factory">addVaccinationCenters</property>

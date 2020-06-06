@@ -7,7 +7,7 @@
 
   <property name="title" i18n:translate="">Identifier Types</property>
   <property name="description"></property>
-  <property name="content_icon">++resource++bika.health.images/identifiertype.png</property>
+  <property name="content_icon">senaite_theme/icon/identifiertype</property>
   <property name="content_meta_type">IdentifierTypes</property>
   <property name="product">bika.health</property>
   <property name="factory">addIdentifierTypes</property>

@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Symptom</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/symptom.png</property>
+ <property name="content_icon">senaite_theme/icon/symptom</property>
  <property name="content_meta_type">Symptom</property>
  <property name="product">bika.health</property>
  <property name="factory">addSymptom</property>

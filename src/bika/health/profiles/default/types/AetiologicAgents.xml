@@ -7,7 +7,7 @@
 
   <property name="title" i18n:translate="">Aetiologic Agents</property>
   <property name="description"></property>
-  <property name="content_icon">++resource++bika.health.images/aetiologicagent.png</property>
+  <property name="content_icon">senaite_theme/icon/aetiologicagent</property>
   <property name="content_meta_type">AetiologicAgents</property>
   <property name="product">bika.health</property>
   <property name="factory">addAetiologicAgents</property>

@@ -7,7 +7,7 @@
 
   <property name="title" i18n:translate="">Immunizations</property>
   <property name="description"></property>
-  <property name="content_icon">++resource++bika.health.images/immunization.png</property>
+  <property name="content_icon">senaite_theme/icon/immunization</property>
   <property name="content_meta_type">Immunizations</property>
   <property name="product">bika.health</property>
   <property name="factory">addImmunizations</property>

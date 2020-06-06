@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Case Outcome</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/caseoutcome.png</property>
+ <property name="content_icon">senaite_theme/icon/caseoutcome</property>
  <property name="content_meta_type">CaseOutcome</property>
  <property name="product">bika.health</property>
  <property name="factory">addCaseOutcome</property>

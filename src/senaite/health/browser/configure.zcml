@@ -5,6 +5,7 @@
     i18n_domain="senaite.health">
 
   <!-- Package includes -->
+  <include package=".theme"/>
   <include package=".viewlets"/>
 
   <!-- Static directory for js, css and image resources -->

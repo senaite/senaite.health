@@ -5,7 +5,7 @@
         i18n:domain="plone">
  <property name="title" i18n:translate="">Drug Prohibition Explanation</property>
  <property name="description"></property>
- <property name="content_icon">++resource++bika.health.images/drugprohibition.png</property>
+ <property name="content_icon">senaite_theme/icon/drugprohibition</property>
  <property name="content_meta_type">DrugProhibition</property>
  <property name="product">bika.health</property>
  <property name="factory">addDrugProhibition</property>

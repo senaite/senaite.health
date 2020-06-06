@@ -7,7 +7,7 @@
 
   <property name="title" i18n:translate="">Case Statuses</property>
   <property name="description"></property>
-  <property name="content_icon">++resource++bika.health.images/casestatus.png</property>
+  <property name="content_icon">senaite_theme/icon/casestatus</property>
   <property name="content_meta_type">CaseStatuses</property>
   <property name="product">bika.health</property>
   <property name="factory">addCaseStatuses</property>
