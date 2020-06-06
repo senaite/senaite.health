@@ -53,7 +53,12 @@ class BaseLayer(PloneSandboxLayer):
         # XXX Hack to avoid this bug:
         # IOError: [Errno 2] No such file or directory:
         #          '.../senaite.core.supermodel/src/senaite/core/configure.zcml'
-        # see code at `zope.configuration.config.ConfigurationContext.path`
+        # Call Stack:
+        # plone.app.testing.helpers.loadZCML
+        # zope.configuration.xmlconfig.file
+        # zope.configuration.xmlconfig.include
+        # zope.configuration.config.ConfigurationContext.path
+        # zope.configuration.config.ConfigurationContext.processxmlfile
         senaite.core.__path__ = [os.path.dirname(senaite.core.__file__)]
 
         self.loadZCML(package=Products.TextIndexNG3)
