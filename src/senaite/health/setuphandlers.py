@@ -14,7 +14,9 @@ from bika.health.setuphandlers import setup_site_structure
 from bika.health.setuphandlers import setup_user_groups
 from bika.health.setuphandlers import setup_workflows
 from bika.health.setuphandlers import sort_nav_bar
+from plone.registry.interfaces import IRegistry
 from senaite.health import logger
+from zope.component import getUtility
 from zope.interface import implementer
 
 try:
@@ -26,6 +28,41 @@ except ImportError:
         pass
 
 PROFILE_ID = "profile-senaite.health:default"
+HEALTH_TYPES = [
+    "AetiologicAgent",
+    "AetiologicAgents",
+    "CaseOutcome",
+    "CaseOutcomes",
+    "CaseStatus",
+    "CaseStatuses",
+    "CaseSyndromicClassification",
+    "CaseSyndromicClassifications",
+    "Disease",
+    "Diseases",
+    "Doctor",
+    "Doctors",
+    "Drug",
+    "DrugProhibition",
+    "DrugProhibitions",
+    "Drugs",
+    "Ethnicities",
+    "Ethnicity",
+    "IdentifierType",
+    "IdentifierTypes",
+    "Immunization",
+    "Immunizations",
+    "InsuranceCompanies",
+    "InsuranceCompany",
+    "Patient",
+    "Patients",
+    "Symptom",
+    "Symptoms",
+    "Treatment",
+    "Treatments",
+    "VaccinationCenter",
+    "VaccinationCenterContact",
+    "VaccinationCenters",
+]
 
 
 @implementer(INonInstallable)
@@ -105,6 +142,9 @@ def install(context):
     # Setup default email body and subject for panic alerts
     setup_panic_alerts(portal)
 
+    # setup navigation types to display
+    setup_navigation_types(portal)
+
     logger.info("SENAITE HEALTH install handler [DONE]")
 
 
@@ -115,6 +155,18 @@ def _run_import_step(portal, name, profile="profile-bika.health:default"):
                 .format(name, profile))
     setup = portal.portal_setup
     setup.runImportStepFromProfile(profile, name)
+
+
+def setup_navigation_types(portal):
+    """Add additional types for navigation
+    """
+    registry = getUtility(IRegistry)
+    key = "plone.displayed_types"
+    display_types = registry.get(key, ())
+
+    new_display_types = set(display_types)
+    new_display_types.update(HEALTH_TYPES)
+    registry[key] = tuple(new_display_types)
 
 
 def pre_install(portal_setup):
