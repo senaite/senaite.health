@@ -7,7 +7,7 @@
 
 <metal:slot fill-slot="head_slot">
     <link rel="stylesheet" type="text/css" media="all" href=""
-          tal:attributes="href python:context.absolute_url()+'/bika_widgets/recordswidget.css'" />
+          tal:attributes="href python:context.absolute_url()+'/senaite_widgets/recordswidget.css'" />
 </metal:slot>
 
 <body>
@@ -24,7 +24,7 @@
             <input type='hidden' name='submitted' value='1'/>
         </form>
 
-        <script type="text/javascript" tal:attributes="src python:context.absolute_url()+'/bika_widgets/recordswidget.js'"> </script>
+        <script type="text/javascript" tal:attributes="src python:context.absolute_url()+'/senaite_widgets/recordswidget.js'"> </script>
 
     </metal:content-core>
 </body>

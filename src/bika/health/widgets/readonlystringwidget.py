@@ -24,23 +24,27 @@ from Products.Archetypes.Widget import StringWidget
 from Products.CMFCore.permissions import View
 from zope.component import getMultiAdapter
 
+
 class ReadonlyStringWidget(StringWidget):
     _properties = StringWidget._properties.copy()
     _properties.update({
-        'macro' : "bika_health_widgets/readonlystringwidget",
-        'css' : "readonly",
+        "macro": "bika_health_widgets/readonlystringwidget",
+        "css": "readonly",
         })
     security = ClassSecurityInfo()
 
-    security.declareProtected(View, 'readonly')
+    security.declareProtected(View, "readonly")
     def readonly(self, context, request):
-        portal_state = getMultiAdapter((context, request), name="plone_portal_state")
+        portal_state = getMultiAdapter(
+            (context, request), name="plone_portal_state")
         if portal_state.anonymous():
             return None
         else:
-            return '1'
+            return "1"
 
-registerWidget(ReadonlyStringWidget,
-               title='ReadonlyString',
-               description=('HTML input text in readonly mode'),
-               )
+
+registerWidget(
+    ReadonlyStringWidget,
+    title="ReadonlyString",
+    description=("HTML input text in readonly mode"),
+)

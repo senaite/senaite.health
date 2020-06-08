@@ -18,11 +18,11 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from caseaetiologicagentswidget import CaseAetiologicAgentsWidget
-from splitteddatewidget import SplittedDateWidget
-from readonlystringwidget import ReadonlyStringWidget
-from casesymptomswidget import CaseSymptomsWidget
-from casemenstrualstatuswidget import CaseMenstrualStatusWidget
-from patientmenstrualstatuswidget import PatientMenstrualStatusWidget
-from casepatientconditionwidget import CasePatientConditionWidget
-from casebasalbodytempwidget import CaseBasalBodyTempWidget
+from caseaetiologicagentswidget import CaseAetiologicAgentsWidget  # noqa
+from splitteddatewidget import SplittedDateWidget  # noqa
+from readonlystringwidget import ReadonlyStringWidget  # noqa
+from casesymptomswidget import CaseSymptomsWidget  # noqa
+from casemenstrualstatuswidget import CaseMenstrualStatusWidget  # noqa
+from patientmenstrualstatuswidget import PatientMenstrualStatusWidget  # noqa
+from casepatientconditionwidget import CasePatientConditionWidget  # noqa
+from casebasalbodytempwidget import CaseBasalBodyTempWidget  # noqa
