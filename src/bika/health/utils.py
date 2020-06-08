@@ -77,10 +77,10 @@ def get_html_image(name, **kwargs):
     if not name:
         return ""
     attr = render_html_attributes(**kwargs)
-    return '<img src="{}" {}/>'.format(get_resource_url(name), attr)
+    return '<img class="icon" height=16 src="{}" {}/>'.format(get_resource_url(name), attr)
 
 
-def get_resource_url(resource, route="++resource++bika.health.images"):
+def get_resource_url(resource, route="senaite_theme/icon"):
     """Returns the url for the given resource name
     """
     portal_url = api.get_url(api.get_portal())
@@ -370,17 +370,17 @@ def get_client_aware_html_image(obj):
     """Renders an icon based on the client the object belongs to
     """
     if is_from_external_client(obj):
-        icon_info = ("lock.png", _("Private, from an external client"))
+        icon_info = ("locked", _("Private, from an external client"))
 
     elif is_from_internal_client(obj):
         if api.get_review_status(obj) == "shared":
-            icon_info = ("share.png", _("Shared, from an internal client"))
+            icon_info = ("share", _("Shared, from an internal client"))
         else:
-            icon_info = ("share_lock.png",
+            icon_info = ("share_lock",
                          _("From an internal client, but not shared"))
     else:
         logger.warn("No client assigned for {}".format(repr(obj)))
-        icon_info = ("exclamation_red.png", _("No client assigned"))
+        icon_info = ("exclamation_red", _("No client assigned"))
 
     return get_html_image(icon_info[0], title=icon_info[1])
 
