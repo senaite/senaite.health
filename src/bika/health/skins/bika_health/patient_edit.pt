@@ -7,23 +7,23 @@
     <metal:body define-macro="body">
         <metal:default_body use-macro="here/edit_macros/macros/body">
           <metal:block fill-slot="extra_buttons">
+            <div class="mt-2">
+              <!-- Save patient and redirect to Add Case view -->
+              <input class="btn btn-primary"
+                     type="submit"
+                     name="form.button.new_batch"
+                     value="Save and create Clinical Case"
+                     i18n:attributes="value"
+                     tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
 
-            <!-- Save patient and redirect to Add Case view -->
-            <input class="context"
-                   type="submit"
-                   name="form.button.new_batch"
-                   value="Save and create Clinical Case"
-                   i18n:attributes="value"
-                   tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
-
-            <!-- Save patient and redirect to Add Sample view -->
-            <input class="context"
-                   type="submit"
-                   name="form.button.new_sample"
-                   value="Save and create Sample"
-                   i18n:attributes="value"
-                   tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
-
+              <!-- Save patient and redirect to Add Sample view -->
+              <input class="btn btn-primary"
+                     type="submit"
+                     name="form.button.new_sample"
+                     value="Save and create Sample"
+                     i18n:attributes="value"
+                     tal:attributes="disabled python:test(isLocked, 'disabled', None);" />
+            </div>
           </metal:block>
         </metal:default_body>
     </metal:body>
