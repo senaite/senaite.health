@@ -32,7 +32,7 @@ class CaseMenstrualStatusWidget(RecordsWidget):
     _properties.update({
         "macro": "bika_health_widgets/casemenstrualstatuswidget",
         "helper_js": ("bika_health_widgets/casemenstrualstatuswidget.js",
-                      "bika_health_widgets/patientmenstrualstatuswidget.js"),
+                      "bika_health_widgets/patientmenstrualstatuswidget.js",),
         "helper_css": ("bika_health_widgets/casemenstrualstatuswidget.css",),
     })
 

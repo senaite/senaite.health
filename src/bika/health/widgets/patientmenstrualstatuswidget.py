@@ -31,8 +31,8 @@ class PatientMenstrualStatusWidget(RecordsWidget):
     _properties = RecordsWidget._properties.copy()
     _properties.update({
         "macro": "bika_health_widgets/patientmenstrualstatuswidget",
-        "helper_js": ("bika_health_widgets/patientmenstrualstatuswidget.js"),
-        "helper_css": ("bika_health_widgets/patientmenstrualstatuswidget.css"),
+        "helper_js": ("bika_health_widgets/patientmenstrualstatuswidget.js",),
+        "helper_css": ("bika_health_widgets/patientmenstrualstatuswidget.css",),
     })
 
     def process_form(self, instance, field, form, empty_marker=None,
