@@ -2,11 +2,10 @@
 
 a, .btn-link {
     &.active, &.expanded {
-        background-color: $senaite-health-red;
+        // background-color: $link-color;
     }
     &:hover {
-        color: $senaite-health-red;
-        opacity: 0.8;
+        color: $link-color;
     }
-    color: $senaite-health-red;
+    color: $link-color;
 }
