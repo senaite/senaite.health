@@ -67,17 +67,14 @@ class PatientsView(BikaListingView):
         self.columns = collections.OrderedDict((
             ("Title", {
                 "title": _("Patient"),
-                "index": "getFullname",
-                "replace_url": "absolute_url"}),
+                "index": "getFullname",}),
 
             ('getPatientID', {
                 'title': _('Patient ID'),
-                'index': 'getPatientID',
-                'replace_url': 'getURL'}),
+                'index': 'getPatientID'}),
 
             ('getClientPatientID', {
                 'title': _('Client PID'),
-                'replace_url': 'getURL',
                 'sortable': False}),
 
             ('getGender', {
