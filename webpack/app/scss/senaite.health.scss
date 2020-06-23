@@ -1,11 +1,1 @@
 @import "base.scss";
-
-a, .btn-link {
-    &.active, &.expanded {
-        // background-color: $link-color;
-    }
-    &:hover {
-        color: $link-color;
-    }
-    color: $link-color;
-}
