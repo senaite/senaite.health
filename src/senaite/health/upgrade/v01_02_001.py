@@ -18,30 +18,31 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.health import logger
-from bika.health.config import PROJECTNAME as product
-from bika.lims.upgrade import upgradestep
-from bika.lims.upgrade.utils import UpgradeUtils
+from bika.health.config import PROJECTNAME
+from senaite.core.upgrade import upgradestep
+from senaite.core.upgrade.utils import UpgradeUtils
+from senaite.health import logger
 
-version = '1.1.0'
-profile = 'profile-{0}:default'.format(product)
+version = '1.2.1'
+profile = 'profile-{0}:default'.format(PROJECTNAME)
 
 
-@upgradestep(product, version)
+@upgradestep(PROJECTNAME, version)
 def upgrade(tool):
     portal = tool.aq_inner.aq_parent
+    setup = portal.portal_setup
     ut = UpgradeUtils(portal)
-    ver_from = ut.getInstalledVersion(product)
+    ver_from = ut.getInstalledVersion(PROJECTNAME)
 
-    if ut.isOlderVersion(product, version):
+    if ut.isOlderVersion(PROJECTNAME, version):
         logger.info("Skipping upgrade of {0}: {1} > {2}".format(
-            product, ver_from, version))
+            PROJECTNAME, ver_from, version))
         return True
 
-    logger.info("Upgrading {0}: {1} -> {2}".format(product, ver_from, version))
+    logger.info("Upgrading {0}: {1} -> {2}".format(PROJECTNAME, ver_from,
+                                                   version))
 
-    # -------- ADD YOUR STUFF HERE --------
+    # -------- ADD YOUR STUFF BELOW --------
 
-    logger.info("{0} upgraded to version {1}".format(product, version))
-
+    logger.info("{0} upgraded to version {1}".format(PROJECTNAME, version))
     return True

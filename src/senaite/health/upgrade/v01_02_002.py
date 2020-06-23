@@ -21,19 +21,18 @@
 import time
 
 from Acquisition import aq_inner
-from Products.CMFPlone.utils import _createObjectByType
-
 from bika.health import CATALOG_PATIENTS
-from bika.health import logger
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import allow_patients_inside_clients
 from bika.health.utils import move_obj
 from bika.lims import api
 from bika.lims.catalog.bika_catalog import BIKA_CATALOG
 from bika.lims.idserver import renameAfterCreation
-from bika.lims.upgrade import upgradestep
-from bika.lims.upgrade.utils import UpgradeUtils
 from bika.lims.utils import tmpID
+from Products.CMFPlone.utils import _createObjectByType
+from senaite.core.upgrade import upgradestep
+from senaite.core.upgrade.utils import UpgradeUtils
+from senaite.health import logger
 
 version = '1.2.2'
 profile = 'profile-{0}:default'.format(PROJECTNAME)

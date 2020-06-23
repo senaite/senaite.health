@@ -21,14 +21,14 @@
 from bika.health import CATALOG_PATIENTS
 from bika.health import api
 from bika.health import DEFAULT_PROFILE_ID
-from bika.health import logger
+from senaite.health import logger
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import allow_patients_inside_clients
 from bika.health.setuphandlers import setup_panic_alerts
 from bika.lims.catalog import CATALOG_ANALYSIS_REQUEST_LISTING
-from bika.lims.upgrade import upgradestep
-from bika.lims.upgrade.utils import UpgradeUtils
-from bika.lims.upgrade.v01_03_003 import fix_email_address
+from senaite.core.upgrade import upgradestep
+from senaite.core.upgrade.utils import UpgradeUtils
+from senaite.core.upgrade.v01_03_003 import fix_email_address
 
 version = '1.2.3'
 profile = 'profile-{0}:default'.format(PROJECTNAME)

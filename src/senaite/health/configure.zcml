@@ -11,6 +11,7 @@
 
   <!-- Package includes -->
   <include package=".browser"/>
+  <include package=".upgrade"/>
 
   <!-- Profile -->
   <genericsetup:registerProfile

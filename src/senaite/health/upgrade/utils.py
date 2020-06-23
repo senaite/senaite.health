@@ -18,7 +18,7 @@
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
 
-from bika.health import logger
+from senaite.health import logger
 from bika.lims import api
 from bika.lims.catalog.catalog_utilities import addZCTextIndex
 

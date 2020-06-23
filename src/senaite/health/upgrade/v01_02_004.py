@@ -17,9 +17,9 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
-from bika.health import CATALOG_PATIENTS
+
 from bika.health import DEFAULT_PROFILE_ID
-from bika.health import logger
+from senaite.health import logger
 from bika.health.config import PROJECTNAME
 from bika.health.setuphandlers import allow_doctors_inside_clients
 from bika.health.setuphandlers import allow_patients_inside_clients
@@ -32,9 +32,8 @@ from bika.health.utils import is_internal_client
 from bika.health.utils import move_obj
 from bika.lims import api
 from bika.lims.setuphandlers import reindex_content_structure
-from bika.lims.upgrade import upgradestep
-from bika.lims.upgrade.utils import UpgradeUtils
-from bika.lims.utils import changeWorkflowState
+from senaite.core.upgrade import upgradestep
+from senaite.core.upgrade.utils import UpgradeUtils
 
 version = '1.2.4'
 profile = 'profile-{0}:default'.format(PROJECTNAME)

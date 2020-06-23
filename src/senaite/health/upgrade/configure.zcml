@@ -1,0 +1,34 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="senaite.health">
+
+<genericsetup:upgradeStep
+        title="Upgrade to SENAITE Health 1.2.4"
+        source="1.2.3"
+        destination="1.2.4"
+        handler="senaite.health.upgrade.v01_02_004.upgrade"
+        profile="senaite.health:default"/>
+
+<genericsetup:upgradeStep
+        title="Upgrade to SENAITE Health 1.2.3"
+        source="1.2.2"
+        destination="1.2.3"
+        handler="senaite.health.upgrade.v01_02_003.upgrade"
+        profile="senaite.health:default"/>
+
+<genericsetup:upgradeStep
+        title="Upgrade to SENAITE Health 1.2.2"
+        source="1.2.1"
+        destination="1.2.2"
+        handler="senaite.health.upgrade.v01_02_002.upgrade"
+        profile="senaite.health:default"/>
+
+<genericsetup:upgradeStep
+        title="Upgrade to SENAITE Health 1.2.1"
+        source="1.2.0"
+        destination="1.2.1"
+        handler="senaite.health.upgrade.v01_02_001.upgrade"
+        profile="senaite.health:default"/>
+
+</configure>
