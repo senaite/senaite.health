@@ -231,42 +231,23 @@ def to_ymd(delta):
 
 
 def move_obj(ob, destination):
-    """
-    This function has the same effect as:
-
-        id = obj.getId()
-        cp = origin.manage_cutObjects(id)
-        destination.manage_pasteObjects(cp)
-
-    but with slightly better performance and **without permission checks**. The
-    code is mostly grabbed from OFS.CopySupport.CopyContainer_pasteObjects
+    """Move object to destination
     """
     id = ob.getId()
 
-    # Notify the object will be copied to destination
-    ob._notifyOfCopyTo(destination, op=1)
-
-    # Notify that the object will be moved
     origin = aq_parent(aq_inner(ob))
-    notify(ObjectWillBeMovedEvent(ob, origin, id, destination, id))
+    cp = origin.manage_cutObjects(id)
+    destination.manage_pasteObjects(cp)
 
-    # Effectively move the object from origin to destination
-    origin._delObject(id, suppress_events=True)
-    ob = aq_base(ob)
-    destination._setObject(id, ob, set_owner=0, suppress_events=True)
-    ob = destination._getOb(id)
+    # XXX: Why does the `portal_catalog` retains the old object?
+    #
+    # unindex the old object from the portal_catalog to avoid this error:
+    # ValueError: No object with id "patient-7" exists in "/senaite/patients".
+    pc = api.get_tool("portal_catalog")
+    pc.unindexObject(ob)
 
-    # Since we used "suppress_events=True", we need to manually notify that the
-    # object has been moved and containers modified. This also makes the objects
-    # to be re-catalogued
-    notify(ObjectMovedEvent(ob, origin, id, destination, id))
-    notifyContainerModified(origin)
-    notifyContainerModified(destination)
-
-    # Try to make ownership implicit if possible, so it acquires the permissions
-    # from the container
-    ob.manage_changeOwnershipType(explicit=0)
-    return ob
+    # return the new wrapped object
+    return destination[id]
 
 
 def is_internal_client(client):
