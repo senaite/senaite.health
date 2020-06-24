@@ -44,7 +44,8 @@ folder is only used as a shortcut to view Patients registered in the system:
     >>> api.create(patients, "Patient")
     Traceback (most recent call last):
     [...]
-    AttributeError: 'NoneType' object has no attribute '_setObject'
+    AttributeError: 'NoneType' object has no attribute 'manage_pasteObjects'
+
 
 If we create a Patient inside an External Client, the object is automatically
 transitioned to "active" status:
