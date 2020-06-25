@@ -61,7 +61,7 @@ class PatientsView(BikaListingView):
         if client:
             # Display the Patients the belong to this Client only
             self.contentFilter["path"] = {
-                "query": api.get_path(client), "depth": 1
+                "query": api.get_path(client)
             }
 
         self.columns = collections.OrderedDict((
