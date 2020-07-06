@@ -43,6 +43,9 @@ class Date_Format_Validator:
         if not value and not required:
             return True
 
+        if api.is_date(value):
+            return True
+
         try:
             datetime.strptime(value, '%Y-%m-%d')
         except ValueError:
