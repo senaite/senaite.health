@@ -20,10 +20,11 @@
 
 from zope.component import getAdapters
 
+from bika.health import logger
 from bika.health.adapters.referencewidget import IReferenceWidgetAdapter
+from bika.health.adapters.referencewidget import IExclusiveReferenceWidgetAdapter
 from bika.lims.browser.widgets.referencewidget import \
     ajaxReferenceWidgetSearch as base
-
 
 class ajaxReferenceWidgetSearch(base):
     """
@@ -40,6 +41,18 @@ class ajaxReferenceWidgetSearch(base):
         if not adapters:
             # No health-specific adapters found, fallback to core's defaults
             return super(ajaxReferenceWidgetSearch, self).search()
+
+        # Do not consider other adapters when an "exclusive" adapter is found
+        def is_exclusive(adapter):
+            return IExclusiveReferenceWidgetAdapter.providedBy(adapter[1])
+
+        # Do not consider other adapters if IExclusiveReferenceWidgetVocabulary
+        exclusive = filter(is_exclusive, adapters)
+        if exclusive:
+            if len(exclusive) > 1:
+                logger.error("Multiple exclusive adapters found!")
+            else:
+                adapters = [exclusive[0]]
 
         brains = []
         for name, adapter in adapters:

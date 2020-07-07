@@ -6,6 +6,7 @@ Changelog
 
 **Added**
 
+- #195 Allow Reference Widget adapters to be exclusive
 - #183 Internal Clients functionality
 - #187 Allow to introduce the Age instead of Date of Birth for Patient
 

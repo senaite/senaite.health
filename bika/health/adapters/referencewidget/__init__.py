@@ -39,6 +39,11 @@ class IReferenceWidgetAdapter(IReferenceWidgetVocabulary):
     """
 
 
+class IExclusiveReferenceWidgetAdapter(IReferenceWidgetAdapter):
+    """Marker interface for 'exclusive' reference widget adapters
+    """
+
+
 class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
     """Injects search criteria (filters) in the query when the current context
     is, belongs or is associated to a Client
