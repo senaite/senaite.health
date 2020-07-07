@@ -47,11 +47,12 @@ class ajaxReferenceWidgetSearch(base):
         exclusive = filter(lambda ad:
                            IExclusiveReferenceWidgetAdapter.providedBy(ad[1]),
                            adapters)
+
         if exclusive:
             if len(exclusive) > 1:
                 logger.error("Multiple exclusive adapters found!")
-            else:
-                adapters = [exclusive[0]]
+                return []
+            adapters = [exclusive[0]]
 
         brains = []
         for name, adapter in adapters:
