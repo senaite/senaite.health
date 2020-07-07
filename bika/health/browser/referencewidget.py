@@ -26,6 +26,7 @@ from bika.health.adapters.referencewidget import IExclusiveReferenceWidgetAdapte
 from bika.lims.browser.widgets.referencewidget import \
     ajaxReferenceWidgetSearch as base
 
+
 class ajaxReferenceWidgetSearch(base):
     """
     End-point for reference widget searches in senaite.health. Does the same
