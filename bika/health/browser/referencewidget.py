@@ -44,11 +44,9 @@ class ajaxReferenceWidgetSearch(base):
             return super(ajaxReferenceWidgetSearch, self).search()
 
         # Do not consider other adapters when an "exclusive" adapter is found
-        def is_exclusive(adapter):
-            return IExclusiveReferenceWidgetAdapter.providedBy(adapter[1])
-
-        # Do not consider other adapters if IExclusiveReferenceWidgetVocabulary
-        exclusive = filter(is_exclusive, adapters)
+        exclusive = filter(lambda ad:
+                           IExclusiveReferenceWidgetAdapter.providedBy(ad[1]),
+                           adapters)
         if exclusive:
             if len(exclusive) > 1:
                 logger.error("Multiple exclusive adapters found!")
