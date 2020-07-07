@@ -23,20 +23,21 @@ from zope.interface import implements
 
 from bika.health import logger
 from bika.health.utils import get_client_from_chain
-from bika.health.utils import is_internal_client
 from bika.health.utils import resolve_query_for_shareable
 from bika.lims import api
 from bika.lims.adapters.referencewidgetvocabulary import \
     DefaultReferenceWidgetVocabulary
 from bika.lims.interfaces import IClient
 from bika.lims.interfaces import IReferenceWidgetVocabulary
-from bika.lims.utils import chain
-from bika.lims.utils import get_client
 
 
 class IReferenceWidgetAdapter(IReferenceWidgetVocabulary):
     """Marker interface for reference widget adapters
     """
+
+    def is_supported(self):
+        """Returns whether the current adapter supports the search
+        """
 
 
 class IExclusiveReferenceWidgetAdapter(IReferenceWidgetAdapter):
@@ -87,6 +88,13 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
         ("Contact", "getParentUID"),
     ]
 
+    def is_supported(self):
+        """Returns whether the adapter supports the portal_type from the query
+        """
+        query = self.get_baseline_query()
+        portal_type = self.get_portal_type(query)
+        return portal_type in self.client_aware_types
+
     def get_client_from_query(self, query, purge=False):
         """Resolves the client from the query passed-in
         """
@@ -103,24 +111,22 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
                 return client
         return None
 
+    def get_baseline_query(self):
+        """Returns the baseline query to work with
+        """
+        return super(ClientAwareReferenceWidgetAdapter, self).get_raw_query()
+
     def get_raw_query(self):
         """Returns the raw query to use for current search, based on the
         base query + update query
         """
-        query = super(ClientAwareReferenceWidgetAdapter, self).get_raw_query()
+        query = self.get_baseline_query()
         logger.info("===============================================")
         logger.info("Custom client-aware reference widget vocabulary")
         logger.info(repr(query))
 
-        # Get the portal types from the query
+        # Get the portal type from the query
         portal_type = self.get_portal_type(query)
-        if not portal_type:
-            # Don't know the type we are searching for, do nothing
-            return query
-
-        if portal_type not in self.client_aware_types:
-            # The portal type is not client aware, do nothing
-            return query
 
         # Try to resolve the client from the query
         client = self.get_client_from_query(query, purge=True)
