@@ -19,6 +19,7 @@
 # Some rights reserved, see README and LICENSE.
 
 from bika.health.interfaces import IPatient
+from bika.health.utils import is_from_external_client
 from bika.lims.interfaces import IClient
 
 
@@ -30,13 +31,15 @@ def getClient(self):
         # The Batch belongs to an External Client
         return parent
 
-    elif IPatient.providedBy(parent):
+    elif IPatient.providedBy(parent) and is_from_external_client(parent):
         # The Batch belongs to a Patient
         return parent.getClient()
 
     parent = self.getField("Client").get(self)
     if parent:
-        # The Batch belongs to an Internal Client
+        # The Batch belongs to an Internal Client, either because is directly
+        # assigned to the Client or because belongs to a Patient from an
+        # internal client
         return parent
 
     # The Batch belongs to the laboratory (no Client assigned)

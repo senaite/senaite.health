@@ -23,6 +23,7 @@ from zope.interface import implements
 
 from bika.health import logger
 from bika.health.utils import get_client_from_chain
+from bika.health.utils import is_external_client
 from bika.health.utils import resolve_query_for_shareable
 from bika.lims import api
 from bika.lims.adapters.referencewidgetvocabulary import \
@@ -153,8 +154,7 @@ class ClientAwareReferenceWidgetAdapter(DefaultReferenceWidgetVocabulary):
             context_portal_type = api.get_portal_type(self.context)
             if context_portal_type in self.internally_shared_types:
 
-                # Current context can be shared internally (e.g. Batch)
-                if client:
+                if client and is_external_client(client):
                     # Display only the current Client in searches
                     criteria = self.resolve_query(portal_type, client, False)
 
