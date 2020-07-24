@@ -17,8 +17,10 @@
 #
 # Copyright 2018-2020 by it's authors.
 # Some rights reserved, see README and LICENSE.
+
 from bika.health.interfaces import IDoctor
 from bika.health.interfaces import IPatient
+from bika.health.utils import is_from_external_client
 from bika.lims.adapters.widgetvisibility import SenaiteATWidgetVisibility
 from bika.lims.interfaces import IClient
 
@@ -33,7 +35,10 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
 
     def isVisible(self, field, mode="view", default="visible"):
         """Renders the Client field as hidden if the current mode is "edit" and
-        the container is either a Patient or a Client
+        the container is a Patient that belongs to an external client or when
+        the container is a Client. If the container is a Patient that belongs to
+        an internal client, the field is kept editable, cause user might want to
+        assign the batch to an internal client other than the current one.
         """
         if mode == "edit":
             container = self.context.aq_parent
@@ -42,7 +47,10 @@ class ClientFieldVisibility(SenaiteATWidgetVisibility):
             # Doctor make Client field to be rendered, but hidden to prevent
             # the error message "Patient is required, please correct".
             if IPatient.providedBy(container):
-                return "readonly"
+                # User might want to assign the batch to an internal client
+                # other than the Patient's
+                if is_from_external_client(container):
+                    return "readonly"
 
             elif IClient.providedBy(container):
                 return "readonly"

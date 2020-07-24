@@ -160,6 +160,10 @@ function HealthBatchEditView() {
         return succeed;
     }
 
+    this.isPatientEditable = function() {
+        return $('#Patient').attr("type") != "hidden";
+    }
+
     this.flushDoctor = function() {
         // Flush doctor field
         $('#Doctor').val('');
@@ -184,8 +188,10 @@ function HealthBatchEditView() {
     function loadEventHandlers() {
         $("#Client").bind("selected paste blur", function(){
             var uid = getElementAttr('#Client', 'uid');
-            // Flush Patient field
-            that.fillPatient(null);
+            // Flush Patient field, but only if is editable!
+            if (that.isPatientEditable()) {
+              that.fillPatient(null);
+            }
             // Flush Doctor field
             that.flushDoctor();
             // Applies the filtering for other client-related fields
