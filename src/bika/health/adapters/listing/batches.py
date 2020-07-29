@@ -20,9 +20,9 @@
 
 import collections
 
-from senaite.core.listing import utils
-from senaite.core.listing.interfaces import IListingView
-from senaite.core.listing.interfaces import IListingViewAdapter
+from senaite.app.listing import utils
+from senaite.app.listing.interfaces import IListingView
+from senaite.app.listing.interfaces import IListingViewAdapter
 from zope.component import adapts
 from zope.interface import implements
 
