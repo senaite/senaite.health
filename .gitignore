@@ -35,9 +35,9 @@ buildout-cache
 atlassian-*.xml
 node_modules
 
-src/senaite.core.listing/
-src/senaite.core.spotlight/
-src/senaite.core.supermodel/
+src/senaite.app.listing/
+src/senaite.app.spotlight/
+src/senaite.app.supermodel/
 src/senaite.core/
 src/senaite.impress/
 src/senaite.jsonapi/
