@@ -1,3 +1,4 @@
+#
 # Translators:
 # Jordi Puiggené <jpuiggene@naralabs.com>, 2018
 # Zhuo Song, 2020
@@ -5,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-04-09 19:30+0000\n"
+"POT-Creation-Date: 2020-08-11 21:03+0000\n"
 "PO-Revision-Date: 2018-10-14 15:05+0000\n"
 "Last-Translator: Zhuo Song, 2020\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/senaite/teams/87046/zh_CN/)\n"
@@ -48,11 +49,22 @@ msgstr "患者去过的地方的清单。"
 msgid "Activate"
 msgstr "启用"
 
-#: bika/health/browser/doctors/folder_view.py:69
-#: bika/health/browser/patients/folder_view.py:108
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:61
+#: bika/health/browser/doctors/folder_view.py:107
+#: bika/health/browser/patients/folder_view.py:111
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:64
 msgid "Active"
 msgstr "活跃的"
+
+#: bika/health/browser/doctors/folder_view.py:139
+#: bika/health/browser/patients/folder_view.py:143
+msgid "Active (private)"
+msgstr ""
+
+#: bika/health/browser/doctors/folder_view.py:132
+#: bika/health/browser/patients/folder_view.py:136
+#: bika/health/profiles/default/workflows/senaite_health_doctor_workflow/definition.xml
+msgid "Active (shared)"
+msgstr ""
 
 #: bika/health/content/immunization.py:131
 msgid "Active immunization"
@@ -62,13 +74,13 @@ msgstr "主动免疫"
 msgid "Active treatment"
 msgstr "积极治疗"
 
-#: bika/health/browser/doctors/folder_view.py:81
-#: bika/health/browser/patient/batches.py:50
+#: bika/health/adapters/listing/batches.py:261
+#: bika/health/browser/doctors/folder_view.py:181
 #: bika/health/browser/patient/files.py:55
 msgid "Add"
 msgstr "添加"
 
-#: bika/health/browser/patients/folder_view.py:99
+#: bika/health/browser/patients/folder_view.py:102
 msgid "Additional IDs"
 msgstr "附加ID"
 
@@ -80,7 +92,7 @@ msgstr "可以在此处输入ICD代码未涵盖的其他症状。"
 msgid "Additional identifiers"
 msgstr "附加标识符"
 
-#: bika/health/content/batch.py:209
+#: bika/health/content/batch.py:210
 msgid "Additional notes"
 msgstr "补充说明"
 
@@ -88,23 +100,23 @@ msgstr "补充说明"
 msgid "Address"
 msgstr "地址"
 
-#: bika/health/controlpanel/bika_aetiologicagents.py:44
+#: bika/health/controlpanel/bika_aetiologicagents.py:48
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Aetiologic Agents"
 msgstr "病原体"
 
-#: bika/health/content/batch.py:239
+#: bika/health/content/batch.py:240
 msgid "Aetiologic agent"
 msgstr "病原体"
 
-#: bika/health/browser/patients/folder_view.py:83
+#: bika/health/browser/patients/folder_view.py:86
 #: bika/health/content/patient.py:124
 msgid "Age"
 msgstr "年龄"
 
-#: bika/health/browser/doctors/folder_view.py:95
+#: bika/health/browser/doctors/folder_view.py:119
 #: bika/health/browser/patient/files.py:81
-#: bika/health/browser/patients/folder_view.py:120
+#: bika/health/browser/patients/folder_view.py:123
 msgid "All"
 msgstr "所有的"
 
@@ -144,10 +156,6 @@ msgstr "适当的剂量和剂量"
 #: bika/health/config.py:35
 msgid "Asian"
 msgstr "亚洲人"
-
-#: bika/health/content/doctor.py:53
-msgid "Associate the doctor to a client. This doctor will not be accessible from other clients."
-msgstr "将该医生与某位客户联系起来。 其他客户将无法访问该医生。"
 
 #: bika/health/impress/reports/Default.pt:607
 msgid "Attachment for"
@@ -189,7 +197,7 @@ msgstr "估计的生日"
 msgid "Birth place"
 msgstr "出生地"
 
-#: bika/health/browser/patients/folder_view.py:88
+#: bika/health/browser/patients/folder_view.py:91
 msgid "BirthDate"
 msgstr "生日"
 
@@ -203,8 +211,8 @@ msgstr "黑色"
 msgid "Both"
 msgstr "二者"
 
-#: bika/health/browser/doctors/folder_view.py:62
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:54
+#: bika/health/browser/doctors/folder_view.py:96
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:57
 msgid "Business Phone"
 msgstr "办公电话"
 
@@ -217,35 +225,35 @@ msgstr "身份识别码"
 msgid "Case"
 msgstr "病案"
 
+#: bika/health/adapters/listing/batches.py:87
 #: bika/health/browser/analysisrequests/view.py:49
-#: bika/health/browser/patient/analysisrequests.py:33
-#: bika/health/impress/reports/Default.pt:385
+#: bika/health/browser/patient/analysisrequests.py:34
 msgid "Case ID"
 msgstr "病案编号"
 
-#: bika/health/controlpanel/bika_caseoutcomes.py:44
+#: bika/health/controlpanel/bika_caseoutcomes.py:48
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Case Outcomes"
 msgstr "病案结果"
 
-#: bika/health/controlpanel/bika_casestatuses.py:44
+#: bika/health/controlpanel/bika_casestatuses.py:48
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Case Statuses"
 msgstr "病案状态"
 
-#: bika/health/controlpanel/bika_casesyndromicclassifications.py:47
+#: bika/health/controlpanel/bika_casesyndromicclassifications.py:48
 msgid "Case Syndromic Classifications"
 msgstr "病案综合征分类"
 
-#: bika/health/content/batch.py:223
+#: bika/health/content/batch.py:224
 msgid "Case outcome"
 msgstr "病案结果"
 
-#: bika/health/content/batch.py:216
+#: bika/health/content/batch.py:217
 msgid "Case status"
 msgstr "病案状态"
 
-#: bika/health/browser/batchfolder.py:44
+#: bika/health/adapters/listing/batches.py:58
 msgid "Cases"
 msgstr "病案"
 
@@ -274,12 +282,13 @@ msgid "Civil status"
 msgstr "公民身份"
 
 #: bika/health/browser/batch/publish.pt:60
-#: bika/health/browser/insurancecompany/invoicefolder.py:56
-#: bika/health/content/doctor.py:56
+#: bika/health/browser/doctors/folder_view.py:78
+#: bika/health/browser/insurancecompany/invoicefolder.py:59
 msgid "Client"
 msgstr "客户"
 
-#: bika/health/content/batch.py:366
+#: bika/health/adapters/listing/batches.py:88
+#: bika/health/content/batch.py:367
 #: bika/health/impress/reports/Default.pt:362
 msgid "Client Case ID"
 msgstr "客户病案编号"
@@ -292,9 +301,9 @@ msgstr "客户编号"
 msgid "Client Order Number"
 msgstr "客户订单号"
 
+#: bika/health/adapters/listing/batches.py:205
 #: bika/health/browser/analysisrequests/view.py:55
-#: bika/health/browser/batchfolder.py:113
-#: bika/health/browser/patients/folder_view.py:73
+#: bika/health/browser/patients/folder_view.py:77
 msgid "Client PID"
 msgstr "客户PID"
 
@@ -320,7 +329,7 @@ msgstr "客户样品编号"
 msgid "Clients"
 msgstr "客户"
 
-#: bika/health/content/batch.py:169
+#: bika/health/content/batch.py:170
 #: bika/health/content/patient.py:454
 msgid "Code"
 msgstr "编码"
@@ -329,7 +338,7 @@ msgstr "编码"
 msgid "Collectives at risk"
 msgstr "集体处于危险之中"
 
-#: bika/health/controlpanel/bika_insurancecompanies.py:52
+#: bika/health/controlpanel/bika_insurancecompanies.py:57
 msgid "Company Name"
 msgstr "公司名"
 
@@ -379,6 +388,14 @@ msgstr "验证日期"
 msgid "Date of Birth"
 msgstr "出生日期"
 
+#: bika/health/browser/patients/folder_view.py:215
+msgid "Date of Birth might be wrong"
+msgstr ""
+
+#: bika/health/adapters/listing/batches.py:144
+msgid "Date of Birth or Case Onset Date are wrong"
+msgstr ""
+
 #: bika/health/skins/bika_health/bika_health_widgets/casebasalbodytempwidget.pt:20
 msgid "Day 1"
 msgstr "第一天"
@@ -400,7 +417,7 @@ msgstr "天"
 msgid "Deactivate"
 msgstr "停用"
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:70
+#: bika/health/browser/insurancecompany/invoicefolder.py:73
 msgid "Default"
 msgstr "默认"
 
@@ -409,9 +426,13 @@ msgstr "默认"
 msgid "Default publication preference for Patients"
 msgstr "患者的默认发布偏好"
 
-#: bika/health/content/batch.py:171
+#: bika/health/browser/doctors/folder_view.py:83
+msgid "Department"
+msgstr ""
+
+#: bika/health/content/batch.py:172
 #: bika/health/content/patient.py:194
-#: bika/health/controlpanel/bika_aetiologicagents.py:55
+#: bika/health/controlpanel/bika_aetiologicagents.py:59
 msgid "Description"
 msgstr "描述"
 
@@ -419,28 +440,29 @@ msgstr "描述"
 msgid "Discount"
 msgstr "折扣"
 
-#: bika/health/controlpanel/bika_diseases.py:58
+#: bika/health/controlpanel/bika_diseases.py:57
 msgid "Disease"
 msgstr "疾病"
 
-#: bika/health/controlpanel/bika_diseases.py:49
+#: bika/health/controlpanel/bika_diseases.py:48
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Diseases"
 msgstr "疾病"
 
+#: bika/health/content/doctor.py:67
 #: bika/health/content/patient.py:81
 msgid "District"
 msgstr "区"
 
+#: bika/health/adapters/listing/batches.py:214
 #: bika/health/browser/analysisrequests/view.py:62
-#: bika/health/browser/batchfolder.py:122
 #: bika/health/content/analysisrequest.py:54
 msgid "Doctor"
 msgstr "医生"
 
-#: bika/health/browser/doctors/folder_view.py:46
+#: bika/health/browser/doctors/folder_view.py:72
 #: bika/health/content/batch.py:104
-#: bika/health/content/doctor.py:42
+#: bika/health/content/doctor.py:46
 msgid "Doctor ID"
 msgstr "医生编号"
 
@@ -448,7 +470,7 @@ msgstr "医生编号"
 msgid "Doctor field is mandatory in cases"
 msgstr "在某些情况下必须填写医生字段"
 
-#: bika/health/browser/doctors/folder_view.py:40
+#: bika/health/browser/doctors/folder_view.py:45
 msgid "Doctors"
 msgstr "医生"
 
@@ -472,18 +494,18 @@ msgstr "文件版本"
 msgid "Don't Know"
 msgstr "不知道"
 
-#: bika/health/browser/doctors/folder_view.py:89
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:70
-#: bika/health/controlpanel/bika_aetiologicagents.py:68
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:73
+#: bika/health/controlpanel/bika_aetiologicagents.py:72
+#: bika/health/controlpanel/bika_caseoutcomes.py:72
 msgid "Dormant"
 msgstr "休眠的"
 
 #: bika/health/content/patient.py:233
-#: bika/health/controlpanel/bika_drugs.py:58
+#: bika/health/controlpanel/bika_drugs.py:57
 msgid "Drug"
 msgstr "药物"
 
-#: bika/health/controlpanel/bika_drugprohibitions.py:58
+#: bika/health/controlpanel/bika_drugprohibitions.py:57
 msgid "Drug Prohibition"
 msgstr "用药禁忌"
 
@@ -491,7 +513,7 @@ msgstr "用药禁忌"
 msgid "Drug Prohibition Explanation"
 msgstr "用药禁忌说明"
 
-#: bika/health/controlpanel/bika_drugprohibitions.py:49
+#: bika/health/controlpanel/bika_drugprohibitions.py:48
 msgid "Drug Prohibition Explanations"
 msgstr "用药禁忌说明"
 
@@ -519,7 +541,7 @@ msgstr "药物保存"
 msgid "Drug side effects"
 msgstr "药物副作用"
 
-#: bika/health/controlpanel/bika_drugs.py:49
+#: bika/health/controlpanel/bika_drugs.py:48
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Drugs"
 msgstr "药物"
@@ -528,14 +550,14 @@ msgstr "药物"
 msgid "EPI Number"
 msgstr "EPI编号"
 
-#: bika/health/controlpanel/bika_insurancecompanies.py:54
+#: bika/health/controlpanel/bika_insurancecompanies.py:59
 #: bika/health/controlpanel/bika_vaccinationcenters.py:79
 #: bika/health/obsolete/__init__.py:40
 msgid "Email"
 msgstr "Email"
 
-#: bika/health/browser/doctors/folder_view.py:60
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:53
+#: bika/health/browser/doctors/folder_view.py:92
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:56
 msgid "Email Address"
 msgstr "Email地址"
 
@@ -547,7 +569,7 @@ msgstr "实证治疗"
 msgid "End"
 msgstr "结束"
 
-#: bika/health/controlpanel/bika_ethnicities.py:44
+#: bika/health/controlpanel/bika_ethnicities.py:48
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Ethnicities"
 msgstr "种族"
@@ -556,7 +578,7 @@ msgstr "种族"
 msgid "Ethnicity"
 msgstr "种族"
 
-#: bika/health/controlpanel/bika_ethnicities.py:53
+#: bika/health/controlpanel/bika_ethnicities.py:57
 msgid "Ethnicity Name"
 msgstr "种族名称"
 
@@ -568,6 +590,10 @@ msgstr "种族，例如：亚洲，非洲等"
 msgid "Expectant/Symptomatic treatment"
 msgstr "预期/对症治疗"
 
+#: bika/health/browser/viewlets/templates/client_type_viewlet.pt:21
+msgid "External Client"
+msgstr ""
+
 #: bika/health/ajax/ajaxhandler.py:74
 msgid "Failed ajax call: %s"
 msgstr "Ajax调用失败：%s"
@@ -576,8 +602,8 @@ msgstr "Ajax调用失败：%s"
 msgid "Fathers name"
 msgstr "父亲的名字"
 
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:56
-#: bika/health/controlpanel/bika_insurancecompanies.py:58
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:59
+#: bika/health/controlpanel/bika_insurancecompanies.py:63
 #: bika/health/controlpanel/bika_vaccinationcenters.py:87
 msgid "Fax"
 msgstr "传真"
@@ -618,18 +644,22 @@ msgstr "文件名："
 msgid "First day of last menses"
 msgstr "最后一次月经的第一天"
 
-#: bika/health/browser/doctors/folder_view.py:50
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:52
+#: bika/health/utils.py:380
+msgid "From an internal client, but not shared"
+msgstr ""
+
+#: bika/health/browser/doctors/folder_view.py:66
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:55
 #: bika/health/content/batch.py:105
 msgid "Full Name"
 msgstr "全名"
 
 #: bika/health/content/analysisrequest.py:97
-#: bika/health/content/batch.py:307
+#: bika/health/content/batch.py:308
 msgid "Fullname"
 msgstr "全名"
 
-#: bika/health/browser/patients/folder_view.py:78
+#: bika/health/browser/patients/folder_view.py:81
 #: bika/health/content/patient.py:118
 #: bika/health/controlpanel/bika_symptoms.py:63
 msgid "Gender"
@@ -687,7 +717,7 @@ msgstr "西班牙裔或拉丁裔"
 msgid "Historic Results"
 msgstr "历史结果"
 
-#: bika/health/content/batch.py:261
+#: bika/health/content/batch.py:262
 msgid "Hours fasting"
 msgstr "空腹小时"
 
@@ -708,7 +738,7 @@ msgstr "识别码"
 msgid "Identifier Type"
 msgstr "标识符类型"
 
-#: bika/health/controlpanel/bika_identifiertypes.py:45
+#: bika/health/controlpanel/bika_identifiertypes.py:49
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Identifier Types"
 msgstr "标识符类型"
@@ -742,7 +772,7 @@ msgid "If selected, Client Patient IDs will be forced to be unique"
 msgstr "如果选择，则客户患者ID将被强制为唯一"
 
 #: bika/health/content/patient.py:367
-#: bika/health/controlpanel/bika_immunizations.py:58
+#: bika/health/controlpanel/bika_immunizations.py:63
 msgid "Immunization"
 msgstr "免疫"
 
@@ -751,14 +781,14 @@ msgstr "免疫"
 msgid "Immunization form"
 msgstr "免疫形式"
 
-#: bika/health/controlpanel/bika_immunizations.py:49
+#: bika/health/controlpanel/bika_immunizations.py:54
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Immunizations"
 msgstr "免疫"
 
-#: bika/health/browser/patients/folder_view.py:114
+#: bika/health/browser/doctors/folder_view.py:113
+#: bika/health/browser/patients/folder_view.py:117
 #: bika/health/profiles/default/workflows/senaite_health_doctor_workflow/definition.xml
-#: bika/health/profiles/default/workflows/senaite_health_patient_workflow/definition.xml
 msgid "Inactive"
 msgstr "不活跃"
 
@@ -766,7 +796,7 @@ msgstr "不活跃"
 msgid "Inches"
 msgstr "英寸"
 
-#: bika/health/validators.py:52
+#: bika/health/validators.py:55
 msgid "Incorrect data format in '${title}', should be YYYY-MM-DD"
 msgstr "'${title}'中的数据格式不正确，应为YYYY-MM-DD"
 
@@ -778,7 +808,7 @@ msgstr "继承默认设置"
 msgid "Inherit default settings for Patient results distribution"
 msgstr "继承患者结果分发的默认设置"
 
-#: bika/health/controlpanel/bika_insurancecompanies.py:43
+#: bika/health/controlpanel/bika_insurancecompanies.py:48
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Insurance Companies"
 msgstr "保险公司"
@@ -792,11 +822,15 @@ msgstr "保险公司"
 msgid "Insurance Number"
 msgstr "保险号码"
 
+#: bika/health/browser/viewlets/templates/client_type_viewlet.pt:12
+msgid "Internal Client"
+msgstr ""
+
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:17
 msgid "Invoice"
 msgstr "发票"
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:58
+#: bika/health/browser/insurancecompany/invoicefolder.py:61
 msgid "Invoice Date"
 msgstr "发票日期"
 
@@ -804,7 +838,7 @@ msgstr "发票日期"
 msgid "Invoice ID"
 msgstr "发票编号"
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:54
+#: bika/health/browser/insurancecompany/invoicefolder.py:57
 msgid "Invoice Number"
 msgstr "发票号码"
 
@@ -812,7 +846,7 @@ msgstr "发票号码"
 msgid "Invoice To"
 msgstr "开发票"
 
-#: bika/health/browser/insurancecompany/invoicefolder.py:46
+#: bika/health/browser/insurancecompany/invoicefolder.py:49
 msgid "Invoices"
 msgstr "发票"
 
@@ -852,11 +886,11 @@ msgstr "$ {accreditation_body}实验室认证时间表中包含的方法。 分�
 msgid "Mild"
 msgstr "温和"
 
-#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:55
+#: bika/health/browser/vaccinationcenter/vaccinationcenter.py:58
 msgid "Mobile Phone"
 msgstr "手机"
 
-#: bika/health/browser/doctors/folder_view.py:64
+#: bika/health/browser/doctors/folder_view.py:100
 msgid "MobilePhone"
 msgstr "移动电话"
 
@@ -887,6 +921,10 @@ msgstr "美洲原住民"
 #: bika/health/config.py:37
 msgid "Native Hawaiian or Other Pacific Islander"
 msgstr "夏威夷原住民或其他太平洋岛民"
+
+#: bika/health/utils.py:383
+msgid "No client assigned"
+msgstr ""
 
 #: bika/health/browser/patient/historicresults.pt:144
 msgid "No historic results found"
@@ -921,18 +959,27 @@ msgstr "客观临床发现"
 msgid "One"
 msgstr "一个"
 
-#: bika/health/content/batch.py:172
+#: bika/health/content/batch.py:173
 msgid "Onset"
 msgstr "发作"
 
-#: bika/health/browser/batchfolder.py:127
-#: bika/health/content/batch.py:146
+#: bika/health/adapters/listing/batches.py:219
+#: bika/health/content/batch.py:147
 msgid "Onset Date"
 msgstr "发病日期"
 
-#: bika/health/content/batch.py:157
+#: bika/health/content/batch.py:158
 msgid "Onset Date Estimated"
 msgstr "预计发病日期"
+
+#: bika/health/adapters/listing/batches.py:184
+msgid "Open (private)"
+msgstr ""
+
+#: bika/health/adapters/listing/batches.py:177
+#: bika/health/setuphandlers.py:98
+msgid "Open (shared)"
+msgstr ""
 
 #: bika/health/skins/bika_health/bika_health_widgets/casemenstrualstatuswidget.pt:67
 #: bika/health/skins/bika_health/bika_health_widgets/patientmenstrualstatuswidget.pt:58
@@ -960,13 +1007,17 @@ msgstr "参数'%s' 丢失"
 msgid "Passive immunization"
 msgstr "被动免疫"
 
+#: bika/health/adapters/listing/batches.py:209
 #: bika/health/browser/analysisrequests/view.py:59
-#: bika/health/browser/batchfolder.py:117
-#: bika/health/browser/insurancecompany/invoicefolder.py:63
+#: bika/health/browser/insurancecompany/invoicefolder.py:66
 msgid "Patient"
 msgstr "患者"
 
-#: bika/health/content/batch.py:151
+#: bika/health/adapters/listing/batches.py:223
+msgid "Patient Age"
+msgstr ""
+
+#: bika/health/content/batch.py:152
 msgid "Patient Age at Case Onset Date"
 msgstr "发病日期的患者年龄"
 
@@ -974,9 +1025,9 @@ msgstr "发病日期的患者年龄"
 msgid "Patient Files"
 msgstr "患者档案"
 
+#: bika/health/adapters/listing/batches.py:201
 #: bika/health/browser/analysisrequests/view.py:52
-#: bika/health/browser/batchfolder.py:109
-#: bika/health/browser/patients/folder_view.py:68
+#: bika/health/browser/patients/folder_view.py:73
 msgid "Patient ID"
 msgstr "患者编号"
 
@@ -1012,8 +1063,16 @@ msgstr "患者过去的病史。"
 msgid "Patients"
 msgstr "患者"
 
+#: bika/health/browser/viewlets/templates/client_type_viewlet.pt:13
+msgid "Patients, Clinical Cases and Doctors from internal clients are shared"
+msgstr ""
+
+#: bika/health/browser/viewlets/templates/client_type_viewlet.pt:22
+msgid "Patients, Clinical Cases and Doctors from this client are private"
+msgstr ""
+
 #: bika/health/browser/batch/publish.pt:68
-#: bika/health/controlpanel/bika_insurancecompanies.py:56
+#: bika/health/controlpanel/bika_insurancecompanies.py:61
 #: bika/health/controlpanel/bika_vaccinationcenters.py:83
 msgid "Phone"
 msgstr "电话"
@@ -1054,8 +1113,7 @@ msgstr "预防/预防治疗"
 msgid "Price"
 msgstr "价格"
 
-#: bika/health/browser/doctors/folder_view.py:54
-#: bika/health/browser/patients/folder_view.py:93
+#: bika/health/browser/patients/folder_view.py:96
 msgid "Primary Referrer"
 msgstr "主要推荐人"
 
@@ -1063,11 +1121,16 @@ msgstr "主要推荐人"
 msgid "Print date:"
 msgstr "印刷日期："
 
+#: bika/health/utils.py:373
+msgid "Private, from an external client"
+msgstr ""
+
+#: bika/health/content/doctor.py:65
 #: bika/health/content/patient.py:79
 msgid "Province"
 msgstr "省"
 
-#: bika/health/content/batch.py:170
+#: bika/health/content/batch.py:171
 msgid "Provisional diagnosis"
 msgstr "临时诊断"
 
@@ -1199,6 +1262,16 @@ msgstr "严重"
 msgid "Severity levels permitted"
 msgstr "允许的严重级别"
 
+#: bika/health/profiles/default/workflows/senaite_health_doctor_workflow/definition.xml
+#: bika/health/profiles/default/workflows/senaite_health_patient_workflow/definition.xml
+#: bika/health/setuphandlers.py:118
+msgid "Share"
+msgstr ""
+
+#: bika/health/utils.py:377
+msgid "Shared, from an internal client"
+msgstr ""
+
 #: bika/health/content/treatment.py:107
 msgid "Shock treatment"
 msgstr "休克治疗"
@@ -1220,12 +1293,12 @@ msgid "Subjective clinical findings"
 msgstr "主观临床发现"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:188
-#: bika/health/browser/insurancecompany/invoicefolder.py:60
+#: bika/health/browser/insurancecompany/invoicefolder.py:63
 msgid "Subtotal"
 msgstr "小计"
 
 #: bika/health/content/aetiologicagent.py:35
-#: bika/health/content/batch.py:241
+#: bika/health/content/batch.py:242
 msgid "Subtype"
 msgstr "亚型"
 
@@ -1274,6 +1347,10 @@ msgstr "测试结果的置信度为$ {lab_confidence}％"
 msgid "The ID number (Insurance Number) from the person whose contract cover the current patient."
 msgstr "合同涵盖当前患者的人员的ID号（保险号）。"
 
+#: bika/health/browser/viewlets/templates/patient_shared_viewlet.pt:23
+msgid "The owner is"
+msgstr ""
+
 #: bika/health/content/patient.py:684
 msgid "The patient and the guarantor are the same."
 msgstr "病人和担保人是相同的。"
@@ -1281,6 +1358,18 @@ msgstr "病人和担保人是相同的。"
 #: bika/health/content/patient.py:683
 msgid "The patient is the guarantor."
 msgstr "病人是保证人。"
+
+#: bika/health/browser/viewlets/templates/patient_shared_viewlet.pt:32
+msgid "This Patient is private."
+msgstr ""
+
+#: bika/health/browser/viewlets/templates/patient_shared_viewlet.pt:14
+msgid "This Patient is shared among Internal Clients"
+msgstr ""
+
+#: bika/health/browser/viewlets/templates/patient_shared_viewlet.pt:20
+msgid "This Patient is shared among Internal Clients."
+msgstr ""
 
 #: bika/health/impress/reports/Default.pt:247
 msgid "This Sample has been invalidated due to erroneously published results"
@@ -1295,13 +1384,13 @@ msgid "This document shall not be reproduced except in full, without the written
 msgstr "未经$ {name_lab}的书面批准，除非完整，否则不得复制本文档。"
 
 #: bika/health/content/batch.py:138
+#: bika/health/content/doctor.py:63
 #: bika/health/content/patient.py:77
-#: bika/health/controlpanel/bika_aetiologicagents.py:53
 msgid "Title"
 msgstr "标题"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:216
-#: bika/health/browser/insurancecompany/invoicefolder.py:62
+#: bika/health/browser/insurancecompany/invoicefolder.py:65
 msgid "Total"
 msgstr "总"
 
@@ -1310,7 +1399,7 @@ msgid "Transmission"
 msgstr "传输"
 
 #: bika/health/content/immunization.py:103
-#: bika/health/controlpanel/bika_treatments.py:58
+#: bika/health/controlpanel/bika_treatments.py:63
 msgid "Treatment"
 msgstr "治疗方法"
 
@@ -1332,7 +1421,7 @@ msgstr "治疗程序"
 msgid "Treatment type"
 msgstr "处理方式"
 
-#: bika/health/controlpanel/bika_treatments.py:49
+#: bika/health/controlpanel/bika_treatments.py:54
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Treatments"
 msgstr "治疗方法"
@@ -1351,16 +1440,21 @@ msgstr "行程开始日期"
 msgid "Unit"
 msgstr "单元"
 
+#: bika/health/profiles/default/workflows/senaite_health_patient_workflow/definition.xml
+#: bika/health/setuphandlers.py:128
+msgid "Unshare"
+msgstr ""
+
 #: bika/health/content/bikasetup.py:40
 msgid "Use '/' symbol to allow multiple-units submission"
 msgstr "使用“ /”符号允许多单位提交"
 
-#: bika/health/browser/doctors/folder_view.py:58
+#: bika/health/browser/doctors/folder_view.py:88
 msgid "User Name"
 msgstr "用户名"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:157
-#: bika/health/browser/insurancecompany/invoicefolder.py:61
+#: bika/health/browser/insurancecompany/invoicefolder.py:64
 msgid "VAT"
 msgstr "加值税"
 
@@ -1373,7 +1467,7 @@ msgstr "疫苗接种中心"
 msgid "Vaccination Centers"
 msgstr "疫苗接种中心"
 
-#: bika/health/validators.py:91
+#: bika/health/validators.py:94
 msgid "Validation failed: '${value}' is not unique"
 msgstr "验证失败：'${value}' 不是唯一的"
 

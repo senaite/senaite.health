@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.4 (unreleased)
+1.2.4 (2020-08-11)
 ------------------
 
 **Added**
@@ -10,18 +10,12 @@ Changelog
 - #183 Internal Clients functionality
 - #187 Allow to introduce the Age instead of Date of Birth for Patient
 
-**Changed**
-
-**Removed**
-
 **Fixed**
 
 - #195 Fix Date Validator fails when value is from DateTime/datetime type
 - #193 Hide url in ClientPatientID column when value is empty
 - #182 Prevent Traceback in patients listing when dob is not set
 - #184 Required patient data can be omitted on save causing error on re-edit
-
-**Security**
 
 
 1.2.3.1 (2020-05-19)
