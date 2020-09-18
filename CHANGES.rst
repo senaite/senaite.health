@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.5 (unreleased)
+------------------
+
+**Fixed**
+
+- #197 Patient's Date time picker does not translates well to current language
+
 1.2.4 (2020-08-11)
 ------------------
 
