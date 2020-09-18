@@ -30,13 +30,7 @@ function HealthPatientEditView() {
         }
 
         // Adapt datepicker to current needs
-        $("#BirthDate").datepicker("destroy");
-        $("#BirthDate").datepicker({
-            dateFormat: "yy-mm-dd",
-            changeMonth:true,
-            changeYear:true,
-            yearRange: "-100:+0"
-        });
+        $("#BirthDate").datepicker("option", "yearRange", "-100:+0" );
 
         if ($('#patient-base-edit')) {
             loadAnonymous();
