@@ -152,7 +152,6 @@ class PatientsView(BikaListingView):
         """
         return get_client_from_chain(self.context)
 
-    @view.memoize
     def get_user_client(self):
         """Returns the client from current user, if any
         """
