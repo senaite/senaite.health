@@ -37,7 +37,7 @@ setup(
         "archetypes.schemaextender",
         "senaite.lims>=1.3.4",
         "senaite.lims<1.4.0",
-        "senaite.panic",
+        "senaite.panic<1.2.0",
     ],
     extras_require={
         'test': [
