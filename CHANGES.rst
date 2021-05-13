@@ -4,9 +4,13 @@ Changelog
 1.2.5 (unreleased)
 ------------------
 
-**Fixed**
-
+- #204 Compatibility with core#1803
+- #203 Pin senaite.panic<1.2.0
+- #202 Compatibility with core#1717
+- #200 Remove JS that inserts/removes the 'required' red icon
+- #198 Remove memoize from patients folder view
 - #197 Patient's Date time picker does not translates well to current language
+
 
 1.2.4 (2020-08-11)
 ------------------
