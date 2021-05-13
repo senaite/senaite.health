@@ -81,7 +81,7 @@ class Aetiologic_Agents(WorksheetImporter):
 
     def get_subtypes(self):
         sheetname = 'Aetiologic Agents Subtypes'
-        worksheet = self.workbook.get_sheet_by_name(sheetname)
+        worksheet = self.workbook[sheetname]
         if not worksheet:
             return
         subtypes = {}
