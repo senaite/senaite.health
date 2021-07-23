@@ -1,13 +1,14 @@
 #
 # Translators:
 # Jordi Puiggené <jpuiggene@naralabs.com>, 2018
+# Carine Nkam <superkrin@hotmail.com>, 2020
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-11 21:03+0000\n"
+"POT-Creation-Date: 2021-07-23 21:31+0000\n"
 "PO-Revision-Date: 2018-10-14 15:05+0000\n"
-"Last-Translator: Jordi Puiggené <jpuiggene@naralabs.com>, 2018\n"
+"Last-Translator: Carine Nkam <superkrin@hotmail.com>, 2020\n"
 "Language-Team: French (https://www.transifex.com/senaite/teams/87046/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,7 +47,7 @@ msgstr "Une liste des lieux visités par le patient."
 #: bika/health/profiles/default/workflows/senaite_health_doctor_workflow/definition.xml
 #: bika/health/profiles/default/workflows/senaite_health_patient_workflow/definition.xml
 msgid "Activate"
-msgstr ""
+msgstr "Activer"
 
 #: bika/health/browser/doctors/folder_view.py:107
 #: bika/health/browser/patients/folder_view.py:111
@@ -81,7 +82,7 @@ msgstr "Ajouter"
 
 #: bika/health/browser/patients/folder_view.py:102
 msgid "Additional IDs"
-msgstr ""
+msgstr "IDs supplémentaires"
 
 #: bika/health/controlpanel/bika_symptoms.py:51
 msgid "Additional Symptoms not covered by ICD codes, can be entered here."
@@ -97,7 +98,7 @@ msgstr "Notes additionnelles"
 
 #: bika/health/impress/reports/Default.pt:306
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #: bika/health/controlpanel/bika_aetiologicagents.py:48
 #: bika/health/profiles/default/controlpanel.xml
@@ -122,11 +123,11 @@ msgstr "Tout"
 #: bika/health/content/bikasetup.py:63
 #: bika/health/content/client.py:50
 msgid "Allow results distribution to Patients"
-msgstr ""
+msgstr "Autorise la transmission des résultats aux patients"
 
 #: bika/health/content/patient.py:637
 msgid "Allow results distribution to this patient"
-msgstr ""
+msgstr "Autorise la transmission des résultats à ce patient"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:83
 msgid "Analysis Profiles"
@@ -142,11 +143,11 @@ msgstr ""
 
 #: bika/health/content/patient.py:619
 msgid "Anonymous"
-msgstr ""
+msgstr "Anonyme"
 
 #: bika/health/content/symptom.py:43
 msgid "Applies to"
-msgstr ""
+msgstr "S'applique à "
 
 #: bika/health/content/drug.py:60
 msgid "Appropriate doses and dosage"
@@ -158,7 +159,7 @@ msgstr "Asiatique"
 
 #: bika/health/impress/reports/Default.pt:607
 msgid "Attachment for"
-msgstr ""
+msgstr "Pièce jointe pour"
 
 #: bika/health/impress/reports/Default.pt:591
 msgid "Attachments for ${DYNAMIC_CONTENT}"
@@ -166,7 +167,7 @@ msgstr ""
 
 #: bika/health/impress/reports/Default.pt:26
 msgid "Attachments per Row"
-msgstr ""
+msgstr "Pièces jointes par ligne"
 
 #. Default: "Case"
 msgid "Batch"
@@ -339,7 +340,7 @@ msgstr "Populations à risque"
 
 #: bika/health/controlpanel/bika_insurancecompanies.py:57
 msgid "Company Name"
-msgstr ""
+msgstr "Nom de l'entreprise"
 
 #: bika/health/content/patient.py:748
 msgid "Consent to SMS"
@@ -385,11 +386,11 @@ msgstr ""
 
 #: bika/health/impress/reports/Default.pt:292
 msgid "Date of Birth"
-msgstr ""
+msgstr "Date de naissance"
 
-#: bika/health/browser/patients/folder_view.py:215
+#: bika/health/browser/patients/folder_view.py:214
 msgid "Date of Birth might be wrong"
-msgstr ""
+msgstr "La date de naissance peut être erronée"
 
 #: bika/health/adapters/listing/batches.py:144
 msgid "Date of Birth or Case Onset Date are wrong"
@@ -397,24 +398,24 @@ msgstr ""
 
 #: bika/health/skins/bika_health/bika_health_widgets/casebasalbodytempwidget.pt:20
 msgid "Day 1"
-msgstr ""
+msgstr "Jour 1"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casebasalbodytempwidget.pt:31
 msgid "Day 2"
-msgstr ""
+msgstr "Jour 2"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casebasalbodytempwidget.pt:42
 msgid "Day 3"
-msgstr ""
+msgstr "Jour 3"
 
 #: bika/health/skins/bika_health/bika_health_widgets/splitteddatewidget.pt:59
 msgid "Days"
-msgstr ""
+msgstr "Jours"
 
 #: bika/health/profiles/default/workflows/senaite_health_doctor_workflow/definition.xml
 #: bika/health/profiles/default/workflows/senaite_health_patient_workflow/definition.xml
 msgid "Deactivate"
-msgstr ""
+msgstr "Désactiver"
 
 #: bika/health/browser/insurancecompany/invoicefolder.py:73
 msgid "Default"
@@ -427,7 +428,7 @@ msgstr ""
 
 #: bika/health/browser/doctors/folder_view.py:83
 msgid "Department"
-msgstr ""
+msgstr "Département"
 
 #: bika/health/content/batch.py:172
 #: bika/health/content/patient.py:194
@@ -437,7 +438,7 @@ msgstr "Description"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:197
 msgid "Discount"
-msgstr ""
+msgstr "Rabais"
 
 #: bika/health/controlpanel/bika_diseases.py:57
 msgid "Disease"
@@ -599,7 +600,7 @@ msgstr ""
 
 #: bika/health/content/patient.py:574
 msgid "Fathers name"
-msgstr ""
+msgstr "Nom du père"
 
 #: bika/health/browser/vaccinationcenter/vaccinationcenter.py:59
 #: bika/health/controlpanel/bika_insurancecompanies.py:63
@@ -706,7 +707,7 @@ msgstr ""
 
 #: bika/health/skins/bika_health/bika_health_widgets/casepatientconditionwidget.pt:20
 msgid "Height"
-msgstr ""
+msgstr "Hauteur"
 
 #: bika/health/config.py:39
 msgid "Hispanic or Latino"
@@ -714,7 +715,7 @@ msgstr "Hispanique ou Latin"
 
 #: bika/health/browser/patient/historicresults.py:51
 msgid "Historic Results"
-msgstr ""
+msgstr "Historique des résultats"
 
 #: bika/health/content/batch.py:262
 msgid "Hours fasting"
@@ -987,7 +988,7 @@ msgstr ""
 
 #: bika/health/obsolete/__init__.py:41
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: bika/health/content/analysisrequest.py:89
 #: bika/health/content/batch.py:130
@@ -1014,7 +1015,7 @@ msgstr "Patient"
 
 #: bika/health/adapters/listing/batches.py:223
 msgid "Patient Age"
-msgstr ""
+msgstr "Âge du patient"
 
 #: bika/health/content/batch.py:152
 msgid "Patient Age at Case Onset Date"
@@ -1022,7 +1023,7 @@ msgstr "Age du patient à la date de début du cas"
 
 #: bika/health/browser/patient/files.py:49
 msgid "Patient Files"
-msgstr ""
+msgstr "Fichiers du patient"
 
 #: bika/health/adapters/listing/batches.py:201
 #: bika/health/browser/analysisrequests/view.py:52
@@ -1078,11 +1079,11 @@ msgstr "Téléphone"
 
 #: bika/health/impress/reports/Default.pt:319
 msgid "Phone (home)"
-msgstr ""
+msgstr "Téléphone (Domicile)"
 
 #: bika/health/impress/reports/Default.pt:323
 msgid "Phone (mobile)"
-msgstr ""
+msgstr "Téléphone (Portable)"
 
 #: bika/health/content/patient.py:588
 msgid "Photo"
@@ -1173,7 +1174,7 @@ msgstr ""
 
 #: bika/health/impress/reports/Default.pt:479
 msgid "Result"
-msgstr ""
+msgstr "Résultat"
 
 #: bika/health/impress/reports/Default.pt:682
 msgid "Result out of client specified range."
@@ -1181,17 +1182,17 @@ msgstr ""
 
 #: bika/health/impress/reports/Default.pt:449
 msgid "Results"
-msgstr ""
+msgstr "Résultats"
 
 #: bika/health/content/bikasetup.py:87
 #: bika/health/content/client.py:71
 #: bika/health/content/patient.py:646
 msgid "Results attachments permitted"
-msgstr ""
+msgstr "Résultats en pièces jointes autorisés"
 
 #: bika/health/impress/reports/Default.pt:555
 msgid "Results interpretation"
-msgstr ""
+msgstr "Interprétation des résultats"
 
 #: bika/health/configure.zcml:51
 msgid "SENAITE Health"
@@ -1294,7 +1295,7 @@ msgstr ""
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:188
 #: bika/health/browser/insurancecompany/invoicefolder.py:63
 msgid "Subtotal"
-msgstr ""
+msgstr "Sous-total"
 
 #: bika/health/content/aetiologicagent.py:35
 #: bika/health/content/batch.py:242
@@ -1328,7 +1329,7 @@ msgstr "Symptômes ou similaires pour lesquels le médicament est adapté"
 
 #: bika/health/profiles/default/controlpanel.xml
 msgid "Syndromes"
-msgstr ""
+msgstr "Syndromes"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:207
 msgid "Taxes"
@@ -1391,7 +1392,7 @@ msgstr "Titre"
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:216
 #: bika/health/browser/insurancecompany/invoicefolder.py:65
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: bika/health/content/immunization.py:76
 msgid "Transmission"
@@ -1437,7 +1438,7 @@ msgstr "Date de début de voyage"
 
 #: bika/health/impress/reports/Default.pt:482
 msgid "Unit"
-msgstr ""
+msgstr "Unité"
 
 #: bika/health/profiles/default/workflows/senaite_health_patient_workflow/definition.xml
 #: bika/health/setuphandlers.py:128
@@ -1450,12 +1451,12 @@ msgstr ""
 
 #: bika/health/browser/doctors/folder_view.py:88
 msgid "User Name"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:157
 #: bika/health/browser/insurancecompany/invoicefolder.py:64
 msgid "VAT"
-msgstr ""
+msgstr "TVA"
 
 #: bika/health/content/patient.py:368
 msgid "Vaccination Center"
@@ -1472,15 +1473,15 @@ msgstr ""
 
 #: bika/health/browser/analysisrequest/templates/analysisrequest_invoice_content.pt:123
 msgid "Verified By"
-msgstr ""
+msgstr "Contrôlé par"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casepatientconditionwidget.pt:52
 msgid "Waist"
-msgstr ""
+msgstr "Taille"
 
 #: bika/health/skins/bika_health/bika_health_widgets/casepatientconditionwidget.pt:36
 msgid "Weight"
-msgstr ""
+msgstr "Poids"
 
 #: bika/health/config.py:38
 msgid "White"
@@ -1489,11 +1490,11 @@ msgstr "Blanc"
 #: bika/health/skins/bika_health/bika_health_widgets/casemenstrualstatuswidget.pt:58
 #: bika/health/skins/bika_health/bika_health_widgets/patientmenstrualstatuswidget.pt:38
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
 #: bika/health/skins/bika_health/bika_health_widgets/splitteddatewidget.pt:46
 msgid "Years"
-msgstr ""
+msgstr "Années"
 
 #. Default: "${Y}-${m}-${d} ${I}:${M} ${p}"
 #. Supported are ${A}, ${a}, ${B}, ${b}, ${H}, ${I}, ${m}, ${d}, ${M}, ${p},
@@ -1517,11 +1518,11 @@ msgstr "aa-mm-jj"
 
 #: bika/health/skins/bika_health/bika_health_widgets/splitteddatewidget.pt:26
 msgid "days"
-msgstr ""
+msgstr "jours"
 
 #: bika/health/skins/bika_health/bika_health_widgets/splitteddatewidget.pt:22
 msgid "months"
-msgstr ""
+msgstr "mois"
 
 #: bika/health/content/drug.py:82
 msgid "preservation"
@@ -1531,7 +1532,7 @@ msgstr "conservation"
 #: bika/health/browser/patient/chronicconditions.pt:22
 #: bika/health/browser/patient/immunizationhistory.pt:22
 msgid "save"
-msgstr ""
+msgstr "enregistrer"
 
 #. Default: "${I}:${M} ${p}"
 #. The variables used here are the same as used in the strftime formating.
@@ -1542,4 +1543,4 @@ msgstr "${I}:${M} ${p}"
 
 #: bika/health/skins/bika_health/bika_health_widgets/splitteddatewidget.pt:18
 msgid "years"
-msgstr ""
+msgstr "années"

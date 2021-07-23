@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-11 21:03+0000\n"
+"POT-Creation-Date: 2021-07-23 21:31+0000\n"
 "PO-Revision-Date: 2018-10-14 15:05+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/senaite/teams/87046/zh_TW/)\n"
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: bika/health/browser/patients/folder_view.py:215
+#: bika/health/browser/patients/folder_view.py:214
 msgid "Date of Birth might be wrong"
 msgstr ""
 

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.5 (unreleased)
+1.2.5 (2021-07-23)
 ------------------
 
 - #204 Compatibility with core#1803
