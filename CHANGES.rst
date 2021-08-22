@@ -4,6 +4,8 @@ Changelog
 1.2.6 (unreleased)
 ------------------
 
+- #205 Fix persistent broken content.analysisspec.AnalysisSpec instance
+
 
 1.2.5 (2021-07-23)
 ------------------
